@@ -1,0 +1,47 @@
+<!-- Community Page -->
+<!-- Created 11/24/2020 -->
+{% extends "cannlytics_website/index.html" %}
+{% block title %}Community | {{ general.title }}{% endblock %}
+{% load static %}
+{% block material %}
+  <div class="community container">
+
+  <!-- https://microsoft.github.io/monaco-editor/ -->
+  <!-- CA Data: https://iservices.dca.ca.gov/docs/bcclicensereadservices -->
+
+    <!-- Hero -->
+    <div class="row featurette mt-5">
+      <div class="col-md-7">
+        <h2 class="h1 serif text-gradient-reverse pb-3 mt-0">
+          Welcome to the Cannlytics Community.
+        </h2>
+        <p class="h5 double-line text-dark text-start text-muted">
+          A vibrant community of cannabis-testing developers and scientists.
+        </p>
+      </div>
+      <div class="col-md-5">
+        <img
+          src="{% static 'cannlytics_website/images/illustrations/cannlytics_communication.svg' %}"
+          width="100%"
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Lab Locator -->
+  {% include "./lab_locator.html" %}
+
+  <!-- Community Packages -->
+  {% comment %} {% include "cannlytics_website/components/packages.html" %} {% endcomment %}
+
+    <!-- Material -->
+    <div class="container markdown py-3">
+      {{ markdown | safe }}
+      <p class="text-start">
+        <a href="https://console.cannlytics.com/sign-up">
+          Join the community today &rarr;
+        </a>
+      </p>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+<!-- Lab Page -->
+<!-- Created 12/26/2020 -->
+{% extends "cannlytics_website/index.html" %}
+
+{% load static %}
+
+{% block material %}
+  <div class="about">
+    <main role="main" class="container py-3 my-3 ">
+      <div class="col-md-8 pb-5 mb-5">
+        <h3 class="pb-4 mb-4 font-italic border-bottom">
+          Lab x
+        </h3>
+
+        <!-- TODO: List of all labs with search -->
+
+        <!-- Section -->
+        <section>
+          <!-- TODO: Dialgo to add a lab -->
+          <!-- Fields:
+            name
+            trade_name
+            website
+            image_url
+            license
+            email
+            phone
+            street
+            city
+            zip
+            county
+            state
+            latitude
+            longitude
+            status
+            analyses
+            current_lims
+            interested_in_new_lims
+            feedback
+            top_problems
+            twitter
+            linkedin
+          -->
+
+          <!-- Dialog to edit a lab -->
+
+        </section>
+
+       
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Vines -->
+  {% include "cannlytics_website/components/art/vines.html" %}
+
+  <!-- TODO: Handle JavaScript better -->
+  {% comment %} <script src="{% static 'cannlytics_website/js/labs/Labs.js'%}"></script>
+  <script src="{% static 'cannlytics_website/js/labs/Labs.View.js'%}"></script>
+  <script src="{% static 'cannlytics_website/js/labs/Labs.Data.js'%}"></script> {% endcomment %}
+
+{% endblock %}

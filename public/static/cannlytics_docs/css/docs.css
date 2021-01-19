@@ -1,0 +1,140 @@
+/*--------------------------------------------------------------------------
+  Documentation Style | Cannlytics Website
+  Created: 10/11/2020
+---------------------------------------------------------------------------*/
+
+/*--------------------------------------------------------------------------
+  General documentation
+---------------------------------------------------------------------------*/
+
+main .action {
+  color: #0BA67F !important;
+}
+body.dark main .action {
+  color: #50fa7b !important;
+}
+body.dark .btn-outline-primary {
+  border-color: #50fa7b;
+  color: #50fa7b;
+}
+body.dark .btn-outline-primary:hover {
+  background: #50fa7b;
+  color: #1a1a1a;
+}
+body.dark .docs {
+  background-color: #323443 !important;
+}
+
+/*--------------------------------------------------------------------------
+  Top Navigation
+---------------------------------------------------------------------------*/
+
+.navbar {
+  background: #fff;
+}
+body.dark .navbar {
+  background-color: rgba(0, 0, 0, .5)
+}
+
+/*--------------------------------------------------------------------------
+  Sidebar
+---------------------------------------------------------------------------*/
+
+.sidebar {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  min-height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+@media (max-width: 767.98px) {
+  .sidebar-sticky {
+    min-height: unset;
+  }
+}
+
+/* Sidebar list items */
+.sidebar .nav-item {
+  width: 100%;
+}
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+  border-radius: .25rem;
+}
+.sidebar .nav-link .feather {
+  margin-right: .5rem;
+  color: #727272;
+}
+.sidebar .nav-link:hover {
+  color: inherit !important;
+  background: rgb(0 0 0 / 5%);
+}
+
+/* Sidebar headings */
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+.panel-collapse {
+  -webkit-transition: height .2s ease;
+  -o-transition: height .2s ease;
+  transition: height .2s ease;
+}
+
+/* Sidebar links */
+.sidebar .active a {
+  color: #1a1a1a !important;
+  background-color: #50fa7b33 !important;
+}
+body.dark .sidebar .active a {
+  color: #50fa7b !important;
+  background-color: #50fa7b33 !important;
+}
+
+/* Dark sidebar */
+body.dark .sidebar {
+  box-shadow: inset -1px 0 0 #dee2e680;
+}
+body.dark .sidebar .nav-link .feather {
+  color: #ccc;
+}
+body.dark .sidebar .nav-link:hover .feather {
+  color: #fff;
+}
+
+/*--------------------------------------------------------------------------
+  Icons
+---------------------------------------------------------------------------*/
+
+.primary-icon.feather {
+  color: #0BA67F;
+}
+.arrow .feather {
+  width: 16px;
+  height: 16px;
+  transform: translateX(6px);
+}
+[data-toggle="collapse"] > .arrow {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+[data-toggle="collapse"][aria-expanded="true"] > .arrow {
+  -webkit-transform: rotate(0) translate(-3px, -3px);
+  -moz-transform: rotate(0) translate(-3px, -3px);
+  -ms-transform: rotate(0) translate(-3px, -3px);
+  -o-transform: rotate(0) translate(-3px, -3px);
+  transform: rotate(0) translate(-3px, -3px);
+}

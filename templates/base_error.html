@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#281e52"/>
+    <meta name="description" content="Super power your lab with free and ethical cannabis-testing software built on the bleeding edge, tried-and-true, battle-tested, and ready for you to plug and play or pop the hood and tinker to your heart's content.">
+    <meta name="author" content="Keegan Skeate">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Error page -->
+    <!-- Created 1/18/2021 -->
+    {% load static %}
+
+    <!-- Title -->
+    <title>{%block title%}{%endblock %}</title>
+
+    <!-- Icons -->
+    <link rel="icon" href="{% static 'cannlytics_website/images/favicon/cannlytics-icon.ico' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/logos/favicon-32x32.png' %}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{% static 'images/logos/favicon-16x16.png' %}" sizes="16x16">
+    <link rel="apple-touch-icon" href="{% static '/images/logos/apple-touch-icon.png' %}" sizes="180x180">
+    <link rel="mask-icon" href="{% static '/images/logos/safari-pinned-tab.svg' %}" color="#e48632">
+    <link rel="shortcut icon" href="{% static '/images/logos/favicon.ico' %}" type="image/x-icon">
+
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="{% static 'cannlytics_website/css/bundle.css'%}?{% now "U" %}" rel="stylesheet" type="text/css">
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    
+  </head>
+  <body class="base">
+
+    <!-- Header -->
+    {% include "cannlytics_website/layout/header.html" %}
+
+    <!-- Error message -->
+    <div class="container markdown my-5">
+      <img src="{% static 'cannlytics_website/images/theme/acorn_original.svg' %}"
+        class="mb-2"
+        height="100px"
+      >
+      <h1 class="fw-bold">
+        {%block statusCode%}{%endblock %}
+      </h1>
+      <p>
+        {%block errormessage%}{%endblock %}
+      </p>
+    </div>
+
+    <!-- Footer -->
+    {% include "cannlytics_website/layout/footer.html" %}
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="{% static 'cannlytics_website/js/bundle.js' %}?{% now 'U' %}"></script>
+    <script>
+      cannlytics.website.initialize();
+    </script>
+
+  </body>
+</html>

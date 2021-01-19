@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+
+  <!-- Error page -->
+  <!-- Created 1/18/2021 -->
+  {% extends 'cannlytics_website/base.html' %}
+
+  {%block page%}
+
+    <div class="container">
+      <div style="margin: 120px;">
+        <h1 class="fw-bold">
+          {%block statusCode%}{%endblock %}
+        </h1>
+        <p>
+          {%block errormessage%}{%endblock %}
+        </p>
+      </div>
+    </div>
+
+  {% endblock %}
+
+</html>

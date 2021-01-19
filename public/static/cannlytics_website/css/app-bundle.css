@@ -1,0 +1,19 @@
+var api = require("!../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+            var content = require("!!../node_modules/extract-loader/lib/extractLoader.js!../node_modules/css-loader/dist/cjs.js!../node_modules/postcss-loader/src/index.js??ref--4-4!../node_modules/sass-loader/dist/cjs.js??ref--4-5!./app.scss");
+
+            content = content.__esModule ? content.default : content;
+
+            if (typeof content === 'string') {
+              content = [[module.id, content, '']];
+            }
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = api(content, options);
+
+
+
+module.exports = content.locals || {};
