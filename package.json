@@ -1,7 +1,7 @@
 {
   "name": "cannlytics_website",
   "productName": "Cannlytics Website",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "GPLv3",
   "private": true,
   "description": "Cannlytics website.",

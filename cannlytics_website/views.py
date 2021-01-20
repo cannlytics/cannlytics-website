@@ -83,7 +83,7 @@ class GeneralView(BaseMixin, TemplateView):
         if page_docs:
             for doc in page_docs:
                 name = doc.replace('-', '_')
-                context = get_markdown(context, APP, FILE_PATH, doc, name=name)
+                context = get_markdown(self.request, context, APP, FILE_PATH, doc, name=name)
         return context
 
     def get_context_data(self, **kwargs):
@@ -102,6 +102,7 @@ class CommunityView(BaseMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # FIXME: Passing API key does not work for some reason.
         api_key = get_document('admin/google')["cannlytics_lab_locator_api_key"]
         labs = get_collection('labs', limit=250, order_by='state')
         context["api_key"] = api_key

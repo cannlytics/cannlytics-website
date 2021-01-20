@@ -2,8 +2,9 @@
 Utility Functions | Cannlytics Website
 Created: 1/5/2021
 """
-import os
+# import os
 import re
+import requests
 import traceback
 from datetime import datetime
 from django.utils.crypto import get_random_string
@@ -14,6 +15,7 @@ from pymdownx import emoji
 # from markdown.extensions.toc import TocExtension
 
 from cannlytics_website import state # Save text in Firestore?
+from cannlytics_website.settings import PRODUCTION
 from .firebase import add_to_array
 
 # TODO: Style blockquotes
@@ -61,37 +63,41 @@ EXTENSION_CONFIGS = {
 #----------------------------------------------#
 
 
-def get_markdown(context, app, dir, page=None, options=None, name="markdown"):
+def get_markdown(request, context, app, dir, page=None, extensions=None, name="markdown"):
     """Try loading markdown material into a given context."""
-    if options is None:
-        options = EXTENSIONS
+    if extensions is None:
+        extensions = EXTENSIONS
     if page is None:
         page = context["page"]
     try:
-        # FIXME: Open markdown file in production environment.
-        # file_name = static(f"/{app}/docs/{page}.md")
-        # module_dir = os.path.dirname(__file__)  # get current directory
-        # file_path = os.path.join(module_dir, 'baz.txt')
-        # markdown_file = open(dir + file_name, "r")
-        url = staticfiles_storage.url(f"/{app}/docs/{page}.md")
-        file_name = os.path.join(dir, url)
-        print('Open:', file_name)
-        markdown_file = open(file_name, "r")
-        text = markdown_file.read()
-        # text = add_code_copy(text) # Optional: Add copy button
+        # TODO: Open markdown file in production directly, instead of with a request.
+        file_name = staticfiles_storage.url(f"/{app}/docs/{page}.md")
+        if PRODUCTION:
+            url = request.build_absolute_uri(file_name)
+            text = requests.get(url).text
+        else:
+            url = dir + file_name
+            markdown_file = open(url, "r")
+            text = markdown_file.read()
         context[name] = markdown(
             text,
-            extensions=options,
-            extension_configs=EXTENSION_CONFIGS,
+            extensions=extensions,
+            extension_config=EXTENSION_CONFIGS
         )
+        # Optional: Add copy code button
+        # text = add_code_copy(text)
     except Exception:
         traceback.print_exc()
-        context[name] = '<h1>Error loading page material.</h1><p>Please notify <a href="mailto:contact@cannlytics.com">contact@cannlytics.com</a>.</p>'
+        context[name] = '<h1>Error loading page material.</h1> \
+        <p>Our apologies, our server encountered a yet-to-be-fixed bug. \
+        Please notify <a href="mailto:contact@cannlytics.com">contact@cannlytics.com</a> \
+        and we will be quick to provide you with support.</p>'
     return context
 
 
-def add_code_copy(text): # FIXME: https://programmersought.com/article/48614916658/
+def add_code_copy(text):
     """Add copy button to code blocks."""
+    # TODO: Make this code work | https://programmersought.com/article/48614916658/
     n = text.count('<div class="codehilite">', 0, len(text))
     print('Codeblocks:', n)
     for i in range(n):

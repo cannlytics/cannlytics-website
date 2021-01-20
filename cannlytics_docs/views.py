@@ -44,5 +44,5 @@ class CannlyticsDocsView(BaseMixin, TemplateView):
         if context["product"]:
             context["section"] = self.kwargs.get("section", "get-started")
             page = f"{context['product']}/{context['section']}"
-            context = get_markdown(context, APP, FILE_PATH, page)
+            context = get_markdown(self.request, context, APP, FILE_PATH, page)
         return context
