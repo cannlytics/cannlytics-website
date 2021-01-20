@@ -87,6 +87,7 @@
     "postgres",
     "projectnum",
     "pymdownx",
+    "quickstart",
     "roadmap",
     "runserver",
     "scrollable",
