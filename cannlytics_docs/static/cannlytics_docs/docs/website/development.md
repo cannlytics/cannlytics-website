@@ -10,9 +10,9 @@ You can begin by cloning the repository.
 git clone https://github.com/keeganskeate/personal-website.git
 ```
 
-See [architecture.md](docs/architecture.md) for information about the repository's architecture.
+See the [architecture guide](../architecture) for information about the repository's architecture.
 
-Next, follow [installation.md](docs/architecture.md) to create your credentials and install all of the project's dependencies.
+Next, follow the [installation guide](../architecture) to create your credentials and install all of the project's dependencies.
 
 Resources:
 
@@ -77,14 +77,14 @@ It is an inconvinience to run 2 consoles, but a major convinience to have smooth
 
 > If you encounter a [django-livereload-server NotImplementedError](https://stackoverflow.com/questions/58422817/jupyter-notebook-with-python-3-8-notimplementederror), then it is likely that you are using Python 3.8+ and need to add the following code to `Lib\site-packages\tornado\platform\asyncio.py`.
 
-  ```py
+```py
 
-  import sys
+import sys
 
-  if sys.platform == 'win32':
-      asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+if sys.platform == 'win32':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-  ```
+```
 
 Resources:
 
@@ -96,23 +96,21 @@ Resources:
 
 Views are Python functions that describe the data to be presented. [Django describes views](https://docs.djangoproject.com/en/3.1/intro/tutorial03/#write-views-that-actually-do-something) in the following quote.
 
-> "Your view can read records from a database, or not. It can use a template system such as Django's – or a third-party Python template system – or not. It can generate a PDF file, output XML, create a ZIP file on the fly, anything you want, using whatever Python libraries you want."
+> "Your view can read records from a database, or not. It can use a template system such as Django's - or a third-party Python template system - or not. It can generate a PDF file, output XML, create a ZIP file on the fly, anything you want, using whatever Python libraries you want."
 
 
 ## Templates
 
-Tempaltes are Django HTML files that describe how the data is presented.
-
-Default Django templates can be found in your Anaconda/Python directory in `Lib\site-packages\django\contrib\admin\templates\admin`.
+Templates are Django HTML files that describe how the data is presented. Default Django templates can be found in your Anaconda/Python directory in `Lib\site-packages\django\contrib\admin\templates\admin`.
 
 
 ### Text Material
 
-All text material is either stored in JSON in `state.py` or written in Markdown in `docs` directories.
+All text material is either stored in JSON in `state.py` or written in Markdown in the `docs` directories.
 
 Resources:
 
-* [`python-markdown` Extensions](https://python-markdown.github.io/extensions/)
+* [`python-markdown`](https://python-markdown.github.io/extensions/)
 
 
 ## Data
@@ -122,14 +120,14 @@ This website has opted for a NoSQL approach for data management with Firebase's 
 
 ## Style
 
-Style distinguishes one site from another. You are free and encouraged to modify the style to create a site that is uniquely yours. See [style.md](style.md) for a guide on the personal website's style.
+Style distinguishes one site from another. You are free and encouraged to modify the style to create a site that is uniquely yours. See the [style guide](../style) for a guide on the personal website's style.
 
 
 ## Email
 
 If you are sending email with Gmail, then you can follow these steps.
 
-- Navigate to [Gmail](mail.google.com), click your profile, and click manage your google account.
+- Navigate to [Gmail](https://mail.google.com), click your profile, and click manage your google account.
 - Navigate to the [security tab](https://myaccount.google.com/security).
 - Enable 2-step verification and then click on App passwords.
 - Select Mail for app and enter a custom name for device.
@@ -138,11 +136,9 @@ If you are sending email with Gmail, then you can follow these steps.
 After you have created your app password, set your Gmail email and app password as environment variables, `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` respectively.
 
 ```shell
-
 echo EMAIL_HOST_USER=\"youremail@gmail.com\" >> .env
 echo EMAIL_HOST_PASSWORD=\"your-app-password\" >> .env
 gcloud secrets versions add etch_mobility_settings --data-file .env
-
 ```
 
 * [Email Self-Defense](https://emailselfdefense.fsf.org/en/)
@@ -164,20 +160,16 @@ Django makes creating stock forms easy.
 You can check for errors with:
 
 ```shell
-
 python manage.py check
-
 ```
 
 You can run tests for an app with:
 
 ```shell
-
 python manage.py test personal_website
-
 ```
 
-See [testing](/testing) for more information.
+See the [testing guide](../testing) for more information.
 
 
 ## Helpful Resources

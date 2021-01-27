@@ -3,62 +3,28 @@ Views | Cannlytics Website
 Created: 12/29/2020
 """
 import os
-from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from cannlytics_website.forms import ContactForm
 from utils.firebase import get_document, get_collection
-from utils.mixins import BaseMixin
+from utils.mixins import BaseMixin, TemplateView
 from utils.utils import get_markdown
+from .state import lab_state, page_data, page_docs
 
 APP = "cannlytics_website"
-
-DATA = {
-    # TODO: Get community data more efficiently? Client-side?
-    # "community": {
-    #     "documents": [],
-    #     "collections": [
-    #         {"name": "labs", "ref": "public/labs"},
-    #         {"name": "packages", "ref": "community/public/packages"},
-    #     ],
-    # },
-    "contributors": {
-        "collections": [{"name": "contributors", "ref": "contributors"}],
-    },
-    "products": {
-        "collections": [{"name": "products", "ref": "products"}],
-    },
-    "partners": {
-        "collections": [{"name": "partners_list", "ref": "partners"}],
-    },
-    "team": {
-        "collections": [{"name": "team", "ref": "team"}],
-    },
-    "whitepapers": {
-        "collections": [{"name": "whitepapers", "ref": "whitepapers"}],
-    }
-}
-
-DOCS = {
-    "about": ["about"],
-    "contributors": ["contribute"],
-    "privacy-policy": ["privacy-policy"],
-    "terms-of-service": ["terms-of-service"],
-    "roadmap": ["roadmap"],
-}
-
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
-# FILE_PATH = os.path.dirname(__file__)
 
 
 class GeneralView(BaseMixin, TemplateView):
     """Generic view for most pages."""
     
     def get_data(self, context):
-        """Get all data for a page from Firestore."""
+        """
+        Get all data for a page from Firestore.
+        """
         if context["section"]:
-            data = DATA.get(context["section"])
+            data = page_data.get(context["section"])
         else:
-            data = DATA.get(context["page"])
+            data = page_data.get(context["page"])
         if data is None:
             return context
         documents = data.get("documents")
@@ -78,16 +44,26 @@ class GeneralView(BaseMixin, TemplateView):
         return context
 
     def get_docs(self, context):
-        """ Get text documents for a given page. """
-        page_docs = DOCS.get(context["page"])
-        if page_docs:
-            for doc in page_docs:
+        """
+        Get the text documents for a given page.
+        """
+        docs = page_docs.get(context["page"])
+        if docs:
+            for doc in docs:
                 name = doc.replace('-', '_')
-                context = get_markdown(self.request, context, APP, FILE_PATH, doc, name=name)
+                context = get_markdown(
+                    self.request, context,
+                    APP,
+                    FILE_PATH,
+                    doc,
+                    name=name
+                )
         return context
 
     def get_context_data(self, **kwargs):
-        """Get the context for a page."""
+        """
+        Get the context for a page.
+        """
         context = super().get_context_data(**kwargs)
         context = self.get_data(context)
         context = self.get_docs( context)
@@ -95,24 +71,16 @@ class GeneralView(BaseMixin, TemplateView):
 
 
 class CommunityView(BaseMixin, TemplateView):
-    """Community page. """
+    """Community page."""
 
     def get_template_names(self):
         return[f"{APP}/pages/community/community.html"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # FIXME: Passing API key does not work for some reason.
-        api_key = get_document('admin/google')["cannlytics_lab_locator_api_key"]
-        labs = get_collection('labs', limit=250, order_by='state')
-        context["api_key"] = api_key
-        context["labs"] = labs
-        context["locations"] = [
-            [l['name'], l['latitude'], l['longitude'], i]
-            for i, l in enumerate(context["labs"])
-        ]
-        # TODO: Parse markdown?
-        # TODO: Get packages from Firestore
+        credentials = get_document('admin/google')
+        api_key = credentials["public_maps_api_key"]
+        context["api_key"] = [api_key]
         return context
 
 
@@ -123,16 +91,61 @@ class ContactView(BaseMixin, FormView):
     success_url = "/contact/thank-you/"
 
     def get_template_names(self):
-        """Get the template."""
         return[f"{APP}/pages/contact/contact.html"]
 
     def get_context_data(self, **kwargs):
-        """Get the context for the page."""
         context = super().get_context_data(**kwargs)
         return context
 
     def form_valid(self, form):
-        """Submit the form."""
+        """Submit the contact form."""
         form.send_email()
         return super(ContactView, self).form_valid(form) 
+
+
+class LabView(BaseMixin, TemplateView):
+    """View for lab detail pages."""
+
+    def get_template_names(self):
+        return[f"{APP}/pages/community/labs/lab.html"]
+    
+    def get_lab_data(self, context):
+        """
+        Get a lab's data from Firestore.
+        """
+        slug = self.kwargs.get("lab")
+        filters = [{"key": "slug", "operation": "==", "value": slug}]
+        labs = get_collection("labs", filters=filters)
+        if labs:
+            context["lab"] = labs[0]
+        else:
+            context["lab"] = {}
+        return context
+
+    def get_context_data(self, **kwargs):
+        """Get the context for a page."""
+        context = super().get_context_data(**kwargs)
+        context = self.get_lab_data(context)
+        context["fields"] = lab_state["detail_fields"]
+        context["tabs"] = lab_state["tabs"]
+        # Optional: Return JSON
+        # if self.request.path.endswith('.json'):
+        #     data = json.dumps(context["lab"])
+        #     return HttpResponse(data, content_type="application/json")
+        # else:
+        return context
+
+
+class NewLabView(BaseMixin, TemplateView):
+    """View for adding a lab."""
+
+    def get_template_names(self):
+        return[f"{APP}/pages/community/labs/new.html"]
+    
+    def get_context_data(self, **kwargs):
+        """Get the context for a page."""
+        context = super().get_context_data(**kwargs)
+        context["fields"] = lab_state["detail_fields"]
+        context["tabs"] = lab_state["tabs"][:2]
+        return context
 

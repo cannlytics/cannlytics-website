@@ -2,20 +2,19 @@
 Utility Functions | Cannlytics Website
 Created: 1/5/2021
 """
-# import os
 import re
 import requests
 import traceback
 from datetime import datetime
 from django.utils.crypto import get_random_string
-# from django.templatetags.static import static
 from django.contrib.staticfiles.storage import staticfiles_storage
 from markdown import markdown
+from random import randint
 from pymdownx import emoji
-# from markdown.extensions.toc import TocExtension
+from markdown.extensions.toc import TocExtension
 
 from cannlytics_website import state # Save text in Firestore?
-from cannlytics_website.settings import PRODUCTION
+from cannlytics_website.settings import DEBUG
 from .firebase import add_to_array
 
 # TODO: Style blockquotes
@@ -30,7 +29,7 @@ EXTENSIONS = [
     "nl2br", # Newlines treated as hard breaks
     "smarty",  # Converts dashes, quotes, and ellipses.
     "tables",  # Creates tables.
-    # TocExtension(permalink=True), # Creates table of contents with [TOC] and adds id's to headers.
+    TocExtension(permalink=True), # Creates table of contents with [TOC] and adds id's to headers.
     'mdx_math', # FIXME: Parse LaTeX
     'pymdownx.arithmatex',
     'pymdownx.emoji',
@@ -72,13 +71,13 @@ def get_markdown(request, context, app, dir, page=None, extensions=None, name="m
     try:
         # TODO: Open markdown file in production directly, instead of with a request.
         file_name = staticfiles_storage.url(f"/{app}/docs/{page}.md")
-        if PRODUCTION:
-            url = request.build_absolute_uri(file_name)
-            text = requests.get(url).text
-        else:
+        if DEBUG:
             url = dir + file_name
             markdown_file = open(url, "r")
             text = markdown_file.read()
+        else:
+            url = request.build_absolute_uri(file_name)
+            text = requests.get(url).text
         context[name] = markdown(
             text,
             extensions=extensions,
@@ -121,6 +120,15 @@ def generate_secret_key(env_file_name):
     generated_secret_key = get_random_string(50, chars)
     env_file.write("SECRET_KEY = '{}'\n".format(generated_secret_key))
     env_file.close()
+
+
+def get_promo_code(num_chars):
+    code_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    code = ''
+    for i in range(0, num_chars):
+        slice_start = randint(0, len(code_chars) - 1)
+        code += code_chars[slice_start: slice_start + 1]
+    return code.lower()
 
 
 #----------------------------------------------#

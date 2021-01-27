@@ -31,12 +31,46 @@ WSGI_APPLICATION = "cannlytics_website.wsgi.application"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 #------------------------------------------------------------#
+# Environment variables
+# https://docs.djangoproject.com/en/3.1/ref/settings/#secret-key
+#------------------------------------------------------------#
+# try:
+# Read settings stored in Secret Manager.
+env_file = os.path.join(BASE_DIR, ".env")
+if not os.path.isfile(".env"):
+    import google.auth
+    from google.cloud import secretmanager as sm
+    _, project = google.auth.default()
+    if project:
+        client = sm.SecretManagerServiceClient()
+        path = client.secret_version_path(project, SETTINGS_NAME, "latest")
+        payload = client.access_secret_version(path).payload.data.decode("UTF-8")
+        with open(env_file, "w") as f:
+            f.write(payload)
+env = environ.Env()
+env.read_env(env_file)
+SECRET_KEY = env("SECRET_KEY")
+DEBUG = env("DEBUG")
+# except:
+#     # Create a default secret key for development.
+#     # https://stackoverflow.com/questions/4664724/distributing-django-projects-with-unique-secret-keys
+#     DEBUG = True
+#     try:
+#         from .secret_key import SECRET_KEY
+#     except ImportError:
+#         from utils.utils import generate_secret_key
+#         SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
+#         generate_secret_key(os.path.join(SETTINGS_DIR, 'secret_key.py'))
+#         from .secret_key import SECRET_KEY
+
+#------------------------------------------------------------#
 # Apps
 # https://docs.djangoproject.com/en/3.1/ref/applications/
 #------------------------------------------------------------#
 INSTALLED_APPS = [
     "cannlytics_website",
     "cannlytics_docs.apps.CannlyticsDocsConfig",
+    "cannlytics_api.apps.CannlyticsAPIConfig",
     "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -44,6 +78,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "django_robohash",
+    # "simplemathcaptcha",
 ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
@@ -66,8 +103,6 @@ MIDDLEWARE_CLASSES = ("livereload.middleware.LiveReloadScript")
 #------------------------------------------------------------#
 # Livereload
 # https://github.com/tjwalch/django-livereload-server
-# Add livereload app; must be before django.contrib.staticfiles
-# May cause django.core.exceptions.ImproperlyConfigured
 #------------------------------------------------------------#
 if not PRODUCTION:
     INSTALLED_APPS.insert(0, "livereload")
@@ -93,6 +128,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # 'django_settings_export.settings_export',
             ],
         },
     },
@@ -122,6 +158,11 @@ AUTH_PASSWORD_VALIDATORS = [
 #         'cannlytics_auth.authentication.FirebaseAuthentication',
 #     ),
 # }
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.SessionAuthentication'
+#     ]
+# }
 
 #------------------------------------------------------------#
 # Internationalization
@@ -132,44 +173,6 @@ TIME_ZONE = "America/Los_Angeles"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
-#------------------------------------------------------------#
-# Environment variables.
-# Pulling django-environ settings file, stored in Secret Manager.
-#------------------------------------------------------------#
-try:
-    env_file = os.path.join(BASE_DIR, ".env")
-    if not os.path.isfile(".env"):
-        import google.auth
-        from google.cloud import secretmanager as sm
-
-        _, project = google.auth.default()
-
-        if project:
-            client = sm.SecretManagerServiceClient()
-            path = client.secret_version_path(project, SETTINGS_NAME, "latest")
-            payload = client.access_secret_version(path).payload.data.decode("UTF-8")
-            with open(env_file, "w") as f:
-                f.write(payload)
-    env = environ.Env()
-    env.read_env(env_file)
-    SECRET_KEY = env("SECRET_KEY")
-    DEBUG = env("DEBUG")
-except:
-    # Default secret key. Highly recommended to setup your own credentials.
-    # https://docs.djangoproject.com/en/3.1/ref/settings/#secret-key
-    # https://stackoverflow.com/questions/4664724/distributing-django-projects-with-unique-secret-keys
-    DEBUG = True
-    try:
-        from .secret_key import SECRET_KEY
-    except ImportError:
-        from utils.utils import generate_secret_key
-        SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
-        generate_secret_key(os.path.join(SETTINGS_DIR, 'secret_key.py'))
-        from .secret_key import SECRET_KEY
-
-if PRODUCTION:
-    DEBUG = False
 
 #------------------------------------------------------------#
 # Security
@@ -276,3 +279,7 @@ STATIC_URL = "/static/"
 # Allow Django template tags to span multiple lines.
 # https://stackoverflow.com/questions/49110044/django-template-tag-on-multiple-line
 base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)
+
+# Make certain settings accessible from within templates.
+# https://github.com/jakubroztocil/django-settings-export
+# SETTINGS_EXPORT = ['DEBUG']

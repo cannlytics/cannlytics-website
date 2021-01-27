@@ -3,7 +3,33 @@ Cannlytics Website | State Variables
 Created: 10/15/2020
 """
 
-state = { #TODO: Turn into models and save in database?
+page_data = {
+    "contributors": {
+        "collections": [{"name": "contributors", "ref": "contributors"}],
+    },
+    "products": {
+        "collections": [{"name": "products", "ref": "products"}],
+    },
+    "partners": {
+        "collections": [{"name": "partners_list", "ref": "partners"}],
+    },
+    "team": {
+        "collections": [{"name": "team", "ref": "team"}],
+    },
+    "whitepapers": {
+        "collections": [{"name": "whitepapers", "ref": "whitepapers"}],
+    }
+}
+
+page_docs = {
+    "about": ["about"],
+    "contributors": ["contribute"],
+    "privacy-policy": ["privacy-policy"],
+    "terms-of-service": ["terms-of-service"],
+    "roadmap": ["roadmap"],
+}
+
+state = { # Optional: Turn into models and save in database?
   "general": {
     "title": "Cannlytics",
     "blurb": "Cannlytics is a suite of free software for cannabis-testing laboratories, empowering you with a state-of-the-art system.",
@@ -16,10 +42,9 @@ state = { #TODO: Turn into models and save in database?
           "url": "https://github.com/cannlytics"
         },
         { 
-          "title": "Twitter",
-          "url": "https://twitter.com/cannlytics"
+          "title": "LinkedIn",
+          "url": "https://linkedin.com/company/cannlytics"
         },
-        # TODO: Add LinkedIn.
     ]
   },
   "header": {
@@ -49,7 +74,7 @@ state = { #TODO: Turn into models and save in database?
         "title": "A Cannabis-Analytics Engine for the 21st Century",
         # AB TEST 2:
         # "message": "Super power your lab with free and ethical cannabis-testing software made with 💖, tried-and-true, and ready for you to plug and play or pop the hood and tinker to your heart's content.",
-        "message": "Super power your lab with free and ethical cannabis-testing software made with love and ready for you to plug and play or pop the hood and tinker to your 💖's content.",
+        "message": "Super power your lab with free cannabis-testing software made with love and ready for you to plug and play or pop the hood and tinker to your 💖's content.",
         "image": "cannlytics_website/images/engine_icons/space_station.svg",
         "primary_action": "Get Started",
         "primary_action_url": "/docs",
@@ -244,3 +269,38 @@ packages = [
         "path": "website"
     }
 ]
+
+lab_state = {
+    "detail_fields": [
+        {"key": "name", "title": "Name", "type": "text"},
+        {"key": "trade_name", "title": "Trade name", "type": "text"},
+        {"key": "phone", "title": "Phone", "type": "text"},
+        {"key": "email", "title": "Email", "type": "email"},
+        {"key": "website", "title": "Website", "type": "text"},
+        {"key": "linkedin", "title": "LinkedIn", "type": "text"},
+        {"key": "street", "title": "Street", "type": "text"},
+        {"key": "city", "title": "City", "type": "text"},
+        {"key": "county", "title": "County", "type": "text"},
+        {"key": "state", "title": "State", "type": "text"},
+        {"key": "zip", "title": "Zip", "type": "text"},
+        {"key": "latitude", "title": "Latitude", "type": "number"},
+        {"key": "longitude", "title": "Longitude", "type": "number"},
+        {"key": "license", "title": "License", "type": "text"},
+        {"key": "license_url", "title": "License URL", "type": "text"},
+        {"key": "status", "title": "License status", "type": "text"},
+        {"key": "capacity", "title": "Capacity", "type": "text"},
+        {"key": "square_feet", "title": "Square Feet", "type": "text"},
+        {"key": "brand_color", "title": "Brand color", "type": "color"},
+        {"key": "secondary_color", "title": "Secondary color", "type": "color"},
+        {"key": "favicon", "title": "Icon URL", "type": "textarea"},
+        {"key": "image_url", "title": "Image URL", "type": "textarea"},
+        # TODO: Keep track of certifications
+        # dea_licensed_hemp_lab
+        # a2la
+    ],
+    "tabs": [
+        {"name": "Details", "section": "details", "active": "true"},
+        {"name": "Analyses", "section": "analyses"},
+        {"name": "Change log", "section": "logs"},
+    ]
+}

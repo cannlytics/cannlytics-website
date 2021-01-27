@@ -6,8 +6,9 @@ Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
+from django_robohash.views import robohash
+from . import api, views
 
-from cannlytics_website import api, views
 
 # Main URLs
 urlpatterns = [
@@ -17,22 +18,26 @@ urlpatterns = [
     path("community/", views.CommunityView.as_view(), name="community"),
 ]
 
-# TODO: Payments
-urlpatterns += [
-    path("subscribe/", api.subscribe, name="subscribe"),
-    # path("checkout/", views.CheckoutView.as_view(), name="checkout"),
-]
-
 # Apps
 urlpatterns += [
+    path("api/", include("cannlytics_api.urls"), name="api"),
     path("docs/", include("cannlytics_docs.urls"), name="docs"),
-    # path("portal/", include("cannlytics_portal.urls"), name="portal"),
-    # TODO: API
-        # /regulations
-        # /instruments
-        # /analytes
-        # /instruments
-        # /labs
+]
+
+# Labs (Turn into standalone app?)
+urlpatterns += [
+    path("labs/", views.CommunityView.as_view(), name="labs"), # Redundant
+    # path("labs\.json", views.CommunityView.as_view()),
+    path('labs/new/', views.NewLabView.as_view()),
+    path('labs/<slug:lab>/', views.LabView.as_view()),
+    # path('labs/<slug:lab>/.json', views.LabView.as_view())
+]
+
+# Functionality
+urlpatterns += [
+    path("download-lab-data/", api.download_lab_data),
+    path('robohash/<string>/', robohash, name='robohash'),
+    path("subscribe/", api.subscribe, name="subscribe"),
 ]
 
 # General pages
@@ -49,21 +54,3 @@ if settings.DEBUG:
         document_root=settings.STATIC_ROOT
     )
 
-# https://stackoverflow.com/questions/5836674/why-does-debug-false-setting-make-my-django-static-files-access-fail
-# url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
-# url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
-
-
-#------------------------------------------------------------#
-# Dev
-#------------------------------------------------------------#
-
-# Authentication
-# https://docs.djangoproject.com/en/3.1/topics/auth/default/#user-objects
-# urlpatterns += [
-#     path("account/", include("cannlytics_auth.urls"), name="auth"),
-#     # Optional: Add Django Authentication
-#     # path('accounts/', include('django.contrib.auth.urls')),
-#     # path('accounts/login/', auth_views.LoginView.as_view(template_name='cannlytics_website/login.html')),
-#     # path('change-password/', auth_views.PasswordChangeView.as_view()),
-# ]

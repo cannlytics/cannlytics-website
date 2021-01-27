@@ -345,12 +345,12 @@ body.dark .bg-cannlytics-green {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.text-gradient-reverse {
-  background: -webkit-linear-gradient(-45deg, #1f622f, #45B649);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+// .text-gradient-reverse {
+//   background: -webkit-linear-gradient(-45deg, #1f622f, #45B649);
+//   background-clip: text;
+//   -webkit-background-clip: text;
+//   -webkit-text-fill-color: transparent;
+// }
 body.dark .text-gradient {
   background: -webkit-linear-gradient(-45deg,#45B649, #96e6a1);
   background-clip: text;
@@ -537,6 +537,23 @@ body.dark .sliding-action:hover {
   position: absolute;
   right: 1rem;
   top: 1rem;
+}
+
+/*--------------------------------------------------------------------------
+  Tabs
+---------------------------------------------------------------------------*/
+
+.nav-tabs .nav-link {
+  color: #777;
+}
+.nav-tabs .nav-link.active {
+  color: #1a1a1a;
+}
+
+/* Dark tabs */
+body.dark .nav-tabs .nav-link.active {
+  background-color: transparent;
+  border-bottom-color: #323443 !important;
 }
 
 /*--------------------------------------------------------------------------
@@ -740,6 +757,10 @@ body.dark .form-control {
 body.dark footer .form-control {
   background: #fff;
   color: #1a1a1a;
+}
+
+.form-control[readonly] {
+  background-color: unset;
 }
 
 /*--------------------------------------------------------------------------
@@ -1056,6 +1077,19 @@ body.dark .text-muted {
   color: #ccc !important;
 }
 
+/* Dark actions */
+body.dark .btn-outline-primary {
+  border-color: #50fa7b;
+  color: #50fa7b;
+}
+body.dark .btn-outline-primary:hover {
+  background: #50fa7b;
+  color: #1a1a1a;
+}
+body.dark .feather-search {
+  stroke: #ccc;
+}
+
 /* Dark Cards */
 body:not(.dark) .card {
   color: #f5f5f5;
@@ -1141,12 +1175,6 @@ body.dark .navbar-light .navbar-toggler {
 }
 body.dark .navbar-light .navbar-brand {
   color: #fff;
-}
-
-/* Dark tabs */
-body.dark .nav-tabs .nav-link.active {
-  background-color: transparent;
-  border-bottom-color: #323443 !important;
 }
 
 /* Dark tables */
@@ -1358,9 +1386,21 @@ body.dark .modal-content {
 }
 
 /*--------------------------------------------------------------------------
-  CArds
+  Cards
 ---------------------------------------------------------------------------*/
 
 .shadow-hover:hover {
   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/*--------------------------------------------------------------------------
+  Alerts
+---------------------------------------------------------------------------*/
+
+.alert a {
+  color: inherit !important;
+  text-decoration: underline !important;
+}
+.alert a:hover {
+  color: #000000 !important;
 }

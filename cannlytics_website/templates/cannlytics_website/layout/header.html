@@ -135,12 +135,13 @@
           </li> {% endcomment %}
         </ul>
 
-        <!-- Right Navigation -->
-        <ul class="navbar-nav me-3">
+        <!-- Right Navigation (Not signed in) -->
+        <ul class="navbar-nav indicates-auth align-items-center me-3">
           <li class="nav-item h6 mb-0">
             <a
-              class="nav-link sliding-action text-nowrap me-2"
-              href="https://console.cannlytics.com/login"
+              class="nav-link app-action sliding-action text-nowrap me-2"
+              data-bs-target="#login-dialog"
+              data-bs-toggle="modal"
             >
               Sign in
             </a>
@@ -149,16 +150,44 @@
             <a
               type="button"
               class="btn btn-sm bg-gradient-green text-white text-nowrap"
-              href="https://console.cannlytics.com/sign-up"
+              href="https://console.cannlytics.com/account/sign-up/"
             >
               Sign up
             </a>
           </li>
         </ul>
 
-      </div>
+        <!-- Right navigation (Signed in) -->
+        <ul class="navbar-nav requires-auth align-items-center me-3">
+          <li class="nav-item h6 mb-0">
+            <a
+              class="nav-link sliding-action text-nowrap me-2"
+              href="https://console.cannlytics.com"
+            >
+              Console
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link dropdown-toggle py-0" href="#" id="navbarUserMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img id="user-photo" class="rounded-circle" style="max-width:60px; max-height:60px;" src="">
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow mx-2" aria-labelledby="navbarUserMenu">
+              <div class="px-3 py-1"><!-- TODO: Make display name / email standout -->
+                <h5 class="serif" id="user-name"></h5>
+                <h6 class="serif" id="user-email"></h6>
+              </div>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="serif dropdown-item" href="https://console.cannlytics.com/settings/account/">Your account</a></li>
+              <li><a class="serif dropdown-item" href="https://console.cannlytics.com/settings/invite/">Invite user</a></li>
+              <li><a class="serif dropdown-item" href="https://console.cannlytics.com/help/feedback/">Send feedback</a></li>
+              <li><button class="serif dropdown-item" onClick="cannlytics.auth.signOut()">Sign Out</button></li>
+            </ul>
+          </li>
+        </ul><!-- End of right navigation -->
+
+      </div><!-- End of navigation links-->
 
     </div>
-  </nav>
+  </nav><!-- End of header -->
 
 </html>

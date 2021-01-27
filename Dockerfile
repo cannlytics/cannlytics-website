@@ -3,6 +3,9 @@
 
 # For more information, please refer to https://aka.ms/vscode-docker-python
 FROM python:3.8-slim-buster
+# Use the official lightweight Python image.
+# https://hub.docker.com/_/python
+# FROM python:3.9-slim
 
 # Service must listen to $PORT environment variable.
 # This default value facilitates local development.
@@ -38,4 +41,7 @@ COPY . ./
 # webserver, with one worker process and 8 threads.
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 cannlytics_website.wsgi:application
+# See:
+# https://docs.gunicorn.org/en/stable/design.html#how-many-workers
+# https://docs.gunicorn.org/en/stable/design.html#how-many-threads
+CMD exec gunicorn --bind :$PORT --workers 3 --threads 8 --timeout 0 cannlytics_website.wsgi:application

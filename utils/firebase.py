@@ -3,7 +3,7 @@ Firebase | Cannlytics Website
 Created: 1/5/2021
 """
 from django.utils.crypto import get_random_string
-from firebase_admin import auth, firestore, initialize_app
+from firebase_admin import auth, firestore, initialize_app, storage
 from google.cloud.firestore import ArrayUnion, ArrayRemove
 from uuid import uuid4
 
@@ -82,7 +82,7 @@ def get_collection(ref, limit=None, order_by=None, desc=False, filters=[]):
         collection = collection.order_by(order_by)
     if limit:
         collection = collection.limit(limit)
-    query = collection.stream() # Only handles streams less than 2 mins
+    query = collection.stream() # Only handles streams less than 2 mins.
     for doc in query:
         data = doc.to_dict()
         docs.append(data)
@@ -114,4 +114,33 @@ def create_account(name, email, notification=True):
         return user, password
     except:
         return None, None
+
+
+#------------------------------------------------------------#
+# Storage helpers
+#------------------------------------------------------------#
+
+
+def download_file(source_blob_name, destination_file_name):
+    """Downloads a file from Firebase Storage."""
+    bucket = storage.bucket(name="cannlytics.appspot.com") # TODO: Get from .env
+    blob = bucket.blob(source_blob_name)
+    blob.download_to_filename(destination_file_name)
+    print(
+        "Blob {} downloaded to {}.".format(
+            source_blob_name, destination_file_name
+        )
+    )
+
+
+def upload_file(destination_blob_name, source_file_name):
+    """Upload file to Firebase Storage."""
+    bucket = storage.bucket(name="cannlytics.appspot.com") # TODO: Get from .env
+    blob = bucket.blob(destination_blob_name)
+    blob.upload_from_filename(source_file_name)
+    print(
+        "File {} uploaded to {}.".format(
+            source_file_name, destination_blob_name
+        )
+    )
 

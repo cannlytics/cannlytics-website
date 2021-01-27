@@ -2,11 +2,16 @@
  * website.js | Cannlytics Website
  * Created: 12/3/2020
  */
+import { auth } from '../firebase.js';
+
 
 export const website = {
 
+
   initialize() {
-    /* Initialize the website's features and functionality. */
+    /*
+     * Initialize the website's features and functionality.
+     */
     
     // Initialize icons.
     feather.replace();
@@ -21,7 +26,25 @@ export const website = {
     // Scroll to any hash's anchor.
     this.scrollToHash();
 
+    // Keep track of user
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById('user-email').textContent = user.email;
+        document.getElementById('user-name').textContent = user.displayName;
+        if (user.photoURL) {
+          document.getElementById('user-photo').src = user.photoURL;
+        } else {
+          document.getElementById('user-photo').src = `/robohash/${user.email}/?width=60&height=60`
+        }
+        this.toggleAuthenticatedMaterial(true);
+        // Save cookie.
+      } else {
+        this.toggleAuthenticatedMaterial(false);
+      }
+    });
+
   },
+
 
   initializeToasts() {
     /*
@@ -30,6 +53,7 @@ export const website = {
     var toast = document.getElementById('cookie-toast');
     new bootstrap.Toast(toast, { autohide: false });
   },
+
 
   acceptCookies() {
     /* Save choice that user accepted cookies. */
@@ -40,6 +64,7 @@ export const website = {
     // TODO: Make entry in Firestore for cookie accepted?
   },
 
+
   acceptCookiesCheck() {
     /* Checks if a user needs to accept cookies. */
     var acceptCookies = localStorage.getItem('acceptCookies');
@@ -49,6 +74,7 @@ export const website = {
       toast.style.opacity = 1;
     }
   },
+
 
   changeTheme() {
     /* Change the website's theme. */
@@ -62,6 +88,7 @@ export const website = {
     this.setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
   },
+
 
   setInitialTheme() {
     /* Set the theme when the website loads. */
@@ -80,6 +107,7 @@ export const website = {
     }
   },
 
+
   setTheme(theme) {
     /* Set the website's theme. */
     if (theme === 'light') {
@@ -89,10 +117,12 @@ export const website = {
     }
   },
 
+
   hasClass(element, className) {
     /* Check if an element has a class. */
     return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
   },
+
 
   scrollToHash () {
     /* Scroll to any an from any hash in the URL. */
@@ -102,6 +132,7 @@ export const website = {
       element.scrollIntoView();
     }
   },
+
 
   copyToClipboard(text) {
     /* Prompt a user to copy a block of code to their clipboard. */
@@ -122,7 +153,8 @@ export const website = {
     });
     window.prompt('Copy to clipboard: Press Ctrl+C, then Enter', text);
   },
-      
+
+
   subscribe() {
     /* Subscribe to newsletter functionality. */
     var emailInput = document.getElementById('email-input');
@@ -150,5 +182,23 @@ export const website = {
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send(`email=${email}`);
   },
+
+
+  toggleAuthenticatedMaterial(authenticated=false) {
+    /*
+     * Show any material that requires authentication.
+     */
+    const indicatesAuth = document.getElementsByClassName('indicates-auth');
+    const requiresAuth = document.getElementsByClassName('requires-auth');
+    for (var i = 0; i < indicatesAuth.length; i++) {
+      if (authenticated) indicatesAuth.item(i).classList.add('visually-hidden');
+      else indicatesAuth.item(i).classList.remove('visually-hidden');
+    }
+    for (var i = 0; i < requiresAuth.length; i++) {
+      if (authenticated) requiresAuth.item(i).classList.remove('visually-hidden');
+      else requiresAuth.item(i).classList.add('visually-hidden');
+    }
+  },
+
 
 }

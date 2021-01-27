@@ -6,6 +6,17 @@
   {% extends "cannlytics_website/index.html" %}
   {% block title %}Contact | {{ general.title }}{% endblock %}
   {% load static crispy_forms_tags %}
+  {% block page_css %}
+    <style>
+      body.dark .captcha-question {
+        color: #f8f8f8;
+      }
+      body.dark .textinput {
+        background: transparent;
+        color: #f8f8f8;
+      }
+    </style>
+  {% endblock %}
   {% block material %}
     <div class="contact container my-4 my-lg-5 px-5">
 

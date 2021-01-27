@@ -1,14 +1,15 @@
-# Installation
+<h1>Installation</h1>
 
-The Cannlytics website works right out of the box, however, it is recommended to setup your own credentials for deploying to production. The website uses [Firebase](https://firebase.google.com) by default for many back-end services. As you are free to modify anything, you are welcome to modify the website to use the back-end services of your choice.
+The Cannlytics website works right out of the box, however, it is recommended to setup your own credentials for deploying to production. The website uses [Firebase](https://firebase.google.com) by default for many back-end services. As you are free to modify anything, you are welcome to modify the website to use the back-end services of your choice. You can walk through these short sections to install the website on your own computer.
 
-* [Getting started](#getting-started)
+<!-- * [Getting started](#getting-started)
 * [Credentials](#credentials)
   - [Creating environment variables](#creating-environment-variables)
 * [Python](#python)
 * [Node.js](#node-js)
 * [Wrap-up](#wrap-up)
-* [Helpful resources](#helpful-resources)
+* [Helpful resources](#helpful-resources) -->
+[TOC]
 
 ## Getting started
 

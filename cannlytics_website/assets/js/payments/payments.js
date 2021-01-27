@@ -7,7 +7,7 @@ export const payments = {
 
   subscribe(subscription) {
     /*
-     * Save account information to Firestore,
+     * Save account information,
      * then navigate to the confirmation page.
      */
     const form = document.getElementById('account-information');

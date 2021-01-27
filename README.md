@@ -1,6 +1,6 @@
 # Cannlytics Website
 
-[![Generic badge](https://img.shields.io/badge/release-v1.0.1-blue.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/release-v1.0.3-blue.svg)](https://shields.io/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/VickiLanger/Queer-of-the-day-bot/fork)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -181,7 +181,7 @@ docker push gcr.io/cannlytics/cannlytics-website
 
 ## 📚 Publishing <a name="publishing"></a>
 
-See [the publishing guide](https://cannlytics.com/publishing) for complete instructions on how to publish the Cannlytics Engine for use. Publishing is done with one command:
+See [the publishing guide](https://cannlytics.com/docs/website/publishing) for complete instructions on how to publish the Cannlytics Engine for use. Publishing is done with one command:
 
 ```shell
 npm run publish

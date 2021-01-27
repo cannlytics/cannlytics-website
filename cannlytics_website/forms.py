@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-# from django.template.loader import render_to_string
+# from simplemathcaptcha.fields import MathCaptchaField
 
 
 class ContactForm(forms.Form):
@@ -21,6 +21,7 @@ class ContactForm(forms.Form):
         widget=forms.Textarea,
     )
     cc_myself = forms.BooleanField(label="Receive a copy", required=False)
+    # captcha = MathCaptchaField() # FIXME: ImportError: cannot import name 'six' from 'django.utils'
 
     def __init__(self, *args, **kwargs):
         """ Control how the form is rendered. """

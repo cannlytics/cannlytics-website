@@ -2,15 +2,18 @@
 API Functions | Cannlytics Website
 Created: 1/5/2021
 """
-import json
+from json import loads
+from pandas import DataFrame
 from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.core.validators import validate_email
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
-from utils.firebase import create_account, update_document
+from tempfile import NamedTemporaryFile
+from utils.firebase import add_to_array, create_account, get_collection, update_document, upload_file
+from utils.utils import get_promo_code
 
 
 @csrf_exempt
@@ -22,31 +25,36 @@ def subscribe(request):
     a welcome email.
     """
     success = False
-    data = json.loads(request.body)
+    data = loads(request.body)
     user_email = data["email"]
     try:
         validate_email(user_email)
     except ValidationError:
-        pass # TODO: Handle invalid emails client-side?
+        pass # Optional: Handle invalid emails client-side?
     else:
+
+        # Create a promo code that can be used to download data.
+        promo_code = get_promo_code(8)
+        add_to_array("promos/data", "promo_codes", promo_code)
 
         # Record subscription in Firestore.
         now = datetime.now()
-        timestamp = now.strftime('%Y-%m-%d_%H-%M-%S')
+        timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")
         iso_time = now.isoformat()
         data["created_at"] = iso_time
         data["updated_at"] = iso_time
-        update_document(f'subscribers/{timestamp}', data)
+        data["promo_code"] = promo_code
+        update_document(f"subscribers/{timestamp}", data)
 
         # Send a welcome email.
         # template_url = "cannlytics_website/emails/newsletter_subscription_thank_you.html"
         send_mail(
             subject="Welcome to the Cannlytics Newsletter",
-            message="Congratulations,\n\nWelcome to the Cannlytics newsletter. Please stay tuned for your material.\n\nAlways here to help,\nThe Cannlytics Team",
+            message=f"Congratulations,\n\nWelcome to the Cannlytics newsletter. You can download data with the promo code:\n\n{promo_code}\n\nPlease stay tuned for more material.\n\nAlways here to help,\nThe Cannlytics Team",
             from_email="contact@cannlytics.com",
             recipient_list=[user_email],
             fail_silently=False,
-            # html_message = render_to_string(template_url, {'context': 'values'}) # TODO: Send HTML email
+            # html_message = render_to_string(template_url, {"context": "values"}) # Optional: Send HTML email
         )
 
         # Create an account if requested.
@@ -59,9 +67,105 @@ def subscribe(request):
                 from_email="contact@cannlytics.com",
                 recipient_list=[user_email],
                 fail_silently=False,
-                # html_message = render_to_string(template_url, {'context': 'values'}) # TODO: Send HTML email
+                # html_message = render_to_string(template_url, {"context": "values"}) # Optional: Send HTML email
             )
 
         success = True
     return JsonResponse({"message": {"success": success}}, safe=False)
+
+
+@csrf_exempt
+def download_lab_data(request):
+    """Download either a free or premium lab data set."""
+
+    # Optional: Store allowed data points in Firebase?
+    data_points = {
+        "free": [
+            "id",
+            "name",
+            "trade_name",
+            "license",
+            "license_url",
+            "license_issue_date",
+            "license_expiration_date",
+            "status",
+            "street",
+            "city",
+            "county",
+            "state",
+            "zip",
+            "description",
+        ],
+        "premium": [
+            "formatted_address",
+            "timezone",
+            "longitude",
+            "latitude",
+            "capacity",
+            "square_feet",
+            "brand_color",
+            "favicon",
+            "email",
+            "phone",
+            "website",
+            "linkedin",
+            "image_url",
+            "opening_hours",
+            "analyses",
+        ],
+    }
+
+    # Get promo code for premium data.
+    subscriber = {}
+    tier = "free"
+    try:
+        authorization = request.headers["Authorization"]
+        token = authorization.split(" ")[1]
+        filters = [{"key": "promo_code", "operation": "==", "value": token}]
+        subscriber = get_collection("subscribers", filters=filters)[0]
+        if subscriber:
+            subscriber["subscriber_created_at"] = subscriber["created_at"]
+            subscriber["subscriber_updated_at"] = subscriber["updated_at"]
+            tier = "premium"
+    except:
+        pass
+
+    # Get lab data.
+    labs = get_collection("labs", order_by="state")
+    data = DataFrame.from_dict(labs, orient="columns")
+
+    # Restrict data points.
+    if tier == "premium":
+        data = data[data_points["free"] + data_points["premium"]]
+    else:
+        data = data[data_points["free"]]
+
+    # Convert JSON to CSV.
+    with NamedTemporaryFile(delete=False) as temp:
+        temp_name = temp.name + ".csv"
+        data.to_csv(temp_name, index=False)
+        temp.close()
+
+    # Post a copy of the data to Firebase storage.
+    now = datetime.now()
+    timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"labs_{timestamp}.csv"
+    destination = "public/data/downloads/"
+    ref = destination + filename
+    upload_file(ref, temp_name)
+
+    # Create an activity log.
+    log_entry = {
+        "created_at": now.isoformat(),
+        "updated_at": now.isoformat(),
+        "data_points": len(data),
+        "tier": tier,
+        "filename": filename,
+        "ref": ref,
+    }
+    log_entry = {**subscriber, **log_entry}
+    update_document(f"logs/downloads/data_downloads/{timestamp}", log_entry)
+
+    # Return the file to download.
+    return FileResponse(open(temp_name, "rb"), filename=filename)
 

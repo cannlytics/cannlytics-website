@@ -3,7 +3,9 @@ Mixins | Cannlytics Website
 Created: 12/30/2020
 """
 from datetime import datetime
+from django.views.generic import TemplateView
 from django.views.generic.base import ContextMixin
+from django.http import HttpResponse
 from cannlytics_website.state import state # Save text in Firestore?
 from .firebase import update_document
 from .utils import get_markdown
@@ -75,3 +77,16 @@ class BaseMixin(ContextMixin):
         
         return context
 
+
+class TemplateView(TemplateView):
+    """
+    Exactly like Django's TemplateView, but adds support for returning an
+    HttpResponse in get_context_data.
+    Source: https://gist.github.com/heyman/eec08ec0ed81df205e83
+    """
+    def get(self, request, *args, **kwargs):
+        context_or_response = self.get_context_data(**kwargs)
+        if isinstance(context_or_response, HttpResponse):
+            return context_or_response
+        else:
+            return self.render_to_response(context_or_response)

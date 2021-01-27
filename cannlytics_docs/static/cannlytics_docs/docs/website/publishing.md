@@ -1,6 +1,6 @@
 # Publishing
 
-First, you will need to save your environment variables as a secret. Then, you may want to walk through the build process one time manually. Afterwards, publishing the website is done with one command:
+First, you will need to save your environment variables as a secret. Then, you may want to walk through the build process one time manually. Before publishing, change `DEBUG=False` to `DEBUG=True` in your `.env` file. Afterwards, publishing the website is done with one command:
 
 ```shell
 npm run publish
@@ -37,7 +37,7 @@ gcloud secrets create \
 Allow Cloud Run to access this secret:
 
 ```shell
-PROJECT_ID=cannlytics-website
+PROJECT_ID=cannlytics
 PROJECTNUM=$(gcloud projects describe ${PROJECT_ID} --format 'value(projectNumber)')
 CLOUDRUN=${PROJECTNUM}-compute@developer.gserviceaccount.com
 
@@ -50,35 +50,35 @@ gcloud secrets add-iam-policy-binding \
 Then create your environment variables and save them to the secret:
 
 ```shell
-PROJECT_ID=cannlytics-website
+PROJECT_ID=xyz
 REGION=us-central1
 DJPASS="$(cat /dev/urandom | LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 30 | head -n 1)"
-GS_BUCKET_NAME=cannlytics-website.appspot.com
 echo DATABASE_URL=\"postgres://djuser:${DJPASS}@//cloudsql/${PROJECT_ID}:${REGION}:cannlytics-sql/cannlytics-sql-database\" > .env
 echo GS_BUCKET_NAME=\"${GS_BUCKET_NAME}\" >> .env
+echo GCS_SA=\"${PROJECT_NUM}-compute@developer.gserviceaccount.com\" >> .env
 echo SECRET_KEY=\"$(cat /dev/urandom | LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1)\" >> .env
-echo DEBUG=\"True\" >> .env
-echo EMAIL_HOST_USER=\"youremail@gmail.com\" >> .env
-echo EMAIL_HOST_PASSWORD=\"app-password\" >> .env
+echo DEBUG=\"False\" >> .env
+echo EMAIL_HOST_USER=\"you@email.com\" >> .env
+echo EMAIL_HOST_PASSWORD=\"password\" >> .env
+echo FIREBASE_API_KEY=\"xxx\" >> .env
+echo FIREBASE_AUTH_DOMAIN=\"xxx\" >> .env
+echo FIREBASE_DATABASE_URL=\"xxx\" >> .env
+echo FIREBASE_PROJECT_ID=\"${PROJECT_ID}\" >> .env
+echo FIREBASE_STORAGE_BUCKET=\"${PROJECT_ID}.appspot.com\" >> .env
+echo FIREBASE_MESSAGING_SENDER_ID=\"xxx\" >> .env
+echo FIREBASE_APP_ID=\"xxx\" >> .env
+echo FIREBASE_MEASUREMENT_ID=\"xxx\" >> .env
 gcloud secrets versions add cannlytics_website_settings --data-file .env
 rm .env
 
 ```
 
-> Set `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` with your email and [app password](https://dev.to/abderrahmanemustapha/how-to-send-email-with-django-and-gmail-in-production-the-right-way-24ab). If you do not plan to use Django's email interface, then you exclude `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD`.
-
-<!-- Allow Cloud Run to access this secret with:
-
-```shell
-set GCS_SA==<path-to-your-service-account>
-
-gcloud secrets add-iam-policy-binding cannlytics_website_settings --member serviceAccount:${GCS_SA} --role roles/secretmanager.secretAccessor
-``` -->
+> Set `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD` with your email and [app password](https://dev.to/abderrahmanemustapha/how-to-send-email-with-django-and-gmail-in-production-the-right-way-24ab). If you do not plan to use Django's email interface, then you can exclude `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD`. Likewise, you can ignore the Firebase environment variables if you are using a different database.
 
 Update your IAM policy:
 
 ```shell
- gcloud beta run services add-iam-policy-binding --region=us-central1 --member=allUsers --role=roles/run.invoker cannlytics
+gcloud beta run services add-iam-policy-binding --region=us-central1 --member=allUsers --role=roles/run.invoker cannlytics
 ```
 
 You can confirm that the secret was created or updated with:
@@ -156,12 +156,10 @@ firebase deploy --project cannlytics-website
 
 You can view logs for your deployment in the Cloud run console at https://console.cloud.google.com/run/detail/us-central1/your-project/logs?project=your-project
 
-## (Optional) Setup a Custom Domain
+## Setup a Custom Domain (Optional)
 
-You can register a domain with [Google Domains](https://domains.google.com/registrar/). You can then add a custom domain in the Firebase Hosting console.
-
-> If you are using Google Domains, then use '@' for your root domain name and 'www' or 'www.domain.com' for your subdomains when registering your DNS A records.
+You can register a domain with [Google Domains](https://domains.google.com/registrar/). You can then add a custom domain in the Firebase Hosting console. If you are using Google Domains, then use '@' for your root domain name and your subdomain name (e.g. console) when registering your DNS records.
 
 ## Conclusion
 
-You now have a simple, yet complex, website running on Cloud Run, which will automatically scale to handle your website's traffic, optimizing CPU and memory so that your website runs with the smallest footprint possible, saving you money. If you desire, you can now seamlessly integrate services such as Cloud Storage into your Django website. You can now plug and play and tinker to your heart's content while your users enjoy your beautiful material!
+You now have a simple, yet complex, website running on Cloud Run, which will automatically scale to handle your website's traffic, optimizing CPU and memory so that your website runs with the smallest footprint possible, saving you money. If you desire, then you can now seamlessly integrate services such as Cloud Storage into your Django website. You can now plug and play and tinker to your heart's content while your users enjoy your beautiful material!
