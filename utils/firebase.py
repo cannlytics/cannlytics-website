@@ -1,10 +1,12 @@
 """
 Firebase | Cannlytics Website
 Created: 1/5/2021
+
+TODO: Save database instance?
 """
 from django.utils.crypto import get_random_string
 from firebase_admin import auth, firestore, initialize_app, storage
-from google.cloud.firestore import ArrayUnion, ArrayRemove
+from google.cloud.firestore import ArrayUnion, ArrayRemove, Increment
 from uuid import uuid4
 
 
@@ -48,6 +50,13 @@ def remove_from_array(ref, field, value):
     database = firestore.client()
     doc = create_reference(database, ref)
     doc.update({field: ArrayRemove([value])})
+
+
+def increment_value(ref, field, amount=1):
+    """Increment a given field for a given reference."""
+    database = firestore.client()
+    doc = create_reference(database, ref)
+    doc.update({field: Increment(amount)})
 
 
 def update_document(ref, values):

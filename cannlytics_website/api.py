@@ -12,8 +12,31 @@ from django.http import JsonResponse, FileResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from tempfile import NamedTemporaryFile
-from utils.firebase import add_to_array, create_account, get_collection, update_document, upload_file
+from utils.firebase import add_to_array, create_account, get_collection, update_document, upload_file, increment_value
 from utils.utils import get_promo_code
+
+
+@csrf_exempt
+def promotions(request):
+    """Record a promotion, by getting promo code,
+    finding any matching promotion document,
+    and updating the views."""
+    try:
+        data = loads(request.body)
+        promo_code = data["promo_code"]
+        matches = get_collection("promos/events/promo_stats", filters=[
+            {"key": "hash", "operation": ">=", "value": promo_code},
+            {"key": "hash", "operation": "<=", "value": "\uf8ff"},
+        ])
+        match = matches[0]
+        promo_hash = match["hash"]
+        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        increment_value(f"promos/events/promo_stats/{promo_hash}", "views")
+        add_to_array(f"promos/events/promo_stats/{promo_hash}", "viewed_at", timestamp)
+        # Optional: If user has an account, record which user visited in viewed_by collection.
+        return JsonResponse({"message": {"success": True}}, safe=False)
+    except:
+        return JsonResponse({"message": {"success": False}}, safe=False)
 
 
 @csrf_exempt

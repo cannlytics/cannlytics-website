@@ -98,7 +98,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-MIDDLEWARE_CLASSES = ("livereload.middleware.LiveReloadScript")
 
 #------------------------------------------------------------#
 # Livereload

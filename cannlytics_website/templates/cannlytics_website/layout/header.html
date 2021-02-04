@@ -6,12 +6,11 @@
 
   <!-- Banner offer -->
   <!-- AB TEST: Phone number and email banner -->
-  <!-- AB TEST: $5 Video Series offer -->
   {% if 'docs' not in request.path %}
-    <div class="info-bar text-dark d-flex justify-content-between py-2 px-2 px-lg-5">
+    <div class="info-bar text-dark d-flex justify-content-between py-2 px-2 px-lg-3">
       <div class="d-flex"></div>
       <div class="d-flex align-items-center fw-bold">
-        <small>
+        <small class="d-none d-lg-block">
           Questions? Call&nbsp;
         </small>
         <a
@@ -19,12 +18,22 @@
           href="tel:{{ general.phone_number }}"
           title="Call us."
         >
-          <small>
+          <small class="d-none d-lg-block">
             {{ general.phone }}
           </small>
         </a>
         <span class="px-2 d-none d-lg-block">|</span>
+        <!-- A/B Test: promotionals -->
         <a
+          class="text-dark underline-hover"
+          href="/events"
+          title="Join us Wednesdays at 8:30am PST to talk about cannabis data science."
+        >
+          <small>
+            Join the Cannabis Data Science meetup 🤝
+          </small>
+        </a>
+        {% comment %} <a
           class="text-dark underline-hover"
           href="/whitepapers"
           title="Premium subscriptions starting at $1/mo."
@@ -32,7 +41,7 @@
           <small class="d-none d-lg-block">
             Get 2021's first whitepaper 🎉
           </small>
-        </a>
+        </a> {% endcomment %}
         <!-- Optional: Star on github -->
         {% comment %} <iframe
           src="https://ghbtns.com/github-btn.html?user=cannlytics&repo=cannlytics-website&type=star&count=true"

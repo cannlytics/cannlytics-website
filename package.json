@@ -27,7 +27,6 @@
     "bootstrap": "^5.0.0-beta1",
     "firebase": "^7.24.0",
     "popper.js": "^1.16.1",
-    "stripe": "^8.111.0",
     "style-loader": "^1.2.1",
     "uuid": "^8.3.2"
   },

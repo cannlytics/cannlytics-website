@@ -21,7 +21,8 @@ export const payments = {
     }
     fetch('/subscribe/', {
       method: 'POST', 
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      headers: { 'Accept': 'application/json' },
     });
     window.location.href = '/subscriptions/subscribed/';
   },

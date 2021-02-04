@@ -7,6 +7,9 @@ page_data = {
     "contributors": {
         "collections": [{"name": "contributors", "ref": "contributors"}],
     },
+    "events": {
+        "collections": [{"name": "events", "ref": "events"}],
+    },
     "products": {
         "collections": [{"name": "products", "ref": "products"}],
     },

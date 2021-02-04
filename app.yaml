@@ -1,0 +1,23 @@
+runtime: python38
+# env: flex
+
+instance_class: F2
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 5
+  max_instances: 100
+  min_pending_latency: 30ms
+  max_pending_latency: automatic
+  max_concurrent_requests: 50
+
+inbound_services:
+- warmup
+
+# Default
+# automatic_scaling:
+#   min_num_instances: 2
+#   max_num_instances: 8
+#   cool_down_period_sec: 120
+#   cpu_utilization:
+#     target_utilization: 0.5

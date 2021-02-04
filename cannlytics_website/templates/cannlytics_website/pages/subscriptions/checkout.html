@@ -4,8 +4,7 @@
   <!-- Checkout Page -->
   <!-- Created 1/17/2021 -->
   {% extends "cannlytics_website/index.html" %}
-
-  <!-- Checkout headers -->
+  {% block title %}Checkout | Cannlytics{% endblock %}
   {% block page_css %}
     <!-- TODO: Get CLIENT_ID from Firestore in Django -->
     <!-- TODO: Pass user's email with cookie -->
@@ -136,11 +135,8 @@
           return actions.subscription.create({ 'plan_id': planID });
         },
         onApprove: function(data, actions) {
-          cannlytics.payments.subscribe({
-            'plan_id': planID,
-            'subscription_id': subscriptionID,
-          });
-          window.location.href = '/subscriptions/subscribed/';
+          var subscription = { ...data, ...{ 'plan_id': planID } };
+          cannlytics.payments.subscribe(subscription);
         },
         onError: function (error) {
           // For example, redirect to a specific error page

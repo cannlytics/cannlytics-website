@@ -201,4 +201,27 @@ export const website = {
   },
 
 
+  logPromo() {
+    /*
+     * Log a promotional event.
+     */
+    var code = this.getUrlParameter('source');
+    if (!code) return;
+    var data = { 'promo_code': code };
+    fetch('/promotions/', {
+      method: 'POST', 
+      body: JSON.stringify(data),
+      headers: { 'Accept': 'application/json' },
+    });
+  },
+
+
+  getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  },
+
+
 }

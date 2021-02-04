@@ -38,6 +38,7 @@ urlpatterns += [
     path("download-lab-data/", api.download_lab_data),
     path('robohash/<string>/', robohash, name='robohash'),
     path("subscribe/", api.subscribe, name="subscribe"),
+    path("promotions/", api.promotions, name="promotions"),
 ]
 
 # General pages
