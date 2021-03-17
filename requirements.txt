@@ -11,6 +11,7 @@ django==3.0.7
 django-crispy-forms==1.10.0
 django-environ==0.4.5
 django-robohash-svg==0.9.5
+django-simple-captcha
 djangorestframework==3.12.2
 firebase_admin==4.3.0
 google-auth==1.20.1

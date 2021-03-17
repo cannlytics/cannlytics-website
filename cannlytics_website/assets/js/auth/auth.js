@@ -12,7 +12,6 @@ export const auth = {
     /*
      * Sign in with username and password.
      */
-    // TODO: Sign a user in.
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
     fbAuth.signInWithEmailAndPassword(email, password)
@@ -59,6 +58,8 @@ export const auth = {
       console.log('Error:', errorMessage);
     });
   },
+
+  // TODO: Sign up.
 
 
 }

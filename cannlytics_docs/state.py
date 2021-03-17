@@ -13,7 +13,14 @@ state = {
             "image_path": "cannlytics_website/images/lab_icons/cannlytics_eye.svg",
             "sections": [
                 {"slug": "get-started", "title": "Get Started"},
-                {"slug": "installation", "title": "Installation"},
+                {"slug": "authentication", "title": "Authentication"},
+                {"slug": "analyses", "title": "Analyses"},
+                {"slug": "analytes", "title": "Analytes"},
+                {"slug": "instruments", "title": "Instruments"},
+                {"slug": "regulations", "title": "Regulations"},
+                {"slug": "limits", "title": "Limits"},
+                {"slug": "labs", "title": "Labs"},
+                {"slug": "lab_results", "title": "Lab Results"},
             ],
         },
         {
@@ -46,8 +53,8 @@ state = {
             ],
         },
         {
-            "product": "portal",
-            "title": "Portal",
+            "product": "console",
+            "title": "Console",
             "description": "Access to laboratory results for lab users; producers, processors, retailers, and consumers.",
             "image_path": "cannlytics_website/images/lab_icons/cannlytics_brain.svg",
             "sections": [

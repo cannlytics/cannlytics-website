@@ -124,14 +124,14 @@ body.dark .sidebar .nav-link:hover .feather {
   height: 16px;
   transform: translateX(6px);
 }
-[data-toggle="collapse"] > .arrow {
+[data-bs-toggle="collapse"] > .arrow {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
   -o-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
-[data-toggle="collapse"][aria-expanded="true"] > .arrow {
+[data-bs-toggle="collapse"][aria-expanded="true"] > .arrow {
   -webkit-transform: rotate(0) translate(-3px, -3px);
   -moz-transform: rotate(0) translate(-3px, -3px);
   -ms-transform: rotate(0) translate(-3px, -3px);

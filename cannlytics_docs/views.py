@@ -14,6 +14,9 @@ from utils.utils import get_markdown
 APP = "cannlytics_docs"
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 
+
+# TODO: Add Was this page helpful? Yes | No question.
+
 # Optional: Use RedirectViews?
 # from django.views.generic import RedirectView
 

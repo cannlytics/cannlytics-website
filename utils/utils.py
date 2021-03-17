@@ -29,7 +29,7 @@ EXTENSIONS = [
     "nl2br", # Newlines treated as hard breaks
     "smarty",  # Converts dashes, quotes, and ellipses.
     "tables",  # Creates tables.
-    TocExtension(permalink=True), # Creates table of contents with [TOC] and adds id's to headers.
+    TocExtension(permalink='#'), # Creates table of contents with [TOC] and adds id's to headers.
     'mdx_math', # FIXME: Parse LaTeX
     'pymdownx.arithmatex',
     'pymdownx.emoji',

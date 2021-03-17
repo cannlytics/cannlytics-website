@@ -1,8 +1,16 @@
 # Bugs
 
-If you encounter a bug, then please email <contact@cannlytics.com>
+If you encounter a bug, then please email <contact@cannlytics.com>.
 
 ## Running list of encountered bugs and their solutions
+
+* [*Using Google Cloud Storage in Google Cloud Functions*](https://stackoverflow.com/questions/52249978/write-to-google-cloud-storage-from-cloud-function-python/52250030)
+
+  > If you are using Firebase Storage in a Google Cloud Function, then you need to specify `google-cloud-storage` in your `requirements.txt`.
+
+* [Firebase Hosting Base Rewrite Not Working](https://stackoverflow.com/questions/44871075/redirect-firebase-hosting-root-to-a-cloud-function-is-not-working)
+
+  > In order to use a rewrite at the root in Firebase Hosting, you must not include an `index.html` file in the public folder.
 
 ### Node.js
 

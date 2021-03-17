@@ -36,9 +36,9 @@ class BaseMixin(ContextMixin):
             context[key] = material
         return context
 
-    def get_page_data(self, documents, collections=[]):
-        """Get all Firestore data needed for a page."""
-        return {}
+    # def get_page_data(self, documents, collections=[]):
+    #     """Get all Firestore data needed for a page."""
+    #     return {}
 
     def save_analytics(self):
         """Save page analytics to Firestore."""

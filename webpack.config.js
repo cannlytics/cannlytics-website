@@ -20,7 +20,7 @@ module.exports = env => {
     entry: [
       `./${appName}/assets/css/cannlytics.scss`,
       `./${appName}/assets/js/index.js`,
-      // TODO: Add docs JS here.
+      // Optional: Add additional JS here.
     ],
     output: {
       path: path.resolve(__dirname, `${appName}/static/${appName}`),

@@ -3,12 +3,10 @@
   Created: 10/4/2020
 ---------------------------------------------------------------------------*/
 
-/* TODO: Import only sizes used */
 @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=Libre+Franklin:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:100,200,300,400,500,600,700');
-@import url("https://fonts.googleapis.com/css?family=Cinzel:400");
-// @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;600&display=swap');
 
@@ -75,7 +73,7 @@ p {
   text-decoration: underline;
 }
 .no-underline {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 .double-line {
   line-height: 1.75 !important;
@@ -102,7 +100,7 @@ p {
   align-items: flex-end;
 }
 .brand-font {
-  font-family: 'Cinzel';
+  font-family: 'Space Grotesk';
   /* font-family: 'IBM Plex Sans';
   font-weight: 200; */
   letter-spacing: 0.5px;
@@ -111,7 +109,7 @@ body.dark .brand-font {
   color: #f5f5f5 !important;
 }
 .brand-title {
-  font-family: 'Cinzel' !important;
+  font-family: 'Space Grotesk' !important;
   letter-spacing: 0.5px;
   font-size: 1.75rem;
   line-height: 1;
@@ -208,15 +206,16 @@ body.dark .brand-font {
   color: inherit;
   text-decoration: none;
   transition: background .15s cubic-bezier(.33, .66, .66, 1);
-  text-decoration: underline;
-  text-decoration-color: #e53a23;
+  // text-decoration: underline;
+  // text-decoration-color: #e53a23;
   // color: #e53a23;
+  font-weight: 700;
   overflow-wrap: break-word;
   word-break: break-word;
   word-wrap: break-word;
 }
-.markdown a:hover {
-  background-color: #e53a2333;
+.markdown a:not(.headerlink):hover {
+  background-color: #50fa7b33;
 }
 body.dark .markdown a {
   text-decoration-color: #ffa600;
@@ -1296,9 +1295,8 @@ body.dark .nav-link.active {
 // }
 
 body.dark .jumbotron {
-  // background-color: #263238;
-
-background-color: transparent;}
+  background-color: transparent;
+}
 
 .large-bottom-margin {
   padding-bottom: 3rem;

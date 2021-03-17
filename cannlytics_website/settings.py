@@ -15,31 +15,33 @@ import environ
 import os
 import re
 from django.template import base
+
 try:
     from .local import *
 except ImportError:
     pass
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Project variables.
-#------------------------------------------------------------#
-PRODUCTION = True # PRODUCTION: Change from False to True
+# ------------------------------------------------------------#
+PRODUCTION = False  # PRODUCTION: Change from False to True
 PROJECT_NAME = "cannlytics_website"
 ROOT_URLCONF = "cannlytics_website.urls"
 SETTINGS_NAME = "cannlytics_website_settings"
 WSGI_APPLICATION = "cannlytics_website.wsgi.application"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Environment variables
 # https://docs.djangoproject.com/en/3.1/ref/settings/#secret-key
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # try:
 # Read settings stored in Secret Manager.
 env_file = os.path.join(BASE_DIR, ".env")
 if not os.path.isfile(".env"):
     import google.auth
     from google.cloud import secretmanager as sm
+
     _, project = google.auth.default()
     if project:
         client = sm.SecretManagerServiceClient()
@@ -63,10 +65,10 @@ DEBUG = env("DEBUG")
 #         generate_secret_key(os.path.join(SETTINGS_DIR, 'secret_key.py'))
 #         from .secret_key import SECRET_KEY
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Apps
 # https://docs.djangoproject.com/en/3.1/ref/applications/
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 INSTALLED_APPS = [
     "cannlytics_website",
     "cannlytics_docs.apps.CannlyticsDocsConfig",
@@ -80,15 +82,16 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "django_robohash",
+    # "captcha",
     # "simplemathcaptcha",
 ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Middleware
 # https://docs.djangoproject.com/en/3.1/topics/http/middleware/
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -99,19 +102,19 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Livereload
 # https://github.com/tjwalch/django-livereload-server
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 if not PRODUCTION:
     INSTALLED_APPS.insert(0, "livereload")
     MIDDLEWARE.insert(0, "livereload.middleware.LiveReloadScript")
-    MIDDLEWARE_CLASSES = ("livereload.middleware.LiveReloadScript")
+    MIDDLEWARE_CLASSES = "livereload.middleware.LiveReloadScript"
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Templates
 # https://docs.djangoproject.com/en/3.1/ref/templates/language/
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -133,10 +136,10 @@ TEMPLATES = [
     },
 ]
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
@@ -146,10 +149,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Authentication
 # https://www.oscaralsing.com/firebase-authentication-in-django/
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # AUTHENTICATION_BACKENDS = []
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -163,34 +166,35 @@ AUTH_PASSWORD_VALIDATORS = [
 #     ]
 # }
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "America/Los_Angeles"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Security
 # https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/web_application_security
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 ALLOWED_HOSTS = [
-    "*",  # TODO: DANGEROUS! Remove in production.
-    "localhost:8000",
-    "127.0.0.1",
     "cannlytics.com",
     "cannlytics.web.app",
+    "cannlytics-deeuhexjlq-uc.a.run.app",
 ]
+
+if not PRODUCTION:
+    ALLOWED_HOSTS.extend(["*", "localhost:8000", "127.0.0.1"])
 
 SECURE_SSL_REDIRECT = False
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -204,22 +208,22 @@ DATABASES = {
     }
 }
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Email
 # https://docs.djangoproject.com/en/3.1/topics/email/
-#------------------------------------------------------------#
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
+# ------------------------------------------------------------#
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = "587"
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')
-LIST_OF_EMAIL_RECIPIENTS = [env('EMAIL_HOST_USER')]
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = env("EMAIL_HOST_USER")
+LIST_OF_EMAIL_RECIPIENTS = [env("EMAIL_HOST_USER")]
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 
 # List of directories where Django will also look for static files
 STATICFILES_DIRS = (
@@ -235,9 +239,9 @@ STATIC_ROOT = os.path.abspath(
 # The relative path to serve files.
 STATIC_URL = "/static/"
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Google Cloud Storage alternative for serving static files
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 
 # Setup Google Cloud Storage for Django.
 # # https://django-storages.readthedocs.io/en/latest/backends/gcloud.html
@@ -271,9 +275,9 @@ STATIC_URL = "/static/"
 # on when you invoke "collectstatic", so you might need to login as root first or run it as sudo.
 # STATIC_ROOT = 'https://storage.googleapis.com/cannlytics.appspot.com/public/static/'
 
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 # Customization
-#------------------------------------------------------------#
+# ------------------------------------------------------------#
 
 # Allow Django template tags to span multiple lines.
 # https://stackoverflow.com/questions/49110044/django-template-tag-on-multiple-line
@@ -282,3 +286,7 @@ base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)
 # Make certain settings accessible from within templates.
 # https://github.com/jakubroztocil/django-settings-export
 # SETTINGS_EXPORT = ['DEBUG']
+
+# Google reCAPTCHA
+# https://simpleisbetterthancomplex.com/tutorial/2017/02/21/how-to-add-recaptcha-to-django-site.html
+# GOOGLE_RECAPTCHA_SECRET_KEY = env("SECRET_KEY")
