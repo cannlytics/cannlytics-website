@@ -12,24 +12,29 @@ from . import api, views
 
 # Main URLs
 urlpatterns = [
-    path("", views.GeneralView.as_view(), name="index"),
-    path("admin/", admin.site.urls, name="admin"),
-    path("contact/", views.ContactView.as_view(), name="contact"),
-    path("community/", views.CommunityView.as_view(), name="community"),
-    path("api/", include("cannlytics_api.urls"), name="api"),
-    path("docs/", include("cannlytics_docs.urls"), name="docs"),
-    path("labs/", views.CommunityView.as_view(), name="labs"),  # Redundant
-    path("labs/new/", views.NewLabView.as_view()),
-    path("labs/<slug:lab>/", views.LabView.as_view()),
-    # path("labs\.json", views.CommunityView.as_view()),
+    path('', views.GeneralView.as_view(), name='index'),
+    path('admin/', admin.site.urls, name='admin'),
+    path('contact/', views.ContactView.as_view(), name='contact'),
+    path('community/', views.CommunityView.as_view(), name='community'),
+    path('api/', include('cannlytics_api.urls'), name='api'),
+    path('docs/', include('cannlytics_docs.urls'), name='docs'),
+    path('labs/', views.CommunityView.as_view(), name='labs'),  # Redundant
+    path('labs/new/', views.NewLabView.as_view()),
+    path('labs/<slug:lab>/', views.LabView.as_view()),
+    # path('labs\.json', views.CommunityView.as_view()),
     # path('labs/<slug:lab>/.json', views.LabView.as_view())
-    path("download-lab-data/", api.download_lab_data),
-    path("robohash/<string>/", robohash, name="robohash"),
-    path("subscribe/", api.subscribe, name="subscribe"),
-    path("promotions/", api.promotions, name="promotions"),
+    path('download-lab-data/', api.download_lab_data),
+    path('robohash/<string>/', robohash, name='robohash'),
+    path('subscribe/', api.subscribe, name='subscribe'),
+    path('promotions/', api.promotions, name='promotions'),
+
+    # TODO: Add video archive!
+    path('videos/', api.promotions, name='videos'),
+    path('videos/<slug:section>/', api.promotions, name='video'),
+
     # path('captcha/', include('captcha.urls')),
-    path("<slug:page>/", views.GeneralView.as_view(), name="page"),
-    path("<slug:page>/<slug:section>/", views.GeneralView.as_view(), name="section"),
+    path('<slug:page>/', views.GeneralView.as_view(), name='page'),
+    path('<slug:page>/<slug:section>/', views.GeneralView.as_view(), name='section'),
 ]
 
 # Serve static assets in development and production.

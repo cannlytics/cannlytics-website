@@ -1,28 +1,32 @@
 <!doctype html>
 <html>
-  <!-- Events Archive Page -->
-  <!-- Created 2/23/2021 -->
+  <!-- Traceability Page -->
+  <!-- Created 3/19/2021 -->
   {% extends "cannlytics_website/index.html" %}
-  {% load static %}
-  {% block title %}Archive | Cannlytics{% endblock %}
-  {% block page_css %}
-  {% endblock %}
+  {% block title %}Traceability | Cannlytics{% endblock %}
   {% block material %}
 
-  <!-- https://cloudinary.com/documentation/cloudinary_video_player -->
+  <!-- Optional: Create consumables, equipment pages -->
+
     <!-- Hero Banner -->
     {% include "cannlytics_website/components/heros/hero_banner.html" with
-      title="Event Archive"
+      title='Traceability'
+      description="Easily comply with your state's traceability system with Cannlytics' simple API integration interface."
+      primary_action='Integrate now'
+      primary_action_url='/account/sign-up/'
+      secondary_action='Learn more'
+      secondary_action_url='/traceability/wa/'
       only
     %}
 
-    
-    
-    {% comment %} <!-- Archive list -->
+    <!-- Traceability List -->
     <div class="album py-5 my-5">
       <div class="container">
-        {% for item in events %}
-          <div
+        {% for item in traceability %}
+        <!-- TODO: List top traceability providers (Leaf Data Systems, Metrc) and the states that they operate 
+        For each provider, list the states that they serve that link to detailed pages (/traceability/{state}).
+        -->
+          {% comment %} <div
             class="row featurette"
             style="{% if forloop.counter|divisibleby:2 %}margin-top:10rem;margin-bottom:10rem;{% endif %}"
           >
@@ -55,17 +59,18 @@
                 </figcaption>
               </figure>
             </div>
-          </div>
+          </div> {% endcomment %}
         {% endfor %}
       </div>
-    </div><!-- End of archive list --> {% endcomment %}
+    </div><!-- End of Events List -->
 
   {% endblock %}
 
-  <!-- Archive JavaScript -->
+  <!-- Traceability JavaScript -->
   {% comment %} {% block page_js %}
-    <script>
+    <script type="text/javascript">
+      cannlytics.website.logPromo();
     </script>
-  {% endblock %} {% endcomment %}
+  {% endblock page_js %} {% endcomment %}
 
 </html>

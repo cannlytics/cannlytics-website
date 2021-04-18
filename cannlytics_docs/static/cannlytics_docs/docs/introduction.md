@@ -1,5 +1,7 @@
 # Introduction
 
+<!-- Example: https://docs.joinmastodon.org/ -->
+
 Welcome to Cannlytics' documentation where you can find information to point you in the right direction for learning about Cannlytics. The Cannlytics Engine puts a lot at your fingertips and empowers users with freedom. The Cannlytics vision is -
 
 > *Super power your lab with free and ethical cannabis-testing software built on the bleeding edge, tried-and-true, battle-tested, and ready for you to plug and play or pop the hood and tinker to your heart's content.*
