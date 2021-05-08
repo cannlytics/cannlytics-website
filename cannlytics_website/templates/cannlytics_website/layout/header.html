@@ -146,6 +146,7 @@
 
         <!-- Right Navigation (Not signed in) -->
         <ul class="navbar-nav indicates-auth align-items-center me-3">
+          {% include 'cannlytics_console/components/buttons/donate_button.html' %}
           <li class="nav-item h6 mb-0">
             <a
               class="nav-link app-action sliding-action text-nowrap me-2"
@@ -168,6 +169,7 @@
 
         <!-- Right navigation (Signed in) -->
         <ul class="navbar-nav requires-auth align-items-center me-3">
+          {% include 'cannlytics_console/components/buttons/donate_button.html' %}
           <li class="nav-item h6 mb-0">
             <a
               class="nav-link sliding-action text-nowrap me-2"
