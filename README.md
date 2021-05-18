@@ -7,6 +7,8 @@ Cannlytics provides a user-friendly interface to quickly receive samples, perfor
 
 This documentation explains Cannlytics' website architecture and how to build, develop, and publish the website. The website is live at <https://cannlytics.com>.
 
+<!-- Video Editing: https://www.youtube.com/watch?v=9E1caMsnXr8 -->
+
 - [Introduction](#introduction)
 - [Features](#features)
 - [Road Map](#road-map)
