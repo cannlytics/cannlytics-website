@@ -28,6 +28,10 @@ urlpatterns = [
     path('subscribe/', api.subscribe, name='subscribe'),
     path('promotions/', api.promotions, name='promotions'),
 
+    # TODO: Add articles!
+    path('articles/', api.promotions, name='articles'),
+    path('articles/<slug:section>/', api.promotions, name='articles'),
+
     # TODO: Add video archive!
     path('videos/', api.promotions, name='videos'),
     path('videos/<slug:section>/', api.promotions, name='video'),
