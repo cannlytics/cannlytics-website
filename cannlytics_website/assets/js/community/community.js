@@ -1,6 +1,7 @@
 /**
- * labs.js | Cannlytics Website
+ * Community Page JavaScript | Cannlytics Website
  * Created: 1/17/2021
+ * Updated: 5/24/2021
  */
 
  // Optional: Add geographic shapes for states.
@@ -162,7 +163,7 @@ export const community = {
     var name = item.trade_name ?? item.name;
     var content = `<div class="text-dark p-3">`;
     content += `
-      <a href="/labs/${item.slug}/">
+      <a href="/labs/${item.slug}/" target="_blank">
         <img src="${item.image_url}" class="float-start me-3 mb-3" style="max-width:150px;max-height:75px;">
       </a>
       <h5 class="fs-4 mb-0">
@@ -184,8 +185,8 @@ export const community = {
     }
     if (item.website) {
       var url = item.website;
-      if (!url.startsWith('http')) url = `http://${url}`;
-      content += `Website: <a href="${url}">${item.website}</a>`;
+      if (!url.startsWith('https')) url = `https://${url}`;
+      content += `Website: <a href="${url}" target="_blank">${item.website}</a>`;
     } else {
       content += `Website: <a class="btn btn-sm btn-light" href="/labs/${item.slug}/?edit=true">Recommend a website</a><br>`;
     }
