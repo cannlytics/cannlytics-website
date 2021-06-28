@@ -12,7 +12,21 @@ Cannlytics video archive.
 """
 from datetime import datetime
 
+
+
 PUBLISHED_AT = '2021-02-'
+
+def upload_video(file_name, video_data):
+    """Upload a video to Firebase Storage.
+    Args:
+        file_name (str): The path of the file to upload.
+        video_data (dict): Metadata about the video.
+    Returns:
+        (dict): The video data updated with the storage ref and URL.
+    """
+    
+    
+    return video_data
 
 if __name__ == '__main__':
     
@@ -25,6 +39,10 @@ if __name__ == '__main__':
     # Save the reference to the video and the
     # video's metadta to Firestore.
     video_data = {
-        'published_at': PUBLISHED_AT
-        'uploaded_at': datetime.now().isoformat()
+        'music': ['Vivaldi'],
+        'category': 'Category: Science and Technology',
+        'title': 'Data Wrangling | Cannabis Data Science Episode 1',
+        'description': 'Join the fun, zany bunch on our first Cannabis Data Science meetup as we begin to wrangle the firehose of data that the Washington State traceability system offers to the public. Support the group: https://opencollective.com/cannlytics-company Find the data and source code: https://github.com/cannlytics/cannabis-data-science',
+        'published_at': PUBLISHED_AT,
+        'uploaded_at': datetime.now().isoformat(),
     }

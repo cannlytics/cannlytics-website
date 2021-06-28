@@ -119,5 +119,6 @@
   "todo-tree.tree.showBadges": false,
   "cSpell.ignoreWords": [
     "hawcons"
-  ]
+  ],
+  "python.pythonPath": "C:\\Anaconda\\python.exe"
 }

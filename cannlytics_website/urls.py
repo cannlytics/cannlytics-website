@@ -33,8 +33,12 @@ urlpatterns = [
     path('articles/<slug:section>/', api.promotions, name='articles'),
 
     # TODO: Add video archive!
-    path('videos/', api.promotions, name='videos'),
-    path('videos/<slug:section>/', api.promotions, name='video'),
+    # path('videos/', api.promotions, name='videos'),
+    # path('videos/<slug:section>/', api.promotions, name='video'),
+
+    # TODO: Add data archive!
+    # path('videos/', api.promotions, name='videos'),
+    # path('videos/<slug:section>/', api.promotions, name='video'),
 
     # path('captcha/', include('captcha.urls')),
     path('<slug:page>/', views.GeneralView.as_view(), name='page'),

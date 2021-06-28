@@ -1,7 +1,11 @@
 <!doctype html>
 <html>
-  <!-- Footer Template -->
-  <!-- Created 12/30/2020-->
+<!--
+  Footer Template
+  Created: 12/30/2020
+  Updated: 6/27/2021
+-->
+  <!-- -->
   {% load static %}
 
   <!-- Wave -->
@@ -75,10 +79,10 @@
                 data-bs-toggle="modal"
                 data-bs-target="#subscribeDialog"
               >
-                Subscribe*
+                Subscribe
               </button>
               <!-- TODO: Pass plan_id from Django from Firestore -->
-              <p class="lh-sm h6 mt-2 text-nowrap">
+              {% comment %} <p class="lh-sm h6 mt-2 text-nowrap">
                 <small class="text-secondary-on-light">
                 * <a
                   class="cannlytics-light-green-text"
@@ -89,7 +93,7 @@
                 </a>
                 $1/mo.
                 </small>
-              </p>
+              </p> {% endcomment %}
             </div>
           </div>
         </div>
@@ -197,7 +201,7 @@
       <!-- Github star button -->
       <iframe
         class="mb-2"
-        src="https://ghbtns.com/github-btn.html?user=cannlytics&repo=cannlytics-website&type=star&count=true"
+        src="https://ghbtns.com/github-btn.html?user=cannlytics&repo=cannlytics&type=star&count=true"
         frameborder="0"
         scrolling="0"
         width="150"

@@ -1,6 +1,8 @@
 """
-Cannlytics Website | State Variables
+State Variables | Cannlytics Website
+Author: Keegan Skeate <keegan@cannlytics.com>
 Created: 10/15/2020
+Updated: 6/27/2021
 """
 
 page_data = {
@@ -18,6 +20,9 @@ page_data = {
     },
     "team": {
         "collections": [{"name": "team", "ref": "team"}],
+    },
+    "videos": {
+        "collections": [{"name": "video_archive", "ref": "videos"}],
     },
     "whitepapers": {
         "collections": [{"name": "whitepapers", "ref": "whitepapers"}],
@@ -74,7 +79,7 @@ state = { # Optional: Turn into models and save in database?
     "hero": {
         # AB TEST 1:
         # "title": "A Modern Cannabis-Testing Engine",
-        "title": "A Cannabis-Analytics Engine for the 21st Century",
+        "title": "Cannabis Analytics for the 21st Century",
         # AB TEST 2:
         # "message": "Super power your lab with free and ethical cannabis-testing software made with 💖, tried-and-true, and ready for you to plug and play or pop the hood and tinker to your heart's content.",
         "message": "Super power your lab with free cannabis-testing software made with love and ready for you to plug and play or pop the hood and tinker to your 💖's content.",
