@@ -93,6 +93,7 @@
     "popperjs",
     "postgres",
     "projectnum",
+    "pylint",
     "pymdownx",
     "quickstart",
     "readonly",

@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<!--
+  Videos Page | Cannlytics
+  Created: 2/23/2021
+  Updated: 6/27/2021
+  TODO:
+    - Explore video players. For example: https://cloudinary.com/documentation/cloudinary_video_player
+-->
+  <!--  -->
+  {% extends "website/index.html" %}
+  {% load static %}
+  {% block title %}Videos | Cannlytics{% endblock %}
+  {% block page_css %}
+  {% endblock %}
+  {% block material %}
+
+  <!-- -->
+
+    <!-- Hero Banner -->
+    {% include "website/components/heros/hero_banner.html" with
+      title="Videos"
+      only
+    %}    
+    
+    <!-- Data Grid -->
+    <div class="row px-3 mb-4">
+    {% for item in video_archive %}
+      <div
+        class="card shade-hover border-secondary rounded-3 app-action col col-sm-1 col-md-2 p-3"
+        style="width:400px; height:150px;"
+      >
+      <a class="card-block stretched-link text-decoration-none" href="/videos/{{ item.uid }}">
+
+        <!-- Card header -->
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-center">
+            <div class="icon-container me-2">
+              {% include 'console/components/icons/people.svg' %}
+            </div>
+            <h4 class="fs-5 text-dark">{{ item.name }}</h4>
+          </div>
+        </div>
+
+        <!-- Card body -->
+        <div class="card-body bg-transparent p-0">
+
+          <!-- Badges -->
+          {% if item.support == 'Enterprise' %}
+            <span class="badge rounded-pill bg-primary">Enterprise</span>
+          {% elif item.support == 'Pro' %}
+            <span class="badge rounded-pill bg-warning text-dark">Pro</span>
+          {% else %}
+            <span class="badge rounded-pill bg-gradient-green text-white">Free</span>
+          {% endif %}
+
+          <!-- Card Stats -->
+          <div class="row h-100 text-dark align-items-center">
+            <div class="col-4 mb-3">
+              {% if item.total_views %}{{ item.total_views }}{% else %}0{% endif %} Views
+            </div>
+          </div>
+
+        </div>
+
+      </a>
+      </div>
+    {% endfor %}
+    </div>
+
+  {% endblock %}
+
+</html>

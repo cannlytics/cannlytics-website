@@ -5,7 +5,7 @@
 const Dotenv = require('dotenv-webpack');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const path = require('path');
-const appName = 'cannlytics_website';
+const appName = 'website';
 
 module.exports = env => {
   return {

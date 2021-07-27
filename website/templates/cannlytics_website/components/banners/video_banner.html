@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<!--
+  Video Banner | Cannlytics Website
+  Created: 7/27/2021
+  Updated: 7/27/2021
+  Params:
+    phone
+    phone_number
+-->
+<div class="row">
+  <div class="row row-cols-2 justify-content-md-start mb-5">
+
+    {% for video in video_archive %}
+
+      <span>{{ video.title }}</span>
+
+    {% endfor %}
+    
+    <!-- TODO: Load video data server-side? -->
+    {% comment %} {% for item in dashboard.cards %}
+      <div class="col-6 col-lg-4 my-3">
+        <a href="./{{ item.path }}">
+          <div
+            class="card h-100 bg-transparent border-secondary rounded-3 shadow-hover px-0 py-2"
+            style="max-width: 375px;"
+          >
+
+            <!-- Card image -->
+            <div class="">
+
+              <div class="float-start p-3">
+                <img
+                    class="ma-2"
+                    src="{% static item.image_path %}"
+                    width="75px"
+                  >
+              </div>
+
+              <!-- Card body -->
+              <div class="col">
+                <div class="card-body bg-transparent">
+                  <h5 class="card-title text-dark text-no-wrap fs-5 mb-1">
+                    {{ item.title }}
+                  </h5>
+                  <p class="card-text text-secondary fs-6 large-line">
+                    <small class="serif tiny-text">{{ item.description }}</small>
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %} {% endcomment %}
+  </div><!-- End of cards -->
+</div><!-- End of row -->
+</html>
