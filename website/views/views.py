@@ -1,18 +1,24 @@
 """
 Views | Cannlytics Website
+
+Author: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/29/2020
+Updated: 7/27/2021
 """
+# Standard imports
 import os
+
+# External imports
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views.generic.edit import FormView
-from website.forms import ContactForm
-from website.utils.firebase import get_document, get_collection
-from website.utils.mixins import BaseMixin, TemplateView
-from website.utils.utils import get_markdown
 
-# from .decorators import check_recaptcha
-from website.state import lab_state, page_data, page_docs
+# Internal imports
+from website.forms import ContactForm
+from website.state import lab_state, page_data, page_docs, state
+from website.views.mixins import BaseMixin, TemplateView
+from website.utils.firebase import get_document, get_collection
+from website.utils.utils import get_markdown
 
 APP = 'website'
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -61,7 +67,6 @@ class GeneralView(BaseMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context = self.get_data(context)
         context = self.get_docs(context)
-        print('Page context:\n\n', context)
         return context
 
 
@@ -92,6 +97,12 @@ class ContactView(BaseMixin, FormView):
         """Submit the contact form."""
         form.send_email()
         return super(ContactView, self).form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        """Get the context for a page."""
+        context = super().get_context_data(**kwargs)
+        context['contact'] = state['contact']
+        return context
 
 
 class LabView(BaseMixin, TemplateView):

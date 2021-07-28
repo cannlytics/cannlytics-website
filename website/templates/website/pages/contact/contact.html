@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <!--
+    Contact Page
+    Created: 1/6/2021
+    Updated: 7/27/2021
+  -->
+  {% extends "website/index.html" %}
+  {% block title %}Contact | {{ general.title }}{% endblock %}
+  {% load static crispy_forms_tags %}
+  {% block page_css %}
+    <style>
+      body.dark .captcha-question {
+        color: #f8f8f8;
+      }
+      body.dark .textinput {
+        background: transparent;
+        color: #f8f8f8;
+      }
+    </style>
+  {% endblock %}
+  {% block material %}
+    <div class="contact container my-4 my-lg-5 px-5">
+
+      <!-- Hero -->
+      <div class="row featurette mt-5">
+        <div class="col-md-7 order-2 order-lg-1">
+          <h2 class="h1 serif text-gradient-reverse pb-3 mt-0">
+            {{ contact.title }}
+          </h2>
+          <p class="fs-6 double-line text-dark text-start text-muted mb-4">
+            {{ contact.message }}
+          </p>
+
+          <!-- Form -->
+          <form id="contact-form" action="?" method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button
+              data-sitekey="6LdJfE8aAAAAAAAOL7QialM_4iEhU66pad3jeMQZ" 
+              data-callback='onSubmit' 
+              data-action='submit'
+              class="g-recaptcha btn bg-gradient-green text-white"
+            >
+              Send
+            </button>
+          </form>
+        </div>
+
+        <!-- Image -->
+        <div class="col-md-5 order-1 order-lg-2 mb-3">
+          <img
+            src="{% static 'website/images/illustrations/cannlytics_office.svg' %}"
+            width="100%"
+          >
+        </div>
+
+      </div><!-- End of hero -->
+    </div>
+  {% endblock %}
+
+  {% block page_js %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+      function onSubmit(token) {
+        document.getElementById('contact-form').submit();
+      }
+    </script>
+  {% endblock %}
+
+</html>

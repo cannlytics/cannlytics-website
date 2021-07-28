@@ -2,7 +2,7 @@
 State Variables | Cannlytics Website
 Author: Keegan Skeate <keegan@cannlytics.com>
 Created: 10/15/2020
-Updated: 6/27/2021
+Updated: 7/27/2021
 """
 
 page_data = {
@@ -38,6 +38,10 @@ page_docs = {
 }
 
 state = { # Optional: Turn into models and save in database?
+  "contact": {
+      "title": "You're welcome to contact us anytime about anything.",
+      "message": "Please enter your contact information and message and the team will get back to you as soon as possible.",
+  },
   "general": {
     "title": "Cannlytics",
     "blurb": "Cannlytics is a suite of free software for cannabis-testing laboratories, empowering you with a state-of-the-art system.",
@@ -93,28 +97,25 @@ state = { # Optional: Turn into models and save in database?
         {
             "title": "Smart Integrations",
             "message": "We believe that everyone benefits when people are able to study and tinker with their software. With the freedom provided by Cannlytics, users, both individually and collectively, control the software and what it does for them.",
-            "icon": "website/images/lab_icons/cannlytics_brain_gradient_orange.png",
-            "image": "website/images/illustrations/cannlytics_collaboration.svg",
+            "image": "website/images/illustrations/outline/lab_tablet.svg",
             "action": "View options",
-            "action_url": "/integrations",
+            "action_url": "/support",
         },
         {
             "title": "Analysis Tailored",
             "message": "Cannlytics provides a user-friendly interface to quickly receive samples, perform analyses, collect and review results, and publish certificates of analysis (CoAs). There are also built in logistics, CRM (client relationship management), inventory management, and invoicing tools.",
             # "message": "Built by scientist for scientists. Data collection can be performed with the Cannlytics command line tool or with the Cannlytics Beanstalk. The Beanstalk is a light-weight app installed on an instrument's operating computer that automatically funnels results into your database.",
             # "message": "Data collection can be performed with the Cannlytics command line tool or with the Cannlytics Beanstalk. The Beanstalk is a light-weight app installed on an instrument's operating computer that automatically funnels results into your database.",
-            "icon": "website/images/lab_icons/cannlytics_stats_gradient_orange.png",
-            "image": "website/images/illustrations/cannlytics_scientist.svg",
+            "image": "website/images/illustrations/outline/lab_microscope.svg",
             "action": "Contribute now",
             "action_url": "/community",
             "action": "Begin customizing",
-            "action_url": "/coas",
+            "action_url": "https://console.cannlytics.com",
         },
         {
             "title": "Community Driven", # vs. People Centric (AB TEST)
             "message": "Built by scientist for scientists. Cannlytics empowers you with control over the development process, resources, and decision making authority. We believe that the Cannlytics community is the best judge of how Cannlytics can be improved, so, we have entrusted Cannlytics' source code with you.",
-            "icon": "website/images/lab_icons/cannlytics_dialog_gradient_orange.png",
-            "image": "website/images/illustrations/cannlytics_teamwork.svg",
+            "image": "website/images/illustrations/outline/lab_microbiologist.svg",
             "action": "Contribute now",
             "action_url": "/community",
         }
@@ -124,7 +125,6 @@ state = { # Optional: Turn into models and save in database?
             "title": "Automate your lab.",
             "subtitle": "Free your time for science and analysis.",
             "message": "The more mundane tasks that you can automate and execute quickly and efficiently with the Cannlytics Engine, then the more time you have to conduct science and experiments.",
-            # "image": "website/images/illustrations/cannlytics_communication.svg"
             "image": "website/images/screenshots/console_intake_light.png",
             "image_dark": "website/images/screenshots/console_intake_dark.png",
         },
@@ -132,7 +132,6 @@ state = { # Optional: Turn into models and save in database?
             "title": "Extend, modify, and personalize.",
             "subtitle": "Add anything that you need.",
             "message": "An advantage of the Cannlytics Engine over proprietary software solutions is that Cannlytics lets you make modifications as you need because Cannlytics is an open box of free software.",
-            # "image": "website/images/illustrations/cannlytics_teamwork_2.svg"
             "image": "website/images/screenshots/console_account_light.png",
             "image_dark": "website/images/screenshots/console_account_dark.png",
         },
@@ -140,7 +139,6 @@ state = { # Optional: Turn into models and save in database?
             "title": "Freedom at your fingertips.",
             "subtitle": "It's all yours.",
             "message": "Cannlytics is a system of free software that you can use to power your lab. Cannlytics belongs to you so that you can use the Cannlytics Engine however that you please. Free software lets you operate ethically with the sky as the limit.",
-            # "image": "website/images/illustrations/cannlytics_developer.svg"
             "image": "website/images/screenshots/console_help_light.png",
             "image_dark": "website/images/screenshots/console_help_dark.png",
         }
@@ -163,7 +161,7 @@ state = { # Optional: Turn into models and save in database?
             },
             {
                 "name": "Pro",
-                "price": "for item in data:month",
+                "price": "$500 / mo.",
                 "color": "orange",
                 "action": "Get started",
                 "url": "/contact",
@@ -176,7 +174,7 @@ state = { # Optional: Turn into models and save in database?
             },
             {
                 "name": "Enterprise",
-                "price": "$500 / mo.",
+                "price": "$2000 / mo.",
                 "color": "purple",
                 "action": "Contact us",
                 "url": "/contact",
@@ -202,8 +200,7 @@ state = { # Optional: Turn into models and save in database?
   "footer": {
     "index": [
         {
-          "slug": "community",
-          "group": "Community",
+          "name": "Community",
           "links": [
               {"title": "Labs", "page": "community"},
               {"title": "Producers", "page": "producers"},
@@ -213,22 +210,20 @@ state = { # Optional: Turn into models and save in database?
           ]
         },
         {
-          "slug": "cannlytics_docs:index",
-          "group": "Docs",
+          "name": "Docs",
           "links": [
-              {"title": "API", "url": "/docs/api/get-started"},
-              {"title": "App", "url": "/docs/app/get-started"},
-              {"title": "LIMS", "url": "/docs/lims/get-started"},
-              {"title": "Portal", "url": "/docs/portal/get-started"},
-              {"title": "Websites", "url": "/docs/website/get-started"}
+              {"title": "API", "url": "https://docs.cannlytics.com/api/about"},
+              {"title": "Users", "url": "https://docs.cannlytics.com/console/get-started"},
+              {"title": "Developers", "url": "https://docs.cannlytics.com/developers/development"},
+              {"title": "LIMS", "url": "https://docs.cannlytics.com/cannlytics/lims/lims"},
+              {"title": "Metrc", "url": "https://docs.cannlytics.com/cannlytics/traceability/metrc"}
           ]
         },
         {
-          "slug": "about",
-          "group": "About",
+          "name": "About",
           "links": [
-            {"title": "Story", "page": "about"},
-            {"title": "Roadmap", "page": "roadmap"},
+            {"title": "Story", "url": "https://docs.cannlytics.com/about/about"},
+            {"title": "Roadmap", "url": "https://docs.cannlytics.com/developers/roadmap"},
             {"title": "Whitepapers", "page": "whitepapers"},
             {"title": "Become a partner", "page": "partners"},
             {"title": "Support", "page": "support"},
@@ -242,7 +237,7 @@ state = { # Optional: Turn into models and save in database?
 packages = [
     {
         "name": "Cannlytics API",
-        "url": "cannlytics_docs:doc",
+        "url": "https://docs.cannlytics.com/api/about",
         "path": "api",
         "description": "",
         "created_at": "",
@@ -258,24 +253,19 @@ packages = [
     },
     {
         "title": "Cannlytics App",
-        "url": "cannlytics_docs:doc",
+        "url": "https://docs.cannlytics.com/console/get-started",
         "path": "app"
     },
     {
         "title": "Cannlytics LIMS",
-        "url": "cannlytics_docs:doc",
+        "url": "https://docs.cannlytics.com/cannlytics/lims/lims",
         "path": "lims"
     },
     {
-        "title": "Cannlytics Portal",
-        "url": "cannlytics_docs:doc",
+        "title": "Cannlytics Console",
+        "url": "https://docs.cannlytics.com/console/get-started/",
         "path": "portal"
     },
-    {
-        "title": "Cannlytics Website",
-        "url": "cannlytics_docs:doc",
-        "path": "website"
-    }
 ]
 
 lab_state = {

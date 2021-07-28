@@ -191,7 +191,7 @@ try:
 except:
     pass
 
-if not PRODUCTION:
+if PRODUCTION == 'False':
     ALLOWED_HOSTS.extend(['*', 'localhost:8000', '127.0.0.1'])
 
 SECURE_SSL_REDIRECT = False

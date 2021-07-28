@@ -1,7 +1,7 @@
 """
 URLs | Cannlytics Website
 Created: 12/29/2020
-Updated: 7/15/2021
+Updated: 7/27/2021
 Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
 """
 # External imports
@@ -25,15 +25,15 @@ urlpatterns = [
     # path('docs/', include('cannlytics_docs.urls'), name='docs'),
     path('labs/', views.CommunityView.as_view(), name='labs'),  # Redundant
     path('labs/new/', views.NewLabView.as_view()),
-    path('labs/<slug:lab>/', views.LabView.as_view()),
+    path('labs/<lab>/', views.LabView.as_view()),
     path('download-lab-data/', data.download_lab_data),
     path('robohash/<string>/', robohash, name='robohash'),
     path('subscribe/', data.subscribe, name='subscribe'),
     path('promotions/', data.promotions, name='promotions'),
     path('videos/', data.promotions, name='videos'),
-    path('videos/<slug:section>/', data.promotions, name='video'),
-    path('<slug:page>/', views.GeneralView.as_view(), name='page'),
-    path('<slug:page>/<slug:section>/', views.GeneralView.as_view(), name='section'),
+    path('videos/<section>/', data.promotions, name='video'),
+    path('<page>/', views.GeneralView.as_view(), name='page'),
+    path('<page>/<section>/', views.GeneralView.as_view(), name='section'),
 ]
 
 # Serve static assets in development and production.
