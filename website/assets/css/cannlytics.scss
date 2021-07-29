@@ -41,7 +41,8 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Cormorant Garamond', serif;
   /* font-family: 'Libre Baskerville', serif !important; */
 }
-p {
+p,
+p small {
   /* font-family: 'Cormorant Garamond', serif; */
   font-family: 'Libre Baskerville', serif !important;
 }
@@ -56,7 +57,7 @@ p {
   font-family:  'Playfair Display', 'serif' !important;
 }
 .sans-serif {
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif !important;
 }
 .simple-sans-serif {
   font-family: 'Libre Franklin';
@@ -481,7 +482,7 @@ body.dark .light-green-fade {
 }
 
 /*--------------------------------------------------------------------------
-  Actions
+  Actions / Buttons
 ---------------------------------------------------------------------------*/
 
 .app-action {
@@ -536,6 +537,38 @@ body.dark .sliding-action:hover {
   position: absolute;
   right: 1rem;
   top: 1rem;
+}
+
+/* Small light buttons */
+.btn-sm-light {
+  padding: 3px 12px;
+  font-size: 12px;
+  border: 1px solid rgb(27 31 35 / 15%);
+  line-height: 20px;
+  background-color: #fafbfc;
+  transition: .2s cubic-bezier(.3, 0, .5, 1);
+  transition-property: color,background-color,border-color;
+}
+.btn-md-light {
+  padding: 4px 8px;
+  font-size: 14px;
+  line-height: 21px;
+}
+.btn-sm-light:hover {
+  background-color: #f3f4f6;
+  border-color: rgb(27 31 35 / 15%);
+}
+body.dark .btn-sm-light {
+  background-color: #30363d;
+  border-color: #8b949e;
+  color: #c9d1d9;
+}
+body.dark .btn-sm-light:hover {
+  background-color: #282e33;
+  border-color: #6e7681;
+}
+.btn-set-width {
+  width: 77px;
 }
 
 /*--------------------------------------------------------------------------

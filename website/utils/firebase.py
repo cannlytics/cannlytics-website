@@ -2,6 +2,8 @@
 Firebase | Cannlytics Website
 Created: 1/5/2021
 
+# TODO: Ween off local Firebase module and onto the Cannlytics module from PyPi.
+
 TODO: Save database instance?
 """
 from django.utils.crypto import get_random_string
@@ -78,7 +80,10 @@ def get_document(ref):
 
 
 def get_collection(ref, limit=None, order_by=None, desc=False, filters=[]):
-    """Get documents from a collection."""
+    """Get documents from a collection.
+    
+        start_at (dynamic): Optional starting at value for pagination.
+    """
     docs = []
     database = firestore.client()
     collection = create_reference(database, ref)

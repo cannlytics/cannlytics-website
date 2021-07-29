@@ -12,6 +12,17 @@ page_data = {
     "events": {
         "collections": [{"name": "events", "ref": "events"}],
     },
+    "homepage": {
+        "collections": [
+            {
+                "name": "video_archive",
+                "ref": "public/videos/video_data",
+                "limit": 3,
+                "order_by": "published_at",
+                "desc": True
+            }
+        ],
+    },
     "products": {
         "collections": [{"name": "products", "ref": "products"}],
     },
@@ -22,7 +33,15 @@ page_data = {
         "collections": [{"name": "team", "ref": "team"}],
     },
     "videos": {
-        "collections": [{"name": "video_archive", "ref": "public/videos/video_data", "limit": 3}],
+        "collections": [
+            {
+                "name": "video_archive",
+                "ref": "public/videos/video_data",
+                "limit": 10,
+                "order_by": "published_at",
+                "desc": True
+            }
+        ],
     },
     "whitepapers": {
         "collections": [{"name": "whitepapers", "ref": "whitepapers"}],
@@ -86,7 +105,7 @@ state = { # Optional: Turn into models and save in database?
         "title": "Cannabis Analytics for the 21st Century",
         # AB TEST 2:
         # "message": "Super power your lab with free and ethical cannabis-testing software made with 💖, tried-and-true, and ready for you to plug and play or pop the hood and tinker to your heart's content.",
-        "message": "Super power your lab with free cannabis-testing software made with love and ready for you to plug and play or pop the hood and tinker to your 💖's content.",
+        "message": "Super power your lab with open-source cannabis-testing software made with love and ready for you to plug & play or pop the hood and tinker to your 💖's content.",
         "image": "website/images/engine_icons/space_station.svg",
         "primary_action": "Get Started",
         "primary_action_url": "/docs",
@@ -96,7 +115,7 @@ state = { # Optional: Turn into models and save in database?
     "features": [
         {
             "title": "Smart Integrations",
-            "message": "We believe that everyone benefits when people are able to study and tinker with their software. With the freedom provided by Cannlytics, users, both individually and collectively, control the software and what it does for them.",
+            "message": "We believe that everyone benefits when people are able to study and tinker with their software. With the freedom provided by Cannlytics, users control their software and what it does for them.",
             "image": "website/images/illustrations/outline/lab_tablet.svg",
             "action": "View options",
             "action_url": "/support",

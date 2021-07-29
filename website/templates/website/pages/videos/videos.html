@@ -4,70 +4,126 @@
   Videos Page | Cannlytics
   Created: 2/23/2021
   Updated: 6/27/2021
+    Fields:
+    title
+    description
+    length
+    cover_image_url
+    video_id
+    video_url
   TODO:
     - Explore video players. For example: https://cloudinary.com/documentation/cloudinary_video_player
 -->
-  <!--  -->
-  {% extends "website/index.html" %}
-  {% load static %}
-  {% block title %}Videos | Cannlytics{% endblock %}
-  {% block page_css %}
-  {% endblock %}
-  {% block material %}
+{% extends "website/index.html" %}
+{% load static icon %}
+{% block title %}Videos | Cannlytics{% endblock %}
+{% block page_css %}
+{% endblock %}
+{% block material %}
 
-  <!-- -->
+<!-- Individual Video -->
+{% if section %}
 
-    <!-- Hero Banner -->
-    {% include "website/components/heros/hero_banner.html" with
-      title="Videos"
-      only
-    %}    
-    
-    <!-- Data Grid -->
-    <div class="row px-3 mb-4">
-    {% for item in video_archive %}
-      <div
-        class="card shade-hover border-secondary rounded-3 app-action col col-sm-1 col-md-2 p-3"
-        style="width:400px; height:150px;"
-      >
-      <a class="card-block stretched-link text-decoration-none" href="/videos/{{ item.uid }}">
+  <div>Video: {{ section }}</div>
 
-        <!-- Card header -->
-        <div class="d-flex justify-content-between">
-          <div class="d-flex align-items-center">
-            <div class="icon-container me-2">
-              {% include 'console/components/icons/people.svg' %}
-            </div>
-            <h4 class="fs-5 text-dark">{{ item.name }}</h4>
-          </div>
+<!-- Video Archive -->
+{% else %}
+
+  <!-- Hero Banner -->
+  {% include "website/components/heros/hero_banner.html" with
+    title="Videos"
+    only
+  %}
+
+<section class="px-3">
+  
+  <!-- Data Grid -->
+  <div class="row px-3 mb-4">
+  {% for video in video_archive %}
+    <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-5 px-4 mx-auto">
+    <div
+      class="card border-secondary rounded-3"
+    >
+    <a
+      class="card-block stretched-link text-decoration-none"
+      href="/videos/{{ video.video_id }}"
+    >
+      <img
+        src="{{ video.cover_image_url }}"
+        class="w-100"
+        stlye="max-height:125px;"
+      />
+
+      <!-- Card header -->
+      <div class="d-flex justify-content-between px-2 pt-1">
+        <div class="d-flex align-items-center">
+          {% comment %} <div class="icon-container me-2">
+            {% include 'console/components/icons/people.svg' %}
+          </div> {% endcomment %}
+          <h4 class="fs-5 fw-bold text-dark">{{ video.title }}</h4>
         </div>
+      </div>
 
-        <!-- Card body -->
-        <div class="card-body bg-transparent p-0">
+      <!-- Card body -->
+      <div class="card-body bg-transparent px-2 pb-1">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+          <!-- Card Stats -->
+          <div class="text-secondary fs-6">
+            {% if video.total_views %}
+              <small class="serif">{{ video.total_views }} Views</small>
+            {% endif %}
+          </div>
 
           <!-- Badges -->
-          {% if item.support == 'Enterprise' %}
+          {% if video.support == 'Enterprise' %}
             <span class="badge rounded-pill bg-primary">Enterprise</span>
-          {% elif item.support == 'Pro' %}
+          {% elif video.support == 'Pro' %}
             <span class="badge rounded-pill bg-warning text-dark">Pro</span>
           {% else %}
             <span class="badge rounded-pill bg-gradient-green text-white">Free</span>
           {% endif %}
 
-          <!-- Card Stats -->
-          <div class="row h-100 text-dark align-items-center">
-            <div class="col-4 mb-3">
-              {% if item.total_views %}{{ item.total_views }}{% else %}0{% endif %} Views
-            </div>
-          </div>
-
         </div>
 
-      </a>
-      </div>
-    {% endfor %}
-    </div>
+        <!-- Description -->
+        <p class="text-secondary fs-6">
+          <small>
+            {{ video.description|truncatechars:120 }}
+          </small>
+        </p>
 
-  {% endblock %}
+      </div>
+
+    </a>
+    </div>
+    </div>
+  {% endfor %}
+  </div>
+
+</section>
+
+{% endif %}
+
+{% endblock %}
+
+<!-- JavaScript -->
+{% block page_js %}
+
+<script>
+
+  const videoId = '{{ section }}';
+  // TODO: Get video data from Firestore!
+  console.log('Get video data:', videoId);
+
+  // TODO: Record view.
+  if (videoId) {
+    console.log('Record view:', videoId);
+  }
+
+</script>
+
+{% endblock %}
 
 </html>

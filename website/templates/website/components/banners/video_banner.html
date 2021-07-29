@@ -3,57 +3,56 @@
 <!--
   Video Banner | Cannlytics Website
   Created: 7/27/2021
-  Updated: 7/27/2021
-  Params:
-    phone
-    phone_number
+  Updated: 7/29/2021
+  Fields:
+    title
+    description
+    length
+    cover_image_url
+    video_id
+    video_url
 -->
-<div class="row">
-  <div class="row row-cols-2 justify-content-md-start mb-5">
-
+<section class="container mb-2">
+  <h2 class="mb-3"><a class="serif text-dark" href="/videos">Media</a></h2>
+</section>
+<section class="container">
+  <div class="row row-cols-3 justify-content-md-start">
     {% for video in video_archive %}
-
-      <span>{{ video.title }}</span>
-
-    {% endfor %}
-    
-    <!-- TODO: Load video data server-side? -->
-    {% comment %} {% for item in dashboard.cards %}
-      <div class="col-6 col-lg-4 my-3">
-        <a href="./{{ item.path }}">
-          <div
-            class="card h-100 bg-transparent border-secondary rounded-3 shadow-hover px-0 py-2"
-            style="max-width: 375px;"
-          >
-
-            <!-- Card image -->
-            <div class="">
-
-              <div class="float-start p-3">
-                <img
-                    class="ma-2"
-                    src="{% static item.image_path %}"
-                    width="75px"
-                  >
-              </div>
-
-              <!-- Card body -->
-              <div class="col">
-                <div class="card-body bg-transparent">
-                  <h5 class="card-title text-dark text-no-wrap fs-5 mb-1">
-                    {{ item.title }}
-                  </h5>
-                  <p class="card-text text-secondary fs-6 large-line">
-                    <small class="serif tiny-text">{{ item.description }}</small>
-                  </p>
-                </div>
-              </div>
-
-            </div>
+      <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-0 px-4">
+        <a class="card-block stretched-link text-decoration-none" href="/videos/{{ video.video_id }}">
+        <div
+          class="bg-image hover-overlay ripple shadow-1-strong rounded"
+          data-ripple-color="light"
+        >
+          <img
+            src="{{ video.cover_image_url }}"
+            class="w-100"
+            stlye="max-height:125px;"
+          />
+          <h4 class="text-dark fw-bold h5 mt-3 mb-1 pb-0">{{ video.title }}</h4>
+          <div class="mb-1">
+            <small  class="serif text-secondary">{{ video.published_at }}</small>
           </div>
+          <p class="text-secondary fs-6">
+            <small>
+              {{ video.description|truncatechars:100 }}
+            </small>
+          </p>
+        </div>
         </a>
       </div>
-    {% endfor %} {% endcomment %}
-  </div><!-- End of cards -->
-</div><!-- End of row -->
+    {% endfor %}
+  </div>
+</section>
+<section class="container my-4">
+  <div class="d-grid gap-2">
+    <a
+      class="btn btn-sm btn-sm-light"
+      href="/videos"
+      type="button"
+    >
+      View more &raquo;
+    </button>
+  </div>
+</section>
 </html>

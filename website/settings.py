@@ -26,7 +26,7 @@ from django.template import base
 PRODUCTION = False  # PRODUCTION: Change from False to True
 PROJECT_NAME = 'website'
 ROOT_URLCONF = 'website.urls'
-SETTINGS_NAME = 'website_settings'
+SETTINGS_NAME = 'cannlytics_website_settings'
 WSGI_APPLICATION = 'website.core.wsgi.application'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -61,8 +61,8 @@ if os.path.isfile(env_file):
 elif os.environ.get('GOOGLE_CLOUD_PROJECT', None):
     project_id = os.environ.get('GOOGLE_CLOUD_PROJECT')
     client = secretmanager.SecretManagerServiceClient()
-    settings_name = env('SETTINGS_NAME')
-    name = f'projects/{project_id}/secrets/{settings_name}/versions/latest'
+    # settings_name = env('SETTINGS_NAME')
+    name = f'projects/{project_id}/secrets/{SETTINGS_NAME}/versions/latest'
     payload = client.access_secret_version(name=name).payload.data.decode('UTF-8')
     env.read_env(io.StringIO(payload))
 else:

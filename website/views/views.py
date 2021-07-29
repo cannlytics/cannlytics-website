@@ -101,6 +101,7 @@ class ContactView(BaseMixin, FormView):
     def get_context_data(self, **kwargs):
         """Get the context for a page."""
         context = super().get_context_data(**kwargs)
+        # FIXME: Would be preferable to get in BaseMixin
         context['contact'] = state['contact']
         return context
 
@@ -142,6 +143,23 @@ class NewLabView(BaseMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context['fields'] = lab_state['detail_fields']
         context['tabs'] = lab_state['tabs'][:2]
+        return context
+
+
+class VideosView(BaseMixin, TemplateView):
+    """Videos page."""
+
+    def get_template_names(self):
+        return [f'{APP}/pages/videos/videos.html']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['video_archive'] = get_collection(
+            'public/videos/video_data',
+            limit=10,
+            order_by='published_at',
+            desc=True,
+        )
         return context
 
 

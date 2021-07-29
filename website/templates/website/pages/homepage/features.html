@@ -14,18 +14,18 @@
             <img
               class="mb-4 mx-auto"
               src="{% static feature.image %}?{% now 'U' %}"
-              width="80%"
+              style="height:175px;"
             >
             <h2 class="h5 serif text-dark text-start mb-3">
               {{ feature.title }}
             </h2>
-            <p class="h6 double-line text-dark text-start">
+            <p class="h6 double-line text-start text-dark">
               <small>{{ feature.message }}</small>
             </p>
             {% if feature.action %}
-              <p class="text-start"><small>
+              <p class="text-start fs-6"><small>
                 <a
-                  class="cannlytics-dark-orange-text sliding-action"
+                  class="text-dark fw-bold sliding-action"
                   href="{{ feature.action_url }}"
                 >
                   <small>{{ feature.action }} &rarr;</small>

@@ -30,8 +30,8 @@ urlpatterns = [
     path('robohash/<string>/', robohash, name='robohash'),
     path('subscribe/', data.subscribe, name='subscribe'),
     path('promotions/', data.promotions, name='promotions'),
-    path('videos/', data.promotions, name='videos'),
-    path('videos/<section>/', data.promotions, name='video'),
+    # path('videos/', data.promotions, name='videos'),
+    # path('videos/<section>/', data.promotions, name='video'),
     path('<page>/', views.GeneralView.as_view(), name='page'),
     path('<page>/<section>/', views.GeneralView.as_view(), name='section'),
 ]
