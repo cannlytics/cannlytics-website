@@ -1,12 +1,13 @@
-# Cannlytics Website
+# <img height="32" alt="" src="https://cannlytics.com/static/cannlytics_website/images/logos/cannlytics_calyx_detailed.svg"> Cannlytics Website
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/cannlytics/cannlytics-website/fork)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-
-<h1 align="center" style="margin-vertical:1rem;"><img align="center" height="150" alt="Cannlytics" src="https://cannlytics.com/static/cannlytics_website/images/logos/cannlytics_calyx_detailed.svg"></h1>
 
 Cannlytics provides a user-friendly interface to quickly receive samples, perform analyses, collect and review results, and publish certificates of analysis (CoAs). There are also built in logistics, CRM (client relationship management), inventory management, and invoicing tools. The Cannlytics engine comes with **batteries included**, but you are always welcome to supercharge your setup with modifications and custom components.
+
+This documentation explains Cannlytics' website architecture and how to build, develop, and publish the website. The website is live at <https://cannlytics.com>.
+
+<!-- Video Editing: https://www.youtube.com/watch?v=9E1caMsnXr8 -->
 
 - [Introduction](#introduction)
 - [Features](#features)
@@ -48,12 +49,14 @@ The Cannlytics Website provides people with information about Cannlytics. The Ca
 
 TODO: Add features. Also;
 
+* [Add video archive for events with Video.js](https://github.com/videojs/video.js)
+* [Video.js Get Started](https://videojs.com/getting-started/)
 * [Customize Error Pages](https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/#customize-the-default-error-views)
 * [Experiment with App Engine](https://cloud.google.com/appengine/docs/flexible/python/quickstart#windows)
 * [Add Google Cloud Armor](https://cloud.google.com/blog/products/identity-security/google-cloud-armor-features-to-protect-your-websites-and-applications?utm_source=release-notes&utm_medium=email&utm_campaign=2020-aug-release-notes-1-en)
 * [Write custom Django commands](https://docs.djangoproject.com/en/3.1/howto/custom-management-commands/)
 * Cannlytics Assistant (bot)
-* Let users can chose their own UTC time.
+* Let users chose their own UTC time.
 
 ## 📖 Installation <a name="installation"></a>
 
@@ -156,15 +159,7 @@ Resources:
 
 ## 🐞 Bugs <a name="bugs"></a>
 
-See [issues](https://github.com/cannlytics/cannlytics-website/issues) for a full list of bugs and issues that you may encounter. Below are some prominent bugs that you may encounter:
-
-* [*Using Google Cloud Storage in Google Cloud Functions*](https://stackoverflow.com/questions/52249978/write-to-google-cloud-storage-from-cloud-function-python/52250030)
-
-  > If you are using Firebase Storage in a Google Cloud Function, then you need to specify `google-cloud-storage` in your `requirements.txt`.
-
-* [Firebase Hosting Base Rewrite Not Working](https://stackoverflow.com/questions/44871075/redirect-firebase-hosting-root-to-a-cloud-function-is-not-working)
-
-  > In order to use a rewrite at the root in Firebase Hosting, you must not include an `index.html` file in the public folder.
+See [issues](https://github.com/cannlytics/cannlytics-website/issues) for a full list of bugs and issues that you may encounter.
 
 ## ⚗️ Testing <a name="testing"></a>
 

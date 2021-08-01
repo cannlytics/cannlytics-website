@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+
+  <!-- Support Page -->
+  <!-- Created 1/15/2021 -->
+  {% extends "website/index.html" %}
+  {% load static get_env %}
+
+  <!-- Title -->
+  {% block title %}Support | {{ general.title }}{% endblock %}
+
+  <!-- CSS -->
+  {% block console_css %}
+
+    <!-- PayPal Client-->
+    <script src="https://www.paypal.com/sdk/js?client-id={{ 'PAYPAL_CLIENT_ID'|get_env }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+
+  {% endblock console_css %}
+
+  {% block material %}
+    <div class="products">
+      
+      <!-- Hero -->
+      {% include "website/components/heros/hero_featurette.html" with
+        title="Support and Consulting"
+        description="Cannlytics is free and always will be free. If you need assistance above and beyond the documentation, then you can consult with the dedicated Cannlytics team for a nominal price."
+        image_path="website/images/illustrations/cannlytics_communication.svg"
+        only
+      %}
+
+      <!-- Pricing Options -->
+      <div class="container mb-5">
+
+      <!-- TODO: Implement subscriptions -->
+
+        <!-- Subscriptions description -->
+        <div style="max-width:540px;">
+          <h3 class="fw-bold pt-4 mb-3">Subscription options</h3>
+          <p class="double-line fs-6 mb-5 mt-0">
+            <small>Explore your Cannlytics subscription options.</small>
+          </p>
+        </div>
+
+        <!-- Tiers -->
+        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+          {% for item in support.pricing_tiers %}
+            <div class="col">
+              <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-gradient-{{ item.color }}">
+                  <h4 class="font-weight-normal text-white my-0">
+                    {{ item.name }}
+                  </h4>
+                </div>
+                <div class="card-body">
+                  <h1 class="text-dark card-title pricing-card-title">
+                    {{ item.price }}
+                  </h1>
+                  <ul class="text-dark list-unstyled mt-3 mb-4">
+                    {% for attribute in item.attributes %}
+                      <li class="fs-6 mb-1">
+                        <small class="serif text-muted">
+                          {{ attribute }}
+                        </small>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                  <a
+                    type="button"
+                    class="btn btn-block bg-gradient-{{ item.color }} text-white"
+                    href="{{ item.url }}"
+                  >
+                    {{ item.action }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div><!-- End of tiers -->
+
+        <!-- Historic Lab Result Migration -->
+        <h3 class="fw-bold mb-3 pt-4">Historic Lab Data Migration</h3>
+        <p class="fs-6 double-line" style="max-width:540px;">
+          <small>Your laboratory data are valuable to you and your clients,
+          therefore, you can have the Cannlytics Team work to migrate your
+          historic lab data into a Cannlytics compatible format for use
+          within the Cannlytics system.
+          </small>
+        </p>
+        <p class="text-start mt-3">
+          <a
+            class="btn btn-sm-light btn-md-light serif"
+            href="{% url 'contact' %}"
+          >
+            <small>Request a quote</small> &rarr;
+          </a>
+        </p>
+
+        <!-- Consulting -->
+        <h3 class="fw-bold mb-3 mt-5 pt-4">Consulting and Custom Development</h3>
+        <p class="fs-6 double-line" style="max-width:540px;">
+          <small>You can employ the Cannlytics team to help you solve any problems at hand.
+          In general, the Cannlytics team is available for $60 per hour or for $500 per significant
+          feature. We are always happy to talk and help you find your best-possible solution.
+          </small>
+        </p>
+        <p class="text-start mt-3">
+          <a
+            class="btn btn-sm-light btn-md-light serif"
+            href="{% url 'contact' %}"
+          >
+            <small>Request a job</small> &rarr;
+          </a>
+        </p>
+
+      </div>
+    </div>
+
+    <!-- Vines -->
+    {% include "website/components/art/vines.html" %}
+
+  {% endblock %}
+
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<!--
+  Home Page | Cannlytics
+  Created: 1/5/2020
+  Updated: 7/27/2021
+-->
+{% extends "website/index.html" %}
+{% load static %}
+{% block title %}Welcome | {{ general.title }}{% endblock %}
+{% block material %}
+  <div class="homepage pb-5 overflow-hidden">
+
+    <!-- Hero -->
+    {% include "./hero.html" with hero=homepage.hero only %}
+
+    <!-- Features -->
+    {% include "./features.html" with features=homepage.features only %}
+
+    <!-- Wave -->
+    <div class="wave small upside-down" >
+      <svg viewBox="0 0 500 150" preserveAspectRatio="none">
+        <path d="M3.58,140.29 C215.76,-58.05 343.30,228.11 573.55,-70.89 L500.00,150.00 L-34.23,201.48 Z"></path>
+      </svg>
+    </div>
+
+    <!-- Video Banner -->
+    {% include "website/components/banners/video_banner.html" %}
+
+    <!-- Featurettes -->
+    {% comment %} {% include "./featurettes.html" with featurettes=homepage.featurettes only %} {% endcomment %}
+
+    <!-- Demo -->
+    {% include "./demo.html" %}
+
+    <!-- Call to Action -->
+    {% include "./call_to_action.html" with general=general %}
+
+  </div>
+
+  <!-- Vines -->
+  {% include "website/components/art/vines.html" %}
+
+{% endblock %}
+
+<!-- Homepage JavaScript -->
+{% block page_js %}
+  <script>
+
+    function CopyToClipboard(containerid) {
+      /*
+       * Copy a block of code to the clipboard.
+       */
+      if (window.getSelection) {
+        if (window.getSelection().empty) { // Chrome
+          window.getSelection().empty();
+        } else if (window.getSelection().removeAllRanges) { // Firefox
+          window.getSelection().removeAllRanges();
+        }
+      } else if (document.selection) { // IE
+        document.selection.empty();
+      }
+      if (document.selection) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(document.getElementById(containerid));
+        range.select().createTextRange();
+        document.execCommand('copy');
+      } else if (window.getSelection) {
+        var range = document.createRange();
+        range.selectNode(document.getElementById(containerid));
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+      }
+    }
+
+    $('.copy-btn').on('click', function(event){
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      console.log(event.currentTarget);
+      var par = $(`#${event.currentTarget.id}`).siblings()[0];
+      var code = $(`#${par.id}`).find('.code-block')[0];
+      CopyToClipboard(code.id);
+    });
+
+  </script>
+{% endblock %}
+
+</html>

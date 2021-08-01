@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<!--
+  Video Banner | Cannlytics Website
+  Created: 7/27/2021
+  Updated: 7/29/2021
+  Fields:
+    title
+    description
+    length
+    cover_image_url
+    video_id
+    video_url
+-->
+<section class="container mb-2">
+  <h2 class="mb-3"><a class="serif text-dark" href="/videos">Media</a></h2>
+</section>
+<section class="container">
+  <div class="row row-cols-3 justify-content-md-start">
+    {% for video in video_archive %}
+      <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-0 px-4">
+        <div
+          class="bg-image hover-overlay ripple shadow-1-strong rounded"
+          data-ripple-color="light"
+        >
+          <a href="/videos/{{ video.video_id }}">
+            <img
+              src="{{ video.cover_image_url }}"
+              class="w-100"
+              stlye="max-height:125px;"
+            />
+          </a>
+          <h4 class="text-dark fw-bold h5 mt-3 mb-1 pb-0">{{ video.title }}</h4>
+          <div class="mb-1">
+            <small  class="serif text-secondary">{{ video.published|date }}</small>
+          </div>
+          <p class="text-secondary fs-6">
+            <small>
+              {{ video.description|truncatechars:100 }}
+            </small>
+          </p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+<section class="container my-4">
+  <div class="d-grid gap-2">
+    <a
+      class="btn btn-sm btn-sm-light btn-md-light"
+      href="{% url 'videos' %}"
+      type="button"
+    >
+      <small class="serif">View more</small> &raquo;
+    </a>
+  </div>
+</section>
+</html>

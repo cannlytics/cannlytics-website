@@ -44,4 +44,4 @@ COPY . ./
 # See:
 # https://docs.gunicorn.org/en/stable/design.html#how-many-workers
 # https://docs.gunicorn.org/en/stable/design.html#how-many-threads
-CMD exec gunicorn --bind :$PORT --workers 3 --threads 8 --timeout 0 cannlytics_website.wsgi:application
+CMD exec gunicorn --bind :$PORT --workers 4 --threads 16 --timeout 120 website.core.wsgi:application

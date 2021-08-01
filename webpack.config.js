@@ -5,7 +5,7 @@
 const Dotenv = require('dotenv-webpack');
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const path = require('path');
-const appName = 'cannlytics_website';
+const appName = 'website';
 
 module.exports = env => {
   return {
@@ -20,7 +20,7 @@ module.exports = env => {
     entry: [
       `./${appName}/assets/css/cannlytics.scss`,
       `./${appName}/assets/js/index.js`,
-      // TODO: Add docs JS here.
+      // Optional: Add additional JS here.
     ],
     output: {
       path: path.resolve(__dirname, `${appName}/static/${appName}`),

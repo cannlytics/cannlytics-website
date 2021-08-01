@@ -43,10 +43,12 @@
   "cSpell.words": [
     "abcdefghijklmnopqrstuvwxyz",
     "analytes",
+    "appengine",
     "appspot",
     "arithmatex",
     "autohide",
     "boxplot",
+    "cannabinoid",
     "cannlypedia",
     "cannlytics",
     "chartjs",
@@ -72,6 +74,7 @@
     "gemoji",
     "gmail",
     "grotesk",
+    "headerlink",
     "heatmap",
     "infowindow",
     "inkscape",
@@ -91,9 +94,12 @@
     "popperjs",
     "postgres",
     "projectnum",
+    "pylint",
     "pymdownx",
     "quickstart",
     "readonly",
+    "recaptcha",
+    "recapthca",
     "roadmap",
     "robohash",
     "runserver",
@@ -115,5 +121,6 @@
   "todo-tree.tree.showBadges": false,
   "cSpell.ignoreWords": [
     "hawcons"
-  ]
+  ],
+  "python.pythonPath": "C:\\Anaconda\\python.exe"
 }

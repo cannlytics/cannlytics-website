@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<!--
+  Contributors Page
+  Created: 11/17/2020
+  Updated: 8/1/2021
+-->
+{% extends "website/index.html" %}
+{% load static %}
+{% block title %}Contributors | {{ general.title }}{% endblock %}
+{% block material %}
+  <div class="contributors large-bottom-margin">
+
+    <!-- Hero -->
+    {% include "website/components/heros/hero_banner.html" with
+      title='Contributors'
+      description='Ahoy, matey! All hands on deck! The Cannlytics spaceship is launching and your contributions would be loved be the cannabis testing community.'
+      primary_action='Contribute now'
+      primary_action_url='https://opencollective.com/cannlytics-company'
+      secondary_action='Browse contributions'
+      secondary_action_url='https://github.com/cannlytics/cannlytics/graphs/contributors'
+      image_url="website/images/illustrations/outline/lab_microbiologist.svg"
+      only
+    %}
+
+    <!-- Contributors -->
+    <div class="container mt-5">
+
+      <h3 class="fw-bold mb-2">
+        Cannlytics is built with the love of...
+      </h3>
+      <p class="fs-6 double-line par-md mt-0 mb-5">
+        <small>Cannlytics contributors who create, make, and deliver your software solutions and support.</small>
+      </p>
+      <div class="row">
+      {% for item in contributors %}
+        <div class="col col-md-4">
+          <figure class="figure">
+            <a href="{{ item.url }}" title="{{ item.name}}">
+              <img
+                class="figure-img img-fluid rounded-3"
+                src="{{ item.url }}.png?size=100"
+              >
+            </a>
+            <figcaption class="figure-caption w-50">
+              <iframe
+                src="https://ghbtns.com/github-btn.html?user={{ item.slug }}&type=follow&count=true"
+                frameborder="0"
+                scrolling="0"
+                width="170"
+                height="20"
+                title="GitHub"
+                class="mt-2"
+              ></iframe>
+            </figcaption>
+          </figure>
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+
+    <!-- Contribute -->
+    <div class="container mt-5">
+      <h3 class="fw-bold mb-2">Contribute</h3>
+      <p class="fs-6 double-line" style="max-width:540px;">
+        <small>
+          If you want to contribute your time, your talent, or your treasure,
+          then please dive into the
+          <a class="serif text-gradient" href="https://docs.cannlytics.com/developers/contributing/">contributing guide</a>,
+          explore the
+          <a class="serif text-gradient" href="https://github.com/cannlytics/cannlytics">GitHub repositories</a>,
+          and
+          <a class="serif text-gradient" href="https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request">create a pull request</a>
+          for your contributions
+          sooner rather than later.
+        </small>
+      </p>
+    </div>
+
+    <!-- Sponsor -->
+    <div class="container mt-5">
+      <h3 class="fw-bold mb-2">Sponsor</h3>
+      <p class="fs-6 double-line" style="max-width:540px;">
+        <small>Open source projects take time and money.
+        Help support the project by
+        <a class="serif text-gradient" href="https://opencollective.com/cannlytics-company">
+          becoming a sponsor
+        </a>.
+        You can add your support at
+        any tier you feel comfortable with. No amount is too little.
+        We also accept one time contributions via
+        <a class="serif text-gradient" href="https://www.paypal.me/cannlytics">
+          PayPal
+        </a>.
+        </small>
+      </p>
+    </div>
+  
+  </div>
+
+  <!-- Vines -->
+  {% include "website/components/art/vines.html" %}
+
+{% endblock %}
+
+</html>

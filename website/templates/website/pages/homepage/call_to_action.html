@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+  <!--
+    Call to action
+    Created: Spring 2021
+    Updated: 7/31/2021
+  -->
+  {% load icon %}
+  <div class="container features">
+    <div class="row">
+      <div class="row mt-5 mx-auto px-3 p-md-0">
+        <div class="col-md-7 border-right border-md-hidden pe-5">
+          <h2 class="serif text-dark mt-0 mb-3">
+            Ready to get started?
+          </h2>
+          <p class="fs-6 double-line">
+            <small>
+              In addition to awesome software,
+              Cannlytics is a free software support business.
+              If you need assistance or desire a
+              fully-managed solution, then you can
+              <a href="/support" class="serif text-dark underline-hover fw-bold">
+                find a support option suited to <span class="serif text-nowrap">you &rarr;</span>
+              </a>
+            </small>
+          </p>
+        </div>
+        <div class="col-md-5 px-3 ps-md-5">
+          <h3 class="serif text-dark fw-bold fs-6 mt-4">Need help?</h3>
+          <a
+            class="serif fs-6 text-gradient"
+            href="tel:{{ general.phone_number }}"
+          >
+            <small class="serif">{{ general.phone }}</small>
+          </a>
+          <h3 class="serif text-dark fs-6 mt-4">Have a question?</h3>
+          <a
+            class="serif fs-6 text-gradient"
+            href="mailto:{{ general.email }}"
+          >
+            <small class="serif">{{ general.email }}</small>
+          </a>
+          <h3 class="serif text-dark fs-6 mt-4">Want to talk?</h3>
+          <a
+            class="serif fs-6 text-gradient"
+            href="https://calendly.com/cannlytics/traceability-for-cannabis-testing?month=2021-08"
+          >
+            <small class="serif text-success">Schedule a meeting {% icon "calendar" width="16px" height="16px" %} </small>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>
