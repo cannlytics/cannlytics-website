@@ -1,4 +1,10 @@
-<!-- Community Page -->
+<!doctype html>
+<html>
+<!--
+  Community Page | Cannlytics Website
+  Created 11/24/2020
+  Updated: 7/31/2021
+-->
 <!-- Created 11/24/2020 -->
 {% extends "website/index.html" %}
 {% block title %}Community | {{ general.title }}{% endblock %}
@@ -43,7 +49,7 @@
     <!-- Hero -->
     <div class="row featurette mt-5">
       <div class="col-md-7">
-        <h2 class="display-5 serif text-dark pb-3 mt-0">
+        <h2 class="display-6 serif text-dark pb-3 mt-0">
           Welcome to the Cannlytics Community.
         </h2>
         <p class="h5 double-line text-dark text-start text-muted">
@@ -68,8 +74,8 @@
   <div class="container markdown py-3">
     {{ markdown | safe }}
     <p class="text-start">
-      <a href="https://console.cannlytics.com/sign-up">
-        Join the community today &rarr;
+      <a class="btn btn-sm btn-sm-light btn-md-light" href="https://console.cannlytics.com/sign-up">
+        <small>Join the community today</small> &rarr;
       </a>
     </p>
   </div>
@@ -78,9 +84,13 @@
 
 <!-- Community JavaScript -->
 {% block page_js %}
+
+  <!-- Google Maps JavaScript -->
   <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier/1.0.3/oms.min.js"></script>
   <script type="text/javascript">
+
+    // Initialize Google Map
     var script = document.createElement('script');
     var apiKey = {{ api_key|safe }}[0]; // Passing API key from Django.
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
@@ -89,5 +99,8 @@
       cannlytics.community.initialize();
     }
     document.head.appendChild(script);
+
   </script>
+
 {% endblock page_js %}
+</html>

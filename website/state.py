@@ -179,11 +179,11 @@ state = { # Optional: Turn into models and save in database?
                 ],
             },
             {
-                "name": "Pro",
+                "name": "Premium",
                 "price": "$500 / mo.",
                 "color": "orange",
                 "action": "Get started",
-                "url": "/contact",
+                "url": "/subscriptions/checkout/?name=Premium",
                 "attributes": [
                     "Metrc integration",
                     "Access to development builds",
@@ -196,7 +196,7 @@ state = { # Optional: Turn into models and save in database?
                 "price": "$2000 / mo.",
                 "color": "purple",
                 "action": "Contact us",
-                "url": "/contact",
+                "url": "/subscriptions/checkout/?name=Enterprise",
                 "attributes": [
                     "Custom installation",
                     "Access to internal tools",

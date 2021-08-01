@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
   <!--
-    Sponsors Page
+    Sponsors Page | Cannlytics Website
     Created: 1/9/2021
-    Updated: 7/29/2021
+    Updated: 7/31/2021
   -->
   {% extends "website/index.html" %}
   {% load static %}
@@ -14,29 +14,31 @@
       <!-- Hero -->
       {% include "website/components/heros/hero_banner.html" with
         title='Sponsors'
-        description='Dear monied individuals, if you are in need of a venture, then Cannlytics is always looking for win-win development opportunities that can yield you tremendous value. In return, our company seeks sponsorship to fuel the engine.'
+        description='Dear monied individuals, if you are in need of a venture, then Cannlytics is always looking for win-win development opportunities that can yield you tremendous value. In return, our company seeks sponsorship to fuel development.'
         primary_action='Invest now'
         primary_action_url='https://www.paypal.com/paypalme/cannlytics'
         secondary_action='Browse opportunities'
         secondary_action_url='https://opencollective.com/cannlytics-company'
+        image_url="website/images/illustrations/multi-tone/degree.svg"
         only
       %}
 
-      <!-- Contributors -->
-      <div class="container markdown">
+      <!-- Body -->
+      <div class="container">
 
-        <h1 class="mb-4">Call for funding</h1>
-        <p>
-          Cannlytics is currently looking for investors who envision a win-win future with the Cannlytics team.
+        <!-- Call for investment -->
+        <h3 class="fw-bold mb-2">Call for funding</h3>
+        <p class="fs-6 double-line" style="max-width:540px;">
+          <small>Cannlytics is currently looking for investors who envision a win-win future with the Cannlytics team.
           Accredited investors* are welcome to email Keegan Skeate at
-          <a href="mailto:keegan@cannlytics.com">keegan@cannlytics.com</a>
+          <a class="serif text-gradient" href="mailto:keegan@cannlytics.com">keegan@cannlytics.com</a>.</small>
         </p>
-        <figure>
+        <figure style="max-width:540px;">
           <blockquote class="blockquote">
-            <p><small>
+            <p class="fs-6 double-line mt-3"><small>
               To be "Accredited", you need a net worth over $1M or you need an annual income over $200K.
               About 10% of our community are "Accredited" by Federal law, however, most don't invest.
-              <a href="https://www.seattleangelconference.com/"><small>The Angel Conference</small></a>
+              <a class="fs-6 serif text-gradient" href="https://www.seattleangelconference.com/"><small>The Angel Conference</small></a>
               provides a "learning by doing" pathway for doing [your] first Angel Investment.
             </small></p>
           </blockquote>
@@ -44,40 +46,26 @@
             <cite title="Source Title">Seattle Angel Conference</cite>
           </figcaption>
         </figure>
-        {% comment %} <h1 class="mb-4">
-          Cannlytics is funded by...
-        </h1> {% endcomment %}
-        {% comment %} {% for item in sponsors %}
-          <figure class="figure">
-            <a href="{{ item.url }}" title="{{ item.name}}">
-              <img
-                class="figure-img img-fluid rounded-3"
-                src="{{ item.url }}.png?size=250"
-              >
-            </a>
-            <figcaption class="figure-caption w-50">
-              <div class="fs-5 text-dark fw-bold">{{ item.name}}</div>
-              <div>{{ item.company}}</div>
-              <div>{{ item.location}}</div>
-              <div>{{ item.description}}</div>
-              <iframe
-                src="https://ghbtns.com/github-btn.html?user={{ item.slug }}&type=follow&count=true"
-                frameborder="0"
-                scrolling="0"
-                width="170"
-                height="20"
-                title="GitHub"
-                class="mt-2"
-              ></iframe>
-            </figcaption>
-          </figure>
-        {% endfor %} {% endcomment %}
       </div>
 
-      <!-- How to invest -->
-      {% comment %} <div class="container markdown py-3 mt-5">
-        {{ investing | safe }}
-      </div> {% endcomment %}
+      <!-- Donations -->
+      <div class="container mt-5">
+        <h3 class="fw-bold mb-2">Donations</h3>
+        <p class="fs-6 double-line" style="max-width:540px;">
+          <small>Open source projects take time and money.
+          Help support the project
+          <a class="serif text-gradient" href="https://opencollective.com/cannlytics-company">
+            by becoming a sponsor
+          </a>.
+          You can add your support at
+          any tier you feel comfortable with. No amount is too little.
+          We also accept one time contributions via
+          <a class="serif text-gradient" href="https://www.paypal.me/cannlytics">
+            PayPal
+          </a>.
+          </small>
+        </p>
+      </div>
     
     </div>
 

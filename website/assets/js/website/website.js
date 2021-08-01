@@ -1,6 +1,7 @@
 /**
- * website.js | Cannlytics Website
+ * Website JavaScript | Cannlytics Website
  * Created: 12/3/2020
+ * Updated: 7/31/2021
  */
 import { auth } from '../firebase.js';
 
@@ -169,7 +170,7 @@ export const website = {
         var success = jsonResponse.message.success;
         if (success) {
           emailInput.value = '';
-          document.location.href = '/subscribed';
+          document.location.href = `${window.location.origin}/subscribed/`;
         }
         else {
           // FIXME: Show success dismiss-able alert
@@ -178,7 +179,7 @@ export const website = {
         subscribeBtn.disabled = false;
       }
     });
-    xhr.open('POST', '/subscribe');
+    xhr.open('POST', `${window.location.origin}/api/subscribe/`);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send(`email=${email}`);
   },
@@ -208,7 +209,7 @@ export const website = {
     var code = this.getUrlParameter('source');
     if (!code) return;
     var data = { 'promo_code': code };
-    fetch('/promotions/', {
+    fetch(`${window.location.origin}/promotions/`, {
       method: 'POST', 
       body: JSON.stringify(data),
       headers: { 'Accept': 'application/json' },

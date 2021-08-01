@@ -12,15 +12,58 @@
     <!-- Title -->
     <h2 class="serif text-dark">Getting started ✍️</h2>
 
-    <!-- Installation -->
+    <!-- Console -->
     <div class="row align-items-center justify-content-center">
+      <div class="col-12 col-md-6 pt-3 px-3 pe-lg-5 pt-md-5 text-start overflow-hidden">
+        <div class="my-3 py-lg-3">
+          {% comment %} <img
+            class="mb-2"
+            src="{% static 'website/images/lab_icons/cannlytics_brain.svg' %}"
+            width="50"
+          > {% endcomment %}
+          <h2 class="fs-3 text-dark fw-bold my-2">Cannlytics Console</h2>
+          <p class="h6 double-line mb-2">
+            <small>
+              If you need a hosted solution, then you can 
+              take advantage of the ready to use Cannlytics console for
+              hosting, analysis, and data and file storage.
+              You can manage your lab results and provide your
+              clients with a simple yet complete client portal.
+            </small>
+          </p>
+          <div class="d-none d-lg-flex mt-3">
+            <a
+              class="btn btn-sm-light btn-md-light"
+              href="https://console.cannlytics.com/account/sign-up"
+            >
+              <small class="serif">Create an account</small> &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+      <a class="col-11 col-md-8 col-lg-6" href="https://console.cannlytics.com">
+        <img
+          src="{% static 'website/images/screenshots/console_dashboard_light.png' %}"
+          class="rounded shadow light-only"
+          height="275px"
+        >
+        <img
+          src="{% static 'website/images/screenshots/console_dashboard_dark.png' %}"
+          class="rounded shadow dark-only"
+          height="275px"
+        >
+      </a>
+    </div>
+
+    <!-- Installation -->
+    <div class="row align-items-center justify-content-center mt-5">
       <div class="col-12 col-md-6 text-start overflow-hidden">
         <div class="my-3 py-lg-3">
           {% comment %} <img src="{% static 'website/images/lab_icons/cannlytics_atom.svg' %}"
             width="50"
             class="mb-2"
           > {% endcomment %}
-          <h2 class="fs-3 text-dark fw-bold my-2">Installation</h2>
+          <h2 class="fs-3 text-dark fw-bold my-2">Custom Installation</h2>
           <p class="h6 double-line mb-2 pe-5">
             <small>
               Installing the Cannlytics Engine into your lab is as easy as 1, 2, 3.
@@ -30,9 +73,9 @@
               your installation to your liking.
             </small>
           </p>
-          <div class="d-none d-lg-flex">
+          <div class="d-none d-lg-flex mt-3">
             <a
-              class="cannlytics-dark-orange-text sliding-action"
+              class="btn btn-sm-light btn-md-light"
               href="https://docs.cannlytics.com/developers/installation"
             >
               <small class="serif">Installation Guide</small> &rarr;
@@ -72,9 +115,9 @@
               grab what you need and you're free to use it.
             </small>
           </p>
-          <div class="d-none d-lg-flex">
+          <div class="d-none d-lg-flex mt-3">
             <a
-              class="cannlytics-dark-orange-text sliding-action"
+              class="btn btn-sm-light btn-md-light"
               href="https://docs.cannlytics.com/developers/development"
             >
               <small class="serif">Components</small> &rarr;
@@ -97,49 +140,6 @@
 </code></pre></div>
     </div>
 
-    <!-- Console -->
-    <div class="row align-items-center justify-content-center">
-      <div class="col-12 col-md-6 pt-3 px-3 pe-lg-5 pt-md-5 text-start overflow-hidden">
-        <div class="my-3 py-lg-3">
-          {% comment %} <img
-            class="mb-2"
-            src="{% static 'website/images/lab_icons/cannlytics_brain.svg' %}"
-            width="50"
-          > {% endcomment %}
-          <h2 class="fs-3 text-dark fw-bold my-2">Cannlytics Console</h2>
-          <p class="h6 double-line mb-2">
-            <small>
-              If you need a hosted solution, then you can 
-              take advantage of the ready to use Cannlytics console for
-              hosting, analysis, and data and file storage.
-              You can manage your lab results and provide your
-              clients with a simple yet complete client portal.
-            </small>
-          </p>
-          <div class="d-none d-lg-flex">
-            <a
-              class="cannlytics-dark-orange-text sliding-action"
-              href="https://docs.cannlytics.com"
-            >
-              <small class="serif">Read the Docs</small> &rarr;
-            </a>
-          </div>
-        </div>
-      </div>
-      <a class="col-11 col-md-8 col-lg-6" href="https://console.cannlytics.com">
-        <img
-          src="{% static 'website/images/screenshots/console_dashboard_light.png' %}"
-          class="rounded shadow light-only"
-          height="275px"
-        >
-        <img
-          src="{% static 'website/images/screenshots/console_dashboard_dark.png' %}"
-          class="rounded shadow dark-only"
-          height="275px"
-        >
-      </a>
-    </div>
-
     <!-- API -->
     <div class="row align-items-center justify-content-center">
       <div class="col-12 col-md-6 pt-3 px-3 pe-lg-5 pt-md-5 text-start overflow-hidden">
@@ -157,9 +157,9 @@
               of all laboratory software at your finger tips.
             </small>
           </p>
-          <div class="d-none d-lg-flex">
+          <div class="d-none d-lg-flex mt-3">
             <a
-              class="cannlytics-dark-orange-text sliding-action"
+              class="btn btn-sm-light btn-md-light"
               href="https://docs.cannlytics.com/api/about"
             >
               <small class="serif">Read the Docs</small> &rarr;

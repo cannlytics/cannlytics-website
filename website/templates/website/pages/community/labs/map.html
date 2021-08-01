@@ -1,10 +1,10 @@
 <!doctype html>
 <html>
-
-  <!-- Lab Locator -->
-  <!-- Created 1/20/2021 -->
-  <!-- https://developers.google.com/maps/documentation/javascript/geocoding -->
-  <!-- https://stackoverflow.com/questions/5984179/javascript-geocoding-from-address-to-latitude-and-longitude-numbers-not-working -->
+<!--
+  Community Map (Lab Locator) | Cannlytics Website
+  Created: 1/20/2021
+  Updated: 7/31/2021
+-->
 
   <!-- Lab Locator -->
   <div class="container lab-locator py-4">
@@ -14,10 +14,10 @@
 
       <!-- Description -->
       <div class="col-md-6">
-        <h2 class="display-5 text-dark fw-bold my-2">Find your lab</h2>
-        <p class="h6 double-line mb-3">
-          Locate your cannabis-testing laboratory, browse analyses, and
-          engage with like-minded scientists around the world.
+        <h3 class="text-dark fw-bold my-2">Find your lab</h3>
+        <p class="fs-6 double-line text-secondary mb-3">
+          <small>Locate your cannabis-testing laboratory, browse analyses, and
+          engage with like-minded scientists around the world.</small>
         </p>
 
         <!-- Search -->
@@ -50,6 +50,7 @@
 
       <!-- Options -->
       <div class="col-md-6 d-none d-md-flex align-items-end justify-content-end mb-3">
+
       <!-- TODO: Add a lab -->
         {% comment %} <a
           class="btn btn-outline-primary me-2"
@@ -57,6 +58,8 @@
         >
           Add your lab
         </a> {% endcomment %}
+
+        <!-- Download Data -->
         <button
           class="btn btn-outline-primary"
           data-bs-toggle="modal"
@@ -64,6 +67,7 @@
         >
           Download data
         </button>
+ 
       </div>
     
     </div><!-- End of introduction -->
@@ -75,7 +79,7 @@
       <div id="map" style="height:540px;width:100%;" class="figure-img img-fluid"></div>
 
       <!-- Caption -->
-      <figcaption class="figure-caption" style="max-width:540px;">
+      <figcaption class="figure-caption text-secondary" style="max-width:540px;">
         <h6 class="sans-serif fw-bold mt-3">
           How Cannlytics sources data
         </h6>

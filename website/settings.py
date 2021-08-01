@@ -177,7 +177,7 @@ USE_TZ = True
 # Security
 # https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/web_application_security
 # ------------------------------------------------------------#
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 try:
     ALLOWED_HOSTS.append(env('CUSTOM_DOMAIN'))
 except:

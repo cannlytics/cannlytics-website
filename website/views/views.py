@@ -7,6 +7,8 @@ Updated: 7/27/2021
 """
 # Standard imports
 import os
+from math import ceil
+from random import randint
 
 # External imports
 from django.shortcuts import render
@@ -17,6 +19,8 @@ from django.views.generic.edit import FormView
 from website.forms import ContactForm
 from website.state import lab_state, page_data, page_docs, state
 from website.views.mixins import BaseMixin, TemplateView
+
+# TODO: Prefer to use Cannlytics module
 from website.utils.firebase import get_document, get_collection
 from website.utils.utils import get_markdown
 
@@ -147,19 +151,67 @@ class NewLabView(BaseMixin, TemplateView):
 
 
 class VideosView(BaseMixin, TemplateView):
-    """Videos page."""
+    """Videos page with pagination. Single videos
+    load with 3 random more videos and 3 recent videos.
+    """
 
     def get_template_names(self):
         return [f'{APP}/pages/videos/videos.html']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        video_id =  self.kwargs.get('video_id', '')
+        print('Video ID:', video_id)
+        video_stats = get_document('public/videos')
+        total_videos = video_stats['total_videos']
+        if video_id:
+            context['video_data'] = get_document(f'public/videos/video_data/{video_id}')
+            more_videos = []
+            print('Getting more videos...')
+            try:
+                while len(more_videos) < 3:
+                    random_number = randint(1, total_videos)
+                    if random_number == context['video_data']['number']:
+                        continue
+                    random_video = get_collection(
+                        'public/videos/video_data',
+                        limit=1,
+                        order_by='number',
+                        desc=True,
+                        start_at={'key': 'number', 'value': random_number }
+                    )
+                    more_videos = [*more_videos, *random_video]
+            except:
+                pass
+            print('Getting recent videos...')
+            try:
+                context['recent_videos'] = get_collection(
+                    'public/videos/video_data',
+                    limit=3,
+                    order_by='number',
+                    desc=True,
+                    start_at={'key': 'number', 'value': total_videos + 1}
+                )
+                context['more_videos'] = more_videos
+            except:
+                pass
+            return context
+        
+        print('Paginating archive...')
+        page = self.request.GET.get('page', 1)
+        print('Current page:', page)
+        limit = 9
+        start_at = 1 + limit + total_videos - int(page) * limit
+        context['page_index'] = range(ceil(total_videos / 10))
+        context['last_page'] = str(context['page_index'][-1] + 1)
         context['video_archive'] = get_collection(
             'public/videos/video_data',
-            limit=10,
-            order_by='published_at',
+            limit=limit,
+            order_by='number',
             desc=True,
+            start_at={'key': 'number', 'value': start_at }
         )
+        print('Returning totalvideos:', len(context['video_archive']))
         return context
 
 

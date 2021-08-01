@@ -1,7 +1,7 @@
 """
 URLs | Cannlytics Website
 Created: 12/29/2020
-Updated: 7/27/2021
+Updated: 7/31/2021
 Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
 """
 # External imports
@@ -12,7 +12,7 @@ from django.urls import include, path
 from django_robohash.views import robohash
 
 # Internal imports
-from website.views import data, views
+from website.views import api, data, views
 
 
 # Main URLs
@@ -21,17 +21,21 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('contact/', views.ContactView.as_view(), name='contact'),
     path('community/', views.CommunityView.as_view(), name='community'),
-    # path('api/', include('cannlytics_api.urls'), name='api'),
-    # path('docs/', include('cannlytics_docs.urls'), name='docs'),
+    path('api', include([
+        path('/labs/', api.labs),
+        path('/labs/<uuid:org_id>/', api.labs),
+        path('/labs/<uuid:org_id>/analyses/', api.lab_analyses),
+        path('/labs/<uuid:org_id>/logs/', api.lab_logs),
+        path('/labs/download/', data.download_lab_data),
+        path('/promotions/', data.promotions, name='promotions'),
+        path('/subscribe/', data.subscribe, name='subscribe'),
+    ])),
     path('labs/', views.CommunityView.as_view(), name='labs'),  # Redundant
     path('labs/new/', views.NewLabView.as_view()),
     path('labs/<lab>/', views.LabView.as_view()),
-    path('download-lab-data/', data.download_lab_data),
     path('robohash/<string>/', robohash, name='robohash'),
-    path('subscribe/', data.subscribe, name='subscribe'),
-    path('promotions/', data.promotions, name='promotions'),
-    # path('videos/', data.promotions, name='videos'),
-    # path('videos/<section>/', data.promotions, name='video'),
+    path('videos/', views.VideosView.as_view(), name='videos'),
+    path('videos/<video_id>/', views.VideosView.as_view(), name='video'),
     path('<page>/', views.GeneralView.as_view(), name='page'),
     path('<page>/<section>/', views.GeneralView.as_view(), name='section'),
 ]

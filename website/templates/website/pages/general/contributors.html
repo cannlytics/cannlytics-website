@@ -19,46 +19,47 @@
         primary_action_url='https://opencollective.com/cannlytics-company'
         secondary_action='Browse contributions'
         secondary_action_url='https://github.com/cannlytics/cannlytics/graphs/contributors'
+        image_url="website/images/illustrations/outline/lab_microbiologist.svg"
         only
       %}
 
       <!-- Contributors -->
       <div class="container markdown">
 
-        <h1 class="my-4">
-          Cannlytics is built with the love by...
-        </h1>
+        <h3 class="mt-4 mb-5">
+          Cannlytics is built with the love of...
+        </h3>
+        <div class="row">
         {% for item in contributors %}
-          <figure class="figure">
-            <a href="{{ item.url }}" title="{{ item.name}}">
-              <img
-                class="figure-img img-fluid rounded-3"
-                src="{{ item.url }}.png?size=250"
-              >
-            </a>
-            <figcaption class="figure-caption w-50">
-              <div class="fs-5 text-dark fw-bold">{{ item.name}}</div>
-              <div>{{ item.company}}</div>
-              <div>{{ item.location}}</div>
-              <div>{{ item.description}}</div>
-              <iframe
-                src="https://ghbtns.com/github-btn.html?user={{ item.slug }}&type=follow&count=true"
-                frameborder="0"
-                scrolling="0"
-                width="170"
-                height="20"
-                title="GitHub"
-                class="mt-2"
-              ></iframe>
-            </figcaption>
-          </figure>
+          <div class="col col-md-4">
+            <figure class="figure">
+              <a href="{{ item.url }}" title="{{ item.name}}">
+                <img
+                  class="figure-img img-fluid rounded-3"
+                  src="{{ item.url }}.png?size=100"
+                >
+              </a>
+              <figcaption class="figure-caption w-50">
+                <iframe
+                  src="https://ghbtns.com/github-btn.html?user={{ item.slug }}&type=follow&count=true"
+                  frameborder="0"
+                  scrolling="0"
+                  width="170"
+                  height="20"
+                  title="GitHub"
+                  class="mt-2"
+                ></iframe>
+              </figcaption>
+            </figure>
+          </div>
         {% endfor %}
+        </div>
       </div>
 
       <!-- How to contribute markdown -->
-      <div class="container markdown py-3 mt-5">
+      {% comment %} <div class="container markdown py-3 mt-5">
         {{ contribute | safe }}
-      </div>
+      </div> {% endcomment %}
     
     </div>
 

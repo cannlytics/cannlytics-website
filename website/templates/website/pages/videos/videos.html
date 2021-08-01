@@ -3,126 +3,121 @@
 <!--
   Videos Page | Cannlytics
   Created: 2/23/2021
-  Updated: 6/27/2021
-    Fields:
-    title
-    description
-    length
-    cover_image_url
-    video_id
-    video_url
-  TODO:
+  Updated: 7/30/2021
+  Optional:
     - Explore video players. For example: https://cloudinary.com/documentation/cloudinary_video_player
 -->
 {% extends "website/index.html" %}
 {% load static icon %}
 {% block title %}Videos | Cannlytics{% endblock %}
 {% block page_css %}
+  <style>
+    @media (max-width: 768px) {
+      .video-card {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  </style>
 {% endblock %}
 {% block material %}
 
-<!-- Individual Video -->
-{% if section %}
+{% if video_id %}
 
-  <div>Video: {{ section }}</div>
+  <!-- Individual Video -->
+  <!-- Optional: Linke to Github Repository -->
+  <section class="container">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent p-0 mb-0">
+        <li class="breadcrumb-item fs-6 lh-sm">
+          <a class="text-dark action" href="/videos">
+            Videos
+          </a>
+        </li>
+        <li class="breadcrumb-item active fs-6 lh-sm" aria-current="page">
+          {{ video_id }}
+        </li>
+      </ol>
+    </nav>
+    <div class="text-center mt-3">
+      <iframe width="100%" height="420"
+        src="https://www.youtube.com/embed/{{ video_data.youtube_id }}">
+      </iframe>
+    </div>
+    <h2 class="fw-bold mt-3">{{ video_data.title }}</h2>
+    <div class="serif text-secondary mb-3">{{ video_data.published|date }}</div>
+    <p class="fs-6" style="max-width:540px;">
+      <small>{{ video_data.description }}</small>
+    </p>
+  </section>
 
-<!-- Video Archive -->
+  <!-- More videos -->
+  <section class="container mt-5">
+    <h2 class="mb-3">More videos</h2>
+    {% include "website/pages/videos/video_grid.html" with video_list=more_videos %}
+    <h2 class="mt-3 mb-3">Recent videos</h2>
+    {% include "website/pages/videos/video_grid.html" with video_list=recent_videos %}
+    <a
+      class="btn btn-sm btn-sm-light btn-md-light"
+      href="/videos"
+      type="button"
+    >
+      <small class="serif">View more videos</small> &raquo;
+    </a>
+  </section>
+
 {% else %}
 
   <!-- Hero Banner -->
   {% include "website/components/heros/hero_banner.html" with
     title="Videos"
+    description="Peruse the archive of video recordings."
     only
   %}
 
-<section class="px-3">
-  
-  <!-- Data Grid -->
-  <div class="row px-3 mb-4">
-  {% for video in video_archive %}
-    <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-5 px-4 mx-auto">
-    <div
-      class="card border-secondary rounded-3"
-    >
-    <a
-      class="card-block stretched-link text-decoration-none"
-      href="/videos/{{ video.video_id }}"
-    >
-      <img
-        src="{{ video.cover_image_url }}"
-        class="w-100"
-        stlye="max-height:125px;"
-      />
+  <!-- Video Archive -->
+  <section class="px-3">
+    {% include "website/pages/videos/video_grid.html" with video_list=video_archive %}
+  </section>
 
-      <!-- Card header -->
-      <div class="d-flex justify-content-between px-2 pt-1">
-        <div class="d-flex align-items-center">
-          {% comment %} <div class="icon-container me-2">
-            {% include 'console/components/icons/people.svg' %}
-          </div> {% endcomment %}
-          <h4 class="fs-5 fw-bold text-dark">{{ video.title }}</h4>
-        </div>
-      </div>
-
-      <!-- Card body -->
-      <div class="card-body bg-transparent px-2 pb-1">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-          <!-- Card Stats -->
-          <div class="text-secondary fs-6">
-            {% if video.total_views %}
-              <small class="serif">{{ video.total_views }} Views</small>
-            {% endif %}
-          </div>
-
-          <!-- Badges -->
-          {% if video.support == 'Enterprise' %}
-            <span class="badge rounded-pill bg-primary">Enterprise</span>
-          {% elif video.support == 'Pro' %}
-            <span class="badge rounded-pill bg-warning text-dark">Pro</span>
-          {% else %}
-            <span class="badge rounded-pill bg-gradient-green text-white">Free</span>
-          {% endif %}
-
-        </div>
-
-        <!-- Description -->
-        <p class="text-secondary fs-6">
-          <small>
-            {{ video.description|truncatechars:120 }}
-          </small>
-        </p>
-
-      </div>
-
-    </a>
-    </div>
-    </div>
-  {% endfor %}
-  </div>
-
-</section>
+  <!-- Pagination -->
+  <section class="container">
+    <nav aria-label="Video pagination" class="px-3">
+      <ul class="pagination pagination-sm justify-content-end">
+        <li class="page-item {% if request.GET.page == '1' or not request.GET.page %}disabled{% endif %}">
+          <a
+            class="page-link text-dark bg-transparent {% if request.GET.page != last_page %}text-dark{% endif %}"
+            href="/videos?page={{ request.GET.page|add:"-1" }}"
+            tabindex="-1"
+            {% if request.GET.page == '1' or not request.GET.page %}aria-disabled="true"{% endif %}
+          >
+            Previous
+          </a>
+        </li>
+        {% for i in page_index %}
+          <li
+            class="page-item">
+              <a
+                class="page-link bg-transparent {% if i == request.GET.page|add:"-1" or not request.GET.page and i == 0%}cannlytics-dark-orange-text fw-bold{% else %}text-dark{% endif %}"
+                href="/videos?page={{ i|add:"1" }}"
+              >
+                {{ i|add:"1" }}
+              </a>
+            </li>
+        {% endfor %}
+        <li class="page-item {% if request.GET.page == last_page %}disabled{% endif %}">
+          <a
+            class="page-link bg-transparent {% if request.GET.page != last_page %}text-dark{% endif %}"
+            href="/videos?page={{ request.GET.page|add:"1" }}"
+          >
+            Next
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </section><!-- End of pagination -->
 
 {% endif %}
-
-{% endblock %}
-
-<!-- JavaScript -->
-{% block page_js %}
-
-<script>
-
-  const videoId = '{{ section }}';
-  // TODO: Get video data from Firestore!
-  console.log('Get video data:', videoId);
-
-  // TODO: Record view.
-  if (videoId) {
-    console.log('Record view:', videoId);
-  }
-
-</script>
 
 {% endblock %}
 

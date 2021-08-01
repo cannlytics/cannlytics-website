@@ -79,7 +79,7 @@ def get_document(ref):
         return data.to_dict()
 
 
-def get_collection(ref, limit=None, order_by=None, desc=False, filters=[]):
+def get_collection(ref, limit=None, order_by=None, desc=False, filters=[], start_at=None):
     """Get documents from a collection.
     
         start_at (dynamic): Optional starting at value for pagination.
@@ -94,6 +94,8 @@ def get_collection(ref, limit=None, order_by=None, desc=False, filters=[]):
         collection = collection.order_by(order_by, direction='DESCENDING')
     elif order_by:
         collection = collection.order_by(order_by)
+    if start_at:
+        collection = collection.start_after({start_at['key']: start_at['value']})
     if limit:
         collection = collection.limit(limit)
     query = collection.stream() # Only handles streams less than 2 mins.

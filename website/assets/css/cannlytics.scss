@@ -247,6 +247,10 @@ body.dark .markdown a:hover {
 a.text-secondary-on-light:hover {
   color: #ccc;
 }
+body.dark .text-secondary,
+body.dark p.text-secondary small {
+  color: #9baec8 !important;
+}
 ::-moz-selection {
   color: #1a1a1a;
   background: #96e6a1;
@@ -415,6 +419,9 @@ body.dark .light-green-fade {
   Layout
 ---------------------------------------------------------------------------*/
 
+.par-md {
+  max-width: 540px;
+}
 .container {
   max-width: 960px;
 }
@@ -747,6 +754,18 @@ ul {
   .form-label-group input::-ms-input-placeholder {
     color: #777;
   }
+}
+
+/* Form fields */
+
+.field-tiny {
+  max-width: 61px;
+}
+.field-sm {
+  max-width: 102px;
+}
+.field-md {
+  max-width: 240px;
 }
 
 /* Checkboxes */
@@ -1127,7 +1146,7 @@ body:not(.dark) .card {
   color: #f5f5f5;
 }
 body.dark .card {
-  background-color: #1a1a1a;
+  background-color: #2e303e;
 }
 body.dark .card-header {
   background-color: #323443;

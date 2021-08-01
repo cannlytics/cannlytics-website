@@ -4,10 +4,18 @@
   <!-- Support Page -->
   <!-- Created 1/15/2021 -->
   {% extends "website/index.html" %}
-  {% load static %}
+  {% load static get_env %}
 
   <!-- Title -->
   {% block title %}Support | {{ general.title }}{% endblock %}
+
+  <!-- CSS -->
+  {% block console_css %}
+
+    <!-- PayPal Client-->
+    <script src="https://www.paypal.com/sdk/js?client-id={{ 'PAYPAL_CLIENT_ID'|get_env }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+
+  {% endblock console_css %}
 
   {% block material %}
     <div class="products">
@@ -23,7 +31,15 @@
       <!-- Pricing Options -->
       <div class="container mb-5">
 
-      <!-- AB TEST: Offers -->
+      <!-- TODO: Implement subscriptions -->
+
+        <!-- Subscriptions description -->
+        <div style="max-width:540px;">
+          <h3 class="fw-bold pt-4 mb-3">Subscription options</h3>
+          <p class="double-line fs-6 mb-5 mt-0">
+            <small>Explore your Cannlytics subscription options.</small>
+          </p>
+        </div>
 
         <!-- Tiers -->
         <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
@@ -62,23 +78,39 @@
         </div><!-- End of tiers -->
 
         <!-- Historic Lab Result Migration -->
-        <div class="markdown">
-        <h1 class="pt-4">Historic Lab Result Migration</h1>
-        <p class="lead double-line simple-serif">
-          Your laboratory results are valuable to you and your clients,
-          therefore, you can have the Cannlytics Team work to migrate all of your
-          historic lab results into a Cannlytics compatible format for use
-          within Cannlytics and OpenTHC systems.
+        <h3 class="fw-bold mb-3 pt-4">Historic Lab Data Migration</h3>
+        <p class="fs-6 double-line" style="max-width:540px;">
+          <small>Your laboratory data are valuable to you and your clients,
+          therefore, you can have the Cannlytics Team work to migrate your
+          historic lab data into a Cannlytics compatible format for use
+          within the Cannlytics system.
+          </small>
         </p>
         <p class="text-start mt-3">
           <a
-            class="h4 fw-bold simple-serif underline-hover"
+            class="btn btn-sm-light btn-md-light serif"
             href="{% url 'contact' %}"
           >
-            Request a quote &rarr;
+            <small>Request a quote</small> &rarr;
           </a>
         </p>
-        </div>
+
+        <!-- Consulting -->
+        <h3 class="fw-bold mb-3 mt-5 pt-4">Consulting and Custom Development</h3>
+        <p class="fs-6 double-line" style="max-width:540px;">
+          <small>You can employ the Cannlytics team to help you solve any problems at hand.
+          In general, the Cannlytics team is available for $60 per hour or for $500 per significant
+          feature. We are always happy to talk and help you find your best-possible solution.
+          </small>
+        </p>
+        <p class="text-start mt-3">
+          <a
+            class="btn btn-sm-light btn-md-light serif"
+            href="{% url 'contact' %}"
+          >
+            <small>Request a quote</small> &rarr;
+          </a>
+        </p>
 
       </div>
     </div>

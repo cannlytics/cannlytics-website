@@ -31,7 +31,7 @@
           />
           <h4 class="text-dark fw-bold h5 mt-3 mb-1 pb-0">{{ video.title }}</h4>
           <div class="mb-1">
-            <small  class="serif text-secondary">{{ video.published_at }}</small>
+            <small  class="serif text-secondary">{{ video.published|date }}</small>
           </div>
           <p class="text-secondary fs-6">
             <small>
@@ -47,12 +47,12 @@
 <section class="container my-4">
   <div class="d-grid gap-2">
     <a
-      class="btn btn-sm btn-sm-light"
-      href="/videos"
+      class="btn btn-sm btn-sm-light btn-md-light"
+      href="{% url 'videos' %}"
       type="button"
     >
-      View more &raquo;
-    </button>
+      <small class="serif">View more</small> &raquo;
+    </a>
   </div>
 </section>
 </html>

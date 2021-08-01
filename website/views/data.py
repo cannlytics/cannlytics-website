@@ -48,6 +48,7 @@ def subscribe(request):
     sending them a notification with the ability to unsubscribe,
     and create a Cannlytics account if requested, sending
     a welcome email.
+    FIXME: Refactor.
     """
     success = False
     data = loads(request.body)
@@ -72,23 +73,24 @@ def subscribe(request):
         update_document(f"subscribers/{timestamp}", data)
 
         # Send a welcome email.
+        # Optional: Use HTML template.
         # template_url = "website/emails/newsletter_subscription_thank_you.html"
-        send_mail(
-            subject="Welcome to the Cannlytics Newsletter",
-            message=f"Congratulations,\n\nWelcome to the Cannlytics newsletter. You can download data with the promo code:\n\n{promo_code}\n\nPlease stay tuned for more material.\n\nAlways here to help,\nThe Cannlytics Team",
-            from_email="contact@cannlytics.com",
-            recipient_list=[user_email],
-            fail_silently=False,
-            # html_message = render_to_string(template_url, {"context": "values"}) # Optional: Send HTML email
-        )
-
-        # Create an account if requested.
-        if data.get("create_account"):
+        # Create an account if one does not exist.
+        try:
             name = (data.get("first_name", "") + data.get("last_name", "")).strip()
             _, password = create_account(name, user_email)
             send_mail(
-                subject="Welcome to the Cannlytics Engine",
+                subject="Welcome to the Cannlytics Platform",
                 message=f"Congratulations,\n\nYou can now login to the Cannlytics console (console.cannlytics.com) with the following credentials.\n\nEmail: {user_email}\nPassword: {password}\n\nAlways here to help,\nThe Cannlytics Team",
+                from_email="contact@cannlytics.com",
+                recipient_list=[user_email],
+                fail_silently=False,
+                # html_message = render_to_string(template_url, {"context": "values"}) # Optional: Send HTML email
+            )
+        except:
+            send_mail(
+                subject="Welcome to the Cannlytics Newsletter",
+                message=f"Congratulations,\n\nWelcome to the Cannlytics newsletter. You can download data with the promo code:\n\n{promo_code}\n\nPlease stay tuned for more material.\n\nAlways here to help,\nThe Cannlytics Team",
                 from_email="contact@cannlytics.com",
                 recipient_list=[user_email],
                 fail_silently=False,
@@ -193,4 +195,3 @@ def download_lab_data(request):
 
     # Return the file to download.
     return FileResponse(open(temp_name, "rb"), filename=filename)
-

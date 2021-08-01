@@ -1,8 +1,14 @@
 <!doctype html>
 <html>
+  <!--
+    Call to action
+    Created: Spring 2021
+    Updated: 7/31/2021
+  -->
+  {% load icon %}
   <div class="container features">
     <div class="row">
-      <div class="row my-5 mx-auto px-3 p-md-0">
+      <div class="row mt-5 mx-auto px-3 p-md-0">
         <div class="col-md-7 border-right border-md-hidden pe-5">
           <h2 class="fs-3 serif text-dark mt-0 mb-3">
             Ready to get started?
@@ -20,26 +26,26 @@
           </p>
         </div>
         <div class="col-md-5 px-3 ps-md-5">
-          <h3 class="serif text-dark fs-6 mt-4">Need help?</h3>
+          <h3 class="serif text-dark fw-bold fs-6 mt-4">Need help?</h3>
           <a
-            class="serif cannlytics-dark-orange-text fs-6 sliding-action"
+            class="serif fs-6 text-gradient"
             href="tel:{{ general.phone_number }}"
           >
             <small class="serif">{{ general.phone }}</small>
           </a>
           <h3 class="serif text-dark fs-6 mt-4">Have a question?</h3>
           <a
-            class="serif cannlytics-dark-orange-text fs-6 sliding-action"
+            class="serif fs-6 text-gradient"
             href="mailto:{{ general.email }}"
           >
             <small class="serif">{{ general.email }}</small>
           </a>
-          <h3 class="serif text-dark fs-6 mt-4">Want the source code?</h3>
+          <h3 class="serif text-dark fs-6 mt-4">Want to talk?</h3>
           <a
-            class="serif cannlytics-dark-orange-text fs-6 sliding-action"
-            href="https://github.com/cannlytics"
+            class="serif fs-6 text-gradient"
+            href="https://calendly.com/cannlytics/traceability-for-cannabis-testing?month=2021-08"
           >
-            <small class="serif">https://github.com/cannlytics</small>
+            <small class="serif text-success">Schedule a meeting {% icon "calendar" width="16px" height="16px" %} </small>
           </a>
         </div>
       </div>
