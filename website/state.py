@@ -244,7 +244,8 @@ state = { # Optional: Turn into models and save in database?
             {"title": "Story", "url": "https://docs.cannlytics.com/about/about"},
             {"title": "Roadmap", "url": "https://docs.cannlytics.com/developers/roadmap"},
             {"title": "Whitepapers", "page": "whitepapers"},
-            {"title": "Become a partner", "page": "partners"},
+            {"title": "Donations", "url": "https://opencollective.com/cannlytics-company"},
+            # {"title": "Become a partner", "page": "partners"},
             {"title": "Support", "page": "support"},
           ]
         }

@@ -19,16 +19,17 @@
   <div class="row row-cols-3 justify-content-md-start">
     {% for video in video_archive %}
       <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-0 px-4">
-        <a class="card-block stretched-link text-decoration-none" href="/videos/{{ video.video_id }}">
         <div
           class="bg-image hover-overlay ripple shadow-1-strong rounded"
           data-ripple-color="light"
         >
-          <img
-            src="{{ video.cover_image_url }}"
-            class="w-100"
-            stlye="max-height:125px;"
-          />
+          <a href="/videos/{{ video.video_id }}">
+            <img
+              src="{{ video.cover_image_url }}"
+              class="w-100"
+              stlye="max-height:125px;"
+            />
+          </a>
           <h4 class="text-dark fw-bold h5 mt-3 mb-1 pb-0">{{ video.title }}</h4>
           <div class="mb-1">
             <small  class="serif text-secondary">{{ video.published|date }}</small>
@@ -39,7 +40,6 @@
             </small>
           </p>
         </div>
-        </a>
       </div>
     {% endfor %}
   </div>

@@ -1,7 +1,7 @@
 """
 URLs | Cannlytics Website
 Created: 12/29/2020
-Updated: 7/31/2021
+Updated: 8/1/2021
 Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
 """
 # External imports
@@ -21,14 +21,14 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('contact/', views.ContactView.as_view(), name='contact'),
     path('community/', views.CommunityView.as_view(), name='community'),
-    path('api', include([
-        path('/labs/', api.labs),
-        path('/labs/<uuid:org_id>/', api.labs),
-        path('/labs/<uuid:org_id>/analyses/', api.lab_analyses),
-        path('/labs/<uuid:org_id>/logs/', api.lab_logs),
-        path('/labs/download/', data.download_lab_data),
-        path('/promotions/', data.promotions, name='promotions'),
-        path('/subscribe/', data.subscribe, name='subscribe'),
+    path('api/', include([
+        path('labs/', api.labs),
+        path('labs/<uuid:org_id>/', api.labs),
+        path('labs/<uuid:org_id>/analyses/', api.lab_analyses),
+        path('labs/<uuid:org_id>/logs/', api.lab_logs),
+        path('labs/download/', data.download_lab_data),
+        path('promotions/', data.promotions, name='promotions'),
+        path('subscribe/', data.subscribe, name='subscribe'),
     ])),
     path('labs/', views.CommunityView.as_view(), name='labs'),  # Redundant
     path('labs/new/', views.NewLabView.as_view()),
