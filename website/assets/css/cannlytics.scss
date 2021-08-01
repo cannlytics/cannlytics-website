@@ -1,6 +1,7 @@
 /*--------------------------------------------------------------------------
   Cannlytics Website Style
   Created: 10/4/2020
+  Updated: 8/1/2021
 ---------------------------------------------------------------------------*/
 
 @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:100,200,300,400,500,600,700');
@@ -35,19 +36,15 @@ a {
 
 * {
   font-family: 'IBM Plex Sans', sans-serif;
-  /* font-family: 'Source Serif Pro', Georgia, 'Times New Roman', Times, serif; */
 }
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Cormorant Garamond', serif;
-  /* font-family: 'Libre Baskerville', serif !important; */
 }
 p,
 p small {
-  /* font-family: 'Cormorant Garamond', serif; */
   font-family: 'Libre Baskerville', serif !important;
 }
 .serif {
-  /* font-family: 'Cormorant Garamond', serif !important; */
   font-family: 'Libre Baskerville' !important;
 }
 .simple-serif {
@@ -102,8 +99,6 @@ p small {
 }
 .brand-font {
   font-family: 'Space Grotesk';
-  /* font-family: 'IBM Plex Sans';
-  font-weight: 200; */
   letter-spacing: 0.5px;
 }
 body.dark .brand-font {
@@ -117,9 +112,6 @@ body.dark .brand-font {
   font-weight: 100;
   margin: 0;
 }
-/* .brand-logo {
-  height:50px;
-} */
 .brand-copyright {
   font-size: 8px;
 }
@@ -179,7 +171,6 @@ body.dark .brand-font {
 .markdown li a,
 .markdown em,
 .markdown strong {
-  /* font-family: 'Cormorant Garamond', serif !important; */
   font-family: 'Libre Baskerville' !important;
 }
 
@@ -207,14 +198,12 @@ body.dark .brand-font {
   color: inherit;
   text-decoration: none;
   transition: background .15s cubic-bezier(.33, .66, .66, 1);
-  // text-decoration: underline;
-  // text-decoration-color: #e53a23;
-  // color: #e53a23;
   font-weight: 700;
   overflow-wrap: break-word;
   word-break: break-word;
   word-wrap: break-word;
 }
+
 .markdown a:not(.headerlink):hover {
   background-color: #50fa7b33;
 }
@@ -289,7 +278,6 @@ body.dark a.cannlytics-dark-orange-text:hover {
   background: #45B649;
 }
 .cannlytics-green-text {
-  /* color: #45B649; */
   color: #0BA67F;
 }
 .cannlytics-green-text svg {
@@ -335,7 +323,6 @@ a.cannlytics-light-green-text:hover {
   fill: #281e52;
 }
 .bg-cannlytics-green {
-  /* background: #1f622f; */
   background-color: #104607;
 }
 body.dark .bg-cannlytics-green {
@@ -349,12 +336,6 @@ body.dark .bg-cannlytics-green {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-// .text-gradient-reverse {
-//   background: -webkit-linear-gradient(-45deg, #1f622f, #45B649);
-//   background-clip: text;
-//   -webkit-background-clip: text;
-//   -webkit-text-fill-color: transparent;
-// }
 body.dark .text-gradient {
   background: -webkit-linear-gradient(-45deg,#45B649, #96e6a1);
   background-clip: text;
@@ -502,13 +483,10 @@ body.dark .light-green-fade {
   text-decoration: none;
 }
 .copy-btn {
-    // display: none;
-    // position: absolute;
     float: right;
     width: 0px;
     padding: 2px 8px;
     transform: translateX(-1rem);
-    // margin: 1rem;
     cursor: pointer;
 }
 .codehilite:hover .copy-btn {
@@ -517,7 +495,6 @@ body.dark .light-green-fade {
 .sliding-action {
 	display: inline-block;
   text-decoration: none;
-  /* color: #0BA67F; */
 	padding-bottom: 0px;
 }
 .sliding-action:hover {
@@ -757,7 +734,6 @@ ul {
 }
 
 /* Form fields */
-
 .field-tiny {
   max-width: 61px;
 }
@@ -778,11 +754,9 @@ ul {
   border-color: #96e6a1 !important;
 }
 .custom-checkbox .custom-control-input:checked:focus ~ .custom-control-label::before {
-  /* box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(0, 255, 0, 0.25) */
   box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem #45B64940;
 }
 .custom-checkbox .custom-control-input:focus ~ .custom-control-label::before {
-  /* box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(0, 0, 0, 0.25) */
   box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem #45B64940;
 }
 .custom-checkbox .custom-control-input:active ~ .custom-control-label::before {
@@ -809,7 +783,6 @@ body.dark footer .form-control {
   background: #fff;
   color: #1a1a1a;
 }
-
 .form-control[readonly] {
   background-color: unset;
 }
@@ -837,9 +810,6 @@ body.dark footer .form-control {
   width: 100%;
 }
 .wave svg path {
-  /* fill: #d4fc7933; */
-  /* fill: #554b8033; */
-  /* fill: #e8f0fe; */
   fill: #f8f8f8;
   stroke: none;
 }
@@ -847,11 +817,9 @@ body.dark .wave svg path {
   fill: #554b8033;
 }
 .wave.green svg path {
-  /* fill: #1f622f !important; */
   fill: #104607 !important;
 }
 .wave.transparent svg path {
-  /* fill: #1f622f !important; */
   fill: transparent !important;
 }
 body.dark .wave.green svg path {
@@ -859,9 +827,6 @@ body.dark .wave.green svg path {
 }
 
 .ground {
-  /* background: #d4fc7933; */
-  /* background: #554b8033; */
-  /* background-color: #e8f0fe; */
   background-color: #f8f8f8;
 }
 body.dark .ground {
@@ -873,7 +838,6 @@ body.dark .ground {
 ---------------------------------------------------------------------------*/
 
 .first-vine {
-  /* z-index: -1; */
   position: absolute;
   transform: rotate(20deg) translate(-50px, -100px);
 }
@@ -1081,7 +1045,6 @@ body.dark .codehilite .il { color: #bd93f9 } /* Literal.Number.Integer.Long */
 ---------------------------------------------------------------------------*/
 
 body.dark {
-  /* background: #281e52; */
   background: rgb(50, 52, 67);
 }
 body:not(.dark) .dark-only {
@@ -1100,7 +1063,6 @@ body.dark h6 {
   color: #ccc;
 }
 body.dark p strong,
-/* body.dark li a, */
 body.dark .text-dark {
   color: #f8f8f8 !important;
 }
@@ -1112,9 +1074,6 @@ body.dark .brand-title,
 body.dark .navbar-toggler-icon:hover {
   color: #fff !important;
 }
-/* body.dark .cannlytics-green-text:hover {
-  color: #96e6a1;
-} */
 body.dark .cannlytics-green-text:hover svg {
   fill: #96e6a1;
 }
@@ -1281,7 +1240,6 @@ body.dark .nav-link.active {
 
 .homepage {
   min-height: calc(100vh - 128px);
-  /* background: url("../images/theme/bean_stalk_lean_right.svg") no-repeat; */
   background-size: cover;
 }
 .homepage section {
@@ -1339,17 +1297,9 @@ body.dark .nav-link.active {
 .jumbotron .container {
   max-width: 40rem;
 }
-// @media (min-width: 768px) {
-//   .jumbotron {
-//     padding-top: 6rem;
-//     padding-bottom: 6rem;
-//   }
-// }
-
 body.dark .jumbotron {
   background-color: transparent;
 }
-
 .large-bottom-margin {
   padding-bottom: 3rem;
 }
@@ -1428,9 +1378,6 @@ body.dark .info-bar {
   Modals
 ---------------------------------------------------------------------------*/
 
-// .modal {
-//   display: block;
-// }
 body.dark .modal-content {
   background-color: #323443;
 }

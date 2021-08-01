@@ -7,10 +7,10 @@ Updated: 7/27/2021
 
 page_data = {
     "contributors": {
-        "collections": [{"name": "contributors", "ref": "contributors"}],
+        "collections": [{"name": "contributors", "ref": "public/contributors/contributor_data"}],
     },
     "events": {
-        "collections": [{"name": "events", "ref": "events"}],
+        "collections": [{"name": "events", "ref": "public/events/event_data"}],
     },
     "homepage": {
         "collections": [
@@ -23,14 +23,11 @@ page_data = {
             }
         ],
     },
-    "products": {
-        "collections": [{"name": "products", "ref": "products"}],
-    },
     "partners": {
-        "collections": [{"name": "partners_list", "ref": "partners"}],
+        "collections": [{"name": "partners_list", "ref": "public/partners/partner_data"}],
     },
     "team": {
-        "collections": [{"name": "team", "ref": "team"}],
+        "collections": [{"name": "team", "ref": "public/team/team_members"}],
     },
     "videos": {
         "collections": [
@@ -44,7 +41,7 @@ page_data = {
         ],
     },
     "whitepapers": {
-        "collections": [{"name": "whitepapers", "ref": "whitepapers"}],
+        "collections": [{"name": "whitepapers", "ref": "public/whitepapers/whitepaper_data"}],
     }
 }
 
