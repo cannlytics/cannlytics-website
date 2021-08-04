@@ -201,7 +201,7 @@ class VideosView(BaseMixin, TemplateView):
         page = self.request.GET.get('page', 1)
         print('Current page:', page)
         limit = 9
-        start_at = 1 + limit + total_videos - int(page) * limit
+        start_at = 1 + total_videos - (int(page) - 1) * limit
         context['page_index'] = range(ceil(total_videos / 10))
         context['last_page'] = str(context['page_index'][-1] + 1)
         context['video_archive'] = get_collection(
@@ -211,7 +211,7 @@ class VideosView(BaseMixin, TemplateView):
             desc=True,
             start_at={'key': 'number', 'value': start_at }
         )
-        print('Returning totalvideos:', len(context['video_archive']))
+        print('Returning total videos:', len(context['video_archive']))
         return context
 
 
