@@ -1,7 +1,7 @@
 """
 URLs | Cannlytics Website
 Created: 12/29/2020
-Updated: 8/1/2021
+Updated: 8/30/2021
 Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
 """
 # External imports
@@ -12,15 +12,13 @@ from django.urls import include, path
 from django_robohash.views import robohash
 
 # Internal imports
-from website.views import api, data, views
+from website.views import api, data, views, email
 
 
 # Main URLs
 urlpatterns = [
     path('', views.GeneralView.as_view(), name='index'),
     path('admin/', admin.site.urls, name='admin'),
-    path('contact/', views.ContactView.as_view(), name='contact'),
-    path('community/', views.CommunityView.as_view(), name='community'),
     path('api/', include([
         path('labs/', api.labs),
         path('labs/<uuid:org_id>/', api.labs),
@@ -29,7 +27,9 @@ urlpatterns = [
         path('labs/download/', data.download_lab_data),
         path('promotions/', data.promotions, name='promotions'),
         path('subscribe/', data.subscribe, name='subscribe'),
+        path('send-message/', email.send_message),
     ])),
+    path('community/', views.CommunityView.as_view(), name='community'),
     path('labs/', views.CommunityView.as_view(), name='labs'),  # Redundant
     path('labs/new/', views.NewLabView.as_view()),
     path('labs/<lab>/', views.LabView.as_view()),
@@ -38,6 +38,7 @@ urlpatterns = [
     path('videos/<video_id>/', views.VideosView.as_view(), name='video'),
     path('<page>/', views.GeneralView.as_view(), name='page'),
     path('<page>/<section>/', views.GeneralView.as_view(), name='section'),
+    path('<page>/<section>/<str:unit>', views.GeneralView.as_view()),
 ]
 
 # Serve static assets in development and production.

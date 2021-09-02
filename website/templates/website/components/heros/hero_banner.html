@@ -12,11 +12,12 @@
     primary_action_url
     secondary_action
     secondary_action_url
+    background_image (optional)
 -->
 {% load static %}
 
-<section class="jumbotron text-center">
-  <div class="container">
+<section class="jumbotron text-center" style="{% if background_image %}background-image: url('{{ background_image }}');background-position: center;background-repeat: no-repeat;background-size: cover;{% endif %}">
+  <div class="container {% if background_image %}card card-opaque pt-3 {% endif %}">
 
     <!-- Image -->
     {% if "website" in image_url%}
@@ -33,14 +34,14 @@
 
     <!-- Title -->
     {% if title %}
-      <h1 class="display-6 fw-bold mt-3 mb-2">
+      <h1 class="display-6 text-dark fw-bold mt-3 mb-2">
         {{ title }}
       </h1>
     {% endif %}
 
     <!-- Description -->
     {% if description %}
-      <p class="lead text-muted">
+      <p class="lead {% if background_image %}text-dark {% endif %}text-muted">
         <small>{{ description|safe }}</small>
       </p>
     {% endif %}

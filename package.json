@@ -1,7 +1,7 @@
 {
   "name": "cannlytics_website",
   "productName": "Cannlytics Website",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MIT",
   "private": true,
   "description": "Cannlytics website.",

@@ -58,17 +58,25 @@
       class="collapse navbar-collapse justify-content-between"
     >
       <ul class="navbar-nav me-2">
-        <li class="nav-item h6 mb-0">
+        {% comment %} <li class="nav-item h6 mb-0">
           <a
-            class="nav-link sliding-action {% if 'community' in request.path %}active{% endif %}"
+            class="nav-link btn-sm background-hover {% if 'community' in request.path %}active{% endif %}"
             href="{% url 'community' %}"
           >
             Community
           </a>
+        </li> {% endcomment %}
+        <li class="nav-item h6 mb-0">
+          <a
+            class="nav-link btn-sm background-hover"
+            href="/data/"
+          >
+            Data
+          </a>
         </li>
         <li class="nav-item h6 mb-0">
           <a
-            class="nav-link sliding-action"
+            class="nav-link btn-sm background-hover"
             href="https://docs.cannlytics.com"
           >
             Docs
@@ -76,8 +84,8 @@
         </li>
         <li class="nav-item h6 mb-0">
           <a
-            class="nav-link sliding-action {% if 'contact' in request.path %}active{% endif %}"
-            href="{% url 'contact' %}"
+            class="nav-link btn-sm background-hover {% if 'contact' in request.path %}active{% endif %}"
+            href="/contact/"
           >
             Contact
           </a>
@@ -85,7 +93,7 @@
         <!-- AB TEST: contact vs. help dropdown-->
         {% comment %} <li class="nav-item h6 mb-0 dropdown">
           <a
-            class="nav-link sliding-action dropdown-toggle"
+            class="nav-link background-hover dropdown-toggle"
             href="#"
             id="navbarDropdownMenuLink"
             role="button"
@@ -105,22 +113,22 @@
       <!-- Right Navigation (Not signed in) -->
       <ul class="navbar-nav indicates-auth align-items-center me-3">
         {% comment %} {% include 'cannlytics_console/components/buttons/donate_button.html' %} {% endcomment %}
-        <li class="nav-item h6 mb-0">
+        {% comment %} <li class="nav-item h6 mb-0">
           <a
-            class="nav-link app-action sliding-action text-nowrap me-2"
+            class="nav-link btn-sm app-action background-hover text-nowrap me-2"
             data-bs-target="#login-dialog"
             data-bs-toggle="modal"
           >
             Sign in
           </a>
-        </li>
+        </li> {% endcomment %}
         <li class="nav-item">
           <a
             type="button"
             class="btn btn-sm bg-gradient-orange text-white text-nowrap"
-            href="https://console.cannlytics.com/account/sign-up"
+            href="https://console.cannlytics.com/account/sign-in"
           >
-            Launch
+            Launch Console
           </a>
         </li>
       </ul>
@@ -130,7 +138,7 @@
         {% comment %} {% include 'cannlytics_console/components/buttons/donate_button.html' %} {% endcomment %}
         <li class="nav-item h6 mb-0">
           <a
-            class="nav-link sliding-action text-nowrap me-2"
+            class="nav-link btn-sm background-hover text-nowrap me-2"
             href="https://console.cannlytics.com"
           >
             Console
@@ -140,7 +148,11 @@
           <a class="nav-link dropdown-toggle py-0" href="#" id="navbarUserMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <img id="user-photo" class="rounded-circle" style="max-width:60px; max-height:60px;" src="">
           </a>
-          <ul class="dropdown-menu dropdown-menu-end shadow mx-2" aria-labelledby="navbarUserMenu">
+          <ul
+            class="dropdown-menu dropdown-menu-end bg-light shadow mx-2"
+            aria-labelledby="navbarUserMenu"
+            style="z-index:10000; right:1rem !important; top:8rem; position: fixed !important;"
+          >
             <div class="px-3 py-1"><!-- TODO: Make display name / email standout -->
               <h5 class="serif" id="user-name"></h5>
               <h6 class="serif" id="user-email"></h6>
