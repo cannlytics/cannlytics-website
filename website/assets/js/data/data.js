@@ -3,7 +3,7 @@
  * Created: 8/21/2021
  * Updated: 8/21/2021
  */
-import { getDocument } from '../firebase.js';
+import { getCollection, getDocument } from '../firebase.js';
 
 export const data = {
 
@@ -13,6 +13,16 @@ export const data = {
      * Get metadata about a given dataset.
      */
     getDocument(path).then((data) => {
+      resolve(data);
+    });
+  }),
+
+
+  getStateData: () => new Promise((resolve) => {
+    /*
+     * Get metadata about a given dataset.
+     */
+    getCollection('public/data/state_data', null, 'state').then((data) => {
       resolve(data);
     });
   }),

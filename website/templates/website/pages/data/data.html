@@ -9,58 +9,18 @@
 {% load static %}
 {% block title %}Data | Cannlytics{% endblock %}
 {% block page_css %}
-  <style>
-    .state{
-      fill: none;
-      stroke: #a9a9a9;
-      stroke-width: 1;
-    }
-    .state:hover{
-      fill-opacity:0.5;
-    }
-    #tooltip {   
-      position: absolute;           
-      text-align: center;
-      padding: 20px;             
-      margin: 10px;
-      font: 12px sans-serif;        
-      background: lightsteelblue;   
-      border: 1px;      
-      border-radius: 2px;           
-      pointer-events: none;         
-    }
-    #tooltip h4{
-      margin:0;
-      font-size:14px;
-    }
-    #tooltip{
-      background:rgba(0,0,0,0.9);
-      border:1px solid grey;
-      border-radius:5px;
-      font-size:12px;
-      width:auto;
-      padding:4px;
-      color:white;
-      opacity:0;
-    }
-    #tooltip table{
-      table-layout:fixed;
-    }
-    #tooltip tr td{
-      padding:0;
-      margin:0;
-    }
-    #tooltip tr td:nth-child(1){
-      width:50px;
-    }
-    #tooltip tr td:nth-child(2){
-      text-align:center;
-    }
-  </style>
+  <link href="{% static 'website/css/map.css'%}?{% now "U" %}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block material %}
 
-  <!-- TODO: Banner -->
+  <!-- Banner -->
+  {% include "website/components/heros/hero_banner.html" with
+    title='Data Troves'
+    description='Explore public cannabis data troves.'
+    background_image='https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2Fvictorian_ransom.jpg?alt=media&token=159b4792-ac98-4c97-8e5d-109d8228d5ac'
+    image_url=' '
+    only
+  %}
 
   <!-- Title -->
   <section class="container mb-2 mt-5">
@@ -139,11 +99,15 @@
         <div class="card-body px-3 bg-transparent">
           <div class="d-flex align-items-center justify-content-between mb-3">
             <h5 id="state_name" class="card-title serif text-dark fs-5 mb-0"></h5>
-            <a id="state_data_button" class="btn btn-sm btn-sm-light" href="">View State Data</a>
+            <a id="state_data_button" class="btn btn-sm btn-sm-light ms-2" href="">View State Data</a>
           </div>
-          <div class="card-text text-dark fs-6"><small id="state_population" class="serif"></small></div>
+          <div class="d-flex align-items-center mb-3">
+            <span id="recreational_status" class="badge rounded-pill bg-success me-2 d-none">Recreational</span>
+            <span id="medicinal_status" class="badge rounded-pill bg-info d-none">Medicinal</span>
+          </div>
           <div class="card-text text-dark fs-6"><small id="state_total_licensees" class="serif"></small></div>
-          <div class="card-text text-dark fs-6"><small id="state_total_licensees_per_capita" class="serif"></small></div>
+          <div class="card-text text-dark fs-6"><small id="state_population" class="serif"></small></div>
+          <div class="card-text text-dark fs-6"><small id="licensees_per_capita" class="serif"></small></div>
           <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales" class="serif"></small></div>
           <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_per_capita" class="serif"></small></div>
           {% comment %} <p id="state_description" class="card-text"></p> {% endcomment %}
@@ -199,7 +163,7 @@
         {id:"SC",n:"South Carolina",d:"M764.94328,408.16488L763.16622,409.13438L760.57965,407.84109L759.93301,405.7395L758.63973,402.18297L756.37647,400.08137L753.7899,399.43473L752.1733,394.58492L749.42506,388.60347L745.22189,386.66353L743.12029,384.72361L741.82701,382.13704L739.72542,380.1971L737.46217,378.90382L735.19892,375.99393L732.12737,373.73069L727.60086,371.95241L727.11588,370.49747L724.69098,367.58758L724.20599,366.13262L720.81111,360.95949L717.41624,361.12115L713.37472,358.69623L712.08144,357.40295L711.75812,355.62468L712.56642,353.68476L714.82967,352.71478L714.31885,350.4257L720.08695,348.08913L729.20245,343.50013L736.97718,342.69182L753.09158,342.26934L755.72983,344.14677L757.40893,347.50499L761.71128,346.89501L774.32081,345.44005L777.2307,346.24836L789.84024,353.84642L799.94832,361.9681L794.52715,367.42644L791.94058,373.56954L791.4556,379.8743L789.839,380.6826L788.70737,383.43083L786.28247,384.07747L784.18088,387.634L781.43265,390.38223L779.16941,393.7771L777.5528,394.5854L773.99627,397.98027L771.08638,398.14193L772.05635,401.37514L767.04487,406.8716L764.94328,408.16488Z"},
         {id:"KY",n:"Kentucky",d:"M725.9944,295.2707L723.70108,297.67238L720.12289,301.66642L715.19834,307.13109L713.98257,308.84686L713.92007,310.94844L709.54021,313.11253L703.88209,316.50741L696.65022,318.30626L644.78233,323.20512L629.02277,324.98338L624.40157,325.49609L620.53322,325.46837L620.30627,329.68865L612.12686,329.83321L605.17545,330.47985L597.18797,330.41963L598.39575,329.09955L600.89529,327.5587L601.12392,324.35797L602.03841,322.52899L600.43159,319.99009L601.23342,318.08328L603.49668,316.30502L605.59826,315.65837L608.34649,316.95166L611.90303,318.24494L613.03466,317.92162L613.19632,315.65837L611.90303,313.23346L612.22635,310.97021L614.16628,309.51527L616.75286,308.86862L618.36946,308.22198L617.56116,306.44371L616.91452,304.50378L618.42114,303.50798C618.42442,303.47086,619.6751,299.98569,619.65943,299.85017L622.71265,298.37149L628.03244,297.40153L632.52648,296.91655L633.91892,298.54398L635.44719,299.41478L637.03796,296.30657L640.22504,295.02395L642.43013,296.50798L642.84069,297.50702L644.01421,297.24301L643.85254,294.29008L646.98341,292.54089L649.1315,291.46741L650.66086,293.12822L653.97901,293.08402L654.56634,291.51277L654.19883,289.24953L656.79936,285.25103L661.57591,281.81313L662.28186,276.97727L665.20688,276.52136L668.99834,274.87568L671.44166,273.16744L671.24333,271.60251L670.10088,270.14757L670.6667,267.15266L674.85155,267.03516L677.15146,266.28936L680.49885,267.71846L682.55296,272.0833L687.68525,272.09412L689.73626,274.30231L691.35171,274.15461L693.9534,272.87644L699.19046,273.44981L701.76538,273.66732L703.45296,271.61108L706.07091,270.1852L707.95269,269.4781L708.59933,272.31473L710.64276,273.37307L713.28552,275.45556L713.40299,281.1288L714.21129,282.70121L716.80101,284.25749L717.57265,286.552L721.73254,289.98894L723.53785,293.61218L725.9944,295.2707Z"},
         {id:"AL",n:"Alabama",d:"M631.30647,460.41572L629.81587,446.09422L627.06763,427.34158L627.22929,413.27709L628.03759,382.23824L627.87593,365.58718L628.04102,359.16812L672.5255,355.54867L672.3777,357.73109L672.53936,359.83269L673.18601,363.22756L676.58089,371.14893L679.00579,381.01024L680.46074,387.15335L682.07734,392.00317L683.5323,398.95458L685.63388,405.25934L688.22045,408.65423L688.70543,412.04909L690.64537,412.8574L690.80703,414.95899L689.02875,419.80881L688.54377,423.04203L688.38211,424.98195L689.99873,429.3468L690.32205,434.68159L689.51373,437.10651L690.16039,437.91481L691.61533,438.72311L691.94347,441.61193L686.34581,441.25838L679.55606,441.90503L654.01366,444.81491L643.6021,446.22168L643.38072,449.09908L645.15899,450.87735L647.74556,452.81727L648.32642,460.75271L642.78436,463.32561L640.03614,463.00229L642.78436,461.06236L642.78436,460.0924L639.71282,454.11096L637.44957,453.46432L635.99462,457.82915L634.70134,460.57738L634.0547,460.41572L631.30647,460.41572Z"},
-        {id:"LS",n:"Louisiana",d:"M607.96706,459.16125L604.68245,455.99511L605.69236,450.49488L605.03101,449.6018L595.76934,450.60836L570.74102,451.06728L570.05683,448.6726L570.96964,440.2169L574.28552,434.27105L579.31688,425.58003L578.74281,423.18201L579.9994,422.50116L580.45833,420.54867L578.17209,418.49274L578.0603,416.55029L576.22964,412.20478L576.08259,405.86618L520.6088,406.79015L520.63737,416.36372L521.32324,425.73725L522.00911,429.62383L524.52396,433.73904L525.43845,438.76875L529.78228,444.25568L530.0109,447.4564L530.69677,448.14227L530.0109,456.60131L527.03881,461.631L528.63917,463.68861L527.95329,466.20345L527.26743,473.51938L525.89569,476.72009L526.01815,480.33654L530.70463,478.81639L542.81798,479.0234L553.16425,482.57993L559.63067,483.71156L563.34886,482.25661L566.58207,483.38824L569.81528,484.3582L570.62358,482.25661L567.39037,481.12499L564.8038,481.60997L562.05557,479.99337C562.05557,479.99337,562.21724,478.70008,562.86388,478.53842C563.51052,478.37676,565.93543,477.56846,565.93543,477.56846L567.71369,479.0234L569.49196,478.05344L572.72517,478.70008L574.18011,481.12499L574.50343,483.38824L579.02992,483.71156L580.80819,485.48982L579.99989,487.10643L578.7066,487.91473L580.32321,489.53133L588.72955,493.08786L592.28608,491.79458L593.25605,489.36967L595.84261,488.72303L597.62088,487.26809L598.91416,488.23805L599.72246,491.14794L597.45922,491.95624L598.10586,492.60288L601.50073,491.3096L603.76398,487.91473L604.57228,487.42975L602.47069,487.10643L603.27899,485.48982L603.11733,484.03488L605.21892,483.5499L606.35054,482.25661L606.99718,483.06491C606.99718,483.06491,606.83552,486.13646,607.64383,486.13646C608.45213,486.13646,611.847,486.78311,611.847,486.78311L615.88851,488.72303L616.85847,490.17798L619.76836,490.17798L620.89999,491.14794L623.16323,488.07639L623.16323,486.62144L621.86995,486.62144L618.47508,483.87322L612.6553,483.06491L609.42209,480.80167L610.55372,478.05344L612.81696,478.37676L612.97862,477.73012L611.20036,476.76016L611.20036,476.27517L614.43357,476.27517L616.21183,473.20363L614.91855,471.2637L614.59523,468.51547L613.14028,468.67713L611.20036,470.77872L610.55372,473.36529L607.48217,472.71864L606.5122,470.94038L608.29047,469.00045L610.1938,465.55485L609.1327,463.14258L607.96706,459.16125Z"},
+        {id:"LA",n:"Louisiana",d:"M607.96706,459.16125L604.68245,455.99511L605.69236,450.49488L605.03101,449.6018L595.76934,450.60836L570.74102,451.06728L570.05683,448.6726L570.96964,440.2169L574.28552,434.27105L579.31688,425.58003L578.74281,423.18201L579.9994,422.50116L580.45833,420.54867L578.17209,418.49274L578.0603,416.55029L576.22964,412.20478L576.08259,405.86618L520.6088,406.79015L520.63737,416.36372L521.32324,425.73725L522.00911,429.62383L524.52396,433.73904L525.43845,438.76875L529.78228,444.25568L530.0109,447.4564L530.69677,448.14227L530.0109,456.60131L527.03881,461.631L528.63917,463.68861L527.95329,466.20345L527.26743,473.51938L525.89569,476.72009L526.01815,480.33654L530.70463,478.81639L542.81798,479.0234L553.16425,482.57993L559.63067,483.71156L563.34886,482.25661L566.58207,483.38824L569.81528,484.3582L570.62358,482.25661L567.39037,481.12499L564.8038,481.60997L562.05557,479.99337C562.05557,479.99337,562.21724,478.70008,562.86388,478.53842C563.51052,478.37676,565.93543,477.56846,565.93543,477.56846L567.71369,479.0234L569.49196,478.05344L572.72517,478.70008L574.18011,481.12499L574.50343,483.38824L579.02992,483.71156L580.80819,485.48982L579.99989,487.10643L578.7066,487.91473L580.32321,489.53133L588.72955,493.08786L592.28608,491.79458L593.25605,489.36967L595.84261,488.72303L597.62088,487.26809L598.91416,488.23805L599.72246,491.14794L597.45922,491.95624L598.10586,492.60288L601.50073,491.3096L603.76398,487.91473L604.57228,487.42975L602.47069,487.10643L603.27899,485.48982L603.11733,484.03488L605.21892,483.5499L606.35054,482.25661L606.99718,483.06491C606.99718,483.06491,606.83552,486.13646,607.64383,486.13646C608.45213,486.13646,611.847,486.78311,611.847,486.78311L615.88851,488.72303L616.85847,490.17798L619.76836,490.17798L620.89999,491.14794L623.16323,488.07639L623.16323,486.62144L621.86995,486.62144L618.47508,483.87322L612.6553,483.06491L609.42209,480.80167L610.55372,478.05344L612.81696,478.37676L612.97862,477.73012L611.20036,476.76016L611.20036,476.27517L614.43357,476.27517L616.21183,473.20363L614.91855,471.2637L614.59523,468.51547L613.14028,468.67713L611.20036,470.77872L610.55372,473.36529L607.48217,472.71864L606.5122,470.94038L608.29047,469.00045L610.1938,465.55485L609.1327,463.14258L607.96706,459.16125Z"},
         {id:"MS",n:"Mississippi",d:"M631.55882,459.34458L631.30456,460.60073L626.13142,460.60073L624.67648,459.79243L622.57489,459.46911L615.78515,461.40903L614.00689,460.60073L611.42032,464.8039L610.31778,465.58192L609.19395,463.09394L608.05083,459.20735L604.6215,456.00664L605.7646,450.46209L605.07874,449.5476L603.24976,449.77622L595.33184,450.64959L570.78534,451.02296L570.0156,448.7976L570.88897,440.4208L574.00581,434.74799L579.23288,425.60309L578.78714,423.17049L580.024,422.51424L580.45987,420.59477L578.14239,418.51579L578.02727,416.37431L576.19155,412.25322L576.08255,406.29045L577.41008,403.80948L577.18678,400.39373L575.41729,397.31114L576.94371,395.82893L575.3731,393.32939L575.83035,391.67718L577.40775,385.15081L579.8937,383.11446L579.25203,380.74749L582.91,375.44496L585.74186,374.08854L585.52089,372.41338L585.23276,370.73228L588.10882,365.16461L590.45454,363.9331L590.60617,363.04009L627.94965,359.15892L628.13451,365.44225L628.29617,382.09331L627.48787,413.13216L627.32621,427.19665L630.07445,445.94929L631.55882,459.34458Z"},
         {id:"IA",n:"Iowa",d:"M569.19154,199.5843L569.45592,202.3705L571.67964,202.94776L572.63358,204.17309L573.13359,206.02845L576.92643,209.3871L577.6123,211.7786L576.93796,215.20307L575.35565,218.43505L574.55631,221.17684L572.38356,222.77888L570.66805,223.35128L565.08903,225.21148L563.69757,229.06017L564.42621,230.43191L566.26672,232.1145L565.98379,236.15079L564.22064,237.68865L563.44923,239.33179L563.57645,242.10811L561.69014,242.56535L560.06469,243.67026L559.7859,245.02289L560.06469,247.13781L558.51367,248.25388L556.04314,245.1206L554.78057,242.67073L489.04475,245.18558L488.12672,245.35102L486.07432,240.83506L485.8457,234.20499L484.24534,230.08978L483.55948,224.83147L481.27325,221.1735L480.35877,216.37243L477.61529,208.82788L476.47218,203.45524L475.10044,201.28333L473.50008,198.53987L475.45406,193.69604L476.8258,187.98047L474.08233,185.92286L473.62508,183.17939L474.53958,180.66454L476.25425,180.66454L558.90825,179.39506L559.74251,183.57818L561.99469,185.13915L562.2514,186.56224L560.22186,189.95155L560.41227,193.15707L562.92713,196.95527L565.45392,198.24889L568.5332,198.75194L569.19154,199.5843Z"},
         {id:"MN",n:"Minnesota",d:"M475.23781,128.82439L474.78056,120.36535L472.95158,113.04943L471.1226,99.560705L470.66535,89.729927L468.83637,86.300584L467.23601,81.270889L467.23601,70.982869L467.92187,67.096282L466.10094,61.644615L496.23336,61.679886L496.55668,53.435202L497.20332,53.273541L499.46657,53.758523L501.40649,54.566825L502.21479,60.063281L503.66974,66.206379L505.28634,67.822984L510.13616,67.822984L510.45948,69.277928L516.76424,69.601249L516.76424,71.702835L521.61405,71.702835L521.93737,70.409551L523.06899,69.277928L525.33224,68.631286L526.62552,69.601249L529.53541,69.601249L533.41526,72.187816L538.75006,74.612723L541.17497,75.097705L541.65995,74.127742L543.11489,73.64276L543.59987,76.552649L546.18644,77.845933L546.67142,77.360951L547.96471,77.522612L547.96471,79.624198L550.55127,80.594161L553.62282,80.594161L555.23943,79.785858L558.47264,76.552649L561.0592,76.067668L561.86751,77.845933L562.35249,79.139216L563.32245,79.139216L564.29241,78.330914L573.18374,78.007593L574.962,81.079142L575.60865,81.079142L576.32226,79.994863L580.76217,79.624198L580.15007,81.903657L576.21135,83.740782L566.96557,87.80191L562.19083,89.808807L559.11928,92.395375L556.69437,95.951905L554.43113,99.831756L552.65286,100.64006L548.12637,105.65153L546.83308,105.81319L542.5053,108.57031L540.04242,111.77542L539.8138,114.96681L539.90816,123.01016L538.53212,124.69891L533.45058,128.45888L531.2205,134.44129L534.09225,136.675L534.77214,139.90198L532.9169,143.14091L533.08769,146.88893L533.45655,153.61933L536.4848,156.62132L539.8138,156.62132L541.70491,159.75392L545.08408,160.25719L548.94324,165.92866L556.03053,170.04541L558.17368,172.92053L558.84483,179.36004L477.63333,180.50483L477.29541,144.82798L476.83817,141.85589L472.72296,138.42655L471.57984,136.59757L471.57984,134.9972L473.63744,133.39685L475.00918,132.02511L475.23781,128.82439Z"},
@@ -239,27 +203,43 @@
         }
 
         function onClick(event) {
-          /* TODO: Action when a polygon is clicked. */
-          console.log('Clicked:', event);
+          /* Action when a polygon is clicked. */
           document.getElementById('states-card').classList.add('d-none');
           document.getElementById('state-overview-card').classList.remove('d-none');
           document.getElementById('state_name').textContent = `${event.n} (${event.id})`;
-          cannlytics.data.getDataSet(`public/data/state_data/${event.id.toLowerCase()}`).then(function (data) {
-            console.log('State data:', data);
-            document.getElementById('state_background').src = data.background_image;
-            document.getElementById('state_population').textContent = `Population: ${data.population}`;
+          cannlytics.data.getDataSet(`public/data/state_data/${event.id.toLowerCase()}`).then(function (stateData) {
+            if (stateData.total_licensees) {
+              document.getElementById('state_background').src = stateData.background_image;
+            } else document.getElementById('state_background').src = 'https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2Fnavigation_map.jpg?alt=media&token=ae1c6a4c-3580-4592-bebb-9ae048523d6c';
+            document.getElementById('state_population').textContent = `Population: ${stateData.population}`;
             document.getElementById('state_data_button').href = `${window.location.href}state/${event.id.toLowerCase()}`;
+            if (stateData.total_licensees) {
+              document.getElementById('state_total_licensees').classList.remove('d-none');
+              document.getElementById('state_total_licensees').textContent = `Total Licensees: ${stateData.total_licensees}`;
+            } else document.getElementById('state_total_licensees').classList.add('d-none');
+            if (stateData.licensees_per_capita) {
+              var value = parseFloat(stateData.licensees_per_capita).toFixed(6);
+              document.getElementById('licensees_per_capita').classList.remove('d-none');
+              document.getElementById('licensees_per_capita').textContent = `Licensees per capita: ${value}`;
+            } else document.getElementById('licensees_per_capita').classList.add('d-none');
+            if (stateData.recreational) {
+              document.getElementById('recreational_status').classList.remove('d-none');
+            } else document.getElementById('recreational_status').classList.add('d-none');
+            if (stateData.medicinal) {
+              document.getElementById('medicinal_status').classList.remove('d-none');
+            } else document.getElementById('medicinal_status').classList.add('d-none');
             // TODO: Population source
             // TODO: state_total_licensees_per_capita (Rank: *calculate each state's rank* )
+            // TODO: Checkboxes or badges for recreational / medicinal
           });
-          //var slug = 'ok';
-          //var base = window.location.href;
-          //window.location.href = `${base}/state/${slug}`;
         }
         
         d3.select(id).selectAll('.state')
-          .data(paths).enter().append('path').attr('class', 'state').attr('d', function(d ){ return d.d;})
-          .style('fill', function(d){ return data[d.id].color; })
+          .data(paths).enter().append('path').attr('class', 'state').attr('d', function(d){ return d.d;})
+          .style('fill', function(d){
+            console.log(d.id);
+            return data[d.id].color;
+          })
           .on('mouseover', mouseOver)
           .on('mouseout', mouseOut)
           .on("click", onClick);
@@ -277,65 +257,27 @@
         "<tr><td>Forecast of 2021 Sales:</td><td>"+(d.forecast_sales_2021)+"</td></tr>"+
         "</table>";
     }
-    
-    var data = {
-      HI: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      AK: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      FL: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#96e6a1' },
-      SC: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      GA: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      AL: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      NC: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      TN: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      RI: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      CT: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      MA: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      ME: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      NH: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      VT: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      NY: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      NJ: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      PA: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      DE: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      MD: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      WV: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      KY: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      OH: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      MI: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      WY: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      MT: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      ID: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      WA: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      DC: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      TX: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      CA: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#45B649' },
-      AZ: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      NV: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      UT: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' }, 
-      CO: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#45B649' },
-      NM: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      OR: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      ND: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      SD: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      NE: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      IA: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      MS: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      IN: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      IL: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      MN: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' }, 
-      WI: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      MO: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      AR: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      OK: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#96e6a1' },
-      KS: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      LS: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-      VA: { licensees: 0, avg_monthly_sales: 0, forecast_sales_2021: 0, color: '#DBDB93' },
-    };	
 
-    // Draw states
-    polygons.draw('#polygon-svg', data, tooltipHtml);
+    // Get state data from Firestore.
+    cannlytics.data.getStateData().then(function(stateData) {
+      console.log('State data:', stateData);
+
+      // Format data, setting color conditionally on recreational / medicinal status.
+      var data = {};
+      stateData.forEach(function(obs) {
+        if (obs === undefined) obs = {}
+        if (obs.recreational) obs.color = '#45B649';
+        else if (obs.medicinal) obs.color = '#96e6a1';
+        else obs.color = '#DBDB93';
+        console.log(obs.state);
+        data[obs.state] = obs;
+      });
+
+      // Draw figure.
+      polygons.draw('#polygon-svg', data, tooltipHtml);
+      d3.select(self.frameElement).style('height', '600px');
+    });
     
-    d3.select(self.frameElement).style('height', '600px'); 
   </script>
 {% endblock %}
 </html>
