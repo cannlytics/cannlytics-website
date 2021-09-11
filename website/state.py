@@ -20,6 +20,12 @@ page_data = {
                 "limit": 3,
                 "order_by": "published_at",
                 "desc": True
+            },
+            {
+                "name": "partners",
+                "ref": "public/partners/partner_data",
+                "limit": 3,
+                "order_by": "name",
             }
         ],
     },

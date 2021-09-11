@@ -82,36 +82,59 @@
         <svg width="960" height="600" id="polygon-svg"></svg>
       </div>
 
+      <!-- Information d-flex flex-direction-column-->
+      <div class="col-lg-3">
+
+        <!-- Legend -->
+        <!-- TODO: Place better -->
+        <div id="map-legend" class="card ms-4 pt-3 px-3" style="border:none !important;height:150px;">
+          <div class="d-flex align-items-center">
+            <input readonly disabled type="color" class="form-control form-control-color" value="#45B649" style="border:none !important;width:50px;">
+            <div class="serif text-dark fs-6">Recreational</div>
+          </div>
+          <div class="d-flex align-items-center">
+            <input readonly disabled type="color" class="form-control form-control-color" value="#96e6a1" style="border:none !important;width:50px;">
+            <div class="serif text-dark fs-6">Medical</div>
+          </div>
+          <div class="d-flex align-items-center">
+            <input readonly disabled type="color" class="form-control form-control-color" value="#DBDB93" style="border:none !important;width:50px;">
+            <div class="serif text-dark fs-6">Not Permitted</div>
+          </div>
+        </div>
+
+        <!-- State detail card -->
+        <div id="state-overview-card" class="card px-0 mt-3 d-none">
+          <img id="state_background" src="" class="card-img-top" alt="" style="max-height:450px;">
+          <div class="card-body px-3 bg-transparent">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 id="state_name" class="card-title serif text-dark fs-5 mb-0"></h5>
+              <!-- FIXME: Then remove d-none -->
+              <a id="state_data_button" class="btn btn-sm btn-sm-light ms-2 d-none" href="">View State Data</a>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <span id="recreational_status" class="badge rounded-pill bg-success me-2 d-none">Recreational</span>
+              <span id="medicinal_status" class="badge rounded-pill bg-info d-none">Medicinal</span>
+            </div>
+            <div class="card-text text-dark fs-6"><small id="state_total_licensees" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="state_population" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="licensees_per_capita" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_per_capita" class="serif"></small></div>
+            {% comment %} <p id="state_description" class="card-text"></p> {% endcomment %}
+          </div>
+        </div>
+
+      </div>
+
       <!-- Tooltip -->
       <div class="col col-md-5 card m-3" id="tooltip"></div>
 
       <!-- TODO: Data Card / List -->
       <!-- Show list of states if no state is selected -->
       <!-- If a state is selected, then show stats for the state + list licensees? -->
-      <div id="states-card" class="card col-lg-3">
+      <div id="states-card" class="card col-lg-3 d-none">
         <h5>States</h5>
 
-      </div>
-
-      <!-- State detail card -->
-      <div id="state-overview-card" class="card col-lg-3 px-0 d-none">
-        <img id="state_background" src="" class="card-img-top" alt="" style="max-height:450px;">
-        <div class="card-body px-3 bg-transparent">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 id="state_name" class="card-title serif text-dark fs-5 mb-0"></h5>
-            <a id="state_data_button" class="btn btn-sm btn-sm-light ms-2" href="">View State Data</a>
-          </div>
-          <div class="d-flex align-items-center mb-3">
-            <span id="recreational_status" class="badge rounded-pill bg-success me-2 d-none">Recreational</span>
-            <span id="medicinal_status" class="badge rounded-pill bg-info d-none">Medicinal</span>
-          </div>
-          <div class="card-text text-dark fs-6"><small id="state_total_licensees" class="serif"></small></div>
-          <div class="card-text text-dark fs-6"><small id="state_population" class="serif"></small></div>
-          <div class="card-text text-dark fs-6"><small id="licensees_per_capita" class="serif"></small></div>
-          <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales" class="serif"></small></div>
-          <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_per_capita" class="serif"></small></div>
-          {% comment %} <p id="state_description" class="card-text"></p> {% endcomment %}
-        </div>
       </div>
 
     </div>
@@ -251,10 +274,12 @@
   <script>
 
     function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
-      return "<h4>"+n+"</h4><table>"+
-        "<tr><td>Licensees:</td><td>"+(d.licensees)+"</td></tr>"+
-        "<tr><td>Avg. Monthly Sales:</td><td>"+(d.avg_monthly_sales)+"</td></tr>"+
-        "<tr><td>Forecast of 2021 Sales:</td><td>"+(d.forecast_sales_2021)+"</td></tr>"+
+      return "<h4>"+n+"</h4><table>" +
+        "<tr><td>Population:</td><td>"+(d.population)+"</td></tr>"+
+        // FIXME: Enhance tooltips
+        //"<tr><td>Licensees:</td><td>"+(d.licensees)+"</td></tr>"+
+        //"<tr><td>Avg. Monthly Sales:</td><td>"+(d.avg_monthly_sales)+"</td></tr>"+
+        //"<tr><td>Forecast of 2021 Sales:</td><td>"+(d.forecast_sales_2021)+"</td></tr>"+
         "</table>";
     }
 
