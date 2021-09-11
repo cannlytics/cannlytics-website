@@ -1,7 +1,7 @@
 """
 Mixins | Cannlytics Website
 Created: 12/30/2020
-Updated: 7/27/2021
+Updated: 8/30/2021
 """
 # Standard imports
 from datetime import datetime
@@ -23,13 +23,16 @@ class BaseMixin(ContextMixin):
         folder = 'website/pages'
         page = self.kwargs.get('page', 'homepage')
         section = self.kwargs.get('section', '')
+        unit = self.kwargs.get('unit', '')
         templates = [
             f'{folder}/{page}.html',
+            f'{folder}/{page}/{section}/{unit}.html',
+            f'{folder}/{page}/{section}.html',
             f'{folder}/{page}/{page}.html',
             f'{folder}/general/{page}.html',
         ]
-        if section:
-            templates.insert(0, f'{folder}/{page}/{section}.html')
+        # if section:
+        #     templates.insert(0, f'{folder}/{page}/{section}.html')
         return templates
 
 
@@ -47,13 +50,12 @@ class BaseMixin(ContextMixin):
         now = datetime.now().isoformat()
         date = now[:10]
         values = {
-            # TODO: Get as many data points as possible about the page visit.
             'date': date,
             'time': now,
             'page': self.request.path,
             'query': self.request.GET.get('q')
         }
-        ref = f'website/logs/page_visits/{now}'
+        ref = f'logs/website/page_visits/{now}'
         update_document(ref, values)
 
 

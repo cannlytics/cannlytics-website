@@ -20,6 +20,12 @@ page_data = {
                 "limit": 3,
                 "order_by": "published_at",
                 "desc": True
+            },
+            {
+                "name": "partners",
+                "ref": "public/partners/partner_data",
+                "limit": 3,
+                "order_by": "name",
             }
         ],
     },
@@ -55,8 +61,8 @@ page_docs = {
 
 state = { # Optional: Turn into models and save in database?
   "contact": {
-      "title": "You're welcome to contact us anytime about anything.",
-      "message": "Please enter your contact information and message and the team will get back to you as soon as possible.",
+      "title": "Contact Us",
+      "message": "You're welcome to contact us anytime about anything. Please enter your contact information and message and the team will get back to you as soon as possible.",
   },
   "general": {
     "title": "Cannlytics",

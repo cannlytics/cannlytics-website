@@ -523,6 +523,13 @@ body.dark .sliding-action:hover {
   top: 1rem;
 }
 
+a.background-hover:hover {
+  background-color: #50fa7b33;
+}
+body.dark a.background-hover:hover {
+  background-color: #ffa60033;
+}
+
 /* Small light buttons */
 .btn-sm-light {
   padding: 3px 12px;
@@ -1104,8 +1111,14 @@ body.dark .feather-search {
 body:not(.dark) .card {
   color: #f5f5f5;
 }
+body:not(.dark) .card-opaque {
+  background-color: #f5f5f590 !important;
+}
 body.dark .card {
   background-color: #2e303e;
+}
+body.dark .card-opaque {
+  background-color: #2e303e90 !important;
 }
 body.dark .card-header {
   background-color: #323443;

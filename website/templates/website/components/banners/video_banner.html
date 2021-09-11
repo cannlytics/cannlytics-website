@@ -12,10 +12,11 @@
     video_id
     video_url
 -->
-<section class="container mb-2">
-  <h2 class="mb-3"><a class="serif text-dark" href="/videos">Media</a></h2>
+{% load icon %}
+<section class="container mb-2 my-5">
+  <h2 class="mb-3 pt-5 mt-5"><a class="serif text-dark" href="/videos">Want to explore the Cannlytics troves?</a></h2>
 </section>
-<section class="container">
+<section class="container mt-4">
   <div class="row row-cols-3 justify-content-md-start">
     {% for video in video_archive %}
       <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-0 px-4">
@@ -44,14 +45,21 @@
     {% endfor %}
   </div>
 </section>
-<section class="container my-4">
-  <div class="d-grid gap-2">
+<section class="container mt-4 mb-5">
+  <div class="grid gap-2">
     <a
-      class="btn btn-sm btn-sm-light btn-md-light"
+      class="btn btn-sm btn-sm-light btn-md-light me-2"
       href="{% url 'videos' %}"
       type="button"
     >
       <small class="serif">View more</small> &raquo;
+    </a>
+    <a
+      class="btn btn-sm btn-sm-light btn-md-light"
+      href="/data"
+      type="button"
+    >
+      <small class="serif">Get the data</small> {% icon "database" width="16px" height="16px"%}
     </a>
   </div>
 </section>
