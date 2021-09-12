@@ -270,17 +270,24 @@
       this.polygons=polygons;
     })();
   </script>
-  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="{% static 'website/js/d3.v3.min.js' %}"></script>
   <script>
 
-    function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
-      return "<h4>"+n+"</h4><table>" +
-        "<tr><td>Population:</td><td>"+(d.population)+"</td></tr>"+
-        // FIXME: Enhance tooltips
-        //"<tr><td>Licensees:</td><td>"+(d.licensees)+"</td></tr>"+
-        //"<tr><td>Avg. Monthly Sales:</td><td>"+(d.avg_monthly_sales)+"</td></tr>"+
-        //"<tr><td>Forecast of 2021 Sales:</td><td>"+(d.forecast_sales_2021)+"</td></tr>"+
-        "</table>";
+    function tooltipHtml(n, d) {
+      /* Function to create HTML tooltips. */
+      var tooltip = `
+        <h4 class="text-start fs-4 p-1 mb-1">${n}</h4>
+        <table class="fs-6 text-start">
+          <tr>
+            <td class="serif pe-2 p-1">Population:</td>
+            <td class="serif p-1 p-1">${d.population}</td>
+          </tr>`;
+      if (d.total_licensees) tooltip += `<tr><td class="serif p-1">Licensees:</td><td class="serif p-1">${d.total_licensees}</td></tr>`;
+      if (d.licensees_per_capita) tooltip += `<tr><td class="serif p-1 text-nowrap">Licensees per capita:</td><td class="serif p-1">${parseFloat(d.licensees_per_capita).toFixed(6)}</td></tr>`;
+      if (d.avg_monthly_sales) tooltip += `<tr><td class="serif p-1">Avg. Monthly Sales:</td><td class="serif p-1">${d.avg_monthly_sales}</td></tr>`;
+      if (d.forecast_sales_2021) tooltip += `<tr><td class="serif p-1">Forecast of 2021 Sales:</td><td class="serif p-1">${d.forecast_sales_2021}</td></tr>`;
+      tooltip += "</table>";
+      return tooltip;
     }
 
     // Get state data from Firestore.
@@ -298,7 +305,7 @@
         data[obs.state] = obs;
       });
 
-      // Draw figure.
+      // Draw the figure.
       polygons.draw('#polygon-svg', data, tooltipHtml);
       d3.select(self.frameElement).style('height', '600px');
     });
