@@ -348,6 +348,18 @@ body.dark .text-gradient-reverse {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.text-gradient-orange {
+  background: -webkit-linear-gradient(-45deg,#e53a23ff, #B9220E);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body.dark .text-gradient-orange {
+  background: -webkit-linear-gradient(-45deg,#ffa600, #e53a23ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 /* Background gradients */
 .bg-gradient-green {

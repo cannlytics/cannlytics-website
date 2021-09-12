@@ -103,16 +103,12 @@ state = { # Optional: Turn into models and save in database?
   },
   "homepage": {
     "hero": {
-        # AB TEST 1:
-        # "title": "A Modern Cannabis-Testing Engine",
         "title": "Cannabis Analytics for the 21st Century",
-        # AB TEST 2:
-        # "message": "Super power your lab with free and ethical cannabis-testing software made with 💖, tried-and-true, and ready for you to plug and play or pop the hood and tinker to your heart's content.",
-        "message": "Super power your lab with open-source cannabis-testing software made with love and ready for you to plug & play or pop the hood and tinker to your 💖's content.",
+        "message": "Super power your lab with open-source cannabis-testing software made with love ❤️ and ready for you to plug & play or pop the hood and tinker to your heart's content.",
         "image": "website/images/engine_icons/space_station.svg",
-        "primary_action": "Get Started",
-        "primary_action_url": "/docs",
-        "secondary_action": "Sign Up",
+        "primary_action": "Get Started 📖",
+        "primary_action_url": "https://docs.cannlytics.com",
+        "secondary_action": "Sign Up 🚀",
         "secondary_action_url": "https://console.cannlytics.com",
     },
     "features": [

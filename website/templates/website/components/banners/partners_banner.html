@@ -22,8 +22,8 @@
       {% if item.active %}
         <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-0 mx-5">
           <div
-            class="w-100"
-            style="height:75px;"
+            class="p-4 w-100 d-flex align-items-center {% if item.logo_background == 'dark' %}bg-dark{% endif %}"
+            style="height:125px;"
           >
             <a href="{{ item.website }}" title="{{ item.name }}">
               <img

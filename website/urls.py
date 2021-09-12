@@ -14,6 +14,32 @@ from django_robohash.views import robohash
 # Internal imports
 from website.views import api, data, views, email
 
+# FIXME: Missing pages and 500 errors. 
+
+# 404:
+
+# /robots.txt/
+# /ads.txt/
+# /docs/website/publishing/
+# /docs/
+# docs/app/get-started/
+# /docs/website/installation/contributing/
+# /docs/website/publishing/
+# /docs/website/architecture
+# /docs/api/regulations/
+# /docs/api/instruments/
+# /docs/api/authentication/
+# /docs/lims/get-started/
+# /docs/api/labs/
+# /docs/console/installation/
+# /docs/api/limits/
+# /docs/about/faq/
+# /api/v1/labs/
+# /docs/api/lab_results/
+
+# 500 errors:
+
+# /subscribe/
 
 # Main URLs
 urlpatterns = [
