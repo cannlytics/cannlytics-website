@@ -3,14 +3,17 @@
 <!--
   National Realtime Statistics | Cannlytics
   Created: 9/25/2021
-  Updated: 9/25/2021
+  Updated: 9/26/2021
+  TODO:
+    - For each data point list which states are included in the statistic.
 -->
 <section class="container my-5">
-  <h2 class="mb-3 pt-5 serif text-dark">National Realtime Statistics</h2>
-  <h4>The one and only source for realtime cannabis statistics.</h4>
+  <h2 class="mb-2 pt-5 serif text-dark">National Real-Time Statistics</h2>
+  <i class="fs-6 serif text-gradient-orange">
+    The one and only source for real-time aggregate cannabis statistics.
+  </i>
 
-  <!-- For each data point list which states are included in the statistic. -->
-
+  <!-- Market Statistics -->
   <h4 class="mt-5">Market</h4>
 
     <h5>Total Cannabis Licensees: #</h5>
@@ -29,6 +32,7 @@
     <!-- TODO: Chart | Timeline of monthly total sales -->
 
 
+  <!-- Cannabinoids Statistics -->
   <h4 class="mt-5">Cannabinoids</h4>
 
     <!-- TODO: Sample Type Select-->
@@ -40,6 +44,7 @@
     <!-- TODO: Chart | Histogram of the Distribution of Analyte Concentrations -->
 
 
+  <!-- Terpenes Statistics -->
   <h4 class="mt-5">Terpenes</h4>
 
     <!-- National YTD AVG. | Total Terpenes -->
@@ -47,6 +52,7 @@
     <!-- Optional dropdown to show the top terpenes -->
 
 
+  <!-- Contaminants Statistics -->
   <h4 class="mt-5">Contaminants</h4>
 
     <!-- TODO: A table of contaminants -->
@@ -59,32 +65,49 @@
   <!-- TODO: Chart | Scatterplot of concentration to time with a horizontal limit line -->
 
 
+  <!-- Production Statistics -->
   <h4 class="mt-5">Production</h4>
 
     <h5>Total Pounds Grown</h5>
 
     <h5>Total Kilograms Processed</h5>
 
-  <!-- TODO: Load data in realtime from Firestore! -->
+  <!-- References -->
+  <!-- TODO: Dynamically list data sources -->
+  <h6 class="fs-5 fw-bold mt-5 mb-3">References</h6>
+  <ol>
+    <li class="serif fs-6">
+      <small class="serif">
+        Data source...
+      </small>
+    </li>
+  </ol>
 
-  <!-- TODO: Data Sources as References -->
-  <h6 class="fs-5 fw-bold mt-5">References</h6>
-
-
-  <!-- TODO: Notes -->
-  <h6 class="fs-5 fw-bold mt-5">Notes</h6>
+  <!-- Notes (Optional: Load notes from Firestore or state?) -->
+  <h6 class="fs-5 fw-bold mt-5 mb-3">Notes</h6>
   <p class="fs-6">
     <small>
-      Statistics are calculated from where data could be found.
+      Aggregate statistics are calculated from available data only and may not be representative of actual values.
     </small>
   </p>
 
-  <!-- TODO: How-to-cite -->
-  <h6 class="fs-5 fw-bold mt-5">Suggested Citation</h6>
+  <!-- How-to-cite -->
+  <h6 class="fs-5 fw-bold mt-5 mb-3">Suggested Citation</h6>
   <p class="fs-6">
     <small>Public cannabis data retrieved from Cannlytics; https://cannlytics.com/data, {% now "jS \o\f F, Y" %}.</small>
   </p>
 
 </section>
+
+
+  <!-- TODO: Load data in realtime from Firestore! -->
+  <script>
+
+    console.log('Get da data!!!');
+    // Get datasets from Firestore.
+
+    // Stream statistics from Firestore.
+
+  </script>
 
 </html>

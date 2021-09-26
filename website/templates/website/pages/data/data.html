@@ -96,17 +96,17 @@
   </section>
 
   <!-- Data Card -->
-  <section class="container card">
+  <section class="container card px-0">
 
       <!-- TODO: Data Card / List -->
       <!-- Show list of states if no state is selected -->
       <!-- If a state is selected, then show stats for the state + list licensees? -->
-      <div id="states-card" class="card col-lg-3 d-none">
+      {% comment %} <div id="states-card" class="card col-lg-3 d-none">
         <h5>States</h5>
-      </div>
+      </div> {% endcomment %}
 
       <!-- Legend -->
-      <!-- TODO: Place better -->
+      <!-- FIXME: Place better -->
       <div
         id="map-legend"
         class="card bg-dark ms-4 pt-3 px-3 d-none"
@@ -127,37 +127,37 @@
       </div>
 
       <!-- State detail card -->
-      <div id="state-overview-card" class="card col col-md-6 px-0 mt-3 d-none">
-        {% comment %} <img
-          id="state_background"
-          class="card-img-top"
-          style="max-height:50px;"
-          src=""
-          alt=""
-        > {% endcomment %}
-        <div class="card-body px-3 bg-transparent">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 id="state_name" class="card-title serif text-dark fs-5 mb-0"></h5>
-            <a
-              id="state_data_button"
-              class="btn btn-sm btn-sm-light ms-2 d-none"
-              href=""
-            >
-              View State Data
-            </a>
+      <div class="row row-wrap">
+      {% for i in '0'|make_list %}
+        <div
+          id="state-overview-card-{{ i }}"
+          class="card col col-md-12 px-0 mx-0 no-border d-none"
+        >
+          <div class="card-body px-3 bg-transparent">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 id="state_name_{{ i }}" class="card-title serif text-dark fs-5 mb-0"></h5>
+              <a
+                id="state_data_button_{{ i }}"
+                class="btn btn-sm btn-sm-light ms-2 d-none"
+                href=""
+              >
+                View State Data
+              </a>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <span id="recreational_status_{{ i }}" class="badge rounded-pill bg-success me-2 d-none">Recreational</span>
+              <span id="medicinal_status_{{ i }}" class="badge rounded-pill bg-info d-none">Medicinal</span>
+            </div>
+            <div class="card-text text-dark fs-6"><small id="state_total_licensees_{{ i }}" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="state_population_{{ i }}" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="licensees_per_capita_{{ i }}" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_{{ i }}" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_per_capita_{{ i }}" class="serif"></small></div>
+            {% comment %} <p id="state_description" class="card-text"></p> {% endcomment %}
+            <!-- TODO: State data sources -->
           </div>
-          <div class="d-flex align-items-center mb-3">
-            <span id="recreational_status" class="badge rounded-pill bg-success me-2 d-none">Recreational</span>
-            <span id="medicinal_status" class="badge rounded-pill bg-info d-none">Medicinal</span>
-          </div>
-          <div class="card-text text-dark fs-6"><small id="state_total_licensees" class="serif"></small></div>
-          <div class="card-text text-dark fs-6"><small id="state_population" class="serif"></small></div>
-          <div class="card-text text-dark fs-6"><small id="licensees_per_capita" class="serif"></small></div>
-          <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales" class="serif"></small></div>
-          <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_per_capita" class="serif"></small></div>
-          {% comment %} <p id="state_description" class="card-text"></p> {% endcomment %}
-          <!-- TODO: State data sources -->
         </div>
+      {% endfor %}
       </div>
 
   </section>
@@ -173,7 +173,7 @@
 
     <!-- Data Source Caption (Optional: Load from Firestore?) -->
     <figcaption class="figure-caption text-secondary markdown pt-3" style="max-width:540px;">
-      <h6 class="sans-serif fw-bold mt-3">
+      <h6 class="text-dark sans-serif fw-bold mt-3">
         Data Sources
       </h6>
       Resident population is published by the
@@ -250,6 +250,8 @@
         {id:"CA",n:"California",d:"M144.69443,382.19813L148.63451,381.70951L150.12055,379.69807L150.66509,376.75698L147.11357,376.16686L146.5994,375.49864L147.0769,373.46633L146.91762,372.87666L148.84019,372.25707L151.88297,369.42439L152.46453,364.42929L153.84443,361.02718L155.78772,358.86092L159.30659,357.27125L160.96098,355.66642L161.02971,353.55758L160.03638,352.97757L159.01323,351.90484L157.85801,346.05639L155.17281,341.2263L155.73862,337.7213L153.31904,336.69199L84.257718,232.51359L103.15983,164.9121L36.079967,149.21414L34.573071,153.94738L34.41141,161.38376L29.238275,173.18497L26.166727,175.77154L25.843406,176.90316L24.06514,177.71147L22.610196,181.91464L21.801894,185.14785L24.550122,189.35102L26.166727,193.55419L27.29835,197.11072L26.975029,203.57714L25.196764,206.64869L24.550122,212.46847L23.580159,216.18666L25.358424,220.06651L28.106652,224.593L30.369899,229.44282L31.663182,233.48433L31.339862,236.71754L31.016541,237.20252L31.016541,239.3041L36.674657,245.60886L36.189676,248.03377L35.543034,250.29702L34.896392,252.23694L35.058052,260.48163L37.159638,264.19982L39.099564,266.78638L41.847792,267.27137L42.817755,270.01959L41.686132,273.57612L39.584545,275.19273L38.452922,275.19273L37.64462,279.07258L38.129601,281.98247L41.362811,286.3473L42.979415,291.6821L44.434359,296.37025L45.727643,299.4418L49.122513,305.26158L50.577457,307.84814L51.062439,310.75803L52.679043,311.72799L52.679043,314.1529L51.870741,316.09283L50.092476,323.20589L49.607494,325.14581L52.032402,327.89404L56.235574,328.37902L60.762067,330.15729L64.641918,332.25887L67.551807,332.25887L70.461695,335.33042L73.048262,340.18024L74.179886,342.44348L78.059737,344.54507L82.909551,345.35337L84.364495,347.45496L85.011137,350.68817L83.556193,351.33481L83.879514,352.30477L87.112725,353.11307L89.860953,353.27474L93.020842,351.58789L96.900696,355.79106L97.708998,358.05431L100.29557,362.25748L100.61889,365.49069L100.61889,374.867L101.10387,376.64526L111.12682,378.10021L130.84939,380.84843L144.69443,382.19813ZM56.559218,338.48145L57.852506,340.01723L57.690846,341.31052L54.457625,341.22969L53.891811,340.01723L53.245167,338.56228L56.559218,338.48145ZM58.49915,338.48145L59.711608,337.83481L63.268151,339.9364L66.339711,341.14885L65.450575,341.79551L60.924066,341.55301L59.307456,339.9364L58.49915,338.48145ZM79.191764,358.28493L80.970029,360.62901L81.778342,361.59898L83.314121,362.16479L83.879928,360.70984L82.909965,358.93157L80.242562,356.91081L79.191764,357.07247L79.191764,358.28493ZM77.736809,366.93379L79.515085,370.08618L80.727543,372.02612L79.272589,372.2686L77.979305,371.05615C77.979305,371.05615,77.251828,369.6012,77.251828,369.19704C77.251828,368.7929,77.251828,367.01462,77.251828,367.01462L77.736809,366.93379Z"}
       ];
       var polygons = {};
+
+      var statesSelected = [];
         
       polygons.draw = function(id, data, toolTip) {
 		
@@ -268,30 +270,38 @@
 
         function onClick(event) {
           /* Action when a polygon is clicked. */
-          document.getElementById('states-card').classList.add('d-none');
-          document.getElementById('state-overview-card').classList.remove('d-none');
-          document.getElementById('state_name').textContent = `${event.n} (${event.id})`;
+          // document.getElementById('states-card').classList.add('d-none');
+          // Optional: Populate 0 if no datasets yet, otherwise populate 1.
+          var cardId = 0;
+          //if (statesSelected.length >= 1) {
+          //  cardId = 1;
+          //} else {
+          //  statesSelected.push(event.id);
+          //}
+          console.log('Looking for:', `state-overview-card-${cardId}`);
+          document.getElementById(`state-overview-card-${cardId}`).classList.remove('d-none');
+          document.getElementById(`state_name_${cardId}`).textContent = `${event.n} (${event.id})`;
           cannlytics.data.getDataSet(`public/data/state_data/${event.id.toLowerCase()}`).then(function (stateData) {
+            document.getElementById(`state_population_${cardId}`).textContent = `Population: ${stateData.population}`;
+            document.getElementById(`state_data_button_${cardId}`).href = `${window.location.href}state/${event.id.toLowerCase()}`;
+            if (stateData.total_licensees) {
+              document.getElementById(`state_total_licensees_${cardId}`).classList.remove('d-none');
+              document.getElementById(`state_total_licensees_${cardId}`).textContent = `Total Licensees: ${stateData.total_licensees}`;
+            } else document.getElementById(`state_total_licensees_${cardId}`).classList.add('d-none');
+            if (stateData.licensees_per_capita) {
+              var value = parseFloat(stateData.licensees_per_capita).toFixed(6);
+              document.getElementById(`licensees_per_capita_${cardId}`).classList.remove('d-none');
+              document.getElementById(`licensees_per_capita_${cardId}`).textContent = `Licensees per capita: ${value}`;
+            } else document.getElementById(`licensees_per_capita_${cardId}`).classList.add('d-none');
+            if (stateData.recreational) {
+              document.getElementById(`recreational_status_${cardId}`).classList.remove('d-none');
+            } else document.getElementById(`recreational_status_${cardId}`).classList.add('d-none');
+            if (stateData.medicinal) {
+              document.getElementById(`medicinal_status_${cardId}`).classList.remove('d-none');
+            } else document.getElementById(`medicinal_status_${cardId}`).classList.add('d-none');
             // if (stateData.total_licensees) {
             //   document.getElementById('state_background').src = stateData.background_image;
             // } else document.getElementById('state_background').src = 'https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2Fnavigation_map.jpg?alt=media&token=ae1c6a4c-3580-4592-bebb-9ae048523d6c';
-            document.getElementById('state_population').textContent = `Population: ${stateData.population}`;
-            document.getElementById('state_data_button').href = `${window.location.href}state/${event.id.toLowerCase()}`;
-            if (stateData.total_licensees) {
-              document.getElementById('state_total_licensees').classList.remove('d-none');
-              document.getElementById('state_total_licensees').textContent = `Total Licensees: ${stateData.total_licensees}`;
-            } else document.getElementById('state_total_licensees').classList.add('d-none');
-            if (stateData.licensees_per_capita) {
-              var value = parseFloat(stateData.licensees_per_capita).toFixed(6);
-              document.getElementById('licensees_per_capita').classList.remove('d-none');
-              document.getElementById('licensees_per_capita').textContent = `Licensees per capita: ${value}`;
-            } else document.getElementById('licensees_per_capita').classList.add('d-none');
-            if (stateData.recreational) {
-              document.getElementById('recreational_status').classList.remove('d-none');
-            } else document.getElementById('recreational_status').classList.add('d-none');
-            if (stateData.medicinal) {
-              document.getElementById('medicinal_status').classList.remove('d-none');
-            } else document.getElementById('medicinal_status').classList.add('d-none');
             // TODO: state_total_licensees_per_capita (Rank: *calculate each state's rank* )
             // TODO: Checkboxes or badges for recreational / medicinal
           });
@@ -334,7 +344,6 @@
 
     // Get state data from Firestore.
     cannlytics.data.getStateData().then(function(response) {
-      console.log('State data:', response);
 
       // Format data, setting color conditionally on recreational / medicinal status.
       var data = {};
@@ -344,7 +353,8 @@
         else if (obs.medicinal) obs.color = '#96e6a1';
         else obs.color = '#DBDB93';
         console.log(obs.state);
-        if (obs.state_data) document.getElementById('state_data_button').classList.remove('d-none');
+        // FIXME: Pass index
+        if (obs.state_data) document.getElementById('state_data_button_0').classList.remove('d-none');
         data[obs.state] = obs;
       });
 
