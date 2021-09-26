@@ -1,7 +1,7 @@
 """
 URLs | Cannlytics Website
 Created: 12/29/2020
-Updated: 8/30/2021
+Updated: 9/16/2021
 Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
 """
 # External imports
@@ -14,32 +14,20 @@ from django_robohash.views import robohash
 # Internal imports
 from website.views import api, data, views, email
 
-# FIXME: Missing pages and 500 errors. 
+# FIXME: Fix missing pages and 500 errors. 
 
 # 404:
 
-# /robots.txt/
-# /ads.txt/
-# /docs/website/publishing/
-# /docs/
-# docs/app/get-started/
-# /docs/website/installation/contributing/
-# /docs/website/publishing/
-# /docs/website/architecture
-# /docs/api/regulations/
-# /docs/api/instruments/
-# /docs/api/authentication/
-# /docs/lims/get-started/
-# /docs/api/labs/
-# /docs/console/installation/
-# /docs/api/limits/
-# /docs/about/faq/
-# /api/v1/labs/
-# /docs/api/lab_results/
+    # /robots.txt/
+    # /ads.txt/
 
 # 500 errors:
 
-# /subscribe/
+    # /subscribe/
+
+# Broken API endpoints:
+
+    # /api/v1/labs/
 
 # Main URLs
 urlpatterns = [
@@ -66,6 +54,32 @@ urlpatterns = [
     path('<page>/<section>/', views.GeneralView.as_view(), name='section'),
     path('<page>/<section>/<str:unit>', views.GeneralView.as_view()),
 ]
+
+# Redirects from old pages.
+# https://stackoverflow.com/questions/35903832/how-to-redirect-to-external-url-in-django
+# urlpatterns += [
+#     path('docs/', include([
+#         path('', api.labs),
+#         path('labs/', api.labs),
+#     ])),
+# ]
+
+# FIXME: Broken documentation links.
+# /docs/website/publishing/
+# /docs/
+# docs/app/get-started/
+# /docs/website/installation/contributing/
+# /docs/website/publishing/
+# /docs/website/architecture
+# /docs/api/regulations/
+# /docs/api/instruments/
+# /docs/api/authentication/
+# /docs/lims/get-started/
+# /docs/api/labs/
+# /docs/console/installation/
+# /docs/api/limits/
+# /docs/about/faq/
+# /docs/api/lab_results/
 
 # Serve static assets in development and production.
 if settings.DEBUG:
