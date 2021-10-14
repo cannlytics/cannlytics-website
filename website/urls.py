@@ -42,6 +42,9 @@ urlpatterns = [
         path('promotions/', data.promotions, name='promotions'),
         path('subscribe/', data.subscribe, name='subscribe'),
         path('send-message/', email.send_message),
+        path('v1/data/buy/', data.buy_data),
+        path('v1/data/publish/', data.publish_data),
+        path('v1/data/sell/', data.sell_data),
     ])),
     path('community/', views.CommunityView.as_view(), name='community'),
     path('labs/', views.CommunityView.as_view(), name='labs'),  # Redundant

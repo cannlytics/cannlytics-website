@@ -65,3 +65,6 @@ typings/
 
 # Ignore any SQL database
 *.sqlite3
+
+# Ignore local distribution of cannlytics
+cannlytics/

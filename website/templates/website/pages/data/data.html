@@ -62,6 +62,14 @@
     <ul class="serif mt-3">
       <li class="mb-3">
         <a
+          href="../data/market"
+          class="serif text-dark fw-bold background-hover"
+        >
+          Market <span class="badge rounded-pill bg-warning">New</span>
+        </a>
+      </li>
+      <li class="mb-3">
+        <a
           href="../data#state-data"
           class="serif text-dark fw-bold background-hover"
         >
@@ -188,7 +196,7 @@
       </div> {% endcomment %}
 
   <!-- National Statistics -->
-  {% include "website/pages/data/national_realtime_statistics.html" %}
+  {% comment %} {% include "website/pages/data/data_components/national_realtime_statistics.html" %} {% endcomment %}
 
 {% endblock material %}
 

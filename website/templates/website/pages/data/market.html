@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<!--
+  Data Market Page | Cannlytics
+  Created: 10/14/2021
+  Updated: 10/14/2021
+-->
+{% extends "website/index.html" %}
+{% load static %}
+{% block title %}Data Market | Cannlytics{% endblock %}
+{% block material %}
+
+  <!-- Banner -->
+  {% include "website/components/heros/hero_banner.html" with
+    title='Data Market'
+    description='Browse the Data Market.'
+    background_image='https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2Fvictorian_ransom.jpg?alt=media&token=159b4792-ac98-4c97-8e5d-109d8228d5ac'
+    image_url=' '
+    only
+  %}
+
+  <!-- Title Section -->
+  <section class="container mb-2 mt-5">
+
+    <!-- Title -->
+    <h2 class="mb-3 pt-5 serif">Are you looking for cannabis data? You're in the right place.</h2>
+    <p class="fs-6 double-line" style="max-width:540px;">
+      <small>
+        Let's commence.
+      </small>
+    </p>
+
+    <!-- TODO: Publish dataset(s) -->
+
+    <!-- TODO: Sell dataset(s) -->
+
+    <!-- TODO: Buy dataset(s) -->
+
+    <!-- TODO: Table of datasets for sale -->
+    
+
+  </section>
+
+{% endblock material %}
