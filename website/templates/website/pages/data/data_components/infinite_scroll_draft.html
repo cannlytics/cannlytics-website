@@ -176,7 +176,7 @@
 
     <!-- TODO: Buy dataset(s) -->
     <!-- Sidepanel of filters and grid of data sets -->
-    <div class="container px-0">
+    <div class="container px-3">
 
       <div class="d-flex">
 
@@ -185,13 +185,6 @@
         class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
         style="width: 280px;"
       >
-
-        <!-- Price range -->
-
-        <!-- Type -->
-
-        <!-- Availability -->
-
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
           <label class="form-check-label" for="defaultCheck1">
@@ -221,9 +214,48 @@
       </div><!-- End of sidebar -->
 
       <!-- Grid -->
-      <section class="w-100">
-      {% include "website/pages/data/data_components/market_datasets.html" with items=datasets %}
-      </section>
+      {% comment %} {% include "website/pages/data/data_components/market_datasets.html" %} {% endcomment %}
+      <!-- Grid -->
+      <div class="grid">
+        <div class="grid__col-sizer"></div>
+        <div class="grid__gutter-sizer"></div>
+      </div>
+
+      <!-- Loading status -->
+      <div class="page-load-status">
+        <div class="loader-ellips infinite-scroll-request">
+          <span class="loader-ellips__dot"></span>
+          <span class="loader-ellips__dot"></span>
+          <span class="loader-ellips__dot"></span>
+          <span class="loader-ellips__dot"></span>
+        </div>
+        <p class="infinite-scroll-last">End of content</p>
+        <p class="infinite-scroll-error">No more pages to load</p>
+      </div>
+      {% comment %} <div class="album py-5 bg-light">
+        <div class="container">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+              <div class="card shadow-sm">
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+                <div class="card-body">
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <div>
+        </div>
+      </div><!-- End of grid --> {% endcomment %}
+
+      </div>
 
     </div><!-- End of sidepanel -->
 
@@ -243,6 +275,24 @@
 <!-- JavaScript -->
 {% block page_js %}
 
+  <script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
+  <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+  <script src="{% static "website/js/tether/tether.min.js" %}"></script>
+
+  <script type="text/html" id="photo-item-template">
+    <div class="photo-item card">
+      <img class="photo-item__image card-img-top" src="\{\{urls.regular\}\}" alt="Photo by \{\{user.name\}\}" />
+      <div class="card-block">
+      <p class="photo-item__caption card-text mx-auto">
+        <a href="">\{\{user.name\}\} - <small>\{\{user.location\}\}</small>
+          <img class="rounded-circle" src="\{\{user.profile_image.medium\}\}" alt="Photo by \{\{user.name\}\}" />
+        </a>
+        
+      </p>
+      </div>
+    </div>
+  </script>
+
   <script>
 
     // Get state data from Firestore.
@@ -253,6 +303,94 @@
       document.getElementById('total_datasets').value = response.total_datasets ?? 0;
 
     });
+
+    // Render dataset grid.
+    {% comment %} var $grid = new Isotope('.grid', {
+      itemSelector: '.photo-item',
+      masonry: {
+        columnWidth: '.grid__col-sizer',
+        gutter: '.grid__gutter-sizer',
+      },
+      percentPosition: true,
+      stagger: 30,
+      // nicer reveal transition
+      visibleStyle: { transform: 'translateY(0)', opacity: 1 },
+      hiddenStyle: { transform: 'translateY(100px)', opacity: 0 },
+    }); {% endcomment %}
+    var $grid = $('.grid').isotope({
+      itemSelector: '.photo-item',
+      masonry: {
+        columnWidth: '.grid__col-sizer',
+        gutter: '.grid__gutter-sizer',
+      },
+      percentPosition: true,
+      stagger: 30,
+      // nicer reveal transition
+      visibleStyle: { transform: 'translateY(0)', opacity: 1 },
+      hiddenStyle: { transform: 'translateY(100px)', opacity: 0 },
+    });
+
+    //------------------//
+
+    // Get an API key for your demos at https://unsplash.com/developers
+    // var unsplashID = "{{ 'UNSPLASH_API_KEY'|get_env }}";
+    var unsplashID = '-zVarlTM3CYtTm1voQYe6r-CMD-MinuM2CqkRFOJ4J8';
+    console.log('Unsplash ID:', unsplashID);
+
+    // get Masonry instance
+    var iso = $grid.data('isotope');
+
+    $grid.infiniteScroll({
+      // use path string with # for page number
+      path: 'https://api.unsplash.com/photos?page=\{\{#\}\}&client_id=' + unsplashID,
+      // load response as flat text
+      responseType: 'text',
+      outlayer: iso,
+      status: '.page-load-status',
+      history: false,
+    });
+
+
+    $grid.on('load.infiniteScroll', function(event, response) {
+      console.log(response)
+      // parse response into JSON data
+      var data = JSON.parse(response);
+      // compile data into HTML
+      var itemsHTML = data.map(getItemHTML).join('');
+      // convert HTML string into elements
+      var $items = $(itemsHTML);
+      // append item elements
+      $items.imagesLoaded( function() {
+        $grid.infiniteScroll('appendItems', $items)
+          .isotope('appended', $items);
+      })
+    });
+
+    // load initial page
+    $grid.infiniteScroll('loadNextPage');
+
+
+    //------------------//
+
+    var itemTemplateSrc = $('#photo-item-template').html();
+
+    function getItemHTML( photo ) {
+      return microTemplate( itemTemplateSrc, photo );
+    }
+
+    // Micro templating.
+    function microTemplate( src, data ) {
+      // replace {{tags}} in source
+      return src.replace( /\{\{([\w\-_\.]+)\}\}/gi, function(match, key) {
+        // walk through objects to get value
+        var value = data;
+        console.log('Data:', value);
+        key.split('.').forEach(function(part) {
+          value = value[part];
+        });
+        return value;
+      });
+    }
 
   </script>
 

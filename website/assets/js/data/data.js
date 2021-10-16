@@ -18,6 +18,18 @@ export const data = {
   }),
 
 
+  getDataMarketStats: () => new Promise((resolve) => {
+    /*
+     * Get metadata about the data market.
+     */
+    // TODO:
+    // getDocument(path).then((data) => {
+    //   resolve(data);
+    // });
+    resolve({});
+  }),
+
+
   getStateData: () => new Promise((resolve) => {
     /*
      * Get metadata about a given dataset.

@@ -2,12 +2,23 @@
 State Variables | Cannlytics Website
 Author: Keegan Skeate <keegan@cannlytics.com>
 Created: 10/15/2020
-Updated: 7/27/2021
+Updated: 10/16/2021
 """
 
 page_data = {
     "contributors": {
         "collections": [{"name": "contributors", "ref": "public/contributors/contributor_data"}],
+    },
+    "market": {
+        "collections": [
+            {
+                "name": "datasets",
+                "ref": "public/market/datasets",
+                "limit": 10,
+                "order_by": "published_at",
+                "desc": True
+            }
+        ],
     },
     "events": {
         "collections": [{"name": "events", "ref": "public/events/event_data"}],
