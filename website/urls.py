@@ -1,7 +1,7 @@
 """
 URLs | Cannlytics Website
 Created: 12/29/2020
-Updated: 9/16/2021
+Updated: 10/15/2021
 Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
 """
 # External imports
@@ -58,15 +58,6 @@ urlpatterns = [
     path('<page>/<section>/<str:unit>', views.GeneralView.as_view()),
 ]
 
-# Redirects from old pages.
-# https://stackoverflow.com/questions/35903832/how-to-redirect-to-external-url-in-django
-# urlpatterns += [
-#     path('docs/', include([
-#         path('', api.labs),
-#         path('labs/', api.labs),
-#     ])),
-# ]
-
 # FIXME: Broken documentation links.
 # /docs/website/publishing/
 # /docs/
@@ -83,6 +74,15 @@ urlpatterns = [
 # /docs/api/limits/
 # /docs/about/faq/
 # /docs/api/lab_results/
+
+# Redirects from old pages.
+# https://stackoverflow.com/questions/35903832/how-to-redirect-to-external-url-in-django
+# urlpatterns += [
+#     path('docs/', include([
+#         path('', api.labs),
+#         path('labs/', api.labs),
+#     ])),
+# ]
 
 # Serve static assets in development and production.
 if settings.DEBUG:

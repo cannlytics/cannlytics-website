@@ -31,12 +31,151 @@
     </p>
 
     <!-- TODO: Publish dataset(s) -->
-
     <!-- TODO: Sell dataset(s) -->
+    <div class="mt-3 d-flex justify-content-between">
+      {% comment %} <div>
+        <button class="btn btn-sm-light">
+          Data Sets
+        </button>
+        <button class="btn btn-sm-light">
+          Algorithms
+        </button>
+      </div> {% endcomment %}
+
+      <div class="d-flex align-items-center">
+        <a class="btn btn-sm-light" href="{% url 'section' 'data' 'publish' %}">
+          Publish
+        </a>
+        <a class="btn btn-sm-light" href="{% url 'page' 'profile' %}">
+          Profile
+        </a>
+        <button class="btn btn-sm-light text-nowrap">
+          Connect Wallet
+        </button>
+      </div>
+
+      <div class="d-flex align-items-center">
+        <select
+          class="form-select form-select-sm btn-sm-light"
+          aria-label="Default select example"
+          style="width:150px;"
+        >
+          <option selected value="date-new">Date Listed: Newest</option>
+          <option value="date-old">Date Listed: Oldest</option>
+          <option value="price-high">Price: Highest</option>
+          <option value="price-low">Price: Lowest</option>
+        </select>
+        <select
+          class="form-select form-select-sm btn-sm-light"
+          aria-label="Select currency"
+        >
+          <option selected value="usd">USD ($)</option>
+          <option value="eur">EUR (€)</option>
+          <option value="btc">BTC (₿)</option>
+          <option value="eth">ETH (Ξ)</option>
+        </select>
+      </div>
+
+    </div>
+
+
+    <!-- TODO: Tabs with Stats -->
+    xxx Profiles | xxx Data Sets
 
     <!-- TODO: Buy dataset(s) -->
+    <!-- Sidepanel of filters and grid of data sets -->
+    <div class="row">
 
-    <!-- TODO: Table of datasets for sale -->
+      <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+          <span class="fs-4">Sidebar</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item">
+            <a href="#" class="nav-link active" aria-current="page">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+              Orders
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
+              Products
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+              Customers
+            </a>
+          </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+          <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong>mdo</strong>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="#">New project...</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="album py-5 bg-light">
+        <div class="container">
+
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+              <div class="card shadow-sm">
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+                <div class="card-body">
+                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- TODO: Table of high liquidity data sets -->
+    {% comment %} <h5 class="sans-serif text-dark fs-5 mt-5 mb-3">Highest Liquidity</h5> {% endcomment %}
+
+
+    <!-- TODO: Table of recently published data sets -->
+    {% comment %} <h5 class="sans-serif text-dark fs-5 mt-5 mb-3">Recently Published</h5> {% endcomment %}
     
 
   </section>
