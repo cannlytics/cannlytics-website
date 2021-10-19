@@ -1,7 +1,7 @@
 """
 URLs | Cannlytics Website
 Created: 12/29/2020
-Updated: 10/15/2021
+Updated: 10/17/2021
 Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
 """
 # External imports
@@ -12,26 +12,11 @@ from django.urls import include, path
 from django_robohash.views import robohash
 
 # Internal imports
-from website.views import api, data, views, email
-
-# FIXME: Fix missing pages and 500 errors. 
-
-# 404:
-
-    # /robots.txt/
-    # /ads.txt/
-
-# 500 errors:
-
-    # /subscribe/
-
-# Broken API endpoints:
-
-    # /api/v1/labs/
+from website.views import api, data, main, email
 
 # Main URLs
 urlpatterns = [
-    path('', views.GeneralView.as_view(), name='index'),
+    path('', main.GeneralView.as_view(), name='index'),
     path('admin/', admin.site.urls, name='admin'),
     path('api/', include([
         path('labs/', api.labs),
@@ -46,34 +31,50 @@ urlpatterns = [
         path('v1/data/publish/', data.publish_data),
         path('v1/data/sell/', data.sell_data),
     ])),
-    path('community/', views.CommunityView.as_view(), name='community'),
-    path('labs/', views.CommunityView.as_view(), name='labs'),  # Redundant
-    path('labs/new/', views.NewLabView.as_view()),
-    path('labs/<lab>/', views.LabView.as_view()),
+    path('community/', main.CommunityView.as_view(), name='community'),
+    path('labs/', main.CommunityView.as_view(), name='labs'),  # Redundant
+    path('labs/new/', main.NewLabView.as_view()),
+    path('labs/<lab>/', main.LabView.as_view()),
     path('robohash/<string>/', robohash, name='robohash'),
-    path('videos/', views.VideosView.as_view(), name='videos'),
-    path('videos/<video_id>/', views.VideosView.as_view(), name='video'),
-    path('<page>/', views.GeneralView.as_view(), name='page'),
-    path('<page>/<section>/', views.GeneralView.as_view(), name='section'),
-    path('<page>/<section>/<str:unit>', views.GeneralView.as_view()),
+    path('videos/', main.VideosView.as_view(), name='videos'),
+    path('videos/<video_id>/', main.VideosView.as_view(), name='video'),
+    path('<page>/', main.GeneralView.as_view(), name='page'),
+    path('<page>/<section>/', main.GeneralView.as_view(), name='section'),
+    path('<page>/<section>/<str:unit>', main.GeneralView.as_view()),
 ]
 
 # FIXME: Broken documentation links.
-# /docs/website/publishing/
-# /docs/
-# docs/app/get-started/
-# /docs/website/installation/contributing/
-# /docs/website/publishing/
-# /docs/website/architecture
-# /docs/api/regulations/
-# /docs/api/instruments/
-# /docs/api/authentication/
-# /docs/lims/get-started/
-# /docs/api/labs/
-# /docs/console/installation/
-# /docs/api/limits/
-# /docs/about/faq/
-# /docs/api/lab_results/
+
+# 404:
+
+    # /robots.txt/
+    # /ads.txt/
+
+# 500 errors:
+
+    # /subscribe/
+
+# Broken API endpoints:
+
+    # /api/v1/labs/
+
+# Missing pages:
+
+    # /docs/website/publishing/
+    # /docs/
+    # docs/app/get-started/
+    # /docs/website/installation/contributing/
+    # /docs/website/publishing/
+    # /docs/website/architecture
+    # /docs/api/regulations/
+    # /docs/api/instruments/
+    # /docs/api/authentication/
+    # /docs/lims/get-started/
+    # /docs/api/labs/
+    # /docs/console/installation/
+    # /docs/api/limits/
+    # /docs/about/faq/
+    # /docs/api/lab_results/
 
 # Redirects from old pages.
 # https://stackoverflow.com/questions/35903832/how-to-redirect-to-external-url-in-django
@@ -90,6 +91,6 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
-# TODO: Error pages.
-# handler404 = 'console.views.main.handler404'
-# handler500 = 'console.views.main.handler500'
+# Error pages.
+handler404 = 'website.views.main.handler404'
+handler500 = 'website.views.main.handler500'
