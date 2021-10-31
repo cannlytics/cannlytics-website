@@ -15,6 +15,11 @@
             class="card-block stretched-link text-decoration-none"
             href="/videos/{{ video.video_id }}"
           >
+          {% if video.premium %}
+            <div class="d-flex justify-content-end">
+              <span class="badge badge-pill bg-gradient-orange position-absolute m-1">Premium</span>
+            </div>
+          {% endif %}
           <img
             src="{{ video.cover_image_url }}"
             class="w-100"

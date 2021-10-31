@@ -43,6 +43,8 @@ urlpatterns = [
     path('<page>/<section>/<str:unit>', main.GeneralView.as_view()),
 ]
 
+# TODO: Create premium page.
+
 # FIXME: Broken documentation links.
 
 # 404:

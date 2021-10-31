@@ -25,6 +25,11 @@
           data-ripple-color="light"
         >
           <a href="/videos/{{ video.video_id }}">
+          {% if video.premium %}
+            <div class="d-flex justify-content-end">
+              <span class="badge badge-pill bg-gradient-orange position-absolute m-1">Premium</span>
+            </div>
+          {% endif %}
             <img
               src="{{ video.cover_image_url }}"
               class="w-100"
@@ -55,14 +60,14 @@
       <small class="serif">View more</small> &raquo;
     </a>
     <a
-      class="btn btn-sm btn-sm-light btn-md-light"
+      class="btn btn-sm btn-sm-light btn-md-light me-2"
       href="https://github.com/cannlytics/cannabis-data-science"
       type="button"
     >
       <small class="serif">Get the data</small> {% icon "database" width="16px" height="16px"%}
     </a>
     <a
-      class="btn btn-sm bg-gradient-orange text-white ms-2"
+      class="btn btn-sm bg-gradient-orange text-white mt-2"
       href="https://www.meetup.com/cannabis-data-science/"
       type="button"
     >
