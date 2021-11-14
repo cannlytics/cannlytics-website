@@ -35,12 +35,19 @@ urlpatterns = [
     path('labs/', main.CommunityView.as_view(), name='labs'),  # Redundant
     path('labs/new/', main.NewLabView.as_view()),
     path('labs/<lab>/', main.LabView.as_view()),
+    # TODO: Add analyses and prices to lab pages.
     path('robohash/<string>/', robohash, name='robohash'),
     path('videos/', main.VideosView.as_view(), name='videos'),
     path('videos/<video_id>/', main.VideosView.as_view(), name='video'),
     path('<page>/', main.GeneralView.as_view(), name='page'),
     path('<page>/<section>/', main.GeneralView.as_view(), name='section'),
     path('<page>/<section>/<str:unit>', main.GeneralView.as_view()),
+
+    # TODO: Add regulations / limits pages.
+
+    # TODO: Add analyte pages.
+
+    # TODO: Add analysis / prices pages.
 ]
 
 # TODO: Create premium page.

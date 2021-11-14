@@ -14,7 +14,7 @@
 -->
 {% load icon %}
 <section class="container mb-2 my-5">
-  <h2 class="mb-3 pt-5 mt-5"><a class="serif text-dark" href="/videos">Want to explore the Cannlytics troves?</a></h2>
+  <h2 class="mb-3"><a class="serif text-dark" href="{% url 'videos' %}">Want to explore the Cannlytics troves?</a></h2>
 </section>
 <section class="container mt-4">
   <div class="row row-cols-3 justify-content-md-start">
@@ -24,7 +24,7 @@
           class="bg-image hover-overlay ripple shadow-1-strong rounded"
           data-ripple-color="light"
         >
-          <a href="/videos/{{ video.video_id }}">
+          <a href="{% url 'video' video.video_id %}">
           {% if video.premium %}
             <div class="d-flex justify-content-end">
               <span class="badge badge-pill bg-gradient-orange position-absolute m-1">Premium</span>

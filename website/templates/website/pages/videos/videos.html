@@ -89,7 +89,7 @@
         <li class="page-item {% if request.GET.page == '1' or not request.GET.page %}disabled{% endif %}">
           <a
             class="page-link text-dark bg-transparent {% if request.GET.page != last_page %}text-dark{% endif %}"
-            href="/videos?page={{ request.GET.page|add:"-1" }}"
+            href="{% url 'videos' %}?page={{ request.GET.page|add:"-1" }}"
             tabindex="-1"
             {% if request.GET.page == '1' or not request.GET.page %}aria-disabled="true"{% endif %}
           >
@@ -101,7 +101,7 @@
             class="page-item">
               <a
                 class="page-link bg-transparent {% if i == request.GET.page|add:"-1" or not request.GET.page and i == 0%}cannlytics-dark-orange-text fw-bold{% else %}text-dark{% endif %}"
-                href="/videos?page={{ i|add:"1" }}"
+                href="{% url 'videos' %}?page={{ i|add:"1" }}"
               >
                 {{ i|add:"1" }}
               </a>
@@ -110,7 +110,7 @@
         <li class="page-item {% if request.GET.page == last_page %}disabled{% endif %}">
           <a
             class="page-link bg-transparent {% if request.GET.page != last_page %}text-dark{% endif %}"
-            href="/videos?page={{ request.GET.page|add:"1" }}"
+            href="{% url 'videos' %}?page={{ request.GET.page|add:"1" }}"
           >
             Next
           </a>

@@ -11,6 +11,9 @@
       https://ethereum.org/en/dapps/
       https://ethereum.org/en/history/
       https://foundation.app/
+    - Cool text:
+      https://codepen.io/makan/pen/yyjRZx
+      https://codepen.io/chrissimmons/pen/WprrQe
 -->
 {% extends "website/index.html" %}
 {% load static %}
@@ -31,20 +34,22 @@
       </svg>
     </div>
 
+    <!-- Video Banner -->
+    {% include "website/components/banners/video_banner.html" %}
+
     <!-- Featurettes -->
     {% comment %} {% include "./featurettes.html" with featurettes=homepage.featurettes only %} {% endcomment %}
 
     <!-- Demo -->
-    {% include "./demo.html" %}
-
-    <!-- Video Banner -->
-    {% include "website/components/banners/video_banner.html" %}
+    {% include "website/pages/homepage/demo.html" %}
 
     <!-- Partners -->
     {% comment %} {% include "website/components/banners/partners_banner.html" %} {% endcomment %}
 
     <!-- Call to Action -->
     {% include "./call_to_action.html" with general=general %}
+
+    <!-- TODO: Cannlytics products and links to each GitHub repository -->
 
   </div>
 

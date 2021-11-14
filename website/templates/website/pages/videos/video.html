@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<!--
+  Video Page | Cannlytics Website
+  Created: 11/14/2021
+  Updated: 11/14/2021
+  Fields:
+    title
+    description
+    length
+    cover_image_url
+    video_id
+    video_url
+-->
+<!-- Optional: Linke to Github Repository -->
+  <!-- TODO: Handle premium videos (Prompt user to sign in and subscribe!) | Play video if signed in and subscribed -->
+  <section class="container">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent p-0 mb-0">
+        <li class="breadcrumb-item fs-6 lh-sm">
+          <a class="text-dark action" href="{% url 'videos' %}">
+            Videos
+          </a>
+        </li>
+        <li class="breadcrumb-item active fs-6 lh-sm" aria-current="page">
+          {{ video_id }}
+        </li>
+      </ol>
+    </nav>
+    <div class="text-center mt-3">
+      <iframe width="100%" height="420"
+        src="https://www.youtube.com/embed/{{ video_data.youtube_id }}">
+      </iframe>
+    </div>
+    <h2 class="fw-bold mt-3">{{ video_data.title }}</h2>
+    <div class="serif text-secondary mb-3">{{ video_data.published|date }}</div>
+    <p class="fs-6" style="max-width:540px;">
+      <small>{{ video_data.description }}</small>
+    </p>
+  </section>
+
+  <!-- More videos -->
+  <section class="container mt-5">
+    <h2 class="mb-3">More videos</h2>
+    {% include "website/pages/videos/video_grid.html" with video_list=more_videos %}
+    <h2 class="mt-3 mb-3">Recent videos</h2>
+    {% include "website/pages/videos/video_grid.html" with video_list=recent_videos %}
+    <a
+      class="btn btn-sm btn-sm-light btn-md-light"
+      href="{% url 'videos' %}"
+      type="button"
+    >
+      <small class="serif">View more videos</small> &raquo;
+    </a>
+  </section>
+
+</html>
