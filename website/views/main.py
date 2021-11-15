@@ -140,7 +140,7 @@ class VideosView(BaseMixin, TemplateView):
         # Get video data.
         video_stats = get_document('public/videos')
         total_videos = video_stats['total_videos']
-        
+
         # Get specific video data.
         if video_id:
             context['video_data'] = get_document(f'public/videos/video_data/{video_id}')
@@ -175,6 +175,9 @@ class VideosView(BaseMixin, TemplateView):
                 context['more_videos'] = more_videos
             except:
                 pass
+
+            # TODO: Handle sign-in for premium videos.
+
             return context
         
         # Paginate videos.

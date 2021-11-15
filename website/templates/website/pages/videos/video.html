@@ -5,16 +5,19 @@
   Created: 11/14/2021
   Updated: 11/14/2021
   Fields:
-    title
-    description
-    length
-    cover_image_url
-    video_id
-    video_url
+    video_id (str)
+    video_data (dict)
+    more_videos (list)
+    recent_videos (lsit)
 -->
-<!-- Optional: Linke to Github Repository -->
-  <!-- TODO: Handle premium videos (Prompt user to sign in and subscribe!) | Play video if signed in and subscribed -->
+{% load kebab_to_title %}
+<div class="video-page">
+
+<!-- TODO: Add resources, such as links to the Github repository and downloadable files. -->
+
   <section class="container">
+
+    <!-- Title -->
     <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
       <ol class="breadcrumb bg-transparent p-0 mb-0">
         <li class="breadcrumb-item fs-6 lh-sm">
@@ -23,20 +26,60 @@
           </a>
         </li>
         <li class="breadcrumb-item active fs-6 lh-sm" aria-current="page">
-          {{ video_id }}
+          {{ video_id|kebab_to_title }}
         </li>
       </ol>
     </nav>
-    <div class="text-center mt-3">
-      <iframe width="100%" height="420"
-        src="https://www.youtube.com/embed/{{ video_data.youtube_id }}">
-      </iframe>
-    </div>
+
+    <!-- TODO: DEV remove True in production -->
+    {% if video_data.premium or True %} 
+
+      {% if user %}
+
+        <!-- Cloudinary video player for playing premium videos -->
+        <div class="w-100 mt-3" style="height:420px;overflow:hidden;">
+          <video
+            id="video-player"
+            class="cld-video-player cld-video-player-skin-dark w-100"
+            style="height:100%;"
+            data-cld-colors='{ "base": "#0BA67F", "accent": "#FF9500", "text": "#fff" }'
+          >
+          </video>
+        </div>
+
+      {% else %}
+
+        <div class="w-100 mt-3" style="height:420px;overflow:hidden;">
+          <a
+            class="btn btn-sm bg-gradient-orange text-white"
+            href="/subscribe"
+            type="button"
+          >
+            <small class="serif">Subscribe now</small> &raquo;
+          </a>
+          <img src="{{ video_data.cover_image_url }}" height="100%" width="100%">
+        </div>
+
+      {% endif %}
+    
+    {% else %}
+
+      <!-- Show video from YouTube -->
+      <div class="text-center mt-3">
+        <iframe width="100%" height="420"
+          src="https://www.youtube.com/embed/{{ video_data.youtube_id }}">
+        </iframe>
+      </div>
+      
+    {% endif %}
+
+    <!-- Video details -->
     <h2 class="fw-bold mt-3">{{ video_data.title }}</h2>
     <div class="serif text-secondary mb-3">{{ video_data.published|date }}</div>
     <p class="fs-6" style="max-width:540px;">
       <small>{{ video_data.description }}</small>
     </p>
+
   </section>
 
   <!-- More videos -->
@@ -54,4 +97,5 @@
     </a>
   </section>
 
+</div>
 </html>

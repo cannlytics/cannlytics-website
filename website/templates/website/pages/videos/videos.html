@@ -3,12 +3,12 @@
 <!--
   Videos Page | Cannlytics
   Created: 2/23/2021
-  Updated: 8/30/2021
+  Updated: 11/14/2021
   Optional:
     - Explore video players. For example: https://cloudinary.com/documentation/cloudinary_video_player
 -->
 {% extends "website/index.html" %}
-{% load static icon %}
+{% load static icon kebab_to_title %}
 {% block title %}Videos | Cannlytics{% endblock %}
 {% block page_css %}
   <style>
@@ -18,54 +18,48 @@
         margin-right: auto;
       }
     }
+    @media screen and (max-width: 500px) {
+      #video-player {
+        width: 100% !important;
+        height: auto !important;
+      }
+    }
+    @media only screen and (max-width: 768px) {
+      /* For mobile phones: */
+      #video-player video {
+          width: 100% !important;
+      }
+    }
+    .fill {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden
+    }
+    .fill img {
+      flex-shrink: 0;
+      min-width: 100%;
+      min-height: 100%
+    }
   </style>
+  {% if video_id %}
+    <link href="https://unpkg.com/cloudinary-video-player@1.5.9/dist/cld-video-player.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/cloudinary-core@latest/cloudinary-core-shrinkwrap.min.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/cloudinary-video-player@1.5.9/dist/cld-video-player.min.js" type="text/javascript"></script>
+  {% endif %}
 {% endblock %}
 {% block material %}
 
 {% if video_id %}
 
   <!-- Individual Video -->
-  <!-- Optional: Linke to Github Repository -->
-  <!-- TODO: Handle premium videos (Prompt user to sign in and subscribe!) | Play video if signed in and subscribed -->
-  <section class="container">
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-      <ol class="breadcrumb bg-transparent p-0 mb-0">
-        <li class="breadcrumb-item fs-6 lh-sm">
-          <a class="text-dark action" href="/videos">
-            Videos
-          </a>
-        </li>
-        <li class="breadcrumb-item active fs-6 lh-sm" aria-current="page">
-          {{ video_id }}
-        </li>
-      </ol>
-    </nav>
-    <div class="text-center mt-3">
-      <iframe width="100%" height="420"
-        src="https://www.youtube.com/embed/{{ video_data.youtube_id }}">
-      </iframe>
-    </div>
-    <h2 class="fw-bold mt-3">{{ video_data.title }}</h2>
-    <div class="serif text-secondary mb-3">{{ video_data.published|date }}</div>
-    <p class="fs-6" style="max-width:540px;">
-      <small>{{ video_data.description }}</small>
-    </p>
-  </section>
-
-  <!-- More videos -->
-  <section class="container mt-5">
-    <h2 class="mb-3">More videos</h2>
-    {% include "website/pages/videos/video_grid.html" with video_list=more_videos %}
-    <h2 class="mt-3 mb-3">Recent videos</h2>
-    {% include "website/pages/videos/video_grid.html" with video_list=recent_videos %}
-    <a
-      class="btn btn-sm btn-sm-light btn-md-light"
-      href="/videos"
-      type="button"
-    >
-      <small class="serif">View more videos</small> &raquo;
-    </a>
-  </section>
+  {% include "website/pages/videos/video.html" with
+    video_id=video_id
+    video_data=video_data
+    more_videos=more_videos
+    recent_videos=recent_videos
+    only
+  %}
 
 {% else %}
 
@@ -83,44 +77,36 @@
   </section>
 
   <!-- Pagination -->
-  <section class="container">
-    <nav aria-label="Video pagination" class="px-3">
-      <ul class="pagination pagination-sm justify-content-end">
-        <li class="page-item {% if request.GET.page == '1' or not request.GET.page %}disabled{% endif %}">
-          <a
-            class="page-link text-dark bg-transparent {% if request.GET.page != last_page %}text-dark{% endif %}"
-            href="{% url 'videos' %}?page={{ request.GET.page|add:"-1" }}"
-            tabindex="-1"
-            {% if request.GET.page == '1' or not request.GET.page %}aria-disabled="true"{% endif %}
-          >
-            Previous
-          </a>
-        </li>
-        {% for i in page_index %}
-          <li
-            class="page-item">
-              <a
-                class="page-link bg-transparent {% if i == request.GET.page|add:"-1" or not request.GET.page and i == 0%}cannlytics-dark-orange-text fw-bold{% else %}text-dark{% endif %}"
-                href="{% url 'videos' %}?page={{ i|add:"1" }}"
-              >
-                {{ i|add:"1" }}
-              </a>
-            </li>
-        {% endfor %}
-        <li class="page-item {% if request.GET.page == last_page %}disabled{% endif %}">
-          <a
-            class="page-link bg-transparent {% if request.GET.page != last_page %}text-dark{% endif %}"
-            href="{% url 'videos' %}?page={{ request.GET.page|add:"1" }}"
-          >
-            Next
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </section><!-- End of pagination -->
+  {% include "website/pages/videos/videos_pagination.html" %}
 
 {% endif %}
 
-{% endblock %}
+{% endblock material %}
+
+<!-- JavaScript -->
+{% block page_js %}
+
+  <!-- Video JavaScript -->
+  {% if video_id %}
+  <script>
+
+    // TODO: Login with Firebase and ensure user has a subscription before initializing video.
+    cannlytics.videos.authenticatePremiumVideo();
+
+    // Initialize Cloudinary.
+    {% comment %} var cld = cloudinary.Cloudinary.new({ cloud_name: 'cannlytics' });
+    var player = cld.videoPlayer('video-player', {
+      controls: true,
+      fontFace: 'Yatra One',
+      seekThumbnails: true,
+    });
+    player.source('https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/events%2Fsaturday-morning-statistics%2Fvideos%2Fsaturday-morning-statistics-2.mov?alt=media&token=d9e47226-65ef-4fb4-a1d1-689b09d19a45'); {% endcomment %}
+
+    // TODO: Log video view.
+
+  </script>
+  {% endif %}
+
+{% endblock page_js %}
 
 </html>

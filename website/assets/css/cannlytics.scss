@@ -427,6 +427,16 @@ body.dark .light-green-fade {
   flex-direction: column;
   align-items: center;
 }
+.two-columns {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
+.three-columns {
+  columns: 3;
+  -webkit-columns: 3;
+  -moz-columns: 3;
+}
 .hidden-item {
   display: none !important;
 }
