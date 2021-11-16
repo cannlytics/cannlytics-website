@@ -1,7 +1,7 @@
 """
 URLs | Cannlytics Website
 Created: 12/29/2020
-Updated: 10/17/2021
+Updated: 11/15/2021
 Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
 """
 # External imports
@@ -12,7 +12,14 @@ from django.urls import include, path
 from django_robohash.views import robohash
 
 # Internal imports
-from website.views import api, data, main, email
+from website.views import (
+    api,
+    data,
+    email,
+    labs,
+    main,
+    videos,
+)
 
 # Main URLs
 urlpatterns = [
@@ -31,14 +38,14 @@ urlpatterns = [
         path('v1/data/publish/', data.publish_data),
         path('v1/data/sell/', data.sell_data),
     ])),
-    path('community/', main.CommunityView.as_view(), name='community'),
-    path('labs/', main.CommunityView.as_view(), name='labs'),  # Redundant
-    path('labs/new/', main.NewLabView.as_view()),
-    path('labs/<lab>/', main.LabView.as_view()),
+    path('community/', labs.CommunityView.as_view(), name='community'),
+    path('labs/', labs.CommunityView.as_view(), name='labs'),  # Redundant
+    path('labs/new/', labs.NewLabView.as_view()),
+    path('labs/<lab>/', labs.LabView.as_view()),
     # TODO: Add analyses and prices to lab pages.
     path('robohash/<string>/', robohash, name='robohash'),
-    path('videos/', main.VideosView.as_view(), name='videos'),
-    path('videos/<video_id>/', main.VideosView.as_view(), name='video'),
+    path('videos/', videos.VideosView.as_view(), name='videos'),
+    path('videos/<video_id>/', videos.VideosView.as_view(), name='video'),
     path('<page>/', main.GeneralView.as_view(), name='page'),
     path('<page>/<section>/', main.GeneralView.as_view(), name='section'),
     path('<page>/<section>/<str:unit>', main.GeneralView.as_view()),
@@ -98,7 +105,6 @@ urlpatterns = [
 if settings.DEBUG:
     from django.conf.urls.static import static
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
 
 # Error pages.
 handler404 = 'website.views.main.handler404'

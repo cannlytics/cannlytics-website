@@ -69,3 +69,5 @@ typings/
 # Ignore local distribution of cannlytics
 cannlytics/
 .datasets*
+__pycache__/
+*.pyc

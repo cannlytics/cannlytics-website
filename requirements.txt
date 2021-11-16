@@ -6,6 +6,8 @@
 # virtual environment/host machine into your container,
 # run 'pip freeze > requirements.txt' in the terminal to overwrite this file.
 
+# TODO: Create separate dev and production requirements. Thin out production requirements.
+
 coreapi==2.3.3
 cryptography==3.4.7
 datetime==4.3

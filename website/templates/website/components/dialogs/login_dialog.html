@@ -1,8 +1,11 @@
 <!doctype html>
 <html>
-  <!-- Login Dialog -->
-  <!-- Created 1/24/20201 -->
-  {% load static %}
+<!--
+  Login Dialog | Cannlytics Website
+  Created: 1/24/2021
+  Updated: 11/15/2021
+-->
+{% load static %}
 
   <!-- Login Style -->
   <style>
@@ -34,12 +37,14 @@
     aria-labelledby="login-dialog-label"
     aria-hidden="false"
   >
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
       <div class="modal-content">
 
         <!-- Dialog header -->
         <div class="modal-header bg-light no-border">
           <div class="d-flex align-items-center">
+
+            <!-- Logo and header-->
             <img
               src="{% static 'website/images/logos/cannlytics_calyx_detailed.svg' %}"
               height="32px"
@@ -50,11 +55,24 @@
               id="login-dialog-label"
               class="modal-title text-dark serif h5"
             >
-              Login
+              Sign In
             </h5>
           </div>
-          <button type="button" class="btn-close btn-sm light-only" data-bs-dismiss="modal" aria-label="Close"></button>
-          <button type="button" class="btn-close btn-sm btn-close-white dark-only" data-bs-dismiss="modal" aria-label="Close"></button>
+
+          <!-- Close button -->
+          <button
+            type="button"
+            class="btn-close btn-sm light-only"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+          <button
+            type="button"
+            class="btn-close btn-sm btn-close-white dark-only"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+
         </div>
 
         <!-- Dialog body -->
@@ -68,7 +86,7 @@
                   name="email"
                   type="email"
                   id="login-email"
-                  class="form-control"
+                  class="form-control form-control-sm"
                   placeholder="Email address"
                   required
                   autofocus
@@ -85,7 +103,7 @@
                   name="password"
                   type="password"
                   id="login-password"
-                  class="form-control"
+                  class="form-control form-control-sm"
                   placeholder="Password"
                   required
                   autofocus
@@ -95,53 +113,59 @@
             </div>
 
             <!-- Options -->
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between align-items-center">
 
               <!-- Reset Password -->
               <a
                 href="https://console.cannlytics.com/account/password-reset"
-                class="text-dark"
+                class="fs-6"
               >
-                Lost password?
+                <small class="serif text-dark">Lost password?</small>
               </a>
+
+              <!-- Sign In -->
+              <button
+                id="sign-in-button"
+                class="ms-1 btn btn-sm btn-set-width bg-gradient-green text-white"
+                style="max-width:250px;"
+                type="button"
+                onclick="cannlytics.auth.signIn(event)"
+              >
+                Sign In
+              </button>
+              <button
+                id="sign-in-loading-button"
+                class="ms-1 btn btn-sm btn-set-width bg-gradient-green text-white d-none"
+                type="button"
+                disabled
+              >
+                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              </button>
             
             </div><!-- End of Options -->
 
-            <!-- Sign In -->
-            <button
-              class="w-100 btn btn-success mt-3"
-              type="button"
-              onclick="cannlytics.auth.signIn()"
-            >
-              Sign In
-            </button>
-
-            <!-- Or -->
-            <div class="text-dark text-center my-3">
-              &mdash;&nbsp;or&nbsp;&mdash;
+            <!-- FIXME: Google Sign In Alternative -->
+            {% comment %} <div class="fs-6 text-center my-3">
+              <small class="serif text-dark">&mdash;&nbsp;or&nbsp;&mdash;</small>
             </div>
-
-            <!-- Google Sign In -->
             <div class="d-grid gap-2 justify-content-center">
               <a id="google-signin" class="app-action" onclick="cannlytics.auth.googleSignIn()"></a>
             </div>
             <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_focus_web@2x.png' %}"/>
-            <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_pressed_web@2x.png' %}"/>
+            <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_pressed_web@2x.png' %}"/> {% endcomment %}
 
             <!-- Sign Up -->
             <p class="text-dark text-center h6 font-weight-light mt-5">
               <small>New to Cannlytics?
                 <a
-                  class="text-dark"
                   href="https://console.cannlytics.com/account/sign-up"
                 >
-                  <b>Sign up!</b>
+                  <b class="serif text-dark">Sign up!</b>
                 </a>
               </small>
             </p>
           </div>
         </div><!-- End of dialog body -->
-
 
       </div>
     </div>
