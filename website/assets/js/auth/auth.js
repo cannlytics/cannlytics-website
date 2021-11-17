@@ -6,6 +6,7 @@
  */
 
 import { auth as fbAuth, GoogleAuthProvider } from '../firebase.js';
+import { authRequest, showNotification } from '../utils.js';
 
 export const auth = {
 
@@ -24,13 +25,14 @@ export const auth = {
         const dialog = document.getElementById('login-dialog');
         const modal = bootstrap.Modal.getInstance(dialog);
         modal.hide();
-        // TODO: Is authRequest('/login') necessary here?
+        // FIXME:
+        authRequest('/api/login/');
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // TODO: Show error
-        console.log('Error:', errorMessage);
+        showNotification('Sign in error', error.message, { type: 'error' });
+      }).finally(() => {
+        document.getElementById('sign-in-button').classList.remove('d-none');
+        document.getElementById('sign-in-loading-button').classList.add('d-none');
       });
   },
 
@@ -39,7 +41,7 @@ export const auth = {
     /*
      * Sign a user out of their account.
      */
-    // TODO: Is authRequest('/logout') necessary here?
+    authRequest('/api/logout/');
     fbAuth.signOut();
   },
 
@@ -50,20 +52,6 @@ export const auth = {
      */
     const provider = GoogleAuthProvider();
     firebase.auth().signInWithRedirect(provider);
-  },
-
-
-  resetPassword() {
-    const email = document.getElementById('email-input').value;
-    fbAuth.sendPasswordResetEmail(email).then(() => {
-      // window.location.href = '/account/password-reset-done';
-      // TODO: Show reset email sent toast.
-    }).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // TODO: Show error
-      console.log('Error:', errorMessage);
-    });
   },
 
 }

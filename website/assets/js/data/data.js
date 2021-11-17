@@ -34,7 +34,7 @@ export const data = {
     /*
      * Get metadata about a given dataset.
      */
-    getCollection('public/data/state_data', null, 'state').then((data) => {
+    getCollection('public/data/state_data', { orderBy: 'state' }).then((data) => {
       resolve(data);
     });
   }),

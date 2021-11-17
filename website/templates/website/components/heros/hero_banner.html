@@ -3,7 +3,7 @@
 <!--
   Hero Banner
   Created: 1/9/2021
-  Updated: 7/31/2021
+  Updated: 11/16/2021
   Params:
     image_url
     title
@@ -13,10 +13,11 @@
     secondary_action
     secondary_action_url
     background_image (optional)
+    background_position (str): The background position for the image, center by default.
 -->
 {% load static %}
 
-<section class="jumbotron text-center" style="{% if background_image %}background-image: url('{{ background_image }}');background-position: center;background-repeat: no-repeat;background-size: cover;{% endif %}">
+<section class="jumbotron text-center" style="{% if background_image %}background-image: url('{{ background_image }}');background-position: {% if background_position %}{{ background_position }}{% else %}center{% endif %};background-repeat: no-repeat;background-size: cover;{% endif %}">
   <div class="container {% if background_image %}card card-opaque pt-3 {% endif %}">
 
     <!-- Image -->
@@ -26,10 +27,6 @@
       >
     {% elif image_url %}
       <img src="{{ image_url }}" style="max-height:120px;">
-    {% else %}
-      <img src="{% static 'website/images/engine_icons/spaceship_outline_tilted.svg' %}"
-        style="max-height:120px;"
-      >
     {% endif %}
 
     <!-- Title -->
@@ -41,7 +38,7 @@
 
     <!-- Description -->
     {% if description %}
-      <p class="lead {% if background_image %}text-dark {% endif %}text-muted">
+      <p class="lead text-dark">
         <small>{{ description|safe }}</small>
       </p>
     {% endif %}

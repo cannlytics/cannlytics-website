@@ -3,7 +3,8 @@
  * Created: 12/3/2020
  * Updated: 7/31/2021
  */
-import { auth } from '../firebase.js';
+import { auth, getDocument } from '../firebase.js';
+import { authRequest } from '../utils.js';
 
 
 export const website = {
@@ -224,5 +225,20 @@ export const website = {
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   },
 
+  getSubscription: (docId) => new Promise((resolve) => {
+    /* Get subscription data from Firestore given a subscription document ID. */
+    getDocument(`public/subscriptions/subscription_plans/${docId}`).then((data) => {
+      resolve(data);
+    });
+  }),
+
+
+  getUserSubscriptions: () => new Promise((resolve) => {
+    /* Get the current user's subscriptions. */
+    authRequest('/api/subscriptions/').then((response) => {
+      console.log('Subscription data:', response.data);
+      resolve(response.data);
+    });
+  }),
 
 }

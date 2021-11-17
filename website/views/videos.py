@@ -9,6 +9,7 @@ from math import ceil
 from random import randint
 
 # Internal imports
+from cannlytics.auth.auth import authorize_user
 from cannlytics.firebase import get_document, get_collection
 from website.views.mixins import BaseMixin, TemplateView
 
@@ -64,7 +65,14 @@ class VideosView(BaseMixin, TemplateView):
             except:
                 pass
 
-            # TODO: Handle sign-in for premium videos.
+            # Handle sign-in for premium videos.
+            if context.get('premium') or True:
+                claims, _, _ = authorize_user(self.request)
+                context['user_id'] = claims.get('user_id')
+                print('User ID:', context['user_id'])
+
+                # TODO: Look-up if user has a subscription.
+                context['premium_subscription'] = False
 
             return context
 

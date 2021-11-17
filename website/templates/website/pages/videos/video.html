@@ -5,16 +5,18 @@
   Created: 11/14/2021
   Updated: 11/14/2021
   Fields:
-    video_id (str)
-    video_data (dict)
-    more_videos (list)
-    recent_videos (lsit)
+    video_id (str): The unique ID of the video.
+    video_data (dict): A dictionary of video data, including the following fields:
+      `cover_image_url`, `description`,  `premium`,  `published`, `title`, `youtube_id`.
+    more_videos (list): A list of video data (dict) for 3 other random videos.
+    recent_videos (lsit): A list of video data (dict) for the 3 most recent videos.
+    user_id (str): The unique ID of any signed-in user.
+    premium_subscription (bool): Whether or not the user is subscribed to premium content.
+  TODO:
+    1. Add resources, such as links to the Github repository and downloadable files.
 -->
 {% load kebab_to_title %}
 <div class="video-page">
-
-<!-- TODO: Add resources, such as links to the Github repository and downloadable files. -->
-
   <section class="container">
 
     <!-- Title -->
@@ -31,41 +33,54 @@
       </ol>
     </nav>
 
+    <!-- Premium Subscription Logic -->
     {% if video_data.premium or True %} 
 
-      {% if user %}
+      {% if user_id and premium_subscription %}
 
-        <!-- TODO: Check if the user is subscribed. -->
-
-        <!-- Cloudinary video player for playing premium videos -->
-        <div class="w-100 mt-3" style="height:420px;overflow:hidden;">
-          <video
-            id="video-player"
-            class="cld-video-player cld-video-player-skin-dark w-100"
-            style="height:100%;"
-            data-cld-colors='{ "base": "#0BA67F", "accent": "#FF9500", "text": "#fff" }'
-          >
-          </video>
-        </div>
+          <!-- Cloudinary video player for playing premium videos -->
+          <div class="w-100 mt-3" style="height:420px;overflow:hidden;">
+            <video
+              id="video-player"
+              class="cld-video-player cld-video-player-skin-dark w-100"
+              style="height:100%;"
+              data-cld-colors='{ "base": "#0BA67F", "accent": "#FF9500", "text": "#fff" }'
+            >
+            </video>
+          </div>
 
       {% else %}
 
-        <!-- Prompt to sign-in overlaid on the thumbnail -->
-        <div class="w-100 mt-3" style="height:420px;overflow:hidden;">
+        <!-- Prompt to sign-in or subscribe overlaid on the thumbnail. -->
+        <div class="w-100 border rounded mt-3" style="height:420px;overflow:hidden;">
           <img src="{{ video_data.cover_image_url }}" height="100%" width="100%">
           <div
-            class="opaque-background d-flex align-items-center justify-content-center w-100 h-100"
+            class="d-flex align-items-center justify-content-center opaque-background rounded w-100 h-100"
             style="transform:translateY(-420px)"
           >
-            <a
-              class="btn btn-sm bg-gradient-green text-white"
-              type="button"
-              style="opacity:1.0;visibility:hidden;"
-              data-bs-target="#login-dialog"
-              data-bs-toggle="modal"
-            >
-              <small class="serif">Sign in to view</small>
-            </a>
+            {% if user_id %}
+              <!-- Prompt to subscribe. -->
+              <a
+                class="btn btn-sm bg-gradient-green text-white"
+                type="button"
+                style="opacity:1.0;visibility:hidden;"
+                data-bs-toggle="modal"
+                data-bs-target="#subscribeDialog"
+              >
+                <small class="serif">Subscribe now to view</small>
+              </a>
+            {% else %}
+              <!-- Prompt to sign-in. -->
+              <a
+                class="btn btn-sm bg-gradient-green text-white"
+                type="button"
+                style="opacity:1.0;visibility:hidden;"
+                data-bs-target="#login-dialog"
+                data-bs-toggle="modal"
+              >
+                <small class="serif">Sign in to view</small>
+              </a>
+            {% endif %}
           </div>
         </div>
 

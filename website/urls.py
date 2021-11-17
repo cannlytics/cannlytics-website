@@ -14,6 +14,7 @@ from django_robohash.views import robohash
 # Internal imports
 from website.views import (
     api,
+    auth,
     data,
     email,
     labs,
@@ -26,6 +27,8 @@ urlpatterns = [
     path('', main.GeneralView.as_view(), name='index'),
     path('admin/', admin.site.urls, name='admin'),
     path('api/', include([
+        path('login/', auth.login),
+        path('logout/', auth.logout),
         path('labs/', api.labs),
         path('labs/<uuid:org_id>/', api.labs),
         path('labs/<uuid:org_id>/analyses/', api.lab_analyses),
@@ -33,6 +36,7 @@ urlpatterns = [
         path('labs/download/', data.download_lab_data),
         path('promotions/', data.promotions, name='promotions'),
         path('subscribe/', data.subscribe, name='subscribe'),
+        path('subscriptions/', api.get_user_subscriptions, name='subscriptions'),
         path('send-message/', email.send_message),
         path('v1/data/buy/', data.buy_data),
         path('v1/data/publish/', data.publish_data),

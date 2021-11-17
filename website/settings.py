@@ -61,7 +61,6 @@ if os.path.isfile(env_file):
 elif os.environ.get('GOOGLE_CLOUD_PROJECT', None):
     project_id = os.environ.get('GOOGLE_CLOUD_PROJECT')
     client = secretmanager.SecretManagerServiceClient()
-    # settings_name = env('SETTINGS_NAME')
     name = f'projects/{project_id}/secrets/{SETTINGS_NAME}/versions/latest'
     payload = client.access_secret_version(name=name).payload.data.decode('UTF-8')
     env.read_env(io.StringIO(payload))
@@ -246,8 +245,8 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # Whether to expire the session when the user closes their browser.
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-# The age of session cookies, in seconds. (Currently: 5 days)
-SESSION_COOKIE_AGE = 60 * 60 * 24 * 5
+# The age of session cookies, in seconds. (Currently: 14 days)
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
 
 # ------------------------------------------------------------#
 # Customization

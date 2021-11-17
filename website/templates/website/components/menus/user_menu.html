@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<!--
+  User Menu | Cannlytics Website
+  Created: 11/15/2021
+  Updated: 11/15/2021
+-->
+<ul class="navbar-nav requires-auth align-items-center me-3">
+  <li class="nav-item h6 mb-0">
+    <a
+      class="btn btn-sm bg-gradient-orange text-white text-nowrap me-2"
+      href="https://console.cannlytics.com"
+    >
+      Launch App
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link dropdown-toggle py-0" href="#" id="navbarUserMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <img id="user-photo" class="rounded-circle" style="max-width:60px; max-height:60px;" src="">
+    </a>
+    <ul
+      class="dropdown-menu dropdown-menu-end bg-light shadow mx-2"
+      aria-labelledby="navbarUserMenu"
+      style="z-index:10000; right:1rem !important; top:8rem; position: fixed !important;"
+    >
+      <div class="px-3 py-1">
+        <h5 class="fs-6 serif text-dark" id="user-name"></h5>
+        <h6 class="fs-6"><small class="serif text-secondary" id="user-email"></small></h6>
+      </div>
+      <li><hr class="dropdown-divider"></li>
+      <li>
+        <a class="dropdown-item" href="https://console.cannlytics.com/settings/account">
+          <small class="serif">Your account</small>
+        </a>
+      </li>
+      <li>
+        <a class="serif dropdown-item" href="https://console.cannlytics.com/settings/invite">
+          <small class="serif">Invite user</small>
+        </a>
+      </li>
+      <li>
+        <a class="serif dropdown-item" href="https://console.cannlytics.com/subscriptions/subscription">
+          <small class="serif">Manage your subscription</small>
+        </a>
+      </li>
+      <li>
+        <a class="serif dropdown-item" href="https://console.cannlytics.com/help/feedback">
+          <small class="serif">Send feedback</small>
+        </a>
+      </li>
+      <li>
+        <button class="serif dropdown-item" onClick="cannlytics.auth.signOut()">
+          <small class="serif">Sign Out</small>
+        </button>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+</html>

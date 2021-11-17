@@ -16,6 +16,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 # Internal imports
+from cannlytics.auth.auth import authenticate_request
 from website.utils.firebase import get_collection, get_document, update_document
 
 ENDPOINTS = ['labs']
@@ -33,6 +34,15 @@ def authenticate(request):
     uid = claims['uid']
     request.session['uid'] = uid # Save user's custom claims in the session.
     return claims
+
+
+@api_view(['GET'])
+def get_user_subscriptions(request):
+    """Get a user's subscriptions."""
+    claims = authenticate_request(request)
+    user_id = claims.get('user_id')
+    subscriptions = get_document(f'subscribers/{user_id}')
+    return Response({ 'data': subscriptions}, content_type='application/json')
 
 
 #----------------------------------------------#

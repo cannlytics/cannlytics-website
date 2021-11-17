@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<!--
+  Subscription Management Page | Cannlytics Website
+  Created: 11/16/2021
+  Updated: 11/16/2021
+-->
+{% extends "website/index.html" %}
+{% load static %}
+{% block title %}Subscription | Cannlytics{% endblock %}
+{% block material %}
+
+  <!-- Title Section -->
+  <section class="container mb-2 mt-5">
+
+    <h2 class="mb-3 pt-5 serif text-dark">
+      Manage your Cannlytics Subscription
+    </h2>
+    <p class="fs-6 double-line" style="max-width:540px;">
+      <small>
+        Personalize your presence in the Cannlytics community.
+      </small>
+    </p>
+
+  </section>
+
+{% endblock material %}
+
+<!-- JavaScript -->
+{% block page_js %}
+  <script>
+    cannlytics.website.getUserSubscriptions(function (data) {
+      console.log('Subscription data:', data);
+    });
+  </script>
+{% endblock page_js %}
