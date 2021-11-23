@@ -3,7 +3,7 @@
 <!--
   Home Page | Cannlytics
   Created: 1/5/2020
-  Updated: 11/15/2021
+  Updated: 11/22/2021
   TODO:
     - Spruce up the homepage. Check out modern sites:
       https://balancer.fi/
@@ -17,7 +17,7 @@
 -->
 {% extends "website/index.html" %}
 {% load static %}
-{% block title %}Welcome | {{ general.title }}{% endblock %}
+{% block title %}Welcome | Cannlytics{% endblock %}
 {% block material %}
   <div class="homepage pb-5 overflow-hidden">
 
@@ -34,9 +34,6 @@
       </svg>
     </div>
 
-    <!-- Video Banner -->
-    {% include "website/components/banners/video_banner.html" %}
-
     <!-- Featurettes -->
     {% comment %} {% include "./featurettes.html" with featurettes=homepage.featurettes only %} {% endcomment %}
 
@@ -46,11 +43,14 @@
     <!-- Partners -->
     {% comment %} {% include "website/components/banners/partners_banner.html" %} {% endcomment %}
 
-    <!-- TODO: Display of states where Cannlytics is validated with Metrc -->
+    <!-- List of Metrc Validations -->
     {% include "website/pages/homepage/metrc_state_list.html" with verifications=verifications only %}
 
     <!-- Call to Action -->
     {% include "website/pages/homepage/call_to_action.html" with general=general only %}
+
+    <!-- Video Banner -->
+    {% include "website/components/banners/video_banner.html" %}
 
     <!-- TODO: Cannlytics products and links to each GitHub repository -->
 

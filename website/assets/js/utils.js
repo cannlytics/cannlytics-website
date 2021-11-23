@@ -228,6 +228,19 @@ export function showNotification(title, message, options) {
  Text Helpers
  --------------------------------------------------------------------*/
 
+export function getUrlParameter(name) {
+  /* Get a specific parameter from the URL.
+  Args:
+    name (String): The name of the parameter.
+  Returns:
+    (String): Returns the parameter value if it is in the URL.
+  */
+  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  var results = regex.exec(location.search);
+  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
 export function capitalize(string) {
   /*
    * Capitalize the first letter of a given string.

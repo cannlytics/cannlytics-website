@@ -3,7 +3,7 @@
 <!--
   Subscriptions Page
   Created: 1/17/2021
-  Updated: 11/15/2021
+  Updated: 11/17/2021
 -->
 {% extends "website/index.html" %}
 {% load static %}
@@ -80,7 +80,7 @@
               id="premium-button"
               type="button"
               class="btn w-100 bg-gradient-orange serif text-white"
-              href="/subscriptions/checkout?id="
+              href="/subscriptions/checkout?name=Newsletter"
             >
               Go premium
             </a>
@@ -103,17 +103,6 @@
   <!-- Vines -->
   {% include "website/components/art/vines.html" %}
 
-{% endblock %}
-
-<!-- JavaScript -->
-{% block page_js %}
-  <script>
-    // Get PayPal subscription plan ID from Firestore.
-    cannlytics.website.getSubscription('Newsletter').then(function (subscriptionData) {
-      var planId = subscriptionData.plan_id;
-      document.getElementById('premium-button').href = `/subscriptions/checkout?id=${planId}`;
-    });
-  </script>
 {% endblock %}
 
 </html>

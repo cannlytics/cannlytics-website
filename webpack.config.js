@@ -1,9 +1,10 @@
 /*
   Module Bundler | Cannlytics
-  Created 1/5/2020
+  Created: 1/5/2021
+  Updated: 11/22/2021
 */
 const Dotenv = require('dotenv-webpack');
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
 const appName = 'website';
 
@@ -24,7 +25,7 @@ module.exports = env => {
     ],
     output: {
       path: path.resolve(__dirname, `${appName}/static/${appName}`),
-      filename: './js/bundle.js',
+      filename: './js/bundles/bundle.js',
       libraryTarget: 'var',
       library: 'cannlytics', // Turns JavaScript into a module.
     },
@@ -36,7 +37,7 @@ module.exports = env => {
             {
               loader: 'file-loader', // Output CSS.
               options: {
-                name: './css/bundle.css',
+                name: './css/bundles/bundle.css',
               },
             },
             {

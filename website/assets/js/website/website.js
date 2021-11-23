@@ -1,10 +1,10 @@
 /**
  * Website JavaScript | Cannlytics Website
  * Created: 12/3/2020
- * Updated: 7/31/2021
+ * Updated: 11/17/2021
+ * TODO: Refactor and move functions to better homes.
  */
-import { auth, getDocument } from '../firebase.js';
-import { authRequest } from '../utils.js';
+import { auth } from '../firebase.js';
 
 
 export const website = {
@@ -18,8 +18,7 @@ export const website = {
     // Initialize icons.
     feather.replace();
 
-    // Initialize toasts.
-    // this.initializeToasts();
+    // Initialize accept cookies notification.
     this.acceptCookiesCheck();
 
     // Set the theme.
@@ -28,7 +27,7 @@ export const website = {
     // Scroll to any hash's anchor.
     this.scrollToHash();
 
-    // Keep track of user
+    // Check if a user is signed in.
     auth.onAuthStateChanged((user) => {
       if (user) {
         document.getElementById('user-email').textContent = user.email;
@@ -111,7 +110,10 @@ export const website = {
 
 
   setTheme(theme) {
-    /* Set the website's theme. */
+    /* Set the website's theme.
+    Args:
+      theme (String): The theme to set, `light` or `dark`.
+    */
     if (theme === 'light') {
       document.body.className = 'base';
     } else if (! this.hasClass(document.body, 'dark')) {
@@ -121,7 +123,11 @@ export const website = {
 
 
   hasClass(element, className) {
-    /* Check if an element has a class. */
+    /* Check if an element has a class.
+    Args:
+      element (Element): An HTML element.
+      className (String): The class to check in the element's class list.
+    */
     return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
   },
 
@@ -137,7 +143,10 @@ export const website = {
 
 
   copyToClipboard(text) {
-    /* Prompt a user to copy a block of code to their clipboard. */
+    /* Prompt a user to copy a block of code to their clipboard.
+    Args:
+      text (String): The text to copy to the clipboard.
+    */
     // Optional: Improve getting only text from between tags.
     // https://aaronluna.dev/blog/add-copy-button-to-code-blocks-hugo-chroma/
     var tags = [
@@ -157,35 +166,6 @@ export const website = {
   },
 
 
-  subscribe() {
-    /* Subscribe to newsletter functionality. */
-    var emailInput = document.getElementById('email-input');
-    var subscribeBtn = document.getElementById('subscribe-button');
-    var email = emailInput.value;
-    if (!email) return; // TODO: Check if email is valid and notify user of error.
-    subscribeBtn.disabled = true;
-    var xhr = new XMLHttpRequest();
-    xhr.addEventListener('readystatechange', function() {
-      if (this.readyState === 4) {
-        var jsonResponse = JSON.parse(this.responseText);
-        var success = jsonResponse.message.success;
-        if (success) {
-          emailInput.value = '';
-          document.location.href = `${window.location.origin}/subscribed/`;
-        }
-        else {
-          // FIXME: Show success dismiss-able alert
-          alert('Error subscribing. Please check that your email is valid and that you have a healthy internet connection.');
-        }
-        subscribeBtn.disabled = false;
-      }
-    });
-    xhr.open('POST', `${window.location.origin}/api/subscribe/`);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send(`email=${email}`);
-  },
-
-
   toggleAuthenticatedMaterial(authenticated=false) {
     /*
      * Show any material that requires authentication.
@@ -201,44 +181,5 @@ export const website = {
       else requiresAuth.item(i).classList.add('visually-hidden');
     }
   },
-
-
-  logPromo() {
-    /*
-     * Log a promotional event.
-     */
-    var code = this.getUrlParameter('source');
-    if (!code) return;
-    var data = { 'promo_code': code };
-    fetch(`${window.location.origin}/promotions/`, {
-      method: 'POST', 
-      body: JSON.stringify(data),
-      headers: { 'Accept': 'application/json' },
-    });
-  },
-
-
-  getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-  },
-
-  getSubscription: (docId) => new Promise((resolve) => {
-    /* Get subscription data from Firestore given a subscription document ID. */
-    getDocument(`public/subscriptions/subscription_plans/${docId}`).then((data) => {
-      resolve(data);
-    });
-  }),
-
-
-  getUserSubscriptions: () => new Promise((resolve) => {
-    /* Get the current user's subscriptions. */
-    authRequest('/api/subscriptions/').then((response) => {
-      console.log('Subscription data:', response.data);
-      resolve(response.data);
-    });
-  }),
 
 }

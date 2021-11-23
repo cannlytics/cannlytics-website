@@ -1,7 +1,7 @@
 /*--------------------------------------------------------------------------
   Cannlytics Website Style
   Created: 10/4/2020
-  Updated: 8/1/2021
+  Updated: 11/22/2021
 ---------------------------------------------------------------------------*/
 
 @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:100,200,300,400,500,600,700');
@@ -323,7 +323,7 @@ a.cannlytics-light-green-text:hover {
   fill: #281e52;
 }
 .bg-cannlytics-green {
-  background-color: #104607;
+  background-color: #062A00;
 }
 body.dark .bg-cannlytics-green {
   background-color: #263238;
@@ -846,7 +846,7 @@ body.dark .wave svg path {
   fill: #554b8033;
 }
 .wave.green svg path {
-  fill: #104607 !important;
+  fill: #062A00 !important;
 }
 .wave.transparent svg path {
   fill: transparent !important;

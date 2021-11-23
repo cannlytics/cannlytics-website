@@ -1,17 +1,17 @@
 """
 URLs | Cannlytics Website
 Created: 12/29/2020
-Updated: 11/15/2021
+Updated: 11/22/2021
 Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
 """
-# External imports
+# External imports.
 from django.conf import settings
 from django.conf.urls import handler404, handler500
 from django.contrib import admin
 from django.urls import include, path
 from django_robohash.views import robohash
 
-# Internal imports
+# Internal imports.
 from website.views import (
     api,
     auth,
@@ -22,7 +22,7 @@ from website.views import (
     videos,
 )
 
-# Main URLs
+# Main URLs.
 urlpatterns = [
     path('', main.GeneralView.as_view(), name='index'),
     path('admin/', admin.site.urls, name='admin'),

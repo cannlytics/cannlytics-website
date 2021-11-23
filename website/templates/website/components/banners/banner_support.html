@@ -9,6 +9,7 @@
     phone
     phone_number
 -->
+{% load static %}
 <div class="info-bar text-dark d-flex justify-content-between py-2 px-2 px-lg-3">
   <div class="d-flex"></div>
   <div class="d-flex align-items-center fw-bold">
@@ -43,11 +44,14 @@
     <!-- Support -->
     <a
       class="text-dark background-hover"
-      href="https://opencollective.com/cannlytics-company/contribute"
+      href="{% url 'page' page='subscriptions' %}"
       title="Get the support that your company needs."
     >
+      <svg class="" style="width:25px;height:25px;">
+        <use href="{% static "website/images/emojies/sparkles.svg" %}#sparkles-emoji"></use>
+      </svg>
       <small>
-        🤝 Get supported now
+        Premium now available!
       </small>
     </a>
 

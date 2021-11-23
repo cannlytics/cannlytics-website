@@ -121,7 +121,7 @@ state = { # Optional: Turn into models and save in database?
     "homepage": {
         "hero": {
             "title": "Cannabis Analytics for the 21st Century",
-            "message": "Super power your lab with open-source cannabis-testing software made with love ❤️ and ready for you to plug & play or pop the hood and tinker to your heart's content.",
+            "message": "Superpower your lab with open-source cannabis analytics made with love ❤️!",
             "image": "website/images/engine_icons/space_station.svg",
             "primary_action": "Get Started 📖",
             "primary_action_url": "https://docs.cannlytics.com",

@@ -3,12 +3,11 @@
 <!--
   Header | Cannlytics Website
   Created: 1/7/2021
-  Updated: 6/27/2021
+  Updated: 11/22/2021
 -->
 {% load static %}
 
 <!-- Banner offer -->
-<!-- AB TEST: Phone number and email banner -->
 {% include "website/components/banners/banner_support.html" with
   email="contact@cannlytics.com"
   phone=general.phone
@@ -24,7 +23,6 @@
   <div class="container-fluid">
 
     <!-- Title -->
-    <!-- AB TEST: Logo font -->
     <a 
       class="navbar-brand d-flex align-items-center me-2"
       href="{% url 'index' %}"
@@ -60,14 +58,6 @@
       class="collapse navbar-collapse justify-content-between"
     >
       <ul class="navbar-nav me-2">
-        {% comment %} <li class="nav-item h6 mb-0">
-          <a
-            class="nav-link btn-sm background-hover {% if 'community' in request.path %}active{% endif %}"
-            href="{% url 'community' %}"
-          >
-            Community
-          </a>
-        </li> {% endcomment %}
         <li class="nav-item h6 mb-0">
           <a
             class="nav-link btn-sm background-hover"
@@ -92,29 +82,10 @@
             Contact
           </a>
         </li>
-        <!-- AB TEST: contact vs. help dropdown-->
-        {% comment %} <li class="nav-item h6 mb-0 dropdown">
-          <a
-            class="nav-link background-hover dropdown-toggle"
-            href="#"
-            id="navbarDropdownMenuLink"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Help
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="{% url 'contact' %}">Contact</a>
-            <a class="dropdown-item" href="{% url 'pricing' %}">Consulting</a>
-          </div>
-        </li> {% endcomment %}
       </ul>
 
       <!-- Right Navigation (Not signed in) -->
       <ul class="navbar-nav indicates-auth align-items-center me-3">
-        {% comment %} {% include 'cannlytics_console/components/buttons/donate_button.html' %} {% endcomment %}
         <li class="nav-item h6 mb-0">
           <a
             class="nav-link btn-sm app-action background-hover text-nowrap me-2"
@@ -135,14 +106,10 @@
         </li>
       </ul>
 
-      <!-- Right navigation (Signed in) -->
+      <!-- Right navigation shown if user is signed in. -->
       {% include "website/components/menus/user_menu.html" %}
 
-      <!-- End of right navigation -->
-
-    </div><!-- End of navigation links-->
-
+    </div>
   </div>
-</nav><!-- End of header -->
-
+</nav>
 </html>

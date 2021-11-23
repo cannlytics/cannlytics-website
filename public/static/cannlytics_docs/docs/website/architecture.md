@@ -41,7 +41,7 @@ A Duck's 🦆 (an app's) directory usually contains:
   - `images` - Supporting images.
   - `js` - App-related Javascript.
   - `css` - App-related CSS
-* `templates\${app_name}` - App-specific tempaltes.
+* `templates\${app_name}` - App-specific templates.
 * `apps.py` - App configuration file.
 * `state.py` - A file for storing state (a database is preferred).
 * `urls.py` - App URL patterns.

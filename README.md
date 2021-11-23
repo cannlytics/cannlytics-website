@@ -103,7 +103,9 @@ This step provides access to this containerized app from a [Firebase Hosting](ht
 
 ## ❤️ Support <a name="support"></a>
 
-Made with ❤️ and <a href="https://opencollective.com/cannlytics-company">your good will</a>.
+Cannlytics is made available with ❤️ and <a href="https://opencollective.com/cannlytics-company">your good will</a>. Please consider making a contribution to keep the good work coming 🚢
+
+🥞 Bitcoin donation address: 34CoUcAFprRnLnDTHt6FKMjZyvKvQHb6c6
 
 ## 🏛️ License <a name="license"></a>
 
