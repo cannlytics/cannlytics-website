@@ -1,16 +1,18 @@
 /**
- * Errors JavaScript | Cannlytics Console
- * Author: Keegan Skeate
+ * Errors JavaScript | Cannlytics Website
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 4/28/2021
- * Updated: 6/3/2021
- * FIXME:
+ * Updated: 11/23/2021
+ * License: MIT License
  */
 
 import { authRequest } from '../utils.js';
 
 export const errorSettings = {
 
-
+  // FIXME:
   reportError(data) {
     /*
      * Reports an error to the back-end.

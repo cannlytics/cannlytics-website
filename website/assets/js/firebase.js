@@ -1,7 +1,11 @@
 /**
  * Firebase JavaScript | Cannlytics Website
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 12/22/2020
  * Updated: 11/23/2021
+ * License: MIT License
  */
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
@@ -9,9 +13,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import {
   getFirestore,
   getDocs,
-  addDoc,
   setDoc,
-  updateDoc,
   deleteField,
   deleteDoc,
   collection,
@@ -20,6 +22,7 @@ import {
   where,
   orderBy,
   limit,
+  onSnapshot,
 } from 'firebase/firestore';
 import {
   getStorage,
@@ -71,6 +74,25 @@ const createCollectionReference = (path) => {
   return collection(db, ...parts);
 };
 
+const createCollectionQuery = (path, params) => {
+  /**
+   * Create a Firestore collection query from a path and parameters.
+   * @param {string} path The path to the collection.
+   * @param {map} params Parameters for querying: `desc`, `filters`, `max`, `order`.
+   * @return {Query}
+   */
+   const collectionRef = createCollectionReference(path);
+   const args = [collectionRef];
+   const { desc, filters=[], max, order } = params;
+   filters.forEach((filter) => {
+     args.push(where(filter.key, filter.operation, filter.value));
+   });
+   if (order && desc) args.push(orderBy(order, 'desc'));
+   else if (order) args.push(orderBy(order));
+   if (max) args.push(limit(max));
+   return query(...args);
+};
+
 async function getCollection(path, params) {
   /**
    * Get documents from a collection in Firestore.
@@ -78,69 +100,111 @@ async function getCollection(path, params) {
    * @param {map} params Parameters for querying: `desc`, `filters`, `max`, `order`.
    * @return {Array}
    */
-  const collectionRef = createCollectionReference(path);
-  const args = [collectionRef];
-  const { desc, filters=[], max, order } = params;
-  filters.forEach((filter) => {
-    args.push(where(filter.key, filter.operation, filter.value));
-  });
-  if (order && desc) args.push(orderBy(order, 'desc'));
-  else if (order) args.push(orderBy(order));
-  if (max) args.push(limit(max));
-  const snapshot = await getDocs(...args);
-  return snapshot.docs.map(doc => doc.data());
+  const q = createCollectionQuery(path, params);
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => Object({ id: doc.id, ...doc.data() }));
 }
 
-// TODO:
 async function getDocument(path) {
   /**
    * Get a document from Firestore.
    * @param {string} path The path to the document.
    * @return {Map}
    */
+  const docRef = createDocumentReference(path);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return { id: docRef.id, ...docSnap.data() };
+  } else {
+    return {}
+  }
 }
 
-/**
- * Create or update a document in Firestore.
- * @param {string} path The path to the document.
- * @param {map} path The path to the document.
- */
- async function setDocument(path, data) {
+async function setDocument(path, data) {
+  /**
+   * Create or update a document in Firestore.
+   * @param {string} path The path to the document.
+   * @param {map} path The path to the document.
+   */
   const now = new Date().toISOString();
-  const documentRef = createDocumentReference(path);
+  const docRef = createDocumentReference(path);
   const entry = {...data, created_at: now, updated_at: now };
-  await setDoc(documentRef, entry);
-  return { id: documentRef.id, ...entry };
+  await setDoc(docRef, entry, { merge: true });
+  return { id: docRef.id, ...entry };
 }
 
-// TODO: Delete document
 async function deleteDocument(path) {
   /**
    * Delete a document from Firestore.
    * @param {string} path The path to the document.
    */
+  const docRef = createDocumentReference(path);
+  await deleteDoc(docRef);
 }
 
-// const deleteDocument = (path) => new Promise((resolve, reject) => {
-//   /*
-//    * Delete a document from Firestore.
-//    */
-//   const ref = getReference(path);
-//   ref.delete().then(() => resolve())
-//     .catch((error) => reject(error));
-// });
+async function deleteDocumentField(path, key) {
+  /**
+   * Delete a field from a document in Firestore.
+   * @param {string} path The path to the document.
+   * @param {string} key The key of the field to delete.
+   */
+  const entry = {}
+  entry[key] = deleteField();
+  await setDocument(path, entry);
+}
 
+async function listenToDocument(path, callback, errorCallback = null) {
+  /**
+   * Listen to changes of a document in Firestore.
+   * @param {string} path The path to the document.
+   * @param {function} callback A callback to execute when the document changes.
+   * @param {function} errorCallback A callback to execute if there is an error.
+   * @returns {function}
+   */
+  const docRef = createDocumentReference(path);
+  return onSnapshot(docRef, (doc) => {
+    callback({ id: doc.id, ...doc.data() });
+  },
+  (error) => {
+    if (errorCallback) errorCallback(error);
+  });
+}
 
-// Optional: Listen to document with a callback.
-
-// Optional: Listen to collection with a callback.
-
-
-// FIXME: Update to SDK v9
-
-
-
-
+async function listenToCollection(
+  path,
+  params,
+  addedCallback = null,
+  modifiedCallback = null,
+  removedCallback = null,
+  errorCallback = null,
+) {
+  /**
+   * Listen to changes of a document in Firestore.
+   * @param {string} path The path to the collection.
+   * @param {map} params Parameters for querying: `desc`, `filters`, `max`, `order`.
+   * @param {function} addedCallback A callback to execute when documents in the collection are added.
+   * @param {function} modifiedCallback A callback to execute when documents in the collection are modified.
+   * @param {function} removedCallback A callback to execute when documents in the collection are removed.
+   * @returns {function}
+   */
+  const q = createCollectionQuery(path, params);
+  return onSnapshot(q, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === 'added' && addedCallback) {
+        addedCallback({ id: change.doc.id, ...change.doc.data() });
+      }
+      if (change.type === 'modified') {
+        modifiedCallback({ id: change.doc.id, ...change.doc.data() })
+      }
+      if (change.type === 'removed') {
+        removedCallback({ id: change.doc.id, ...change.doc.data() })
+      }
+    });
+  },
+  (error) => {
+    if (errorCallback) errorCallback(error);
+  });
+}
 
 /*----------------------------------------------------------------------------
   Authentication Interface
@@ -322,15 +386,17 @@ export {
   auth,
   db,
   deleteDocument,
+  deleteDocumentField,
   getCollection,
   getDocument,
+  listenToDocument,
+  listenToCollection,
   logEvent,
   onAuthStateChanged,
   setDocument,
   storageErrors,
   // GoogleAuthProvider,
   // changePhotoURL,
-  // deleteDocument,
   // deleteFile,
   // downloadFile,
   // getCollection,

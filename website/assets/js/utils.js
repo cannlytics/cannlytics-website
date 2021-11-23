@@ -1,8 +1,11 @@
-/*
+/**
  * Utility JavaScript | Cannlytics Console
- * Author: Keegan Skeate <contact@cannlytics.com>
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 2/21/2021
  * Updated: 6/21/2021
+ * License: MIT License
  */
 
 import { getUserToken } from './firebase.js';

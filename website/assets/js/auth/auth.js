@@ -1,8 +1,11 @@
 /**
  * Authentication JavaScript | Cannlytics Website
- * Author: Keegan Skeate
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 1/17/2021
  * Updated: 11/15/2021
+ * License: MIT License
  */
 import { signInWithEmailAndPassword, signOut as fbSignOut } from 'firebase/auth';
 import { auth as fbAuth, GoogleAuthProvider } from '../firebase.js';

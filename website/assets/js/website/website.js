@@ -1,14 +1,17 @@
 /**
  * Website JavaScript | Cannlytics Website
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 12/3/2020
- * Updated: 11/17/2021
+ * Updated: 11/23/2021
+ * License: MIT License
+ * 
  * TODO: Refactor and move functions to better homes.
  */
 import { auth, onAuthStateChanged } from '../firebase.js';
 
-
 export const website = {
-
 
   initialize() {
     /*
@@ -46,7 +49,6 @@ export const website = {
 
   },
 
-
   initializeToasts() {
     /*
      * Initialize Bootstrap toasts.
@@ -54,7 +56,6 @@ export const website = {
     var toast = document.getElementById('cookie-toast');
     new bootstrap.Toast(toast, { autohide: false });
   },
-
 
   acceptCookies() {
     /* Save choice that user accepted cookies. */
@@ -65,7 +66,6 @@ export const website = {
     // TODO: Make entry in Firestore for cookie accepted?
   },
 
-
   acceptCookiesCheck() {
     /* Checks if a user needs to accept cookies. */
     var acceptCookies = localStorage.getItem('acceptCookies');
@@ -75,7 +75,6 @@ export const website = {
       toast.style.opacity = 1;
     }
   },
-
 
   changeTheme() {
     /* Change the website's theme. */
@@ -89,7 +88,6 @@ export const website = {
     this.setTheme(newTheme);
     localStorage.setItem('theme', newTheme);
   },
-
 
   setInitialTheme() {
     /* Set the theme when the website loads. */
@@ -108,7 +106,6 @@ export const website = {
     }
   },
 
-
   setTheme(theme) {
     /* Set the website's theme.
     Args:
@@ -121,7 +118,6 @@ export const website = {
     }
   },
 
-
   hasClass(element, className) {
     /* Check if an element has a class.
     Args:
@@ -131,7 +127,6 @@ export const website = {
     return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
   },
 
-
   scrollToHash () {
     /* Scroll to any an from any hash in the URL. */
     var hash = window.location.hash.substring(1);
@@ -140,7 +135,6 @@ export const website = {
       element.scrollIntoView();
     }
   },
-
 
   copyToClipboard(text) {
     /* Prompt a user to copy a block of code to their clipboard.
@@ -164,7 +158,6 @@ export const website = {
     });
     window.prompt('Copy to clipboard: Press Ctrl+C, then Enter', text);
   },
-
 
   toggleAuthenticatedMaterial(authenticated=false) {
     /*

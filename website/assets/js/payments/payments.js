@@ -1,16 +1,16 @@
 /**
  * Payment JavaScript | Cannlytics Website
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
- * Updated: 11/17/2021
+ * Updated: 11/23/2021
+ * License: MIT License
  */
-
 import { getDocument } from '../firebase.js';
 import { authRequest, getUrlParameter } from '../utils.js';
 
-
-
 export const payments = {
-
 
   // TODO: Cancel subscription with PayPal API.
   // https://developer.paypal.com/docs/api/reference/get-an-access-token/
@@ -34,7 +34,6 @@ export const payments = {
   },
   // headers.set('Authorization', 'Basic ' + Buffer.from(username + ":" + password).toString('base64'));
 
-
   async getSubscription(name) {
     /*
      * Get a subscription given its name.
@@ -42,13 +41,11 @@ export const payments = {
     return await getDocument(`public/subscriptions/subscription_plans/${name}`);
   },
 
-
   async getUserSubscriptions() {
     /* Get the current user's subscriptions. */
     const response = await authRequest('/api/subscriptions/');
     return response.data;
   },
-
 
   subscribe(subscription) {
     /*
@@ -72,7 +69,6 @@ export const payments = {
     window.location.href = `${window.location.origin}/subscriptions/subscribed/`;
   },
 
-
   logPromo() {
     /*
      * Log a promotional event.
@@ -86,7 +82,6 @@ export const payments = {
       headers: { 'Accept': 'application/json' },
     });
   },
-
 
   // subscribe() {
   //   /* Subscribe to newsletter functionality. */
@@ -115,6 +110,5 @@ export const payments = {
   //   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   //   xhr.send(`email=${email}`);
   // },
-
 
 };

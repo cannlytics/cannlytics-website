@@ -1,7 +1,11 @@
 /**
  * Videos JavaScript | Cannlytics Website
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 7/30/2021
- * Updated: 7/30/2021
+ * Updated: 11/23/2021
+ * License: MIT License
  */
  import { auth, getDocument, onAuthStateChanged } from '../firebase.js';
 

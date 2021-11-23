@@ -1,7 +1,11 @@
 /**
  * Labs JavaScript | Cannlytics Website
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
  * Updated: 7/31/2021
+ * License: MIT License
  */
 
 // import { firestore } from 'firebase';

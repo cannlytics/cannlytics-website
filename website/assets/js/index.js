@@ -1,7 +1,11 @@
 /**
- * index.js | Cannlytics Website
+ * Cannlytics Module Index | Cannlytics Website
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 1/6/2021
- * Updated: 7/30/2021
+ * Updated: 11/23/2021
+ * License: MIT License
  */
 import { auth } from './auth/auth.js';
 import { community } from './community/community.js';

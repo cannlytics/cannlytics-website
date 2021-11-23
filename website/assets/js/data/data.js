@@ -1,12 +1,15 @@
 /**
  * Data JavaScript | Cannlytics Website
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 8/21/2021
- * Updated: 10/14/2021
+ * Updated: 11/23/2021
+ * License: MIT License
  */
 import { getCollection, getDocument } from '../firebase.js';
 
 export const data = {
-
 
   getDataSet: (path) => new Promise((resolve) => {
     /*
@@ -16,7 +19,6 @@ export const data = {
       resolve(data);
     });
   }),
-
 
   getDataMarketStats: () => new Promise((resolve) => {
     /*
@@ -29,7 +31,6 @@ export const data = {
     resolve({});
   }),
 
-
   getStateData: () => new Promise((resolve) => {
     /*
      * Get metadata about a given dataset.
@@ -39,13 +40,11 @@ export const data = {
     });
   }),
 
-
   downloadDataSet() {
     /*
      * TODO: Download a given dataset.
      */
   },
-
 
   publishDataSet() {
     /*
@@ -53,13 +52,11 @@ export const data = {
      */
   },
 
-
   sellDataSet() {
     /*
      * TODO: Publish a given dataset on the data market.
      */
   },
-
 
   buyDataSet() {
     /*
