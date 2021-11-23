@@ -4,7 +4,7 @@
  * Created: 1/17/2021
  * Updated: 11/15/2021
  */
-
+import { signInWithEmailAndPassword, signOut as fbSignOut } from 'firebase/auth';
 import { auth as fbAuth, GoogleAuthProvider } from '../firebase.js';
 import { authRequest, showNotification } from '../utils.js';
 
@@ -20,7 +20,7 @@ export const auth = {
     const password = document.getElementById('login-password').value;
     document.getElementById('sign-in-button').classList.add('d-none');
     document.getElementById('sign-in-loading-button').classList.remove('d-none');
-    fbAuth.signInWithEmailAndPassword(email, password)
+    signInWithEmailAndPassword(fbAuth, email, password)
       .then((user) => {
         const dialog = document.getElementById('login-dialog');
         const modal = bootstrap.Modal.getInstance(dialog);
@@ -42,7 +42,7 @@ export const auth = {
      * Sign a user out of their account.
      */
     authRequest('/api/logout/');
-    fbAuth.signOut();
+    signOut(auth);
   },
 
 
@@ -50,6 +50,7 @@ export const auth = {
     /*
      * Sign in with Google.
      */
+    // FIXME:
     const provider = GoogleAuthProvider();
     firebase.auth().signInWithRedirect(provider);
   },

@@ -3,7 +3,7 @@
  * Created: 7/30/2021
  * Updated: 7/30/2021
  */
- import { auth, getDocument } from '../firebase.js';
+ import { auth, getDocument, onAuthStateChanged } from '../firebase.js';
 
 
  export const videos = {
@@ -11,7 +11,7 @@
     authenticatePremiumVideo() {
       /* Authenticate the user to view a premium video.
       */
-      auth.onAuthStateChanged((user) => {
+      onAuthStateChanged(auth, (user) => {
         if (user) {
           console.log('Current user:', user);
         } else {

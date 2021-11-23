@@ -4,7 +4,7 @@
  * Updated: 11/17/2021
  * TODO: Refactor and move functions to better homes.
  */
-import { auth } from '../firebase.js';
+import { auth, onAuthStateChanged } from '../firebase.js';
 
 
 export const website = {
@@ -28,7 +28,7 @@ export const website = {
     this.scrollToHash();
 
     // Check if a user is signed in.
-    auth.onAuthStateChanged((user) => {
+    onAuthStateChanged(auth, user => {
       if (user) {
         document.getElementById('user-email').textContent = user.email;
         document.getElementById('user-name').textContent = user.displayName;

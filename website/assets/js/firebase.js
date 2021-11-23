@@ -1,17 +1,36 @@
 /**
  * Firebase JavaScript | Cannlytics Website
  * Created: 12/22/2020
- * Updated: 11/15/2021
+ * Updated: 11/23/2021
  */
-import * as firebase from 'firebase/app';
-import 'firebase/analytics';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/performance';
-import 'firebase/storage';
+import { initializeApp } from 'firebase/app';
+import { getAnalytics, logEvent } from 'firebase/analytics';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  getFirestore,
+  getDocs,
+  addDoc,
+  setDoc,
+  updateDoc,
+  deleteField,
+  deleteDoc,
+  collection,
+  doc,
+  query,
+  where,
+  orderBy,
+  limit,
+} from 'firebase/firestore';
+import {
+  getStorage,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from 'firebase/storage';
 
-// Initialize Firebase
-firebase.initializeApp({
+// Initialize Firebase.
+const firebaseApp = initializeApp({
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.FIREBASE_DATABASE_URL,
@@ -22,23 +41,113 @@ firebase.initializeApp({
   measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 });
 
-// FIXME: As session cookies are to be used, do not persist any state client side.
-// firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+// Get core modules.
+const analytics = getAnalytics(firebaseApp);
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+const storage = getStorage(firebaseApp);
 
-// Core modules
-const analytics = firebase.analytics();
-const auth = firebase.auth();
-const db = firebase.firestore();
-const performance = firebase.performance();
-const storage = firebase.storage();
-const { firestore } = firebase;
-const GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
-
- 
 /*----------------------------------------------------------------------------
-  Authentication interface
+  Firestore Interface
   ----------------------------------------------------------------------------*/
 
+ const createDocumentReference = (path) => {
+  /**
+   * Create a Firestore document reference from a path.
+   * @param {string} path The path to the document. 
+   * @return {DocumentReference}
+   */
+  const parts = path.replace(/^\//g, '').split('/');
+  return doc(db, ...parts);
+};
+
+const createCollectionReference = (path) => {
+  /**
+   * Create a Firestore collection reference from a path.
+   * @param {string} path The path to the collection. 
+   * @return {CollectionReference}
+   */
+  const parts = path.replace(/^\//g, '').split('/');
+  return collection(db, ...parts);
+};
+
+async function getCollection(path, params) {
+  /**
+   * Get documents from a collection in Firestore.
+   * @param {string} path The path to the document.
+   * @param {map} params Parameters for querying: `desc`, `filters`, `max`, `order`.
+   * @return {Array}
+   */
+  const collectionRef = createCollectionReference(path);
+  const args = [collectionRef];
+  const { desc, filters=[], max, order } = params;
+  filters.forEach((filter) => {
+    args.push(where(filter.key, filter.operation, filter.value));
+  });
+  if (order && desc) args.push(orderBy(order, 'desc'));
+  else if (order) args.push(orderBy(order));
+  if (max) args.push(limit(max));
+  const snapshot = await getDocs(...args);
+  return snapshot.docs.map(doc => doc.data());
+}
+
+// TODO:
+async function getDocument(path) {
+  /**
+   * Get a document from Firestore.
+   * @param {string} path The path to the document.
+   * @return {Map}
+   */
+}
+
+/**
+ * Create or update a document in Firestore.
+ * @param {string} path The path to the document.
+ * @param {map} path The path to the document.
+ */
+ async function setDocument(path, data) {
+  const now = new Date().toISOString();
+  const documentRef = createDocumentReference(path);
+  const entry = {...data, created_at: now, updated_at: now };
+  await setDoc(documentRef, entry);
+  return { id: documentRef.id, ...entry };
+}
+
+// TODO: Delete document
+async function deleteDocument(path) {
+  /**
+   * Delete a document from Firestore.
+   * @param {string} path The path to the document.
+   */
+}
+
+// const deleteDocument = (path) => new Promise((resolve, reject) => {
+//   /*
+//    * Delete a document from Firestore.
+//    */
+//   const ref = getReference(path);
+//   ref.delete().then(() => resolve())
+//     .catch((error) => reject(error));
+// });
+
+
+// Optional: Listen to document with a callback.
+
+// Optional: Listen to collection with a callback.
+
+
+// FIXME: Update to SDK v9
+
+
+
+
+
+/*----------------------------------------------------------------------------
+  Authentication Interface
+  ----------------------------------------------------------------------------*/
+
+
+// FIXME:
 const changePhotoURL = (file) => new Promise((resolve, reject) => {
   /* 
   * Upload an image to Firebase Storage to use for a user's photo URL,
@@ -71,13 +180,13 @@ const changePhotoURL = (file) => new Promise((resolve, reject) => {
   );
 });
 
-
+// FIXME:
 const getUserToken = (refresh=false) => new Promise((resolve, reject) => {
   /*
    * Get an auth token for a given user.
    */
   if (!auth.currentUser) {
-    auth.onAuthStateChanged((user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         user.getIdToken(refresh).then((idToken) => {
           resolve(idToken)
@@ -95,7 +204,7 @@ const getUserToken = (refresh=false) => new Promise((resolve, reject) => {
   }
 });
 
-
+// FIXME:
 const verifyUserToken = (token) => new Promise((resolve, reject) => {
   /*
    * Verify an authentication token for a given user.
@@ -107,117 +216,44 @@ const verifyUserToken = (token) => new Promise((resolve, reject) => {
 
 
 /*----------------------------------------------------------------------------
-  Firestore interface
+  Storage Interface
   ----------------------------------------------------------------------------*/
 
-const getCollection = (path, params) => new Promise((resolve) => {
-  /*
-   * Get documents from a collection in Firestore.
-   */
-  const { desc, filters=[], limit, orderBy } = params;
-  let ref = getReference(path);
-  filters.forEach((filter) => {
-    ref = ref.where(filter.key, filter.operation, filter.value);
-  });
-  if (orderBy && desc) ref = ref.orderBy(orderBy, 'desc');
-  else if (orderBy) ref = ref.orderBy(orderBy);
-  if (limit) ref = ref.limit(limit);
-  ref.get().then((snapshot) => {
-    const docs = [];
-    if (!snapshot) {
-      resolve();
-      return;
-    }
-    snapshot.forEach((doc) => {
-      docs.push(doc.data());
-    });
-    resolve(docs);
-  })
-  // .catch((error) => {
-  //   console.log('Error getting documents: ', error);
-  // });
-});
+// FIXME:
+// const getDownloadURL = (path) => new Promise((resolve, reject) => {
+//   /*
+//    * Get a download URL for a given file path.
+//    */
+//   ref(storage, path).getDownloadURL()
+//   .then((url) => resolve(url))
+//   .catch((error) => reject(error));
+
+// });
 
 
-const getDocument = (path) => new Promise((resolve) => {
-  /*
-   * Get a document from Firestore.
-   */
-  const ref = getReference(path);
-  ref.get().then((doc) => {
-    resolve(doc.data() || {});
-  });
-});
-
-
-const getReference = (path) => {
-  /*
-   * Create a collection or a document Firestore reference.
-   */
-  let ref = db;
-  const parts = path.split('/');
-  parts.forEach((part, index) => {
-    if (index % 2) ref = ref.doc(part);
-    else ref = ref.collection(part);
-  });
-  return ref;
-};
-
-
-const updateDocument = (path, data) => new Promise((resolve, reject) => {
-  /*
-   * Update or create a document in Firestore.
-   */
-  const ref = getReference(path);
-  ref.set(data, { merge: true }).then((doc) => {
-    if (doc) resolve(doc.data());
-    else resolve();
-  })
-  .catch((error) => reject(error));
-});
-
-
-
-const deleteDocument = (path) => new Promise((resolve, reject) => {
-  /*
-   * Delete a document from Firestore.
-   */
-  const ref = getReference(path);
-  ref.delete().then(() => resolve())
-    .catch((error) => reject(error));
-});
-
-
-/*----------------------------------------------------------------------------
-  Storage interface
-  ----------------------------------------------------------------------------*/
-
-const getDownloadURL = (path) => new Promise((resolve, reject) => {
-  /*
-   * Get a download URL for a given file path.
-   */
-  const storageRef = storage.ref();
-  storageRef.child(path).getDownloadURL()
-  .then((url) => resolve(url))
-  .catch((error) => reject(error));
-
-});
-
-
+// FIXME:
 // TODO: Combine uploadImage with uploadFile
 const uploadImage = (path, data) => new Promise((resolve) => {
   /*
    * Upload an image to Firebase Storage given it's full destination path and 
    * the image as a data URL.
    */
-  const storageRef = storage.ref();
-  const ref = storageRef.child(path);
-  ref.putString(data, 'data_url').then((snapshot) => {
-    resolve(snapshot);
+  // const storageRef = storage.ref();
+  // const ref = storageRef.child(path);
+  // ref.putString(data, 'data_url').then((snapshot) => {
+  //   resolve(snapshot);
+  // });
+  const storage = getStorage();
+  const storageRef = ref(storage, path);
+
+  // TODO: Create 'file' comes from the Blob or File API
+  uploadBytes(storageRef, file).then((snapshot) => {
+    console.log('Uploaded a blob or file!');
   });
 });
 
 
+// FIXME:
 const uploadFile = (path, file) => new Promise((resolve, reject) => {
   /*
    * Upload an image to Firebase Storage given it's full destination path and 
@@ -230,6 +266,7 @@ const uploadFile = (path, file) => new Promise((resolve, reject) => {
 });
 
 
+// FIXME:
 const deleteFile = (path) => new Promise((resolve, reject) => {
   /*
    * Upload an image to Firebase Storage given it's full destination path and 
@@ -242,6 +279,7 @@ const deleteFile = (path) => new Promise((resolve, reject) => {
 });
 
 
+// FIXME:
 const downloadFile = async (ref, fileName) => {
   /*
    * Download a file given a path or a URL.
@@ -283,20 +321,24 @@ export {
   analytics,
   auth,
   db,
-  firestore,
-  performance,
-  storageErrors,
-  GoogleAuthProvider,
-  changePhotoURL,
   deleteDocument,
-  deleteFile,
-  downloadFile,
   getCollection,
-  getDownloadURL,
-  getUserToken,
   getDocument,
-  updateDocument,
-  uploadImage,
-  uploadFile,
-  verifyUserToken,
+  logEvent,
+  onAuthStateChanged,
+  setDocument,
+  storageErrors,
+  // GoogleAuthProvider,
+  // changePhotoURL,
+  // deleteDocument,
+  // deleteFile,
+  // downloadFile,
+  // getCollection,
+  // getDownloadURL,
+  // getUserToken,
+  // getDocument,
+  // updateDocument,
+  // uploadImage,
+  // uploadFile,
+  // verifyUserToken,
 };
