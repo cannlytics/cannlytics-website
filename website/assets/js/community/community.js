@@ -4,16 +4,14 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
- * Updated: 7/31/2021
+ * Updated: 11/23/2021
  * License: MIT License
  */
 
- // Optional: Add geographic shapes for states.
- // https://developers.google.com/maps/documentation/javascript/combining-data
+ // TODO: Create list of labs.
+ // Example: https://github.com/elapouya/django-listing
 
- // Optional: Create list of labs
- // https://github.com/elapouya/django-listing
-
+import { showNotification } from '../utils.js';
 
 export const community = {
 
@@ -27,6 +25,9 @@ export const community = {
   // Functions
 
   initialize() {
+    /**
+     * Initialize the community page.
+     */
     
     // Draw the map.
     this.map = this.createMap();
@@ -55,10 +56,10 @@ export const community = {
 
   },
 
-
   createMap() {
-    /*
+    /**
      * Render a Google map.
+     * @returns {Map}
      */
     return new google.maps.Map(document.getElementById('map'), {
       zoom: 4,
@@ -68,10 +69,13 @@ export const community = {
     });
   },
 
-
   createInfoWindows(map, oms, data) {
-    /*
+    /**
      * Create markers with info windows.
+     * @param {Map} map The Google map.
+     * @param {OverlappingMarkerSpiderfier} oms Overlapping marker spiderfier.
+     * @param {Array} data A list of data used in creating info-windows.
+     * @returns {Array}
      */
     var logView = this.logView;
     var createWindow = this.createMarkerInfoWindow;
@@ -142,27 +146,32 @@ export const community = {
     // Add lab names to search options.
     document.getElementById('searchOptions').innerHTML = searchOptions;
 
+    // Return the list of markers.
     return markers;
 
   },
 
-
   createMarkerClusterer(map, markers) {
-    /*
+    /**
      * Create a clusterer for markers on the map.
+     * @param {Map} map The Google map.
+     * @param {Array} markers A list of markers to render.
+     * @returns {MarkerClusterer}
      */
+    // TODO: replace imagePath with local path.
     return new MarkerClusterer(map, markers, {
       gridSize: 50,
       maxZoom: 10,
       minimumClusterSize: 4,
-      imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m', // Optional: replace with local path.
+      imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
     });
   },
 
-
   createMarkerInfoWindow(item) {
-    /*
+    /**
      * Creates a marker info window.
+     * @param {Object} item Information to render in the info-window.\
+     * @returns {String}
      */
     var name = item.trade_name ?? item.name;
     var content = `<div class="text-dark p-3">`;
@@ -201,14 +210,16 @@ export const community = {
     return content;
   },
 
-
   logView(id, field) {
-    /*
+    /**
      * Record when people search or view for a lab.
+     * @param {String} id The ID for the log.
+     * @param {String} field The page viewed.
      */
     const timestamp = new Date().toISOString();
     const update = { updated_at: timestamp };
-    // TODO: Update stats in Django.
+    throw new NotImplementedException();
+    // FIXME: Update stats in Django.
     // update[field] = firestore.FieldValue.increment(1);
     // updateDocument(`labs/${id}`, update);
     // updateDocument(`public/logs/website_logs/${timestamp}`, {
@@ -217,9 +228,8 @@ export const community = {
     // });
   },
 
-
   onInput() {
-    /*
+    /**
      * Pan to a marker on selection.
      */
     var val = document.getElementById('searchInput').value;
@@ -233,8 +243,10 @@ export const community = {
   },
 
   panToMarker(map, value) {
-    /*
+    /**
      * Pan to a point on the map.
+     * @param {Map} map The Google map.
+     * @param {String} value A value to search for on the map.
      */
     const point = this.points[value];
     map.panTo(new google.maps.LatLng(point.latitude, point.longitude));
@@ -242,10 +254,10 @@ export const community = {
     this.logView(item.id, 'searches');
   },
 
-
   setupSearch(map) {
-    /*
+    /**
      * Setup search for the map.
+     * @param {Map} map The Google map.
      */
     var searchButton = document.getElementById('searchButton');
     var searchInput = document.getElementById('searchInput');
@@ -259,10 +271,10 @@ export const community = {
     });
   },
 
-
   getLabs() {
-    /*
+    /**
      * Get labs with API.
+     * @returns {Promise}
      */
     return new Promise((resolve, reject) => {
       var headers = { headers: { 'Accept': 'application/json' } };
@@ -272,9 +284,8 @@ export const community = {
       });
   },
 
-
   showPromo() {
-    /*
+    /**
      * Show the promo code field.
      */
     var promoButton = document.getElementById('promo-button');
@@ -282,13 +293,11 @@ export const community = {
     promoButton.style.display = 'none';
     if (promoInputGroup.classList.contains('visually-hidden')) {
       promoInputGroup.classList.remove('visually-hidden');
-  
     }
   },
 
-
   async downloadLabs() {
-    /*
+    /**
      * Download either free or premium data sets.
      */
 
@@ -317,8 +326,7 @@ export const community = {
       link.parentNode.removeChild(link);
       window.URL.revokeObjectURL(blob);
     } catch(error) {
-      // TODO: Handle download error
-      alert('Download error:', error);
+      showNotification('Download error', error, /* type = */ 'error' );
     }
 
     // Hide dialog.
@@ -327,6 +335,5 @@ export const community = {
     modal.hide();
 
   },
-
 
 };

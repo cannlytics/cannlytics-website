@@ -11,14 +11,12 @@ import { getCollection, getDocument } from '../firebase.js';
 
 export const data = {
 
-  getDataSet: (path) => new Promise((resolve) => {
+  async getDataSet(path) {
     /*
      * Get metadata about a given dataset.
      */
-    getDocument(path).then((data) => {
-      resolve(data);
-    });
-  }),
+    return await getDocument(path);
+  },
 
   getDataMarketStats: () => new Promise((resolve) => {
     /*

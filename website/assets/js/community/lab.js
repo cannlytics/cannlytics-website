@@ -20,6 +20,9 @@ export const lab = {
   // Functions
 
   initializeDetails() {
+    /**
+     * Initialize lab details page.
+     */
     const form = document.querySelector('form');
     form.addEventListener('submit', cannlytics.community.updateLab);
     if (auth.currentUser) {
@@ -27,12 +30,11 @@ export const lab = {
     }
   },
 
-
-  toggleEditLab(edit=true) {
-    /*
-     * Toggle editing for a lab.
+  toggleEditLab(edit = true) {
+    /**
+     * Toggle editing for a lab if permitted by the user's account.
+     * @param {bool} edit Whether or not the lab can be edited.
      */
-    // Restrict editing to user's with an account.
     if (!auth.currentUser) {
       document.getElementById('login-alert').classList.add('show');
       return;
@@ -76,20 +78,20 @@ export const lab = {
     }
   },
 
-
   addLab(event) {
-    /*
+    /**
      * Submit a lab to be added to the directory through the API.
+     * @param {Event} event A user-driven event.
      */
     // TODO: Get lab data.
 
     // TODO: Post data to the API.
   },
 
-
   updateLab(event) {
-    /*
+    /**
      * Update a lab through the API.
+     * @param {Event} event A user-driven event.
      */
 
     // Get the form data.
@@ -124,10 +126,10 @@ export const lab = {
 
   },
 
-
   getLabAnalyses(id) {
-    /*
+    /**
      * Get analyses for a lab.
+     * @param {String} id The ID of a lab.
      */
     return new Promise((resolve, reject) => {
       var headers = { headers: { 'Accept': 'application/json' } };
@@ -137,10 +139,10 @@ export const lab = {
       });
   },
 
-
   getLabLogs(id) {
-    /*
+    /**
      * Get change logs for a lab.
+     * @param {String} id The ID of a lab.
      */
     return new Promise((resolve, reject) => {
       var headers = { headers: { 'Accept': 'application/json' } };
@@ -152,8 +154,9 @@ export const lab = {
 
 
   initializeAnalyses(id) {
-    /*
+    /**
      * Initialize analyses for a lab.
+     * @param {String} id The ID of a lab.
      */
     this.getLabAnalyses(id).then((data) => {
       // TODO: Show the data!
@@ -162,14 +165,14 @@ export const lab = {
 
 
   initializeLogs(id) {
-    /*
+    /**
      * Initialize logs for a lab.
+     * @param {String} id The ID of a lab.
      */
     this.getLabLogs(id).then((data) => {
       // TODO: Show the data!
     });
 
   },
-
 
 }

@@ -4,58 +4,77 @@
  * 
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 1/17/2021
- * Updated: 11/15/2021
+ * Updated: 11/23/2021
  * License: MIT License
  */
-import { signInWithEmailAndPassword, signOut as fbSignOut } from 'firebase/auth';
-import { auth as fbAuth, GoogleAuthProvider } from '../firebase.js';
+import { checkGoogleLogIn, createAccount, googleLogIn, login, logout } from '../firebase.js';
 import { authRequest, showNotification } from '../utils.js';
 
 export const auth = {
 
+  async checkForCredentials() {
+    /**
+     * Check if a user has signed in through a redirect from
+     * an authentication provider, such as Google.
+     */
+    await checkGoogleLogIn();
+    await authRequest('/api/login/');
+  },
 
-  signIn(event) {
-    /*
+  async signIn(event) {
+    /**
      * Sign in with username and password.
+     * @param {Event} event A user-driven event.
      */
     event.preventDefault();
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
-    document.getElementById('sign-in-button').classList.add('d-none');
-    document.getElementById('sign-in-loading-button').classList.remove('d-none');
-    signInWithEmailAndPassword(fbAuth, email, password)
-      .then((user) => {
-        const dialog = document.getElementById('login-dialog');
-        const modal = bootstrap.Modal.getInstance(dialog);
-        modal.hide();
-        // FIXME:
-        authRequest('/api/login/');
-      })
-      .catch((error) => {
-        showNotification('Sign in error', error.message, { type: 'error' });
-      }).finally(() => {
-        document.getElementById('sign-in-button').classList.remove('d-none');
-        document.getElementById('sign-in-loading-button').classList.add('d-none');
-      });
+    document.getElementById('login-button').classList.add('d-none');
+    document.getElementById('login-loading-button').classList.remove('d-none');
+    try {
+      await login(email, password);
+      await authRequest('/api/login/');
+      const dialogElement = document.getElementById('login-dialog');
+      const modal = bootstrap.Modal.getInstance(dialogElement);
+      modal.hide();
+    } catch(error) {
+      showNotification('Sign in error', error.message, /* type = */ 'error' );
+    }
+    document.getElementById('login-button').classList.remove('d-none');
+    document.getElementById('login-loading-button').classList.add('d-none');
   },
 
-
-  signOut() {
-    /*
-     * Sign a user out of their account.
-     */
-    authRequest('/api/logout/');
-    signOut(auth);
-  },
-
-
-  googleSignIn() {
-    /*
+  signInWithGoogle() {
+    /**
      * Sign in with Google.
      */
-    // FIXME:
-    const provider = GoogleAuthProvider();
-    firebase.auth().signInWithRedirect(provider);
+    googleLogIn();
+  },
+
+  async signOut() {
+    /**
+     * Sign a user out of their account.
+     */
+    await logout();
+    await authRequest('/api/logout/');
+  },
+
+  async signUp() {
+    /**
+     * Sign a user up for a Firebase account with a username and password.
+     */
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    document.getElementById('signup-button').classList.add('d-none');
+    document.getElementById('signup-loading-button').classList.remove('d-none');
+    try {
+      await createAccount(email, password);
+      await authRequest('/api/login/');
+    } catch(error) {
+      showNotification('Sign up error', error.message, /* type = */ 'error');
+    }
+    document.getElementById('signup-button').classList.remove('d-none');
+    document.getElementById('signup-loading-button').classList.add('d-none');
   },
 
 }

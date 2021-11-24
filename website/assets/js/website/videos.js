@@ -13,8 +13,9 @@
  export const videos = {
 
     authenticatePremiumVideo() {
-      /* Authenticate the user to view a premium video.
-      */
+      /**
+       * Authenticate the user to view a premium video.
+       */
       onAuthStateChanged(auth, (user) => {
         if (user) {
           console.log('Current user:', user);
@@ -24,29 +25,22 @@
       });
     },
 
-
     async getVideo(videoId) {
-      /* Get video data from Firestore.
-      Args:
-        videoId (string): The ID of the video to retrieve.
-      Returns:
-        (object): The document object if found, otherwise an empty object.
-      */
+      /**
+       * Get video data from Firestore.
+       * @param {String} videoId The ID of the video to retrieve.
+       * @returns {Object} The document object if found, otherwise an empty object.
+       */
       const videoData = await getDocument(`public/videos/video_data/${videoId}`);
       return videoData;
     },
 
-
     async updateVideoViews(videoId) {
-      /* Increment video views for a given video in Firestore.
-      Args:
-        videoId (string): The ID of the video to increment views.
-      Returns:
-        (object): The document object if found, otherwise an empty object.
+      /**
+       * Increment video views for a given video in Firestore.
+       * @param {string} videoId The ID of the video to increment views.
       */
-      const videoData = await updateDocument(`public/videos/video_data/${videoId}`);
-      return videoData;
+      await updateDocument(`public/videos/video_data/${videoId}`);
     },
 
-  
  };

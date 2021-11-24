@@ -9,12 +9,13 @@
  * 
  * TODO: Refactor and move functions to better homes.
  */
+import { checkForCredentials } from '../auth/auth.js';
 import { auth, onAuthStateChanged } from '../firebase.js';
 
 export const website = {
 
   initialize() {
-    /*
+    /**
      * Initialize the website's features and functionality.
      */
     
@@ -41,16 +42,16 @@ export const website = {
           document.getElementById('user-photo').src = `/robohash/${user.email}/?width=60&height=60`
         }
         this.toggleAuthenticatedMaterial(true);
-        // Save cookie.
       } else {
         this.toggleAuthenticatedMaterial(false);
+        checkForCredentials();
       }
     });
 
   },
 
   initializeToasts() {
-    /*
+    /**
      * Initialize Bootstrap toasts.
      */
     var toast = document.getElementById('cookie-toast');
@@ -58,7 +59,9 @@ export const website = {
   },
 
   acceptCookies() {
-    /* Save choice that user accepted cookies. */
+    /**
+     * Save choice that user accepted cookies.
+     */
     localStorage.setItem('acceptCookies', true);
     var toast = document.getElementById('accept-cookies');
     toast.style.display = 'none';
@@ -67,7 +70,9 @@ export const website = {
   },
 
   acceptCookiesCheck() {
-    /* Checks if a user needs to accept cookies. */
+    /**
+     * Checks if a user needs to accept cookies.
+     */
     var acceptCookies = localStorage.getItem('acceptCookies');
     if (!acceptCookies) {
       var toast = document.getElementById('accept-cookies');
@@ -77,7 +82,9 @@ export const website = {
   },
 
   changeTheme() {
-    /* Change the website's theme. */
+    /**
+     * Change the website's theme.
+     */
     var theme = localStorage.getItem('theme');
     if (!theme) {
       var hours = new Date().getHours();
@@ -90,7 +97,9 @@ export const website = {
   },
 
   setInitialTheme() {
-    /* Set the theme when the website loads. */
+    /**
+     * Set the theme when the website loads.
+     */
     if (typeof(Storage) !== 'undefined') {
       var theme = localStorage.getItem('theme');
       if (!theme) {
@@ -107,10 +116,10 @@ export const website = {
   },
 
   setTheme(theme) {
-    /* Set the website's theme.
-    Args:
-      theme (String): The theme to set, `light` or `dark`.
-    */
+    /**
+     * Set the website's theme.
+     * @param {String} theme The theme to set: `light` or `dark`.
+     */
     if (theme === 'light') {
       document.body.className = 'base';
     } else if (! this.hasClass(document.body, 'dark')) {
@@ -119,16 +128,19 @@ export const website = {
   },
 
   hasClass(element, className) {
-    /* Check if an element has a class.
-    Args:
-      element (Element): An HTML element.
-      className (String): The class to check in the element's class list.
-    */
+    /**
+     * Check if an element has a class.
+     * @param {Element} element An HTML element.
+     * @param {String} className The class to check in the element's class list.
+     * @returns {bool}
+     */
     return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
   },
 
   scrollToHash () {
-    /* Scroll to any an from any hash in the URL. */
+    /**
+     * Scroll to any an from any hash in the URL.
+     */
     var hash = window.location.hash.substring(1);
     var element = document.getElementById(hash);
     if (element) {
@@ -137,9 +149,9 @@ export const website = {
   },
 
   copyToClipboard(text) {
-    /* Prompt a user to copy a block of code to their clipboard.
-    Args:
-      text (String): The text to copy to the clipboard.
+    /**
+     * Prompt a user to copy a block of code to their clipboard.
+     * @param {String} text The text to copy to the clipboard.
     */
     // Optional: Improve getting only text from between tags.
     // https://aaronluna.dev/blog/add-copy-button-to-code-blocks-hugo-chroma/
@@ -159,9 +171,10 @@ export const website = {
     window.prompt('Copy to clipboard: Press Ctrl+C, then Enter', text);
   },
 
-  toggleAuthenticatedMaterial(authenticated=false) {
-    /*
+  toggleAuthenticatedMaterial(authenticated = false) {
+    /**
      * Show any material that requires authentication.
+     * @param {bool} authenticated Whether or not the user is authenticated.
      */
     const indicatesAuth = document.getElementsByClassName('indicates-auth');
     const requiresAuth = document.getElementsByClassName('requires-auth');

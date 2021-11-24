@@ -9,7 +9,23 @@
  */
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  deleteUser,
+  getAuth,
+  getRedirectResult,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  updatePassword,
+  updateProfile,
+  reauthenticateWithCredential,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInWithCustomToken,
+  signInWithEmailAndPassword,
+  signInWithRedirect,
+  signOut,
+} from 'firebase/auth';
 import {
   getFirestore,
   getDocs,
@@ -29,6 +45,7 @@ import {
   getDownloadURL,
   ref,
   uploadBytes,
+  uploadString,
   deleteObject,
 } from 'firebase/storage';
 
@@ -210,146 +227,180 @@ async function listenToCollection(
   Authentication Interface
   ----------------------------------------------------------------------------*/
 
+async function changeEmail(email) {
+  /**
+   * Change the user's email and update their user data in Firestore.
+   * @param {string} email The user's new email.
+   */
+  await updateEmail(auth.currentUser, email)
+  await setDocument(`users/${auth.currentUser.uid}`, { email })
+};
 
-// FIXME:
-const changePhotoURL = (file) => new Promise((resolve, reject) => {
-  /* 
-  * Upload an image to Firebase Storage to use for a user's photo URL,
-  * listening for state changes, errors, and the completion of the upload.
-  */
-  const uid = auth.currentUser.uid;
-  const storageRef = storage.ref();
-  const metadata = { contentType: 'image/jpeg' };
-  const fileName = `users/${uid}/user_photos/${file.name}`;
-  const uploadTask = storageRef.child(fileName).put(file, metadata);
-  uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-    (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      switch (snapshot.state) {
-        case firebase.storage.TaskState.PAUSED:
-          break;
-        case firebase.storage.TaskState.RUNNING:
-          break;
-      }
-    }, 
-    (error) => {
-      reject(error);
-    },
-    () => {
-      uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-        auth.currentUser.updateProfile({ photoURL: downloadURL });
-        resolve(downloadURL);
-      });
-    }
-  );
-});
+async function changePassword(newPassword) {
+  /**
+   * Change a user's password.
+   * @param {string} newPassword The user's new password.
+   */
+   updatePassword(auth.currentUser, newPassword)
+}
 
-// FIXME:
-const getUserToken = (refresh=false) => new Promise((resolve, reject) => {
-  /*
+async function checkGoogleLogIn() {
+  /**
+   * Check if a user signed in through Google.
+   * @returns {User}
+   */
+  const result = await getRedirectResult(auth);
+  const credential = GoogleAuthProvider.credentialFromResult(result);
+  return result.user;
+}
+
+async function createAccount(email, password) {
+  /**
+   * Sign a user up for a Firebase account with a username and password.
+   * @param {string} email The user's email to be used as a username.
+   * @param {string} password The user's password. Should be longer than 6 characters.
+   * @returns {User}
+   */
+  const credentials = await createUserWithEmailAndPassword(auth, email, password);
+  return credentials.user;
+}
+
+async function deleteCurrentUser() {
+  /**
+   * WARNING: Delete the current user's account.
+   */   
+  await deleteUser(auth.currentUser)
+}
+
+async function getUserToken(refresh = false) {
+  /**
    * Get an auth token for a given user.
+   * @param {bool} refresh Whether or not the credentials of the ID token should be refreshed.
    */
   if (!auth.currentUser) {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        user.getIdToken(refresh).then((idToken) => {
-          resolve(idToken)
-        }).catch((error) => {
-          reject(error);
-        });
-      }
+    return await onAuthStateChanged(auth, async (user) => {
+      if (user) return await user.getIdToken(refresh);
     });
   } else {
-    auth.currentUser.getIdToken(refresh).then((idToken) => {
-      resolve(idToken)
-    }).catch((error) => {
-      reject(error);
-    });
+    return await auth.currentUser.getIdToken(refresh);
   }
-});
+}
 
-// FIXME:
-const verifyUserToken = (token) => new Promise((resolve, reject) => {
-  /*
-   * Verify an authentication token for a given user.
+function googleLogIn() {
+  /**
+   * Sign a user in through Google.
    */
-  auth.signInWithCustomToken(token)
+  const provider = new GoogleAuthProvider();
+  signInWithRedirect(auth, provider);
+}
+
+async function logIn(email, password) {
+  /**
+   * Sign a user in with username and password.
+   * @param {string} email The user's login email.
+   * @param {string} password The user's password.
+   * @returns {User}
+   */
+  const credentials = await signInWithEmailAndPassword(auth, email, password);
+  return credentials.user;
+}
+
+async function logOut() {
+  /**
+   * Sign the current user out of their account.
+   */
+  await signOut(auth);
+}
+
+async function sendPasswordReset() {
+  /**
+   * Send the current user a password reset email.
+   */
+  await sendPasswordResetEmail(auth, auth.currentUser.email);
+};
+
+async function updateUserPhoto(file) {
+  /**
+   * Update a user's photo URL, listening for state changes, errors,
+   * and the completion of the upload.
+   * @param {File} file The image file to upload as the user's photo.
+   */
+  const metadata = { contentType: 'image/jpeg' };
+  const fileName = `users/${uid}/user_photos/${file.name}`;
+  const storageRef = ref(storage, fileName);
+  const uploadTask = uploadBytesResumable(storageRef, file, metadata);
+  uploadTask.on('state_changed', (snapshot) => {}, (error) => {}, () => {
+    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      auth.currentUser.updateProfile({ photoURL: downloadURL });
+    });
+  });
+}
+
+async function updateUserDisplayName(displayName) {
+  /**
+   * Update a user's display name.
+   * @param {string} displayName The user's new display name.
+   */
+  await updateProfile(auth.currentUser, { displayName });
+}
+
+async function verifyUserToken(token) {
+  /**
+   * Verify an authentication token for a given user.
+   * @param {string} token A Firebase user token.
+   */
+  await signInWithCustomToken(auth, token)
     .then((userCredential) => resolve(userCredential.user))
     .catch((error) => reject(error));
-});
+};
 
+async function sendVerification() {
+  /**
+   * Send the current user a verification email.
+   */
+  await sendEmailVerification(auth.currentUser);
+};
+
+// FIXME: Re-authenticate a user: <https://firebase.google.com/docs/auth/web/manage-users#re-authenticate_a_user>
+async function reAuthenticate() {
+  /**
+   * Re-authenticate the current user.
+   */
+  throw new NotImplementedException();
+  // TODO: Implement promptForCredentials.
+  // const credential = promptForCredentials();
+  // await reauthenticateWithCredential(user, credential)
+};
 
 /*----------------------------------------------------------------------------
   Storage Interface
   ----------------------------------------------------------------------------*/
 
-// FIXME:
-// const getDownloadURL = (path) => new Promise((resolve, reject) => {
-//   /*
-//    * Get a download URL for a given file path.
-//    */
-//   ref(storage, path).getDownloadURL()
-//   .then((url) => resolve(url))
-//   .catch((error) => reject(error));
-
-// });
-
-
-// FIXME:
-// TODO: Combine uploadImage with uploadFile
-const uploadImage = (path, data) => new Promise((resolve) => {
-  /*
-   * Upload an image to Firebase Storage given it's full destination path and 
-   * the image as a data URL.
+async function deleteFile(path) {
+  /**
+   * Delete a given file from Firebase Storage.
+   * @param {string} path The full path to the file.
    */
-  // const storageRef = storage.ref();
-  // const ref = storageRef.child(path);
-  // ref.putString(data, 'data_url').then((snapshot) => {
-  //   resolve(snapshot);
-  // });
-  const storage = getStorage();
-  const storageRef = ref(storage, path);
+  const fileRef = ref(storage, path);
+  await deleteObject(fileRef);
+}
 
-  // TODO: Create 'file' comes from the Blob or File API
-  uploadBytes(storageRef, file).then((snapshot) => {
-    console.log('Uploaded a blob or file!');
-  });
-});
-
-
-// FIXME:
-const uploadFile = (path, file) => new Promise((resolve, reject) => {
-  /*
-   * Upload an image to Firebase Storage given it's full destination path and 
-   * the image as a data URL.
+async function getFileURL(path) {
+  /**
+   * Get a download URL for a given file path in Firebase Storage.
+   * @param {string} path The full path to the file.
+   * @returns {string}
    */
-  const storageRef = storage.ref();
-  const ref = storageRef.child(path);
-  ref.put(file).then((snapshot) => resolve(snapshot))
-    .catch((error) => reject(error));
-});
+  return await getDownloadURL(ref(storage, path));
+}
 
-
-// FIXME:
-const deleteFile = (path) => new Promise((resolve, reject) => {
-  /*
-   * Upload an image to Firebase Storage given it's full destination path and 
-   * the image as a data URL.
+async function downloadFile(ref, fileName) {
+  /**
+   * Download a file from Firebase Storage.
+   * @param {string} ref The full path to the file.
+   * @param {string} fileName The name of the download file.
    */
-  const storageRef = storage.ref();
-  const ref = storageRef.child(path);
-  ref.delete().then(() => resolve())
-    .catch((error) => reject(error));
-});
-
-
-// FIXME:
-const downloadFile = async (ref, fileName) => {
-  /*
-   * Download a file given a path or a URL.
-   */
-  console.log(ref, fileName);
-  if (!ref.startsWith('http')) ref = await getDownloadURL(ref);
+  if (!ref.startsWith('http')) ref = await getFileURL(ref);
   const response = await fetch(ref);
   const blob = await response.blob();
   const url = window.URL.createObjectURL(blob);
@@ -361,8 +412,27 @@ const downloadFile = async (ref, fileName) => {
   link.click();
   link.parentNode.removeChild(link);
   window.URL.revokeObjectURL(blob);
-};
+}
 
+async function uploadFile(path, file, type = 'File') {
+  /*
+   * Upload an image to Firebase Storage given it's full destination path and 
+   * the image as a data URL.
+   */
+  /**
+   * Upload an image to Firebase Storage given a file object or
+   * another specified type: 'data_url', base64url', 'base64', or
+   * null for a raw string.
+   * @param {string} path The full path to the file.
+   * @param {File} file The name of the download file.
+   * @param {string} type The type of file to upload, 'File' by default.
+   *    You can upload by string by specifying the type as:
+   *    'data_url', base64url', 'base64', or null.
+   */
+  const storageRef = ref(storage, path);
+  if (type === 'File') await uploadBytes(storageRef, file);
+  else uploadString(storageRef, file, type)
+};
 
 const storageErrors = {
   'storage/unknown':	'An unknown error occurred.',
@@ -380,31 +450,35 @@ const storageErrors = {
   'storage/server-file-wrong-size':	"Your file is too large. Please try uploading a different file.",
 };
 
-
 export {
-  analytics,
   auth,
-  db,
+  changeEmail,
+  changePassword,
+  checkGoogleLogIn,
+  createAccount,
+  deleteCurrentUser,
   deleteDocument,
   deleteDocumentField,
+  deleteFile,
+  downloadFile,
   getCollection,
   getDocument,
+  getFileURL,
+  getUserToken,
+  googleLogIn,
   listenToDocument,
   listenToCollection,
   logEvent,
+  logIn,
+  logOut,
   onAuthStateChanged,
+  reAuthenticate,
+  sendPasswordReset,
+  sendVerification,
   setDocument,
   storageErrors,
-  // GoogleAuthProvider,
-  // changePhotoURL,
-  // deleteFile,
-  // downloadFile,
-  // getCollection,
-  // getDownloadURL,
-  // getUserToken,
-  // getDocument,
-  // updateDocument,
-  // uploadImage,
-  // uploadFile,
-  // verifyUserToken,
+  updateUserDisplayName,
+  updateUserPhoto,
+  uploadFile,
+  verifyUserToken,
 };

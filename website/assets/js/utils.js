@@ -4,10 +4,9 @@
  * 
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 2/21/2021
- * Updated: 6/21/2021
+ * Updated: 11/23/2021
  * License: MIT License
  */
-
 import { getUserToken } from './firebase.js';
 
 /*---------------------------------------------------------------------
@@ -15,9 +14,12 @@ import { getUserToken } from './firebase.js';
  --------------------------------------------------------------------*/
 
 export const authRequest = (endpoint, data, options) => new Promise((resolve, reject) => {
-  /*
+  /**
    * Make an authorized GET or POST request by
    * getting the user's ID token and exchanging it for a session cookie.
+   * @param {String} endpoint The API endpoint to which to make an authenticated request.
+   * @param {Object} data Any data posted to the API.
+   * @param {Object} options Any request options: `delete` (bool) or `params` (Object).
    */
   getUserToken()
     .then((idToken) => {
@@ -25,15 +27,19 @@ export const authRequest = (endpoint, data, options) => new Promise((resolve, re
         .then((data) => resolve(data))
         .catch((error) => reject(error));
     })
-    .catch((error) => reject(error));
+    // .catch((error) => reject(error));
 });
 
 
 export const apiRequest = (endpoint, data, options, idToken = null) => new Promise((resolve, reject) => {
-  /*
+  /**
    * Make a request to the Cannlytics API, with an ID token for authentication
    * or without ID token when the user already has an authenticated session.
    * CSRF protection is taken into account.
+   * @param {String} endpoint The API endpoint to which to make an authenticated request.
+   * @param {Object} data Any data posted to the API.
+   * @param {Object} options Any request options: `delete` (bool) or `params` (Object).
+   * @param {String} idToken = null
    */
   const csrftoken = getCookie('csrftoken');
   const headerAuth = new Headers({
@@ -43,6 +49,7 @@ export const apiRequest = (endpoint, data, options, idToken = null) => new Promi
   });
   const init = {
     headers: headerAuth,
+    // TODO: Determine if needed in production.
     // credentials: 'include',
     // mode: 'same-origin',
     method: 'GET',
@@ -67,7 +74,6 @@ export const apiRequest = (endpoint, data, options, idToken = null) => new Promi
       } catch(error) {
         return response;
       }
-      // return response.json();
     })
     .catch((error) => reject(error))
     .then((data) => resolve(data))
@@ -76,10 +82,12 @@ export const apiRequest = (endpoint, data, options, idToken = null) => new Promi
 
 
 export function getCookie(name) {
-  /*
+  /**
    * Get a cookie by name.
+   * @param {string} name The name of the cookie to retrieve.
+   * @returns {string}
    */
-  let cookieValue = null;
+  let cookieValue = '';
   if (document.cookie && document.cookie !== '') {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -95,16 +103,14 @@ export function getCookie(name) {
 
 
 export const Password = {
-  /*
+  /**
    * Class use to generate random passwords.
-   * Usage: Password.generate(32)
+   * @Usage Password.generate(32)
    */
  
   _pattern : /[a-zA-Z0-9_\-\+\.]/,
   
-  
   _getRandomByte : function() {
-    // http://caniuse.com/#feat=getrandomvalues
     if (window.crypto && window.crypto.getRandomValues) {
       var result = new Uint8Array(1);
       window.crypto.getRandomValues(result);
@@ -119,7 +125,7 @@ export const Password = {
       return Math.floor(Math.random() * 256);
     }
   },
-  
+
   generate : function(length) {
     return Array.apply(null, {'length': length})
       .map(function() {
@@ -129,11 +135,11 @@ export const Password = {
           if (this._pattern.test(result)) {
             return result;
           }
-        }        
+        }
       }, this)
-      .join('');  
-  }    
-    
+      .join('');
+  }
+
 };
 
 
@@ -141,9 +147,13 @@ export const Password = {
  Form Helpers
  --------------------------------------------------------------------*/
 
- export function serializeForm(elementId, keepAll=false) {
-  /*
+ export function serializeForm(elementId, keepAll = false) {
+  /**
    * Get a data object from a form, by default excluding empty fields.
+   * @param {string} elementId The ID of the form element.
+   * @param {bool} keepAll Whether or not to keep all the null fields,
+   *    `false` by default.
+   * @returns {Map}
    */
   let form;
   if (typeof elementId === 'string') {
@@ -163,8 +173,10 @@ export const Password = {
 
 
 export function deserializeForm(form, data) {
-  /*
+  /**
    * Populate a form given data.
+   * @param {Element} form The form to which to populate data.
+   * @param {Object} data The data to populate into a form.
    */
   const entries = (new URLSearchParams(data)).entries();
   for (const [key, val] of entries) {
@@ -179,51 +191,59 @@ export function deserializeForm(form, data) {
 }
 
 export function parameterizeForm(form) {
-  /*
+  /**
    * Get data from a form into a query string.
-   * https://stackoverflow.com/a/44033425/1869660
+   * Credit: https://stackoverflow.com/a/44033425/1869660
+   * @param {Element} form The form to which to populate data.
+   * @returns {String}
    */
   const data = new FormData(form);
   return new URLSearchParams(data).toString();
 }
 
-
-// Format file size as bytes.
-// https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
+/**
+ * Format file size as bytes.
+ * Credit: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
+ */
 export function formatBytes(a,b=2){if(0===a)return"0 Bytes";const c=0>b?0:b,d=Math.floor(Math.log(a)/Math.log(1024));return parseFloat((a/Math.pow(1024,d)).toFixed(c))+" "+["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"][d]};
-
 
 /*---------------------------------------------------------------------
  UI Helpers
  --------------------------------------------------------------------*/
 
 export function hasClass(element, className) {
-  /*
+  /**
    * Check if an element has a class.
+   * @param {Element} element An element to check for a certain class.
+   * @param {String} className The class string to check for in an element.
    */
   return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
 }
 
 
-export function showNotification(title, message, options) {
-  /*
+export function showNotification(title, message, type, delay = 4000) {
+  /**
    * Show an error notification.
+   * @param {String} title The title for the notification.
+   * @param {String} message The message to display in the notification.
+   * @param {String} type The type of message: `error`, `success`, or `wait`.
+   * @param {Number} delay The time to show the notification, 4000 milliseconds by default.
    */
   const toastEl = document.getElementById('notification-toast');
   document.getElementById('notification-title').textContent = title;
   document.getElementById('notification-message').textContent = message;
   toastEl.classList.remove('d-none');
-  if (options.type) {
+  if (type) {
     const types = ['error', 'success', 'wait'];
-    types.forEach((type) => {
-      if (type === options.type) {
+    types.forEach((t) => {
+      if (type === t) {
         document.getElementById(`notification-${type}-icon`).classList.remove('d-none');
       } else {
         document.getElementById(`notification-${type}-icon`).classList.add('d-none');
       }
     });
   }
-  const toast = new bootstrap.Toast(toastEl, { delay: options.delay || 4000 });
+  const toast = new bootstrap.Toast(toastEl, { delay });
   toast.show()
 }
 
@@ -232,11 +252,9 @@ export function showNotification(title, message, options) {
  --------------------------------------------------------------------*/
 
 export function getUrlParameter(name) {
-  /* Get a specific parameter from the URL.
-  Args:
-    name (String): The name of the parameter.
-  Returns:
-    (String): Returns the parameter value if it is in the URL.
+  /** Get a specific parameter from the URL.
+   * @param {String} name The name of the parameter.
+   * @returns {String} Returns the parameter value if it is in the URL.
   */
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -244,19 +262,20 @@ export function getUrlParameter(name) {
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-export function capitalize(string) {
-  /*
-   * Capitalize the first letter of a given string.
+export function capitalize(text) {
+  /**
+   * Capitalize the first letter of given text.
    * Reference: https://www.geeksforgeeks.org/how-to-make-first-letter-of-a-string-uppercase-in-javascript/
+   * @param {String} text The text to capitalize.
    */
-  return string.replace(/^./, string[0].toUpperCase());
+  return text.replace(/^./, text[0].toUpperCase());
 }
 
-
 export function slugify(text) {
-  /*
-   * Turn a string to a slug.
+  /**
+   * Turn text to a slug.
    * Reference: https://stackoverflow.com/questions/1053902/how-to-convert-a-title-to-a-url-slug-in-jquery
+   * @param {String} text The text to capitalize.
    */
   return text
     .toLowerCase()
