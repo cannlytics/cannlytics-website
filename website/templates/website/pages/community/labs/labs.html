@@ -1,9 +1,16 @@
-<!-- Labs Page -->
-<!-- Created 12/26/2020 -->
-{% extends "website/index.html" %}
+<!doctype html>
+<html>
+<!--
+  Labs Page | Cannlytics Website
+  Copyright (c) 2021 Cannlytics
 
+  Authors: Keegan Skeate <contact@cannlytics.com>
+  Created: 12/26/2020
+  Updated: 11/25/2021
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
 {% load static %}
-
+{% extends "website/index.html" %}
 {% block material %}
   <div class="about">
     <main role="main" class="container py-3 my-3 ">
@@ -145,4 +152,6 @@
   <script src="{% static 'website/js/labs/Labs.View.js'%}"></script>
   <script src="{% static 'website/js/labs/Labs.Data.js'%}"></script>
 
-{% endblock %}
+{% endblock material %}
+
+</html>

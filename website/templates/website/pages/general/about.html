@@ -1,43 +1,49 @@
 <!doctype html>
 <html>
+<!--
+  About Page | Cannlytics Website
+  Copyright (c) 2021 Cannlytics
 
-  <!-- About Page -->
-  <!-- Created 1/14/2013 -->
-  {% extends "website/index.html" %}
-  {% load static %}
+  Authors: Keegan Skeate <contact@cannlytics.com>
+  Created: 1/14/2021
+  Updated: 11/25/2021
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
+{% extends "website/index.html" %}
+{% load static %}
 
-  <!-- Title -->
-  {% block title %}About | {{ general.title }}{% endblock %}
+<!-- Title -->
+{% block title %}About | Cannlytics{% endblock %}
 
-  {% block material %}
-    <div class="about">
+{% block material %}
+  <div class="about">
 
-      <!-- Hero Banner -->
-      {% include "website/components/heros/hero_banner.html" with
-        title='Launching Cannlytics'
-        only
-      %}
+    <!-- Hero Banner -->
+    {% include "website/components/heros/hero_banner.html" with
+      title='Launching Cannlytics'
+      only
+    %}
 
-      <main role="main" class="container pb-3 mb-3 ">
+    <main role="main" class="container pb-3 mb-3 ">
 
-      {% comment %} <img
-        src="{% static 'website/images/logos/cannlytics_calyx_detailed.svg' %}"
-        style="height:100px;"
-      > {% endcomment %}
+    {% comment %} <img
+      src="{% static 'website/images/logos/cannlytics_calyx_detailed.svg' %}"
+      style="height:100px;"
+    > {% endcomment %}
 
-        <!-- Material -->
-        <div class="container markdown py-3">
-          {{ about | safe }}
-        </div>
+      <!-- Material -->
+      <div class="container markdown py-3">
+        {{ about | safe }}
+      </div>
 
-      </main>
-    </div>
+    </main>
+  </div>
 
-    <!-- TODO: Call to action -->
+  <!-- TODO: Call to action -->
 
-    <!-- Vines -->
-    {% include "website/components/art/vines.html" %}
+  <!-- Vines -->
+  {% include "website/components/art/vines.html" %}
 
-  {% endblock %}
+{% endblock material %}
 
 </html>

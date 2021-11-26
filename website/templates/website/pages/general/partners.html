@@ -1,12 +1,17 @@
-<!-- Partners Page -->
+<!doctype html>
+<html>
+<!--
+  Partners Page | Cannlytics Website
+  Copyright (c) 2021 Cannlytics
+
+  Authors: Keegan Skeate <keegan@cannlytics.com>
+  Created:  11/25/2021
+  Updated: 11/25/2021
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
 {% extends "website/index.html" %}
-
-{% comment %} Vivid Microscopy helps parhmetcutical companies create cancer-fighting pharmacuticals faster. {% endcomment %}
 {% load static %}
-
-<!-- Title -->
-{% block title %}Partners | {{ general.title }}{% endblock %}
-
+{% block title %}Partners | Cannlytics{% endblock %}
 {% block material %}
   <div class="partners pb-5">
 
@@ -60,6 +65,8 @@
       </div>
     </div><!-- End of partners -->
 
+{% comment %} Vivid Microscopy helps parhmetcutical companies create cancer-fighting pharmacuticals faster. {% endcomment %}
+
     <!-- TODO: Partner application form -->
     {% comment %} <div class="row mb-3">
 
@@ -74,7 +81,7 @@
           class="btn btn-sm position-absolute text-dark"
           onclick="cannlytics.settings.uploadAccountPhoto()"
         >
-          <span data-feather="image"></span>
+          {% icon "image" height="24px" width="24px" %}
         </button>
       </div>
 
@@ -126,3 +133,5 @@
   {% include "website/components/art/vines.html" %}
 
 {% endblock %}
+
+</html>

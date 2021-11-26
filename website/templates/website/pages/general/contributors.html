@@ -1,13 +1,17 @@
 <!doctype html>
 <html>
 <!--
-  Contributors Page
+  Contributors Page | Cannlytics Website
+  Copyright (c) 2021 Cannlytics
+
+  Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 11/17/2020
-  Updated: 8/1/2021
+  Updated: 11/25/2021
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
 {% load static %}
-{% block title %}Contributors | {{ general.title }}{% endblock %}
+{% block title %}Contributors | Cannlytics{% endblock %}
 {% block material %}
   <div class="contributors large-bottom-margin">
 
@@ -101,6 +105,6 @@
   <!-- Vines -->
   {% include "website/components/art/vines.html" %}
 
-{% endblock %}
+{% endblock material %}
 
 </html>

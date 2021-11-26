@@ -7,10 +7,10 @@
  * Updated: 11/25/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 */
-const Dotenv = require('dotenv-webpack');
-const TerserPlugin = require("terser-webpack-plugin");
-const path = require('path');
 const appName = 'website';
+const Dotenv = require('dotenv-webpack');
+const path = require('path');
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = env => {
   return {

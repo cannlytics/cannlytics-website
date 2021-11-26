@@ -1,90 +1,91 @@
 <!doctype html>
 <html>
-  <!--
-    Sponsors Page | Cannlytics Website
-    Created: 1/9/2021
-    Updated: 9/11/2021
-    See:
-      https://www.elegantthemes.com/blog/wordpress/how-to-create-the-best-sponsorship-page-possible
-      https://powersponsorship.com/how-to-use-your-website-to-sell-sponsorship/
-  -->
-  {% extends "website/index.html" %}
-  {% load static %}
-  {% block title %}Sponsors | {{ general.title }}{% endblock %}
-  {% block material %}
-    <div class="sponsors large-bottom-margin">
+<!--
+  Sponsors Page | Cannlytics Website
+  Copyright (c) 2021 Cannlytics
 
-      <!-- Hero -->
-      {% include "website/components/heros/hero_banner.html" with
-        title='Sponsors'
-        description='Dear monied individuals, if you are in need of a venture, then Cannlytics is always looking for win-win development opportunities that can yield you tremendous value. In return, our company seeks sponsorship to fuel development.'
-        primary_action='Invest now'
-        primary_action_url='https://www.paypal.com/paypalme/cannlytics'
-        secondary_action='Browse opportunities'
-        secondary_action_url='https://opencollective.com/cannlytics-company'
-        image_url="website/images/illustrations/multi-tone/degree.svg"
-        only
-      %}
+  Authors: Keegan Skeate <contact@cannlytics.com>
+  Created: 1/9/2021
+  Updated: 11/25/2021
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
+{% extends "website/index.html" %}
+{% load static %}
+{% block title %}Sponsors | Cannlytics{% endblock %}
+{% block material %}
+  <div class="sponsors large-bottom-margin">
 
-      <!-- Body -->
-      <div class="container">
+    <!-- Hero -->
+    {% include "website/components/heros/hero_banner.html" with
+      title='Sponsors'
+      description='Dear monied individuals, if you are in need of a venture, then Cannlytics is always looking for win-win development opportunities that can yield you tremendous value. In return, our company seeks sponsorship to fuel development.'
+      primary_action='Invest now'
+      primary_action_url='https://www.paypal.com/paypalme/cannlytics'
+      secondary_action='Browse opportunities'
+      secondary_action_url='https://opencollective.com/cannlytics-company'
+      image_url="website/images/illustrations/multi-tone/degree.svg"
+      only
+    %}
 
-        <!-- Call for investment -->
-        <h3 class="fw-bold mb-2">Call for funding</h3>
-        <p class="fs-6 double-line" style="max-width:540px;">
-          <small>Cannlytics is currently looking for investors who envision a win-win future with the Cannlytics team.
-          Accredited investors* are welcome to email Keegan Skeate at
-          <a class="serif text-gradient" href="mailto:keegan@cannlytics.com">keegan@cannlytics.com</a>.</small>
-        </p>
-        <figure style="max-width:540px;">
-          <blockquote class="blockquote">
-            <p class="fs-6 double-line mt-3"><small>
-              To be "Accredited", you need a net worth over $1M or you need an annual income over $200K.
-              About 10% of our community are "Accredited" by Federal law, however, most don't invest.
-              <a class="fs-6 serif text-gradient" href="https://www.seattleangelconference.com/"><small>The Angel Conference</small></a>
-              provides a "learning by doing" pathway for doing [your] first Angel Investment.
-            </small></p>
-          </blockquote>
-          <figcaption class="blockquote-footer pt-2">
-            <cite title="Source Title">Seattle Angel Conference</cite>
-          </figcaption>
-        </figure>
-      </div>
+    <!-- Body -->
+    <div class="container">
 
-      <!-- Donations -->
-      <div class="container mt-5">
-        <h3 class="fw-bold mb-2">Donations</h3>
-        <p class="fs-6 double-line" style="max-width:540px;">
-          <small>Open source projects take time and money.
-          Help support the project by becoming a sponsor.
-          You can add your support at
-          any tier you feel comfortable with. No amount is too little.
-          We also accept one time contributions via PayPal.
-          </small>
-        </p>
-        <div class="grid gap-2 mt-3">
-          <a
-            class="btn btn-sm bg-gradient-orange text-white me-2"
-            href="https://opencollective.com/cannlytics-company"
-            type="button"
-          >
-            <small class="serif">Become a sponsor</small> &raquo;
-          </a>
-          <a
-            class="btn btn-sm bg-gradient-green text-white"
-            href="https://www.paypal.me/cannlytic"
-            type="button"
-          >
-            <small class="serif">Donate with PayPal</small> &raquo;
-          </a>
-        </div>
-      </div>
-    
+      <!-- Call for investment -->
+      <h3 class="fw-bold mb-2">Call for funding</h3>
+      <p class="fs-6 double-line" style="max-width:540px;">
+        <small>Cannlytics is currently looking for investors who envision a win-win future with the Cannlytics team.
+        Accredited investors* are welcome to email Keegan Skeate at
+        <a class="serif text-gradient" href="mailto:keegan@cannlytics.com">keegan@cannlytics.com</a>.</small>
+      </p>
+      <figure style="max-width:540px;">
+        <blockquote class="blockquote">
+          <p class="fs-6 double-line mt-3"><small>
+            To be "Accredited", you need a net worth over $1M or you need an annual income over $200K.
+            About 10% of our community are "Accredited" by Federal law, however, most don't invest.
+            <a class="fs-6 serif text-gradient" href="https://www.seattleangelconference.com/"><small>The Angel Conference</small></a>
+            provides a "learning by doing" pathway for doing [your] first Angel Investment.
+          </small></p>
+        </blockquote>
+        <figcaption class="blockquote-footer pt-2">
+          <cite title="Source Title">Seattle Angel Conference</cite>
+        </figcaption>
+      </figure>
     </div>
 
-    <!-- Vines -->
-    {% include "website/components/art/vines.html" %}
+    <!-- Donations -->
+    <div class="container mt-5">
+      <h3 class="fw-bold mb-2">Donations</h3>
+      <p class="fs-6 double-line" style="max-width:540px;">
+        <small>Open source projects take time and money.
+        Help support the project by becoming a sponsor.
+        You can add your support at
+        any tier you feel comfortable with. No amount is too little.
+        We also accept one time contributions via PayPal.
+        </small>
+      </p>
+      <div class="grid gap-2 mt-3">
+        <a
+          class="btn btn-sm bg-gradient-orange text-white me-2"
+          href="https://opencollective.com/cannlytics-company"
+          type="button"
+        >
+          <small class="serif">Become a sponsor</small> &raquo;
+        </a>
+        <a
+          class="btn btn-sm bg-gradient-green text-white"
+          href="https://www.paypal.me/cannlytic"
+          type="button"
+        >
+          <small class="serif">Donate with PayPal</small> &raquo;
+        </a>
+      </div>
+    </div>
+  
+  </div>
 
-  {% endblock %}
+  <!-- Vines -->
+  {% include "website/components/art/vines.html" %}
+
+{% endblock material %}
 
 </html>

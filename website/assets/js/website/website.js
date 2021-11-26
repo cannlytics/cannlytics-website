@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 12/3/2020
- * Updated: 11/23/2021
+ * Updated: 11/25/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  * 
  * TODO: Refactor and move functions to better homes.
@@ -31,9 +31,6 @@ export const website = {
     /**
      * Initialize the website's features and functionality.
      */
-    
-    // Initialize icons.
-    // feather.replace();
 
     // Initialize accept cookies notification.
     this.acceptCookiesCheck();

@@ -7,7 +7,7 @@
   Optional:
     - Make rendering dynamic with a for loop.
 -->
-{% load static %}
+{% load static icon %}
 <div class="container">
 
   <!-- Title -->
@@ -91,7 +91,7 @@
         onclick="cannlytics.website.copyToClipboard(document.getElementById('codeblock-1').innerHTML)"
         title="Copy snippet"
       >
-        <span class="link-secondary" data-feather="copy"></span>
+        {% icon "copy" class="link-secondary" height="24px" width="24px" %}
       </button>
       <pre class="d-flex">
         <code id="codeblock-1">git clone https://github.com/cannlytics/cannlytics.git</code>
@@ -133,7 +133,7 @@ class="copy-btn bg-transparent border-0 float-end app-action pt-2"
 onclick="cannlytics.website.copyToClipboard(document.getElementById('codeblock-2').innerHTML)"
 title="Copy snippet"
 >
-<span class="link-secondary" data-feather="copy"></span>
+{% icon "copy" class="link-secondary" height="24px" width="24px" %}
 </button>
 
 <pre><span></span><code id="codeblock-2"><span class="kn">from</span> <span class="nn">cannlytics</span> <span class="kn">import</span> <span class="n">lims</span>
@@ -176,7 +176,7 @@ title="Copy snippet"
       onclick="cannlytics.website.copyToClipboard(document.getElementById('codeblock-3').innerHTML)"
       title="Copy snippet"
     >
-      <span class="link-secondary" data-feather="copy"></span>
+      {% icon "copy" class="link-secondary" height="24px" width="24px" %}
     </button>
     <pre><span></span><code id="codeblock-3"><span class="p">{</span>
   <span class="nx">analyses</span><span class="o">:</span> <span class="p">[...],</span>

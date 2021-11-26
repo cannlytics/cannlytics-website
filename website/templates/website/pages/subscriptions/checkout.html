@@ -1,230 +1,236 @@
 <!doctype html>
 <html>
-  <!--
-    Checkout Page |  Cannlytics Website
-    Created: 1/17/2021
-    Updated: 7/31/2021
-  -->
-  {% extends "website/index.html" %}
-  {% load get_env %}
-  {% block title %}Checkout | Cannlytics{% endblock %}
-  {% block page_css %}
+<!--
+  Checkout Page | Cannlytics Website
+  Copyright (c) 2021 Cannlytics
 
-    <!-- PayPal Client-->
-    <script src="https://www.paypal.com/sdk/js?client-id={{ 'PAYPAL_CLIENT_ID'|get_env }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+  Authors: Keegan Skeate <contact@cannlytics.com>
+  Created: 1/17/2021
+  Updated: 11/25/2021
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
+{% extends "website/index.html" %}
+{% load get_env %}
+{% block title %}Checkout | Cannlytics{% endblock %}
+{% block page_css %}
 
-  {% endblock %}
+  <!-- PayPal Client-->
+  <script src="https://www.paypal.com/sdk/js?client-id={{ 'PAYPAL_CLIENT_ID'|get_env }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 
-  <!-- Checkout template -->
-  {% block material %}
-    <div class="checkout">
+{% endblock %}
 
-    <!-- Header -->
-    {% include "website/components/heros/hero_banner.html" with
-      title='Checkout'
-      description="Get your Cannlytics loot now."
-      image_url="website/images/illustrations/multi-tone/notes.svg"
-      only
-    %}
+<!-- Checkout template -->
+{% block material %}
+  <div class="checkout">
 
-    <!-- Checkout Tempplate -->
-    <div class="container">
-      <div class="row g-3">
+  <!-- Header -->
+  {% include "website/components/heros/hero_banner.html" with
+    title='Checkout'
+    description="Get your Cannlytics loot now."
+    image_url="website/images/illustrations/multi-tone/notes.svg"
+    only
+  %}
 
-        <!-- Cart -->
-        <div class="col-md-5 col-lg-4 order-last">
-          <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="serif">Your cart</span>
-          </h4>
-          <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between lh-sm">
-              <div>
-                <h6 id="subscription-title" class="fs-5 fw-bold sans-serif mt-0"></h6>
-                <small id="subscription-description" class="text-muted"></small>
-              </div>
-              <span id="subscription-price" class="text-muted"></span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Total (USD)</span>
-              <strong id="subscription-price-now"></strong>
-            </li>
-          </ul>
+  <!-- Checkout Tempplate -->
+  <div class="container">
+    <div class="row g-3">
 
-          <!-- PayPal buttons -->
-          <div id="paypal-button-container"></div>
+      <!-- Cart -->
+      <div class="col-md-5 col-lg-4 order-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="serif">Your cart</span>
+        </h4>
+        <ul class="list-group mb-3">
+          <li class="list-group-item d-flex justify-content-between lh-sm">
+            <div>
+              <h6 id="subscription-title" class="fs-5 fw-bold sans-serif mt-0"></h6>
+              <small id="subscription-description" class="text-muted"></small>
+            </div>
+            <span id="subscription-price" class="text-muted"></span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>Total (USD)</span>
+            <strong id="subscription-price-now"></strong>
+          </li>
+        </ul>
 
-        </div>
+        <!-- PayPal buttons -->
+        <div id="paypal-button-container"></div>
 
-        <!-- Account information -->
-        <div class="col-md-7 col-lg-8">
-          <h4 class="serif">Account information</h4>
-          <p class="text-secondary fs-6 mb-5">
-            <small>Please fill-in your account information before checking out your cart.</small>
-          </p>
-          <form id="account-information" class="needs-validation" novalidate>
-            <div class="row g-3">
+      </div>
 
-              <!-- Field -->
-              <div class="row my-2">
-                <label
-                  for="firstName"
-                  class="col-sm-3 col-form-label col-form-label-sm"
+      <!-- Account information -->
+      <div class="col-md-7 col-lg-8">
+        <h4 class="serif">Account information</h4>
+        <p class="text-secondary fs-6 mb-5">
+          <small>Please fill-in your account information before checking out your cart.</small>
+        </p>
+        <form id="account-information" class="needs-validation" novalidate>
+          <div class="row g-3">
+
+            <!-- Field -->
+            <div class="row my-2">
+              <label
+                for="firstName"
+                class="col-sm-3 col-form-label col-form-label-sm"
+              >
+                First name
+              </label>
+              <div class="col-sm-9">
+                <input
+                  id="firstName"
+                  class="form-control form-control-sm field-md"
+                  name="first_name"
+                  type="text"
+                  placeholder=""
+                  value=""
                 >
-                  First name
-                </label>
-                <div class="col-sm-9">
-                  <input
-                    id="firstName"
-                    class="form-control form-control-sm field-md"
-                    name="first_name"
-                    type="text"
-                    placeholder=""
-                    value=""
-                  >
-                </div>
               </div>
-
-              <!-- Field -->
-              <div class="row my-2">
-                <label
-                  for="lastName"
-                  class="col-sm-3 col-form-label col-form-label-sm"
-                >
-                  Last name
-                </label>
-                <div class="col-sm-9">
-                  <input
-                    id="lastName"
-                    class="form-control form-control-sm field-md"
-                    name="last_name"
-                    type="text"
-                    placeholder=""
-                    value=""
-                  >
-                </div>
-              </div>
-
-              <!-- Field -->
-              <div class="row my-2">
-                <label
-                  for="email"
-                  class="col-sm-3 col-form-label col-form-label-sm"
-                >
-                  Email (required)
-                </label>
-                <div class="col-sm-9">
-                  <input
-                    id="email"
-                    class="form-control form-control-sm"
-                    name="email"
-                    type="email"
-                    placeholder=""
-                    value=""
-                  >
-                </div>
-              </div>
-
-              <!-- Field -->
-              <div class="row my-2">
-                <label
-                  for="company"
-                  class="col-sm-3 col-form-label col-form-label-sm"
-                >
-                  Company
-                </label>
-                <div class="col-sm-9">
-                  <input
-                    id="company"
-                    class="form-control form-control-sm"
-                    name="organization"
-                    type="text"
-                    placeholder=""
-                    value=""
-                  >
-                </div>
-              </div>
-
-              <!-- Field -->
-              <div class="row my-2">
-                <label
-                  for="position"
-                  class="col-sm-3 col-form-label col-form-label-sm"
-                >
-                  Position
-                </label>
-                <div class="col-sm-9">
-                  <input
-                    id="position"
-                    class="form-control form-control-sm"
-                    name="position"
-                    type="text"
-                    placeholder=""
-                    value=""
-                  >
-                </div>
-              </div>
-
-              <!-- Feedback -->
-              <div class="col-12">
-                <label for="reference" class="form-label col-form-label-sm">How did you find out about Cannlytics?</label>
-                <textarea class="form-control form-control-sm"  id="reference" name="reference" style="height:100px;" placeholder=""></textarea>
-              </div>
-              <div class="col-12">
-                <label for="challenges" class="form-label col-form-label-sm">What are your top challenges with cannabis analytics?</label>
-                <textarea class="form-control form-control-sm" id="challenges" name="challenges" style="height:100px;" placeholder=""></textarea>
-              </div>
-
             </div>
 
-          </form>
+            <!-- Field -->
+            <div class="row my-2">
+              <label
+                for="lastName"
+                class="col-sm-3 col-form-label col-form-label-sm"
+              >
+                Last name
+              </label>
+              <div class="col-sm-9">
+                <input
+                  id="lastName"
+                  class="form-control form-control-sm field-md"
+                  name="last_name"
+                  type="text"
+                  placeholder=""
+                  value=""
+                >
+              </div>
+            </div>
 
-        </div>
+            <!-- Field -->
+            <div class="row my-2">
+              <label
+                for="email"
+                class="col-sm-3 col-form-label col-form-label-sm"
+              >
+                Email (required)
+              </label>
+              <div class="col-sm-9">
+                <input
+                  id="email"
+                  class="form-control form-control-sm"
+                  name="email"
+                  type="email"
+                  placeholder=""
+                  value=""
+                >
+              </div>
+            </div>
+
+            <!-- Field -->
+            <div class="row my-2">
+              <label
+                for="company"
+                class="col-sm-3 col-form-label col-form-label-sm"
+              >
+                Company
+              </label>
+              <div class="col-sm-9">
+                <input
+                  id="company"
+                  class="form-control form-control-sm"
+                  name="organization"
+                  type="text"
+                  placeholder=""
+                  value=""
+                >
+              </div>
+            </div>
+
+            <!-- Field -->
+            <div class="row my-2">
+              <label
+                for="position"
+                class="col-sm-3 col-form-label col-form-label-sm"
+              >
+                Position
+              </label>
+              <div class="col-sm-9">
+                <input
+                  id="position"
+                  class="form-control form-control-sm"
+                  name="position"
+                  type="text"
+                  placeholder=""
+                  value=""
+                >
+              </div>
+            </div>
+
+            <!-- Feedback -->
+            <div class="col-12">
+              <label for="reference" class="form-label col-form-label-sm">How did you find out about Cannlytics?</label>
+              <textarea class="form-control form-control-sm"  id="reference" name="reference" style="height:100px;" placeholder=""></textarea>
+            </div>
+            <div class="col-12">
+              <label for="challenges" class="form-label col-form-label-sm">What are your top challenges with cannabis analytics?</label>
+              <textarea class="form-control form-control-sm" id="challenges" name="challenges" style="height:100px;" placeholder=""></textarea>
+            </div>
+
+          </div>
+
+        </form>
+
       </div>
-    </div><!-- End of form-->
-
-    <!-- Checkout JavaScript -->
-    <script>
-
-      // Initialize subscriptions.
-      (async function initializeCheckout () {
-      
-        // Get subscription data.
-        var planName = '{{ request.GET.name }}';
-        var subscriptionData = await cannlytics.payments.getSubscription(planName);
-        var planID = subscriptionData['plan_id'];
-
-        // Fill-in the template.
-        document.getElementById('subscription-title').textContent = planName;
-        document.getElementById('subscription-description').textContent = subscriptionData['plan_description'];
-        document.getElementById('subscription-price').textContent = subscriptionData['price'];
-        document.getElementById('subscription-price-now').textContent = subscriptionData['price_now'] + ' now';
-
-        // Initialize PayPal buttons.
-        paypal.Buttons({
-          style: {
-              shape: 'rect',
-              color: 'silver',
-              layout: 'horizontal',
-              label: 'subscribe',
-          },
-          createSubscription: function(data, actions) {
-            // Optional: Validate the form.
-            return actions.subscription.create({ 'plan_id': planID });
-          },
-          onApprove: function(data, actions) {
-            var subscription = { ...data, ...{ 'plan_id': planID } };
-            cannlytics.payments.subscribe(subscription);
-          },
-          onError: function (error) {
-            alert('Uknown error subscribing. Please contact contact@cannlytics.com. Thank you for your patience and we will deliver you support.');
-          },
-        }).render('#paypal-button-container');
-
-      })();
-
-    </script>
-
     </div>
-  {% endblock %}
+  </div><!-- End of form-->
+
+  <!-- Checkout JavaScript -->
+  <script>
+
+    // Initialize subscriptions.
+    (async function initializeCheckout () {
+    
+      // Get subscription data.
+      var planName = '{{ request.GET.name }}';
+      var subscriptionData = await cannlytics.payments.getSubscription(planName);
+      var planID = subscriptionData['plan_id'];
+
+      // Fill-in the template.
+      document.getElementById('subscription-title').textContent = planName;
+      document.getElementById('subscription-description').textContent = subscriptionData['plan_description'];
+      document.getElementById('subscription-price').textContent = subscriptionData['price'];
+      document.getElementById('subscription-price-now').textContent = subscriptionData['price_now'] + ' now';
+
+      // Initialize PayPal buttons.
+      paypal.Buttons({
+        style: {
+            shape: 'rect',
+            color: 'silver',
+            layout: 'horizontal',
+            label: 'subscribe',
+        },
+        createSubscription: function(data, actions) {
+          // Optional: Validate the form.
+          return actions.subscription.create({ 'plan_id': planID });
+        },
+        onApprove: function(data, actions) {
+          var subscription = { ...data, ...{ 'plan_id': planID } };
+          cannlytics.payments.subscribe(subscription);
+        },
+        onError: function (error) {
+          alert('Uknown error subscribing. Please contact contact@cannlytics.com. Thank you for your patience and we will deliver you support.');
+        },
+      }).render('#paypal-button-container');
+
+    })();
+
+  </script>
+
+  </div>
+{% endblock material %}
+
+<!-- TODO: Separate JavaScript into page_js?-->
 
 </html>
