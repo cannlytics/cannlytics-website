@@ -1,5 +1,6 @@
 """
 Upload Video Data | Cannlytics Console
+Copyright (c) 2021 Cannlytics
 
 Author: Keegan Skeate <keegan@cannlytics.com>
 Created: 7/15/2021

@@ -5,12 +5,25 @@
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 12/3/2020
  * Updated: 11/23/2021
- * License: MIT License
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  * 
  * TODO: Refactor and move functions to better homes.
  */
-import { checkForCredentials } from '../auth/auth.js';
-import { auth, onAuthStateChanged } from '../firebase.js';
+import { auth, checkGoogleLogIn, onAuthStateChanged } from '../firebase.js';
+import { authRequest } from '../utils.js';
+
+async function checkForCredentials() {
+  /**
+   * Check if a user has signed in through a redirect from
+   * an authentication provider, such as Google.
+   */
+  try {
+    await checkGoogleLogIn();
+    await authRequest('/api/login/');
+  } catch(error) {
+    // No Google sign-in token.
+  }
+}
 
 export const website = {
 
@@ -20,7 +33,7 @@ export const website = {
      */
     
     // Initialize icons.
-    feather.replace();
+    // feather.replace();
 
     // Initialize accept cookies notification.
     this.acceptCookiesCheck();

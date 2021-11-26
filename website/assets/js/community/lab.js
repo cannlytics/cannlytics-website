@@ -5,7 +5,7 @@
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
  * Updated: 7/31/2021
- * License: MIT License
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 
 // import { firestore } from 'firebase';

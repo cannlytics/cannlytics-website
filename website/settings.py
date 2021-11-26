@@ -1,9 +1,11 @@
 """
 Django Project Settings | Cannlytics Website
+Copyright (c) 2021 Cannlytics
 
-Author: Keegan Skeate <keegan@cannlytics.com>  
-Created: 1/5/2021  
-Updated: 7/27/2021  
+Author: Keegan Skeate <keegan@cannlytics.com>
+Created: 1/5/2021
+Updated: 7/27/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 Django settings powered by environment variables and
 secured by Google Cloud Secret Manager.

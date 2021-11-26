@@ -5,7 +5,7 @@
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
  * Updated: 11/23/2021
- * License: MIT License
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { getDocument } from '../firebase.js';
 import { authRequest, getUrlParameter } from '../utils.js';

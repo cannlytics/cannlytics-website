@@ -1,21 +1,30 @@
 """
-WSGI config for the website project.
+WSGI Configuration | Cannlytics Website
+Copyright (c) 2021 Cannlytics
 
-It exposes the WSGI callable as a module-level variable named ``application``.
+Authors: Keegan Skeate <keegan@cannlytics.com>
+Created: 11/24/2021
+Updated: 11/24/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
-For more information on this file, see
-https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
+Description:
+
+    This script exposes the WSGI callable as a
+    module-level variable named ``application``.
+    For more information on this file, see
+    https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/
 """
-
+# Internal imports.
 import os
 
+# External imports.
 from django.core.wsgi import get_wsgi_application
-
 try:
     from dj_static import Cling
 except ImportError:
     pass
 
+# Specify the name of the settings file.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings')
 
 # Use dj-static if installed.

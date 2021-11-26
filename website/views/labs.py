@@ -1,9 +1,11 @@
 """
 Laboratory Views | Cannlytics Website
+Copyright (c) 2021 Cannlytics
 
-Author: Keegan Skeate <keegan@cannlytics.com>
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 11/15/2021
 Updated: 11/15/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
 import os

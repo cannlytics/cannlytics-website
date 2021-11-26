@@ -1,8 +1,11 @@
 """
 Authentication Views | Cannlytics Website
+Copyright (c) 2021 Cannlytics
+
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/18/2020
-Updated: 11/15/2021
+Updated: 11/24/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports
 from django.http import HttpResponse, JsonResponse

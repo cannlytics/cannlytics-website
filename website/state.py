@@ -1,8 +1,11 @@
 """
 State Variables | Cannlytics Website
-Author: Keegan Skeate <keegan@cannlytics.com>
+Copyright (c) 2021 Cannlytics
+
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 10/15/2020
 Updated: 11/15/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 
 page_data = {

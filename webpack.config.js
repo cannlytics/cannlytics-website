@@ -1,73 +1,86 @@
-/*
-  Module Bundler | Cannlytics
-  Created: 1/5/2021
-  Updated: 11/22/2021
+/**
+ * Module Bundler | Cannlytics Website
+ * Copyright (c) 2021 Cannlytics
+ * 
+ * Authors: Keegan Skeate <keegan@cannlytics.com>
+ * Created: 1/5/2021
+ * Updated: 11/25/2021
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 */
 const Dotenv = require('dotenv-webpack');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 const path = require('path');
 const appName = 'website';
 
 module.exports = env => {
   return {
     mode: env.production ? 'production' : 'development',
-    devtool: env.production ? 'source-map' : 'eval',
+    devtool: env.production ? 'source-map' : 'eval', // source-map required for minimization.
     devServer: {
-      writeToDisk: true, // Write files to disk in dev mode, so that Django can serve the assets.
-    },
-    resolve: {
-      extensions: [ '.js' ]
+      devMiddleware: {
+      	writeToDisk: true, // Write files to disk in dev mode, so that Django can serve the assets.
+      }
     },
     entry: [
       `./${appName}/assets/css/cannlytics.scss`,
       `./${appName}/assets/js/index.js`,
-      // Optional: Add additional JS here.
+      // You can add additional JS here.
     ],
     output: {
       path: path.resolve(__dirname, `${appName}/static/${appName}`),
-      filename: './js/bundles/bundle.js',
+      filename: './js/bundles/cannlytics.min.js',
       libraryTarget: 'var',
       library: 'cannlytics', // Turns JavaScript into a module.
     },
     module: {
       rules: [
         {
-          test: /\.s?css$/,
+          test: /\.s[ac]ss$/i,
           use: [
             {
-              loader: 'file-loader', // Output CSS.
-              options: {
-                name: './css/bundles/bundle.css',
-              },
+              // Inject CSS to page by creating `style` nodes from JS strings.
+              loader: 'style-loader'
             },
             {
-              loader: 'sass-loader', // Compiles Sass to CSS.
+              // Translate CSS into CommonJS modules.
+              loader: 'css-loader'
+            },
+            {
+              // Run postcss actions.
+              loader: 'postcss-loader',
               options: {
-                implementation: require('sass'),
-                webpackImporter: false,
-                sassOptions: {
-                  includePaths: ['./node_modules'],
-                },
-              },
+                postcssOptions: {
+                  plugins: function () {
+                    return [
+                      require('autoprefixer')
+                    ];
+                  }
+                }
+              }
+            },
+            {
+              // Compiles Sass to CSS.
+              loader: 'sass-loader'
             },
           ],
         },
         {
+          // Convert ES2015 to JavaScript.
           test: /\.js$/,
-          loader: 'babel-loader', // Convert ES2015 to JavaScript.
-          query: {
-            "presets": [
-              ["@babel/preset-env", {
-                "targets": { "esmodules": true }
-              }]
-            ]
+          exclude: '/node_modules/',
+          loader: 'babel-loader',
+          options: {
+            compact: true,
           },
         },
       ],
     },
+    optimization: {
+      minimize: env.production, // Minimize JavaScript in production.
+      minimizer: [new TerserPlugin({ parallel: true })],
+    },
     plugins: [
       new Dotenv(), // Make .env variables available in entry file.
-      new OptimizeCSSAssetsPlugin({}), // Minimize the CSS.
     ],
   }
 };

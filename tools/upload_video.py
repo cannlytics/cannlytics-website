@@ -1,11 +1,12 @@
 """
 Upload Video | Cannlytics Website
+Copyright (c) 2021 Cannlytics
 
-Author: Keegan Skeate
+Authors: Keegan Skeate
 Contact: <keegan@cannlytics.com>
 Created: 5/19/2021
 Updated: 6/27/2021
-License: MIT License <https://opensource.org/licenses/MIT>
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 This script uploads a specified video and it's data to the
 Cannlytics video archive.

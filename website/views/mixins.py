@@ -1,7 +1,11 @@
 """
 Mixins | Cannlytics Website
+Copyright (c) 2021 Cannlytics
+
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/30/2020
-Updated: 8/30/2021
+Updated: 11/24/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
 from datetime import datetime
@@ -12,8 +16,8 @@ from django.views.generic.base import ContextMixin
 from django.http import HttpResponse
 
 # Internal imports
+from cannlytics.firebase import initialize_firebase, update_document
 from website.state import state
-from website.utils.firebase import update_document
 
 
 class BaseMixin(ContextMixin):
@@ -68,6 +72,7 @@ class BaseMixin(ContextMixin):
         context['page'] = self.kwargs.get('page', 'homepage')
         context['section'] = self.kwargs.get('section', '')
         context = self.get_page_state(context)
+        initialize_firebase()
         self.save_analytics()
         return context
 

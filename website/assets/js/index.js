@@ -5,8 +5,9 @@
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 1/6/2021
  * Updated: 11/23/2021
- * License: MIT License
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
+import { Tooltip, Toast, Popover } from 'bootstrap';
 import { auth } from './auth/auth.js';
 import { community } from './community/community.js';
 import { data } from './data/data.js';

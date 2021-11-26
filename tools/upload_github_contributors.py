@@ -1,25 +1,23 @@
-# -*- coding: utf-8 -*-
 """
-Get Github Contributors | Cannlytics
+Get Github Contributors | Cannlytics Website
+Copyright (c) 2021 Cannlytics
 
-Copyright © 2020 Cannlytics
-
-Author: Keegan Skeate <keegan@cannlytics.com>
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/9/2021
-Updated: 7/29/2021
-License: MIT License <https://opensource.org/licenses/MIT>
+Updated: 11/24/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 Resources:
     https://pygithub.readthedocs.io/en/latest/examples/MainClass.html#get-user-by-name
 """
-# Standard imports
+# Standard imports.
 import os
 import environ
 import sys
 
-# External imports
+# External imports.
 from github import Github
 
-# Internal imports
+# Internal imports.
 sys.path.append('../../')
 from cannlytics.firebase import initialize_firebase, update_document
 
@@ -54,7 +52,7 @@ def upload_github_contributors(org_name):
     return users
 
 if __name__ == '__main__':
-    
+
     # Specify credentials for Firebase.
     env = environ.Env()
     env.read_env('../../.env')

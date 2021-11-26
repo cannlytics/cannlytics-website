@@ -1,8 +1,11 @@
 """
 URLs | Cannlytics Website
+Copyright (c) 2021 Cannlytics
+
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/29/2020
 Updated: 11/22/2021
-Resources: https://docs.djangoproject.com/en/3.1/topics/http/urls/
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports.
 from django.conf import settings

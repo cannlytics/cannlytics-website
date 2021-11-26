@@ -1,12 +1,20 @@
+"""
+Decorators | Cannlytics Website
+Copyright (c) 2021 Cannlytics
+
+Authors: Keegan Skeate <keegan@cannlytics.com>
+Created: 11/24/2021
+Updated: 11/24/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+"""
+# External imports.
 import requests
 from django.conf import settings
-# from django.contrib import messages
 from functools import wraps
 
-# https://docs.djangoproject.com/en/3.1/topics/class-based-views/intro/
-
-
+# FIXME: Fix or remove.
 def check_recaptcha(view_func):
+    """Check if a reCaptcha is valid."""
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
         request.recaptcha_is_valid = None

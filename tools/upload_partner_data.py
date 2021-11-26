@@ -1,10 +1,11 @@
 """
 Add Partner | Cannlytics Website
+Copyright (c) 2021 Cannlytics
 
-Author: Keegan Skeate <keegan@cannlytics.com>
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 9/10/2021
 Updated: 9/10/2021
-License: MIT License <https://opensource.org/licenses/MIT>
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
 from datetime import datetime

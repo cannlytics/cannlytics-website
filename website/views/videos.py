@@ -1,8 +1,11 @@
 """
 Videos Views | Cannlytics Website
-Author: Keegan Skeate <keegan@cannlytics.com>
+Copyright (c) 2021 Cannlytics
+
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 11/15/2021
-Updated: 11/15/2021
+Updated: 11/24/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
 from math import ceil

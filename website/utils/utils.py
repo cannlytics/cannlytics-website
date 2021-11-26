@@ -1,7 +1,7 @@
 """
 Utility Functions | Cannlytics Website
 Created: 1/5/2021
-Updated: 11/15/2021
+Updated: 11/24/2021
 """
 # Standard imports
 from random import randint
@@ -52,7 +52,6 @@ EXTENSION_CONFIGS = {
 #----------------------------------------------#
 # Rendering helpers
 #----------------------------------------------#
-
 
 def get_markdown(
         request,
@@ -105,11 +104,10 @@ def get_markdown(
         and we will be quick to provide you with support.</p>"
     return context
 
-
 def add_code_copy(text):
     """Add copy button to code blocks.
     Args:
-        (str): A block of HTML text.
+        text (str): A block of HTML text.
     Returns
         (str): Returns the HTML text with copy buttons inserted.
     """
@@ -124,16 +122,14 @@ def add_code_copy(text):
         '<div class="codehilite" id="code{}">'.format(i, i, i), text, 1)
     return text
 
-
 #----------------------------------------------#
 # Authentication helpers
 #----------------------------------------------#
 
-
 def generate_secret_key(env_file_name):
     """Generate a Django secret key.
     Args:
-        (str): The directory of the environment variable file.
+        env_file_name (str): The directory of the environment variable file.
     """
     env_file = open(env_file_name, 'w+')
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
@@ -141,11 +137,10 @@ def generate_secret_key(env_file_name):
     env_file.write("SECRET_KEY = '{}'\n".format(generated_secret_key))
     env_file.close()
 
-
 def get_promo_code(num_chars=7):
     """Generate a random promotion code.
     Args:
-        (int): The number of digits for the promotion code, 7 by default.
+        num_chars (int): The number of digits for the promotion code, 7 by default.
     Returns:
         (str): A random code that can be use for promotions.
     """

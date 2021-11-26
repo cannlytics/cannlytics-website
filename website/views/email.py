@@ -1,8 +1,11 @@
 """
 Email Views | Cannlytics Website
-Author: Keegan Skeate <keegan@cannlytics.com>
+Copyright (c) 2021 Cannlytics
+
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 8/22/2021
 Updated: 8/22/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports
 from django.core.mail import send_mail

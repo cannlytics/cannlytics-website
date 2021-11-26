@@ -1,7 +1,11 @@
 """
 API Views | Cannlytics Website
+Copyright (c) 2021 Cannlytics
+
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/22/2021
-Updated: 7/31/2021
+Updated: 11/24/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 API to interface with cannabis-testing information.
 """
@@ -17,7 +21,7 @@ from rest_framework.response import Response
 
 # Internal imports
 from cannlytics.auth.auth import authenticate_request
-from website.utils.firebase import get_collection, get_document, update_document
+from cannlytics.firebase import get_collection, get_document, update_document
 
 ENDPOINTS = ['labs']
 VERSION = 'v1'
@@ -27,7 +31,7 @@ VERSION = 'v1'
 #----------------------------------------------#
 
 def authenticate(request):
-    """ Identify the user's Firebase account using an ID token. """
+    """Identify the user's Firebase account using an ID token."""
     authorization = request.headers['Authorization']
     token = authorization.split(' ')[1]
     claims = auth.verify_id_token(token)
@@ -107,7 +111,7 @@ def labs(request, format=None):
             before = existing_data[key]
             if before != after:
                 changes.append({'key': key, 'before': before, 'after': after})
-        
+
         # Get a timestamp.
         timestamp = datetime.now().isoformat()
         lab['updated_at'] = timestamp

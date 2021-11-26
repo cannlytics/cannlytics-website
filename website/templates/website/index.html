@@ -3,7 +3,7 @@
 <!--
   Index Template | Cannlytics Website
   Created: 1/7/2021
-  Updated: 6/27/2021
+  Updated: 11/25/2021
 -->
 {% extends "website/base.html" %}
 {% load static %}
@@ -12,7 +12,7 @@
   <!-- Header -->
   {% include "website/layout/header.html" %}
 
-  <!-- Page Material -->
+  <!-- Material -->
   <div id="material">{% block material %}{% endblock %}</div>
 
   <!-- Footer -->
@@ -20,6 +20,15 @@
 
   <!-- Subscribe Dialog -->
   {% include "website/components/dialogs/subscribe_dialog.html" %}
+
+  <!-- Login Dialog -->
+  {% include "website/components/dialogs/login_dialog.html" %}
+
+  <!-- Cookie Notification -->
+  {% include "website/components/dialogs/cookie_notification.html" %}
+
+  <!-- General Notifications -->
+  {% include "website/components/notifications/notification_toast.html" %}
 
 {% endblock %}
 </html>

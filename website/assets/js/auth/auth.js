@@ -5,21 +5,21 @@
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 1/17/2021
  * Updated: 11/23/2021
- * License: MIT License
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { checkGoogleLogIn, createAccount, googleLogIn, login, logout } from '../firebase.js';
+import { createAccount, googleLogIn, logIn, logOut } from '../firebase.js';
 import { authRequest, showNotification } from '../utils.js';
 
 export const auth = {
 
-  async checkForCredentials() {
-    /**
-     * Check if a user has signed in through a redirect from
-     * an authentication provider, such as Google.
-     */
-    await checkGoogleLogIn();
-    await authRequest('/api/login/');
-  },
+  // async checkForCredentials() {
+  //   /**
+  //    * Check if a user has signed in through a redirect from
+  //    * an authentication provider, such as Google.
+  //    */
+  //   await checkGoogleLogIn();
+  //   await authRequest('/api/login/');
+  // },
 
   async signIn(event) {
     /**
@@ -32,7 +32,7 @@ export const auth = {
     document.getElementById('login-button').classList.add('d-none');
     document.getElementById('login-loading-button').classList.remove('d-none');
     try {
-      await login(email, password);
+      await logIn(email, password);
       await authRequest('/api/login/');
       const dialogElement = document.getElementById('login-dialog');
       const modal = bootstrap.Modal.getInstance(dialogElement);
@@ -55,7 +55,7 @@ export const auth = {
     /**
      * Sign a user out of their account.
      */
-    await logout();
+    await logOut();
     await authRequest('/api/logout/');
   },
 

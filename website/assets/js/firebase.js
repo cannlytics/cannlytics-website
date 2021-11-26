@@ -5,7 +5,7 @@
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 12/22/2020
  * Updated: 11/23/2021
- * License: MIT License
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { initializeApp } from 'firebase/app';
 import { getAnalytics, logEvent } from 'firebase/analytics';

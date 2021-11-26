@@ -1,7 +1,11 @@
 """
 Data Views | Cannlytics Website
+Copyright (c) 2021 Cannlytics
+
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 10/14/2021
+Updated: 11/24/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
 import os
@@ -17,7 +21,7 @@ from django.http import JsonResponse, FileResponse
 from django.views.decorators.csrf import csrf_exempt
 from pandas import DataFrame
 
-# TODO: Use standard Cannlytics firebase module in production.
+# Internal imports.
 from cannlytics.firebase import (
     add_to_array,
     create_user,
