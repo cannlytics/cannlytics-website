@@ -11,11 +11,6 @@
   
   Optional Improvements:
     - Loading button
-    - Form validation
-  
-  FIXME: NEED SPAM PREVENTION!
-    - recaptcha
-      https://cloud.google.com/recaptcha-enterprise/docs/instrument-web-pages
 -->
 {% extends "website/index.html" %}
 {% block title %}Contact | {{ general.title }}{% endblock %}
@@ -30,7 +25,6 @@
       color: #f8f8f8;
     }
   </style>
-  {% comment %} <script src="https://www.google.com/recaptcha/enterprise.js?render={{ 'RECAPTCHA_SITE_KEY'|get_env }}"></script> {% endcomment %}
 {% endblock %}
 {% block material %}
   <div class="contact container my-4 my-lg-5 px-5">
@@ -49,8 +43,9 @@
         <form
           id="contact-form"
           class="mt-4 pe-sm-5"
-          action="/api/send-message/"
+          action="/api/internal/send-message"
           method="post"
+          onsubmit="return onSubmit(this);"
         >
 
           <!-- CSRF Token -->
@@ -121,15 +116,16 @@
             </label>
           </div>
 
+          <!-- ReCaptcha -->
+          <div class="g-recaptcha" data-sitekey="{{ recaptcha.site_key }}"></div>
+
+          <!-- Submit -->
           <div class="d-flex align-items-center justify-content-end">
-            <button
-              class="btn btn-sm bg-gradient-green text-white g-recaptcha"
-              data-sitekey="{{ 'RECAPTCHA_SITE_KEY'|get_env }}" 
-              data-callback='onSubmit' 
-              data-action='submit'
+            <input
+              class="btn btn-sm bg-gradient-green text-white"
+              type="submit"
+              value="Send message"
             >
-              Send message
-            </button>
           </div>
 
         </form>
@@ -143,21 +139,30 @@
         >
       </div>
 
-    </div><!-- End of hero -->
+    </div>
   </div>
 {% endblock %}
 
 <!-- JavaScript -->
 {% block page_js %}
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script>
-    function onSubmit(token) {
-      document.getElementById('contact-form').submit();
+    function onSubmit(form) {
+      /**
+        * Submit the contact form after validation.
+        */
+      var email = form.email.value;
+      if (email === null || email === '') {
+        cannlytics.showNotification('Email required', 'Please enter a valid email so we can reply to your message.', 'error');
+        return false;
+      }
+      var message = form.message.value;
+      if (message === null || message === '') {
+        cannlytics.showNotification('Message required', 'Please enter a message so we can reply to you.', 'error');
+        return false;
+      }
+      return true;
     }
-    // grecaptcha.enterprise.ready(function() {
-    // grecaptcha.enterprise.execute('{{ 'RECAPTCHA_SITE_KEY'|get_env }}', {action: 'login'}).then(function(token) {
-    //   ...
-    //   });
-    // });
   </script>
 {% endblock %}
 

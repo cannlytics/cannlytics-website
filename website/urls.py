@@ -4,7 +4,7 @@ Copyright (c) 2021 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/29/2020
-Updated: 11/22/2021
+Updated: 11/26/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports.
@@ -28,43 +28,40 @@ from website.views import (
 # Main URLs.
 urlpatterns = [
     path('', main.GeneralView.as_view(), name='index'),
-    path('admin/', admin.site.urls, name='admin'),
+    path('admin', admin.site.urls, name='admin'),
     path('api/', include([
-        path('login/', auth.login),
-        path('logout/', auth.logout),
-        path('labs/', api.labs),
-        path('labs/<uuid:org_id>/', api.labs),
-        path('labs/<uuid:org_id>/analyses/', api.lab_analyses),
-        path('labs/<uuid:org_id>/logs/', api.lab_logs),
-        path('labs/download/', data.download_lab_data),
-        path('promotions/', data.promotions, name='promotions'),
-        path('subscribe/', data.subscribe, name='subscribe'),
-        path('subscriptions/', api.get_user_subscriptions, name='subscriptions'),
-        path('send-message/', email.send_message),
-        path('v1/data/buy/', data.buy_data),
-        path('v1/data/publish/', data.publish_data),
-        path('v1/data/sell/', data.sell_data),
+        path('internal/login', auth.login),
+        path('internal/logout', auth.logout),
+        path('internal/promotions', data.promotions, name='promotions'),
+        path('internal/send-message', email.send_message),
+        path('internal/subscribe', data.subscribe, name='subscribe'),
+        path('internal/subscriptions', api.get_user_subscriptions, name='subscriptions'),
+        path('v1/data/buy', data.buy_data),
+        path('v1/data/publish', data.publish_data),
+        path('v1/data/sell', data.sell_data),
+        path('v1/labs', api.labs),
+        path('v1/labs/<uuid:org_id>', api.labs),
+        path('v1/labs/<uuid:org_id>/analyses', api.lab_analyses),
+        path('v1/labs/<uuid:org_id>/logs', api.lab_logs),
+        path('v1/labs/download', data.download_lab_data),
+        # TODO: Add regulations / limits pages.
+        # TODO: Add analyte pages.
+        # TODO: Add analysis / prices pages.
     ])),
-    path('community/', labs.CommunityView.as_view(), name='community'),
-    path('labs/', labs.CommunityView.as_view(), name='labs'),  # Redundant
-    path('labs/new/', labs.NewLabView.as_view()),
-    path('labs/<lab>/', labs.LabView.as_view()),
+    path('community', labs.CommunityView.as_view(), name='community'),
+    path('labs', labs.CommunityView.as_view(), name='labs'),  # Redundant?
+    path('labs/new', labs.NewLabView.as_view()),
+    path('labs/<lab>', labs.LabView.as_view()),
     # TODO: Add analyses and prices to lab pages.
-    path('robohash/<string>/', robohash, name='robohash'),
-    path('videos/', videos.VideosView.as_view(), name='videos'),
-    path('videos/<video_id>/', videos.VideosView.as_view(), name='video'),
-    path('<page>/', main.GeneralView.as_view(), name='page'),
-    path('<page>/<section>/', main.GeneralView.as_view(), name='section'),
+    path('robohash/<string>', robohash, name='robohash'),
+    path('videos', videos.VideosView.as_view(), name='videos'),
+    path('videos/<video_id>', videos.VideosView.as_view(), name='video'),
+    path('<page>', main.GeneralView.as_view(), name='page'),
+    path('<page>/<section>', main.GeneralView.as_view(), name='section'),
     path('<page>/<section>/<str:unit>', main.GeneralView.as_view()),
 
-    # TODO: Add regulations / limits pages.
-
-    # TODO: Add analyte pages.
-
-    # TODO: Add analysis / prices pages.
+    
 ]
-
-# TODO: Create premium page.
 
 # FIXME: Broken documentation links.
 
@@ -99,7 +96,7 @@ urlpatterns = [
     # /docs/about/faq/
     # /docs/api/lab_results/
 
-# Redirects from old pages.
+# TODO: Redirects from old pages to stable links.
 # https://stackoverflow.com/questions/35903832/how-to-redirect-to-external-url-in-django
 # urlpatterns += [
 #     path('docs/', include([

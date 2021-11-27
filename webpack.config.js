@@ -10,7 +10,7 @@
 const appName = 'website';
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
-const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = env => {
   return {
@@ -20,6 +20,9 @@ module.exports = env => {
       devMiddleware: {
       	writeToDisk: true, // Write files to disk in dev mode, so that Django can serve the assets.
       }
+    },
+    resolve: {
+      extensions: ['.js'],
     },
     entry: [
       `./${appName}/assets/css/cannlytics.scss`,
@@ -31,6 +34,8 @@ module.exports = env => {
       filename: './js/bundles/cannlytics.min.js',
       libraryTarget: 'var',
       library: 'cannlytics', // Turns JavaScript into a module.
+      hotUpdateChunkFilename: './js/bundles/hot/hot-update.js',
+      hotUpdateMainFilename: './js/bundles/hot/hot-update.json'
     },
     module: {
       rules: [
@@ -75,10 +80,10 @@ module.exports = env => {
         },
       ],
     },
-    optimization: {
-      minimize: env.production, // Minimize JavaScript in production.
-      minimizer: [new TerserPlugin({ parallel: true })],
-    },
+    // optimization: {
+    //   minimize: env.production, // Minimize JavaScript in production.
+    //   minimizer: [new TerserPlugin({ parallel: true })],
+    // },
     plugins: [
       new Dotenv(), // Make .env variables available in entry file.
     ],

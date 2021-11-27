@@ -19,7 +19,7 @@ async function checkForCredentials() {
    */
   try {
     await checkGoogleLogIn();
-    await authRequest('/api/login/');
+    await authRequest('/api/internal/login');
   } catch(error) {
     // No Google sign-in token.
   }

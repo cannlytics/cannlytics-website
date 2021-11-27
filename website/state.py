@@ -9,6 +9,9 @@ License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main
 """
 
 page_data = {
+    "contact": {
+        "documents": [{"name": "recaptcha", "ref": "admin/recaptcha"}]
+    },
     "contributors": {
         "collections": [{"name": "contributors", "ref": "public/contributors/contributor_data"}],
     },

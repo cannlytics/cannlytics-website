@@ -28,6 +28,7 @@ import {
 } from 'firebase/auth';
 import {
   getFirestore,
+  getDoc,
   getDocs,
   setDoc,
   deleteField,
@@ -434,6 +435,20 @@ async function uploadFile(path, file, type = 'File') {
   else uploadString(storageRef, file, type)
 };
 
+const authErrors = {
+  'auth/email-already-exists': 'The provided email is already in use by an existing user. Each user must have a unique email.',
+  'auth/internal-error': 'Unexpected error while trying to process the request. If the error persists, please report the problem to support@cannlytics.com',
+  'auth/invalid-email':	'The provided email is invalid. It must be a valid email address.',
+  'auth/invalid-password': 'The provided password is invalid.',
+  'wrong-password': 'The password provided is incorrect.',
+  'network-request-failed': 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.',
+  'too-many-requests': 'We have blocked all requests from this device due to unusual activity. Try again later.',
+  'user-not-found': 'There is no user record corresponding to this identifier. The user may have been deleted.',
+  'user-disabled': 'The user account has been disabled by an administrator.',
+  'weak-password': 'The password must be 6 characters long or more.',
+  'web-storage-unsupported': 'This browser is not supported or 3rd party cookies and data may be disabled.',
+}
+
 const storageErrors = {
   'storage/unknown':	'An unknown error occurred.',
   'storage/object-not-found':	'No file exists at the desired reference.',
@@ -452,6 +467,7 @@ const storageErrors = {
 
 export {
   auth,
+  authErrors,
   changeEmail,
   changePassword,
   checkGoogleLogIn,

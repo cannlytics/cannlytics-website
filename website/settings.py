@@ -4,19 +4,19 @@ Copyright (c) 2021 Cannlytics
 
 Author: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 7/27/2021
+Updated: 11/26/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 Django settings powered by environment variables and
 secured by Google Cloud Secret Manager.
 """
-# Standard imports
+# Standard imports.
 import json
 import io
 import os
 import re
 
-# External imports
+# External imports.
 import environ
 import google.auth
 from google.cloud import secretmanager
@@ -25,11 +25,10 @@ from django.template import base
 # ------------------------------------------------------------#
 # Project variables.
 # ------------------------------------------------------------#
-PRODUCTION = False  # PRODUCTION: Change from False to True
 PROJECT_NAME = 'website'
-ROOT_URLCONF = 'website.urls'
-SETTINGS_NAME = 'cannlytics_website_settings'
-WSGI_APPLICATION = 'website.core.wsgi.application'
+ROOT_URLCONF = f'{PROJECT_NAME}.urls'
+SECRET_SETTINGS_NAME = 'cannlytics_website_settings'
+WSGI_APPLICATION = f'{PROJECT_NAME}.core.wsgi.application'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Get the version number.
@@ -63,7 +62,7 @@ if os.path.isfile(env_file):
 elif os.environ.get('GOOGLE_CLOUD_PROJECT', None):
     project_id = os.environ.get('GOOGLE_CLOUD_PROJECT')
     client = secretmanager.SecretManagerServiceClient()
-    name = f'projects/{project_id}/secrets/{SETTINGS_NAME}/versions/latest'
+    name = f'projects/{project_id}/secrets/{SECRET_SETTINGS_NAME}/versions/latest'
     payload = client.access_secret_version(name=name).payload.data.decode('UTF-8')
     env.read_env(io.StringIO(payload))
 else:
@@ -88,8 +87,7 @@ else:
 # https://docs.djangoproject.com/en/3.1/ref/applications/
 # ------------------------------------------------------------#
 INSTALLED_APPS = [
-    'website',
-    'crispy_forms',
+    PROJECT_NAME,
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -100,8 +98,6 @@ INSTALLED_APPS = [
     'django_feather',
     'django_robohash',
 ]
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # ------------------------------------------------------------#
 # Middleware
@@ -115,6 +111,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    f'{PROJECT_NAME}.core.middleware.AppendOrRemoveSlashMiddleware',
 ]
 
 # ------------------------------------------------------------#
@@ -255,7 +252,7 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
 # ------------------------------------------------------------#
 
 # Remove trailing slash from URLs.
-# APPEND_SLASH = False
+APPEND_SLASH = False
 
 # Allow Django template tags to span multiple lines.
 # https://stackoverflow.com/questions/49110044/django-template-tag-on-multiple-line

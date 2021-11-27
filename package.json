@@ -12,7 +12,7 @@
   "scripts": {
     "start": "npm-run-all --parallel webpack livereload runserver",
     "webpack": "webpack-dev-server --env development",
-    "livereload": "python manage.py livereload",
+    "livereload": "python manage.py livereload --ignore-static-dirs",
     "runserver": "python manage.py runserver",
     "publish": "npm run container && npm run cloud && npm run deploy",
     "build": "webpack --env production && npm run collectstatic",

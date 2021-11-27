@@ -23,28 +23,28 @@
       aria-labelledby="navbarUserMenu"
       style="z-index:10000; right:1rem !important; top:8rem; position: fixed !important;"
     >
-      <div class="px-3 py-1">
+      <div class="px-3 pt-1">
         <h5 class="fs-6 serif text-dark" id="user-name"></h5>
         <h6 class="fs-6"><small class="serif text-secondary" id="user-email"></small></h6>
       </div>
       <li><hr class="dropdown-divider"></li>
       <li>
-        <a class="dropdown-item" href="https://console.cannlytics.com/settings/account">
+        <a class="dropdown-item" href="{% url 'page' page='account' %}">
           <small class="serif">Your account</small>
         </a>
       </li>
       <li>
-        <a class="serif dropdown-item" href="https://console.cannlytics.com/settings/invite">
-          <small class="serif">Invite user</small>
+        <a class="serif dropdown-item" href="{% url 'section' page='account' section='rewards' %}">
+          <small class="serif">Rewards</small>
         </a>
       </li>
       <li>
-        <a class="serif dropdown-item" href="https://console.cannlytics.com/subscriptions/subscription">
+        <a class="serif dropdown-item" href="{% url 'section' page='account' section='subscription' %}">
           <small class="serif">Manage your subscription</small>
         </a>
       </li>
       <li>
-        <a class="serif dropdown-item" href="https://console.cannlytics.com/help/feedback">
+        <a class="serif dropdown-item" href="{% url 'page' page='feedback' %}">
           <small class="serif">Send feedback</small>
         </a>
       </li>

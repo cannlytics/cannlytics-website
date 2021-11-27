@@ -7,6 +7,7 @@
  * Updated: 11/23/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
+import { Toast } from 'bootstrap';
 import { getUserToken } from './firebase.js';
 
 /*---------------------------------------------------------------------
@@ -221,13 +222,13 @@ export function hasClass(element, className) {
 }
 
 
-export function showNotification(title, message, type, delay = 4000) {
+export function showNotification(title, message, type, delay = 3500) {
   /**
    * Show an error notification.
    * @param {String} title The title for the notification.
    * @param {String} message The message to display in the notification.
    * @param {String} type The type of message: `error`, `success`, or `wait`.
-   * @param {Number} delay The time to show the notification, 4000 milliseconds by default.
+   * @param {Number} delay The time to show the notification, 3500 milliseconds by default.
    */
   const toastEl = document.getElementById('notification-toast');
   document.getElementById('notification-title').textContent = title;
@@ -243,7 +244,7 @@ export function showNotification(title, message, type, delay = 4000) {
       }
     });
   }
-  const toast = new bootstrap.Toast(toastEl, { delay });
+  const toast = new Toast(toastEl, { delay });
   toast.show()
 }
 

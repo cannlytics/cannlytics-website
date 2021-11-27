@@ -25,16 +25,20 @@
 
   <!-- Pricing Options -->
   <div class="container mb-5 mt-3">
-    <div class="markdown w-75 py-5">
-      <svg class="pe-3" style="float:left;width:125px;height:125px;">
-        <use href="{% static "website/images/emojies/books.svg" %}#books-emoji"></use>
+    <div class="markdown py-5" style="max-width:720px;">
+      <svg class="pe-1" style="float:left;width:125px;height:125px;">
+        <use href="{% static "website/images/emojies/newspaper.svg" %}#newspaper-emoji"></use>
       </svg>
       <h1 class="pt-4 text-dark">Subscription options</h1>
       <p>
-        Explore the options that you have to subscribe to Cannlytics
+        Explore your options to get Cannlytics
         material. Get a premium subscription
-        and get access to all whitepapers and videos. When you go premium,
+        and get access to all
+        <a href="{% url 'page' page='whitepapers' %}">whitepapers</a> and
+        <a href="{% url 'page' page='videos' %}">videos</a>. When you go premium,
         you will also receive first access to published data sets.
+        All users can use the open-source
+        <a href="https://console.cannlytics.com">Cannlytics Console.</a>
       </p>
     </div>
 
@@ -46,9 +50,9 @@
             <h4 class="font-weight-normal text-white my-0">Free</h4>
           </div>
           <div class="card-body bg-transparent d-flex flex-column justify-content-between align-items-center">
-            <h1 class="card-title pricing-card-title fs-4 mt-3">
-              👐
-            </h1>
+            <svg style="width:60px;height:60px;">
+              <use href="{% static "website/images/emojies/open-hands.svg" %}#open-hands-emoji"></use>
+            </svg>
             <ul class="text-dark list-unstyled text-start w-75">
               <li class="fs-6 mb-1"><small class="serif text-dark">✔️ Community material</small></li>
               <li class="fs-6 mb-1"><small class="serif text-dark">✔️ Analytics console</small></li>
@@ -58,7 +62,7 @@
             </ul>
             <a
               class="btn w-100 bg-gradient-green serif text-white"
-              href="https://console.cannlytics.com"
+              href="{% url 'page' page='videos' %}"
             >
               Sign up for free
             </a>
@@ -83,6 +87,7 @@
               <li class="fs-6 mb-1"><small class="serif text-dark">✔️ Access to all whitepapers</small></li>
               <li class="fs-6 mb-1"><small class="serif text-dark">✔️ First access to data sets</small></li>
             </ul>
+            <!-- FIXME: Link with url -->
             <a
               id="premium-button"
               type="button"
@@ -98,7 +103,7 @@
 
     <!-- Call out -->
     <div class="markdown mt-5">
-      <p class="w-75">
+      <p style="max-width:720px;">
         If you have a topic that you would like addressed in an upcoming
         whitepaper or video, then please email our editor at
         <a href="mailto:contact@cannlytics.com">contact@cannlytics.com</a>.

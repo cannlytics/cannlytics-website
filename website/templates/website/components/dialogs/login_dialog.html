@@ -145,14 +145,14 @@
             </div><!-- End of Options -->
 
             <!-- TODO: Google Sign In Alternative -->
-            {% comment %} <div class="fs-6 text-center my-3">
+            <div class="fs-6 text-center my-3">
               <small class="serif text-dark">&mdash;&nbsp;or&nbsp;&mdash;</small>
             </div>
             <div class="d-grid gap-2 justify-content-center">
-              <a id="google-signin" class="app-action" onclick="cannlytics.auth.googleSignIn()"></a>
+              <a id="google-signin" class="app-action" onclick="cannlytics.auth.signInWithGoogle()"></a>
             </div>
             <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_focus_web@2x.png' %}"/>
-            <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_pressed_web@2x.png' %}"/> {% endcomment %}
+            <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_pressed_web@2x.png' %}"/>
 
             <!-- Sign Up -->
             <p class="text-dark text-center h6 font-weight-light mt-5">
@@ -170,5 +170,15 @@
       </div>
     </div>
   </div><!-- End of modal -->
+
+  <!-- JavaScript -->
+  <script>
+    // Add sign-in on enter on login password field.
+    const input = document.getElementById('login-password');
+    input.addEventListener('keyup', function(event) {
+      event.preventDefault();
+      if (event.keyCode === 13) cannlytics.auth.signIn(event);
+    });
+  </script>
 
 </html>

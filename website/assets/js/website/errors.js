@@ -18,7 +18,7 @@ export const errorSettings = {
      * Reports an error to the back-end.
      * @param {Object} data Error data.
      */
-    authRequest('/api/errors/', data).then(() => {
+    authRequest('/api/internal/errors', data).then(() => {
       const message = 'Thank you for reporting this error. We will try to address it as soon as possible.';
       showNotification('Error report sent', message, /* type = */ 'success');
     }).catch((error) => {

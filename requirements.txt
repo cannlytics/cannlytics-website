@@ -17,7 +17,6 @@ django-environ==0.4.5
 django-feather==0.2.6
 django-livereload-server
 django-storages[google]==1.11.1
-django-crispy-forms==1.10.0
 django-environ==0.4.5
 django-robohash-svg==0.9.5
 djangorestframework==3.12.4

@@ -30,11 +30,11 @@ def send_message(request, *args, **argv): #pylint: disable=unused-argument
     text += '\n\n{0}'.format(message)
     if name is not None:
         text += '\n\nFrom,\n' + str(name)
-    send_mail(
-        subject=subject.strip(),
-        message=text,
-        from_email=sender,
-        recipient_list=recipients,
-        fail_silently=False,
-    )
+    # send_mail(
+    #     subject=subject.strip(),
+    #     message=text,
+    #     from_email=sender,
+    #     recipient_list=recipients,
+    #     fail_silently=False,
+    # )
     return redirect('/contact/thank-you/')

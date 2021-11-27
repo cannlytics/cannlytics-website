@@ -12,12 +12,10 @@
 {% load static %}
 <div class="info-bar text-dark d-flex justify-content-between py-2 px-2 px-lg-3">
   <div class="d-flex"></div>
-  <div class="d-flex align-items-center fw-bold">
+  <div class="d-flex align-items-center justify-content-center flex-wrap fw-bold">
 
     <!-- Phone-->
-    <small class="d-none d-lg-block">
-      Questions?&nbsp;
-    </small>
+    
     <a
       class="text-dark background-hover"
       href="tel:{{ phone_number }}"
@@ -47,11 +45,11 @@
       href="{% url 'page' page='subscriptions' %}"
       title="Get the support that your company needs."
     >
-      <svg class="" style="width:25px;height:25px;">
-        <use href="{% static "website/images/emojies/sparkles.svg" %}#sparkles-emoji"></use>
+      <svg class="" style="width:20px;height:20px;">
+        <use href="{% static "website/images/emojies/atronaut.svg" %}#atronaut-emoji"></use>
       </svg>
       <small>
-        Premium now available!
+        Premium subscriptions now available!
       </small>
     </a>
 

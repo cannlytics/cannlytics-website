@@ -48,7 +48,7 @@ export const payments = {
     /**
      * Get the current user's subscriptions.
      */
-    const response = await authRequest('/api/subscriptions/');
+    const response = await authRequest('/api/internal/subscriptions');
     return response.data;
   },
 
@@ -82,12 +82,12 @@ export const payments = {
       var userEmail = document.getElementById('email-input').value;
       data = { email: userEmail };
     }
-    fetch(`${window.location.origin}/api/subscribe/`, {
+    fetch(`${window.location.origin}/api/internal/subscribe`, {
       method: 'POST', 
       body: JSON.stringify(data),
       headers: { 'Accept': 'application/json' },
     });
-    window.location.href = `${window.location.origin}/subscriptions/subscribed/`;
+    window.location.href = `${window.location.origin}/subscriptions/subscribed`;
   },
   // subscribe() {
   //   /* Subscribe to newsletter functionality. */
