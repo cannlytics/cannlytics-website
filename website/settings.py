@@ -131,8 +131,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'website/templates'),
+            os.path.join(BASE_DIR, f'{PROJECT_NAME}/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -144,19 +143,6 @@ TEMPLATES = [
             ],
         },
     },
-]
-
-# ------------------------------------------------------------#
-# Password validation
-# https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
-# ------------------------------------------------------------#
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'
-    },
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # ------------------------------------------------------------#
@@ -222,7 +208,7 @@ LIST_OF_EMAIL_RECIPIENTS = [env('EMAIL_HOST_USER')]
 
 # List of directories where Django will also look for static files
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'website/static'),
+    os.path.join(BASE_DIR, f'{PROJECT_NAME}/static'),
 )
 
 # The directory from where files are served. (web accessible folder)
@@ -242,10 +228,10 @@ STATIC_URL = '/static/'
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 # Whether to expire the session when the user closes their browser.
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-# The age of session cookies, in seconds. (Currently: 14 days)
-SESSION_COOKIE_AGE = 60 * 60 * 24 * 14
+# The age of session cookies, in seconds. (Currently: 30 days)
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 
 # ------------------------------------------------------------#
 # Customization

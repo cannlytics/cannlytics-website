@@ -53,6 +53,7 @@ export const apiRequest = (endpoint, data, options, idToken = null) => new Promi
     // TODO: Determine if needed in production.
     // credentials: 'include',
     // mode: 'same-origin',
+    mode: 'no-cors',
     method: 'GET',
   };
   if (data) {
@@ -68,7 +69,8 @@ export const apiRequest = (endpoint, data, options, idToken = null) => new Promi
       endpoint.search = new URLSearchParams(options.params).toString();
     }
   }
-  fetch(window.location.origin + endpoint, init)
+  const url = endpoint.startsWith('https') ? endpoint : window.location.origin + endpoint;
+  fetch(url, init)
     .then(response => {
       try {
         return response.json();

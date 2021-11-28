@@ -4,10 +4,11 @@ Copyright (c) 2021 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 10/15/2020
-Updated: 11/15/2021
+Updated: 11/28/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 
+# Page-specific Firestore documents and collections.
 page_data = {
     "contact": {
         "documents": [{"name": "recaptcha", "ref": "admin/recaptcha"}]
@@ -38,18 +39,12 @@ page_data = {
                 "order_by": "published_at",
                 "desc": True
             },
-            # {
-            #     "name": "partners",
-            #     "ref": "public/partners/partner_data",
-            #     "limit": 3,
-            #     "order_by": "name",
-            # },
             {
                 "name": "verifications",
                 "ref": "public/verifications/verification_data",
                 "limit": None,
                 "order_by": "state",
-            }
+            },
         ],
     },
     "partners": {
@@ -74,15 +69,36 @@ page_data = {
     }
 }
 
+# Page-specific markdown documents.
 page_docs = {
     "about": ["about"],
     "contributors": ["contribute"],
-    "privacy-policy": ["privacy-policy"],
-    "terms-of-service": ["terms-of-service"],
-    "roadmap": ["roadmap"],
 }
 
-state = { # Optional: Turn into models and save in database?
+# Page-specific context.
+state = {
+    "account": {
+         "user_fields": [
+            {"key": "name", "label": "Name"},
+            # {"key": "position", "label": "Position"},
+            {"type": "email", "key": "email", "label": "Email"},
+            {"key": "phone_number", "label": "Phone"},
+        ],
+        "user_options": [
+            {
+                "title": "Change your password",
+                "url": "/account/password-reset",
+            },
+            {
+                "title": "Manage your subscription",
+                "url": "/account/subscription",
+            },
+            {
+                "title": "Make a suggestion",
+                "url": "/account/feedback",
+            },
+        ],
+    },
     "contact": {
         "title": "Contact Us",
         "message": "You're welcome to contact us anytime about anything. Please enter your contact information and message and the team will get back to you as soon as possible.",
@@ -127,9 +143,9 @@ state = { # Optional: Turn into models and save in database?
     "homepage": {
         "hero": {
             "title": "Cannabis Analytics for the 21st Century",
-            "message": "Superpower your lab with open-source cannabis analytics made with love ❤️!",
+            "message": "Get superpowers with open-source cannabis analytics made with love ❤️!",
             "image": "website/images/engine_icons/space_station.svg",
-            "primary_action": "Get Started 📖",
+            "primary_action": "Get Started 🌱",
             "primary_action_url": "https://docs.cannlytics.com",
             "secondary_action": "Sign Up 🚀",
             "secondary_action_url": "https://console.cannlytics.com",
@@ -145,8 +161,6 @@ state = { # Optional: Turn into models and save in database?
             {
                 "title": "Analysis Tailored",
                 "message": "Cannlytics provides a user-friendly interface to quickly receive samples, perform analyses, collect and review results, and publish certificates of analysis (CoAs). There are also built in logistics, CRM (client relationship management), inventory management, and invoicing tools.",
-                # "message": "Built by scientist for scientists. Data collection can be performed with the Cannlytics command line tool or with the Cannlytics Beanstalk. The Beanstalk is a light-weight app installed on an instrument's operating computer that automatically funnels results into your database.",
-                # "message": "Data collection can be performed with the Cannlytics command line tool or with the Cannlytics Beanstalk. The Beanstalk is a light-weight app installed on an instrument's operating computer that automatically funnels results into your database.",
                 "image": "website/images/illustrations/outline/lab_microscope.svg",
                 "action": "Contribute now",
                 "action_url": "/community",
@@ -267,7 +281,6 @@ state = { # Optional: Turn into models and save in database?
                     {"title": "Roadmap", "url": "https://docs.cannlytics.com/developers/roadmap"},
                     {"title": "Whitepapers", "page": "whitepapers"},
                     {"title": "Donations", "url": "https://opencollective.com/cannlytics-company"},
-                    # {"title": "Become a partner", "page": "partners"},
                     {"title": "Support", "page": "support"},
                 ]
             }
@@ -275,41 +288,7 @@ state = { # Optional: Turn into models and save in database?
     },
 }
 
-# TODO: Create entries in Firestore using Github API
-packages = [
-    {
-        "name": "Cannlytics API",
-        "url": "https://docs.cannlytics.com/api/about",
-        "path": "api",
-        "description": "",
-        "created_at": "",
-        "updated_at": "",
-        "version": "",
-        "readme_url": "",
-        "likes": 0,
-        "downloads": 0,
-        "license": "",
-        "repo_url": "",
-        "issues_url": "",
-        "documentation_url": "",
-    },
-    {
-        "title": "Cannlytics App",
-        "url": "https://docs.cannlytics.com/console/get-started",
-        "path": "app"
-    },
-    {
-        "title": "Cannlytics LIMS",
-        "url": "https://docs.cannlytics.com/cannlytics/lims/lims",
-        "path": "lims"
-    },
-    {
-        "title": "Cannlytics Console",
-        "url": "https://docs.cannlytics.com/console/get-started/",
-        "path": "portal"
-    },
-]
-
+# Context for lab pages.
 lab_state = {
     "detail_fields": [
         {"key": "name", "title": "Name", "type": "text"},
@@ -335,8 +314,8 @@ lab_state = {
         {"key": "favicon", "title": "Icon URL", "type": "textarea"},
         {"key": "image_url", "title": "Image URL", "type": "textarea"},
         # TODO: Keep track of certifications
-        # dea_licensed_hemp_lab
-        # a2la
+        # - dea_licensed_hemp_lab
+        # - a2la_certified
     ],
     "tabs": [
         {"name": "Details", "section": "details", "active": "true"},

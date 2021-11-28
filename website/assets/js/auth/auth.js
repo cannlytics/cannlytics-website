@@ -7,10 +7,31 @@
  * Updated: 11/23/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { authErrors, createAccount, googleLogIn, logIn, logOut } from '../firebase.js';
+import { authErrors, createAccount, googleLogIn, logIn, logOut, sendPasswordReset } from '../firebase.js';
 import { authRequest, showNotification } from '../utils.js';
 
 export const auth = {
+
+  async resetPassword() {
+    /**
+     * Send the user a password reset email.
+     */
+    const email = document.getElementById('login-email').value;
+    if (!email) {
+      showNotification('Password reset error', 'Please enter your email to request a password reset.', /* type = */ 'error' );
+      return;
+    }
+    document.getElementById('password-reset-button').classList.add('d-none');
+    document.getElementById('password-reset-loading-button').classList.remove('d-none');
+    try {
+      await sendPasswordReset();
+      window.location.href = `${window.location.origin}\\acount\\password-reset-done`;
+    } catch(error) {
+      document.getElementById('password-reset-button').classList.remove('d-none');
+      document.getElementById('password-reset-loading-button').classList.add('d-none');
+      showNotification('Password reset error', 'Password reset email failed to send. Try again later.', /* type = */ 'error' );
+    }
+  },
 
   async signIn(event) {
     /**
