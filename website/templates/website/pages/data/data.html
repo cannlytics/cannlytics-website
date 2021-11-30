@@ -162,6 +162,7 @@
             </div>
             <div class="card-text text-dark fs-6"><small id="state_total_licensees_{{ i }}" class="serif"></small></div>
             <div class="card-text text-dark fs-6"><small id="state_population_{{ i }}" class="serif"></small></div>
+            <!-- FIXME: Report licensees per 100,000 people -->
             <div class="card-text text-dark fs-6"><small id="licensees_per_capita_{{ i }}" class="serif"></small></div>
             <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_{{ i }}" class="serif"></small></div>
             <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_per_capita_{{ i }}" class="serif"></small></div>
@@ -364,7 +365,6 @@
         if (obs.recreational) obs.color = '#45B649';
         else if (obs.medicinal) obs.color = '#96e6a1';
         else obs.color = '#DBDB93';
-        console.log(obs.state);
         // FIXME: Pass index
         if (obs.state_data) document.getElementById('state_data_button_0').classList.remove('d-none');
         data[obs.state] = obs;

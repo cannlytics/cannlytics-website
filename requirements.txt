@@ -1,6 +1,6 @@
 # Python Requirements | Cannlytics Website
 # Created 1/5/2021
-# Updated: 7/27/2021
+# Updated: 11/28/2021
 
 # To ensure app dependencies are ported from your
 # virtual environment/host machine into your container,
@@ -29,5 +29,3 @@ pandas==1.2.1
 pymdown-extensions==8.1
 python-decouple==3.3
 python-markdown-math==0.8
-psycopg2-binary==2.8.5
-scholarly==1.1.0

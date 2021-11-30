@@ -7,10 +7,32 @@
  * Updated: 11/23/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { authErrors, createAccount, googleLogIn, logIn, logOut, sendPasswordReset } from '../firebase.js';
+import { auth as fbAuth, authErrors, createAccount, googleLogIn, logIn, logOut, onAuthStateChanged, sendPasswordReset } from '../firebase.js';
 import { authRequest, showNotification } from '../utils.js';
 
 export const auth = {
+
+  // getUserData() {
+  //   /**
+  //    * Get a user's name, email, phone number, and photo URL.
+  //    */
+  //   const user = fbAuth.currentUser || {};
+  //   return {
+  //     email: user.email,
+  //     name: user.displayName,
+  //     phone_number: user.phoneNumber,
+  //     photo_url: user.photoURL,
+  //   }
+  // },
+  ifUserDetected(callback) {
+    /**
+     * Perform a callback if/when a user is detected.
+     * @param {function} callback A callback to perform that gets the user as a parameter.
+     */
+    onAuthStateChanged(fbAuth, (user) => {
+      if (user) callback(user);
+    });
+  },
 
   async resetPassword() {
     /**

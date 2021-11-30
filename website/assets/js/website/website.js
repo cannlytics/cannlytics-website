@@ -186,6 +186,8 @@ export const website = {
      * Show any material that requires authentication.
      * @param {bool} authenticated Whether or not the user is authenticated.
      */
+    // FIXME: Janky.
+    console.log('Toggling authenticated material:', authenticated);
     const indicatesAuth = document.getElementsByClassName('indicates-auth');
     const requiresAuth = document.getElementsByClassName('requires-auth');
     for (var i = 0; i < indicatesAuth.length; i++) {

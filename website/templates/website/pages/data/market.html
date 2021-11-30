@@ -119,9 +119,9 @@
         <a class="btn btn-sm-light me-2" href="{% url 'section' 'data' 'publish' %}">
           Publish
         </a>
-        <a class="btn btn-sm-light" href="{% url 'page' 'profile' %}">
+        {% comment %} <a class="btn btn-sm-light" href="{% url 'page' 'account' %}">
           Profile
-        </a>
+        </a> {% endcomment %}
         
       </div>
     </div>
@@ -131,7 +131,7 @@
       
       <!-- TODO: Tabs with Stats -->
       <ul class="nav nav-tabs">
-        <li class="nav-item">
+        {% comment %} <li class="nav-item">
           <a
             class="nav-link fs-6 {% if request.GET.table == 'profiles' %}active{% endif %}"
             aria-current="page"
@@ -139,10 +139,10 @@
           >
             <small class="serif"><span id="total_profiles"></span> Profiles</small>
           </a>
-        </li>
+        </li> {% endcomment %}
         <li class="nav-item">
           <a class="nav-link fs-6 {% if request.GET.table == 'datasets' or not request.GET.table %}active{% endif %}" href="./?table=datasets">
-            <small class="serif"><span id="total_datasets"></span>  Data Sets</small>
+            <small class="serif"><span id="total_datasets"></span>Data Sets</small>
           </a>
         </li>
       </ul>
@@ -188,6 +188,8 @@
         class="d-flex flex-column flex-shrink-0 p-3 text-dark border rounded"
         style="width: 280px;"
       >
+
+        <h2>Filters</h2>
 
         <!-- Price range -->
 

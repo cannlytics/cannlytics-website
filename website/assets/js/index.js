@@ -16,6 +16,7 @@ import { settings } from './settings/settings.js';
 import { videos } from './website/videos.js';
 import { website } from './website/website.js';
 import { showNotification } from './utils.js';
+import { onAuthStateChanged } from './firebase.js';
 
 export {
   auth,
@@ -26,5 +27,6 @@ export {
   settings,
   videos,
   website,
+  onAuthStateChanged,
   showNotification,
 };

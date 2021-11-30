@@ -39,7 +39,6 @@ class BaseMixin(ContextMixin):
         #     templates.insert(0, f'{folder}/{page}/{section}.html')
         return templates
 
-
     def get_page_state(self, context):
         """Get screen-specific text."""
         key = self.kwargs.get('page', 'homepage')
@@ -47,7 +46,6 @@ class BaseMixin(ContextMixin):
         if material is not None:
             context[key] = material
         return context
-
 
     def save_analytics(self):
         """Save page analytics to Firestore."""
@@ -61,7 +59,6 @@ class BaseMixin(ContextMixin):
         }
         ref = f'logs/website/page_visits/{now}'
         update_document(ref, values)
-
 
     def get_context_data(self, **kwargs):
         """Get context that is used on all pages."""
@@ -83,6 +80,7 @@ class TemplateView(TemplateView): #pylint:disable=function-redefined
     HttpResponse in get_context_data.
     Source: https://gist.github.com/heyman/eec08ec0ed81df205e83
     """
+
     def get(self, request, *args, **kwargs):
         context_or_response = self.get_context_data(**kwargs)
         if isinstance(context_or_response, HttpResponse):

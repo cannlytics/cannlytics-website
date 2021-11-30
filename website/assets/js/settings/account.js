@@ -39,44 +39,16 @@ export const accountSettings = {
         userForm.reset();
         deserializeForm(userForm, userData);
       } else {
-        // TODO: Show sign-up form.
+        window.location.href = `${window.location.origin}\\account\\sign-up`;
       }
     });
-
-    this.resetAccountForm();
-  },
-
-  initializePasswordResetForm() {
-    /**
-     * Initialize the user account form.
-     */
-     onAuthStateChanged(auth, user => {
-      if (user) {
-        const emailElem = document.getElementById('login-email');
-        emailElem.value = auth.currentUser.email;
-        emailElem.disabled = true;
-      }
-     });
-  },
-
-  resetAccountForm() {
-    /**
-     * Reset a form with currently saved data, replacing any changes.
-     */
-    // FIXME: Populate from Firebase auth instead of server?    
-    console.log(auth.currentUser);
-    // authRequest('https://console.cannlytics.com/api/users').then((data) => {
-    //   console.log('Retrieved data:', data);
-    //   const userForm = document.forms['user-form'];
-    //   userForm.reset();
-    //   deserializeForm(userForm, data);
-    // });
   },
 
   saveAccount() {
     /**
     * Saves a user's account fields.
     */
+   // FIXME:
     const user = auth.currentUser;
     const data = serializeForm('user-form');
     if (data.email !== user.email) {
@@ -95,6 +67,7 @@ export const accountSettings = {
     /**
      * Upload a user's photo through the API.
      */
+    // FIXME:
     if (this.files.length) {
       showNotification('Uploading photo', 'Uploading your profile picture...', /* type = */ 'wait');
       updateUserPhoto(this.files[0]).then((downloadURL) => {

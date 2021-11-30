@@ -87,7 +87,6 @@ def logout(request, *args, **argv): #pylint: disable=unused-argument
             key='logout'
         )
         update_document(f'users/{uid}', {'signed_in': False})
-        print('Updated user as signed-out in Firestore:', uid)
         revoke_refresh_tokens(claims['sub'])
         # request.session['__session'] = ''
         response = HttpResponse(status=205)
@@ -102,3 +101,60 @@ def logout(request, *args, **argv): #pylint: disable=unused-argument
         response['Set-Cookie'] = '__session=None; Path=/'
         response['Cache-Control'] = 'public, max-age=300, s-maxage=900'
         return response
+
+
+def subscribe(request):
+    """
+    Subscribe a user to newsletters,
+    sending them a notification with the ability to unsubscribe,
+    and create a Cannlytics account if requested, sending a welcome email.
+    FIXME: Refactor.
+    """
+    success = False
+    data = loads(request.body)
+    user_email = data['email']
+    try:
+        validate_email(user_email)
+    except ValidationError:
+        pass # Optional: Handle invalid emails client-side?
+    else:
+
+        # Create a promo code that can be used to download data.
+        promo_code = get_promo_code(8)
+        add_to_array('promos/data', 'promo_codes', promo_code)
+
+        # Record subscription in Firestore.
+        now = datetime.now()
+        timestamp = now.strftime('%Y-%m-%d_%H-%M-%S')
+        iso_time = now.isoformat()
+        data['created_at'] = iso_time
+        data['updated_at'] = iso_time
+        data['promo_code'] = promo_code
+        update_document(f'subscribers/{timestamp}', data)
+
+        # Send a welcome email. (Optional: Use HTML template.)
+        # template_url = 'website/emails/newsletter_subscription_thank_you.html'
+        # Create an account if one does not exist.
+        try:
+            name = (data.get('first_name', '') + data.get('last_name', '')).strip()
+            _, password = create_user(name, user_email)
+            send_mail(
+                subject='Welcome to the Cannlytics Platform',
+                message=f'Congratulations,\n\nYou can now login to the Cannlytics console (console.cannlytics.com) with the following credentials.\n\nEmail: {user_email}\nPassword: {password}\n\nAlways here to help,\nThe Cannlytics Team',
+                from_email='contact@cannlytics.com',
+                recipient_list=[user_email],
+                fail_silently=False,
+                # html_message = render_to_string(template_url, {'context': 'values'}) # Optional: Send HTML email
+            )
+        except:
+            send_mail(
+                subject='Welcome to the Cannlytics Newsletter',
+                message=f'Congratulations,\n\nWelcome to the Cannlytics newsletter. You can download data with the promo code:\n\n{promo_code}\n\nPlease stay tuned for more material.\n\nAlways here to help,\nThe Cannlytics Team',
+                from_email='contact@cannlytics.com',
+                recipient_list=[user_email],
+                fail_silently=False,
+                # html_message = render_to_string(template_url, {'context': 'values'}) # Optional: Send HTML email
+            )
+
+        success = True
+    return JsonResponse({'message': {'success': success}}, safe=False)
