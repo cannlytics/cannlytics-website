@@ -23,7 +23,7 @@
     "deploy": "firebase deploy --project cannlytics --only hosting:production"
   },
   "dependencies": {
-    "@popperjs/core": "^2.5.3",
+    "@popperjs/core": "^2.10.2",
     "@primer/octicons": "^11.0.0",
     "bootstrap": "^5.0.0-beta1",
     "firebase": "^7.24.0",
