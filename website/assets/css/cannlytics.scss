@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 10/4/2020
- * Updated: 11/23/2021
+ * Updated: 12/23/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 @import 'custom';
@@ -844,7 +844,7 @@ body.dark footer .form-control {
   width: 100%;
 }
 .wave svg path {
-  fill: #f8f8f8;
+  fill: #45B6491a;
   stroke: none;
 }
 body.dark .wave svg path {
@@ -861,7 +861,7 @@ body.dark .wave.green svg path {
 }
 
 .ground {
-  background-color: #f8f8f8;
+  background-color: #45B6491a;
 }
 body.dark .ground {
   background: #554b8033;
@@ -1408,7 +1408,7 @@ body.dark .jumbotron {
 ---------------------------------------------------------------------------*/
 
 .info-bar {
-  background-color: #f8f8f8;
+  background-color: #45B6491a;
 }
 body.dark .info-bar {
   background-color:rgba(255, 255, 255,.15);

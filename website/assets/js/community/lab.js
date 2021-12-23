@@ -101,7 +101,7 @@ export const lab = {
 
     // Get the user's token and post the lab data to the API for processing.
     auth.currentUser.getIdToken(/* forceRefresh */ true).then((token) => {
-      fetch(`${window.location.origin}/api/v1/labs`, {
+      fetch(`${window.location.origin}/api/labs`, {
         method: 'post',
         credentials: 'same-origin',
         headers: {
@@ -133,7 +133,7 @@ export const lab = {
      */
     return new Promise((resolve, reject) => {
       var headers = { headers: { 'Accept': 'application/json' } };
-      fetch(`${window.location.origin}/api/v1/labs/${id}/logs`, headers)
+      fetch(`${window.location.origin}/api/labs/${id}/logs`, headers)
         .then(response => response.json())
         .then(data => resolve(data.data));
       });
@@ -146,7 +146,7 @@ export const lab = {
      */
     return new Promise((resolve, reject) => {
       var headers = { headers: { 'Accept': 'application/json' } };
-      fetch(`${window.location.origin}/api/v1/labs/${id}/analyses`, headers)
+      fetch(`${window.location.origin}/api/labs/${id}/analyses`, headers)
         .then(response => response.json())
         .then(data => resolve(data.data));
       });    

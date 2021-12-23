@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/17/2021
-  Updated: 11/25/2021
+  Updated: 12/23/2021
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
@@ -25,50 +25,28 @@
 
   <!-- Pricing Options -->
   <div class="container mb-5 mt-3">
-    <div class="markdown py-5" style="max-width:720px;">
+
+    <div class="row">
+
+    <!-- Description -->
+    <div class="col markdown py-5" style="max-width:560px;">
       <svg class="pe-1" style="float:left;width:125px;height:125px;">
         <use href="{% static "website/images/emojies/newspaper.svg" %}#newspaper-emoji"></use>
       </svg>
-      <h1 class="pt-4 text-dark">Subscription options</h1>
+      <h1 class="pt-4 text-dark">Premium Subscription</h1>
       <p>
-        Explore your options to get Cannlytics
-        material. Get a premium subscription
+        Get a premium subscription
         and get access to all
         <a href="{% url 'page' page='whitepapers' %}">whitepapers</a> and
         <a href="{% url 'page' page='videos' %}">videos</a>. When you go premium,
-        you will also receive first access to published data sets.
-        All users can use the open-source
+        you will also receive first-access to published data sets
+        that you can explore in the open-source
         <a href="https://console.cannlytics.com">Cannlytics Console.</a>
+        If you have a topic that you would like addressed in an upcoming
+        whitepaper or video, then please email the editor at
+        <a href="mailto:contact@cannlytics.com">contact@cannlytics.com</a>.
       </p>
     </div>
-
-    <!-- Free Tier -->
-    <div class="row justify-content-center mb-3 text-center">
-      <div class="col-12 col-md-5">
-        <div class="card h-100 mb-4 shadow-sm">
-          <div class="card-header bg-gradient-green">
-            <h4 class="font-weight-normal text-white my-0">Free</h4>
-          </div>
-          <div class="card-body bg-transparent d-flex flex-column justify-content-between align-items-center">
-            <svg style="width:60px;height:60px;">
-              <use href="{% static "website/images/emojies/open-hands.svg" %}#open-hands-emoji"></use>
-            </svg>
-            <ul class="text-dark list-unstyled text-start w-75">
-              <li class="fs-6 mb-1"><small class="serif text-dark">✔️ Community material</small></li>
-              <li class="fs-6 mb-1"><small class="serif text-dark">✔️ Analytics console</small></li>
-              <li class="fs-6 mb-1"><small class="serif text-muted">❌ Access to all videos</small></li>
-              <li class="fs-6 mb-1"><small class="serif text-muted">❌ Access to all whitepapers</small></li>
-              <li class="fs-6 mb-1"><small class="serif text-muted">❌ First access to data sets</small></li>
-            </ul>
-            <a
-              class="btn w-100 bg-gradient-green serif text-white"
-              href="{% url 'page' page='videos' %}"
-            >
-              Sign up for free
-            </a>
-          </div>
-        </div>
-      </div>
 
       <!-- Premium Tier -->
       <div class="col-12 col-md-5">
@@ -81,11 +59,31 @@
               $4.20 <small class="text-dark simple-serif">/ mo.</small>
             </h1>
             <ul class="text-dark list-unstyled text-start w-75">
-              <li class="fs-6 mb-1"><small class="serif text-dark">✔️ Community material</small></li>
-              <li class="fs-6 mb-1"><small class="serif text-dark">✔️ Analytics console</small></li>
-              <li class="fs-6 mb-1"><small class="serif text-dark">✔️ Access to all videos</small></li>
-              <li class="fs-6 mb-1"><small class="serif text-dark">✔️ Access to all whitepapers</small></li>
-              <li class="fs-6 mb-1"><small class="serif text-dark">✔️ First access to data sets</small></li>
+              <li class="fs-6 mb-1"><small class="serif text-dark">
+                <svg class="" style="width:24px;height:24px;">
+                  <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
+                </svg> Access to all videos</small>
+              </li>
+              <li class="fs-6 mb-1"><small class="serif text-dark">
+                <svg class="" style="width:24px;height:24px;">
+                  <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
+                </svg> Access to all whitepapers</small>
+              </li>
+              <li class="fs-6 mb-1"><small class="serif text-dark">
+                <svg class="" style="width:24px;height:24px;">
+                  <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
+                </svg> Analytics console</small>
+              </li>
+              <li class="fs-6 mb-1"><small class="serif text-dark">
+                <svg class="" style="width:24px;height:24px;">
+                  <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
+                </svg> Community material</small>
+              </li>
+              <li class="fs-6 mb-1"><small class="serif text-dark">
+                <svg class="" style="width:24px;height:24px;">
+                  <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
+                </svg> First access to data sets</small>
+              </li>
             </ul>
             <!-- FIXME: Link with url -->
             <a
@@ -99,16 +97,21 @@
           </div>
         </div>
       </div>
+    
     </div>
 
     <!-- Call out -->
     <div class="markdown mt-5">
+      <svg class="" style="width:24px;height:24px;">
+        <use href="{% static "website/images/emojies/speech-balloon.svg" %}#speech-balloon-emoji"></use>
+      </svg>
       <p style="max-width:720px;">
-        If you have a topic that you would like addressed in an upcoming
-        whitepaper or video, then please email our editor at
-        <a href="mailto:contact@cannlytics.com">contact@cannlytics.com</a>.
+        If you need software support....
       </p>
     </div>
+
+
+
 
   </div>
 

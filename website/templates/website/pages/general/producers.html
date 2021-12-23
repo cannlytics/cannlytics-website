@@ -6,14 +6,16 @@
 
   Authors: Keegan Skeate <keegan@cannlytics.com>
   Created: 1/16/2021
-  Updated: 11/25/2021
+  Updated: 12/23/2021
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
+{% load static %}
 {% block title %}Producers | Cannlytics{% endblock %}
 {% block material %}
 
   <!-- Hero Banner -->
+  {% comment %} image_url="website/images/illustrations/multi-tone/instrument.svg" {% endcomment %}
   {% include "website/components/heros/hero_banner.html" with
     title='Producers'
     description="If you are a producer needing analysis from your lab results, then capitalize on Cannlytics' robust and extensive toolkit for cannabis analytics."
@@ -21,12 +23,58 @@
     primary_action_url='https://console.cannlytics.com/account/login'
     secondary_action='Browse solutions'
     secondary_action_url='https://github.com/cannlytics'
-    image_url="website/images/illustrations/multi-tone/instrument.svg"
+    background_image="https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2FIllustration_Cannabis_sativa0.jpg?alt=media&token=7c1f2d17-1df6-46b4-b698-21eb5cc5c174"
+    background_position="80% 80%"
     only
   %}
 
-  <!-- About producer analytics -->
-  <div class="container text-start my-5">
+  <!-- Introduction -->
+  <div class="container mb-5 mt-3">
+    <div class="markdown py-5" style="max-width:560px;">
+      <svg class="pt-3 pe-1" style="float:left;width:125px;height:125px;">
+        <use href="{% static "website/images/emojies/spade.svg" %}#spade-emoji"></use>
+      </svg>
+      <h1 class="pt-4 text-dark">Producer Analytics</h1>
+      <p class="mt-2">
+        Cannlytics is proud to offer our suite of industry-leading cannabis analytics tools to all
+        cannabis producers. You can utilize any data set of lab results to generate
+        rich analytics. Use the Cannlytics Console or the Cannlytics API to securely analyze your data.
+      </p>
+      <p class="text-start mt-3">
+        <a
+          class="btn btn-sm-light btn-md-light"
+          href="https://console.cannlytics.com/account/sign-up"
+        >
+          <small>Utilize the app today</small> &rarr;
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Introduction -->
+  <div class="container mb-5 mt-3">
+    <div class="markdown py-5" style="max-width:560px;">
+      <svg class="pt-3 pe-1" style="float:left;width:125px;height:125px;">
+        <use href="{% static "website/images/emojies/oil.svg" %}#oil-emoji"></use>
+      </svg>
+      <h1 class="pt-4 text-dark">Processor Analytics</h1>
+      <p class="mt-2">
+        Cannlytics is proud to offer our suite of industry-leading cannabis analytics tools to all
+        cannabis producers and processors. You can utilize any data set of lab results to generate
+        rich analytics. Use the Cannlytics Console or the Cannlytics API to securely analyze your data.
+      </p>
+      <p class="text-start mt-3">
+        <a
+          class="btn btn-sm-light btn-md-light"
+          href="https://console.cannlytics.com/account/sign-up"
+        >
+          <small>Utilize the app today</small> &rarr;
+        </a>
+      </p>
+    </div>
+  </div>
+
+  {% comment %} <div class="container text-start my-5">
 
     <h3 class="fw-bold my-4">
       About producer analytics
@@ -44,7 +92,7 @@
         <small>Utilize the app today</small> &rarr;
       </a>
     </p>
-  </div>
+  </div> {% endcomment %}
 
   <!-- Vines -->
   {% include "website/components/art/vines.html" %}

@@ -24,7 +24,8 @@
   "python.linting.pylintEnabled": true,
   "[python]": {
     "editor.insertSpaces": true,
-    "editor.tabSize": 4  
+    "editor.tabSize": 4,
+    "editor.rulers": [79, 100],
   },
   "todo-tree.highlights.customHighlight": {
     "TODO": {
@@ -42,6 +43,7 @@
   },
   "cSpell.words": [
     "abcdefghijklmnopqrstuvwxyz",
+    "analyte",
     "analytes",
     "appengine",
     "appspot",
@@ -112,6 +114,7 @@
     "staticfiles",
     "subcollections",
     "timegrid",
+    "ungrouped",
     "urandom",
     "wsgi",
     "zondicons"

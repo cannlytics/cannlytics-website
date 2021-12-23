@@ -1,15 +1,19 @@
 """
 Utility Functions | Cannlytics Website
+Copyright (c) 2021 Cannlytics
+
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 11/24/2021
+Updated: 12/23/2021
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
 from random import randint
 import re
 import traceback
+from typing import Optional
 
 # External imports
-from django.utils.crypto import get_random_string
 from django.contrib.staticfiles.storage import staticfiles_storage
 import requests
 from markdown import markdown
@@ -49,9 +53,6 @@ EXTENSION_CONFIGS = {
     }
 }
 
-#----------------------------------------------#
-# Rendering helpers
-#----------------------------------------------#
 
 def get_markdown(
         request,
@@ -104,6 +105,7 @@ def get_markdown(
         and we will be quick to provide you with support.</p>"
     return context
 
+
 def add_code_copy(text):
     """Add copy button to code blocks.
     Args:
@@ -122,22 +124,8 @@ def add_code_copy(text):
         '<div class="codehilite" id="code{}">'.format(i, i, i), text, 1)
     return text
 
-#----------------------------------------------#
-# Authentication helpers
-#----------------------------------------------#
 
-def generate_secret_key(env_file_name):
-    """Generate a Django secret key.
-    Args:
-        env_file_name (str): The directory of the environment variable file.
-    """
-    env_file = open(env_file_name, 'w+')
-    chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
-    generated_secret_key = get_random_string(50, chars)
-    env_file.write("SECRET_KEY = '{}'\n".format(generated_secret_key))
-    env_file.close()
-
-def get_promo_code(num_chars=7):
+def get_promo_code(num_chars: Optional[int] = 7) -> str:
     """Generate a random promotion code.
     Args:
         num_chars (int): The number of digits for the promotion code, 7 by default.
@@ -146,7 +134,7 @@ def get_promo_code(num_chars=7):
     """
     code_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     code = ''
-    for i in range(0, num_chars):
+    for _ in enumerate(num_chars):
         slice_start = randint(0, len(code_chars) - 1)
         code += code_chars[slice_start: slice_start + 1]
     return code.lower()

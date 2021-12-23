@@ -22,25 +22,26 @@
 
     <!-- Title -->
     <div class="w-100">
-      <h2 class="serif text-dark">
-        Cannlytics is Validated Metrc Integrator 
+      <h2 class="serif text-dark mb-3">
+        <svg class="pe-1" style="float:left;width:125px;height:125px;">
+          <use href="{% static "website/images/emojies/green-shield.svg" %}#green-shield-emoji"></use>
+        </svg>
+        Cannlytics Integrates with Metrc!
       </h2>
       <p class="fs-6 double-line mb-3" style="max-width:720px;">
-        <small>
-          Cannlytics is a
-          <a
-            href="https://www.metrc.com/validated-integrators/#cannlytics"
-            class="serif text-dark fw-bold background-hover"
-          >
-            validated integrator with Metrc
-          </a>
-          in the following states.
-          If you need assistance or a fully-managed solution to automate your
-          interactions with the Metrc traceability system, then you can
-          <a href="/support" class="serif text-dark background-hover fw-bold">
-            sign up for integration support &rarr;
-          </a>
-        </small>
+        Cannlytics is a
+        <a
+          href="https://www.metrc.com/validated-integrators/#cannlytics"
+          class="serif text-dark fw-bold background-hover"
+        >
+          validated Metrc integrator
+        </a>
+        in the following states.
+        If you need assistance, a fully-managed solution, or help automating your
+        interactions with Metrc, then you can
+        <a href="/support" class="serif text-dark background-hover fw-bold">
+          sign up for support &rarr;
+        </a>
       </p>
     </div>
 
@@ -73,6 +74,20 @@
         </li>
       {% endfor %}
     </ul>
+
+    <!-- Python package mention -->
+    <p class="fs-6 double-line mb-3" style="max-width:720px;">
+      You can also utilize the Metrc interface in the
+      <a
+        class="serif text-dark background-hover fw-bold"
+        href="https://pypi.org/project/cannlytics/"
+      >
+        Cannlytics Python package
+        <svg class="" style="width:24px;height:24px;">
+          <use href="{% static "website/images/emojies/snake.svg" %}#snake-emoji"></use>
+        </svg>
+      </a>
+    </p>
 
   </section>
 </div>

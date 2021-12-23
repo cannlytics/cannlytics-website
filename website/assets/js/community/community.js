@@ -278,7 +278,7 @@ export const community = {
      */
     return new Promise((resolve, reject) => {
       var headers = { headers: { 'Accept': 'application/json' } };
-      fetch(`${window.location.origin}/api/v1/labs`, headers)
+      fetch(`${window.location.origin}/api/labs`, headers)
         .then(response => response.json())
         .then(data => resolve(data.data));
       });
@@ -305,7 +305,7 @@ export const community = {
     const promoCode = document.getElementById('promo-input').value;
 
     // Download data.
-    const url = `${window.location.origin}/api/v1/labs/download`;
+    const url = `${window.location.origin}/api/labs/download`;
     const time = new Date().toISOString().slice(0, 19).replace(/T|:/g, '-');
     const filename = `labs-${time}.csv`;
     try {

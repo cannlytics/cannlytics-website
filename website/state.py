@@ -143,7 +143,7 @@ state = {
     "homepage": {
         "hero": {
             "title": "Cannabis Analytics for the 21st Century",
-            "message": "Get superpowers with open-source cannabis analytics made with love ❤️!",
+            "message": "Get superpowers with open-source cannabis analytics made with love ❤️‍🔥!",
             "image": "website/images/engine_icons/space_station.svg",
             "primary_action": "Get Started 🌱",
             "primary_action_url": "https://docs.cannlytics.com",
@@ -260,18 +260,18 @@ state = {
                     {"title": "Labs", "page": "community"},
                     {"title": "Producers", "page": "producers"},
                     {"title": "Retailers", "page": "retailers"},
-                    {"title": "Consumers", "page": "consumers"},
-                    {"title": "Platform", "url": "https://console.cannlytics.com"},
+                    {"title": "Integrators", "page": "integrators"},
+                    {"title": "Data Scientists", "page": "data-science"},
                 ]
             },
             {
                 "name": "Docs",
                 "links": [
                     {"title": "API", "url": "https://docs.cannlytics.com/api/about"},
-                    {"title": "Users", "url": "https://docs.cannlytics.com/console/get-started"},
                     {"title": "Developers", "url": "https://docs.cannlytics.com/developers/development"},
                     {"title": "LIMS", "url": "https://docs.cannlytics.com/cannlytics/lims/lims"},
-                    {"title": "Metrc", "url": "https://docs.cannlytics.com/cannlytics/traceability/metrc"}
+                    {"title": "Metrc", "url": "https://docs.cannlytics.com/cannlytics/traceability/metrc"},
+                    {"title": "Users", "url": "https://docs.cannlytics.com/console/get-started"},
                 ]
             },
             {

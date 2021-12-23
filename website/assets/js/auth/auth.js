@@ -24,6 +24,15 @@ export const auth = {
   //     photo_url: user.photoURL,
   //   }
   // },
+  // FIXME: Replace ifUserDetected with onAuthChange
+  // function onAuthChange(callback) {
+  //   /**
+  //    * Perform an action when a user sign in or sign out is detected.
+  //    * @param {function} callback An action to perform when a user is detected.
+  //    *    Passed a `User` object..
+  //    */
+  //   return onAuthStateChanged(auth, callback);
+  // }
   ifUserDetected(callback) {
     /**
      * Perform a callback if/when a user is detected.

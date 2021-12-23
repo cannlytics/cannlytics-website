@@ -35,8 +35,6 @@ class BaseMixin(ContextMixin):
             f'{folder}/{page}/{page}.html',
             f'{folder}/general/{page}.html',
         ]
-        # if section:
-        #     templates.insert(0, f'{folder}/{page}/{section}.html')
         return templates
 
     def get_page_state(self, context):

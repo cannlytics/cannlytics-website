@@ -1,5 +1,5 @@
 /**
- * Utility JavaScript | Cannlytics Console
+ * Utility JavaScript | Cannlytics Website
  * Copyright (c) 2021 Cannlytics
  * 
  * Authors: Keegan Skeate <contact@cannlytics.com>

@@ -1,5 +1,5 @@
 {
-  "name": "cannlytics_website",
+  "name": "cannlytics-website",
   "productName": "Cannlytics Website",
   "version": "1.1.5",
   "license": "MIT",
@@ -8,6 +8,16 @@
   "author": "Keegan Skeate <contact@cannlytics.com>",
   "build": {
     "productName": "Cannlytics Website"
+  },
+  "keywords": ["cannabis", "analytics", "python", "LIMS"],
+  "homepage": "https://cannlytics.com",
+  "bugs": {
+    "url": "https://github.com/cannlytics/cannlytics-website/issues",
+    "email": "contact@cannlytics.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cannlytics/cannlytics-website.git"
   },
   "scripts": {
     "start": "npm-run-all --parallel webpack livereload runserver",

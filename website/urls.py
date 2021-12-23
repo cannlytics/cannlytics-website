@@ -9,7 +9,7 @@ License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main
 """
 # External imports.
 from django.conf import settings
-from django.conf.urls import handler404, handler500
+from django.conf.urls import handler404, handler500 #pylint: disable=unused-import
 from django.contrib import admin
 from django.urls import include, path
 from django_robohash.views import robohash
@@ -25,61 +25,19 @@ from website.views import (
     videos,
 )
 
-# Main URLs.
-urlpatterns = [
-    path('', main.GeneralView.as_view(), name='index'),
-    path('admin', admin.site.urls, name='admin'),
-    path('api/', include([
-        path('internal/login', auth.login),
-        path('internal/logout', auth.logout),
-        path('internal/promotions', data.promotions, name='promotions'),
-        path('internal/send-message', email.send_message),
-        path('internal/subscribe', data.subscribe, name='subscribe'),
-        path('internal/subscriptions', api.get_user_subscriptions, name='subscriptions'),
-        path('v1/data/buy', data.buy_data),
-        path('v1/data/publish', data.publish_data),
-        path('v1/data/sell', data.sell_data),
-        path('v1/labs', api.labs),
-        path('v1/labs/<uuid:org_id>', api.labs),
-        path('v1/labs/<uuid:org_id>/analyses', api.lab_analyses),
-        path('v1/labs/<uuid:org_id>/logs', api.lab_logs),
-        path('v1/labs/download', data.download_lab_data),
-        # TODO: Add regulations / limits pages.
-        # TODO: Add analyte pages.
-        # TODO: Add analysis / prices pages.
-    ])),
-    path('community', labs.CommunityView.as_view(), name='community'),
-    path('labs', labs.CommunityView.as_view(), name='labs'),  # Redundant?
-    path('labs/new', labs.NewLabView.as_view()),
-    path('labs/<lab>', labs.LabView.as_view()),
-    # TODO: Add analyses and prices to lab pages.
-    path('robohash/<string>', robohash, name='robohash'),
-    path('videos', videos.VideosView.as_view(), name='videos'),
-    path('videos/<video_id>', videos.VideosView.as_view(), name='video'),
-    path('<page>', main.GeneralView.as_view(), name='page'),
-    path('<page>/<section>', main.GeneralView.as_view(), name='section'),
-    path('<page>/<section>/<str:unit>', main.GeneralView.as_view()),
-
-    
-]
-
-# FIXME: Broken documentation links.
+# FIXME: Fix all broken links.
 
 # 404:
-
     # /robots.txt/
     # /ads.txt/
 
 # 500 errors:
-
     # /subscribe/
 
 # Broken API endpoints:
-
-    # /api/v1/labs/
+    # /api/labs/
 
 # Missing pages:
-
     # /docs/website/publishing/
     # /docs/
     # docs/app/get-started/
@@ -105,11 +63,47 @@ urlpatterns = [
 #     ])),
 # ]
 
+# Main URLs.
+urlpatterns = [
+    path('', main.GeneralView.as_view(), name='index'),
+    path('admin', admin.site.urls, name='admin'),
+    path('api/', include([
+        path('internal/login', auth.login),
+        path('internal/logout', auth.logout),
+        path('internal/promotions', data.promotions, name='promotions'),
+        path('internal/send-message', email.send_message),
+        path('internal/subscribe', data.subscribe, name='subscribe'),
+        path('internal/subscriptions', api.get_user_subscriptions, name='subscriptions'),
+        path('data/buy', data.buy_data),
+        path('data/publish', data.publish_data),
+        path('data/sell', data.sell_data),
+        path('labs', api.labs),
+        path('labs/<uuid:org_id>', api.labs),
+        path('labs/<uuid:org_id>/analyses', api.lab_analyses),
+        path('labs/<uuid:org_id>/logs', api.lab_logs),
+        path('labs/download', data.download_lab_data),
+        # TODO: Add regulations / limits pages.
+        # TODO: Add analyte pages.
+        # TODO: Add analysis / prices pages.
+    ])),
+    path('community', labs.CommunityView.as_view(), name='community'),
+    path('labs', labs.CommunityView.as_view(), name='labs'),  # Redundant?
+    path('labs/new', labs.NewLabView.as_view()),
+    path('labs/<lab>', labs.LabView.as_view()),
+    # TODO: Add analyses and prices to lab pages.
+    path('robohash/<string>', robohash, name='robohash'),
+    path('videos', videos.VideosView.as_view(), name='videos'),
+    path('videos/<video_id>', videos.VideosView.as_view(), name='video'),
+    path('<page>', main.GeneralView.as_view(), name='page'),
+    path('<page>/<section>', main.GeneralView.as_view(), name='section'),
+    path('<page>/<section>/<str:unit>', main.GeneralView.as_view()),
+]
+
 # Serve static assets in development and production.
 if settings.DEBUG:
-    from django.conf.urls.static import static
+    from django.conf.urls.static import static #pylint: disable=ungrouped-imports
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Error pages.
-handler404 = 'website.views.main.handler404'
-handler500 = 'website.views.main.handler500'
+handler404 = 'website.views.main.handler404' #pylint: disable=invalid-name
+handler500 = 'website.views.main.handler500' #pylint: disable=invalid-name

@@ -28,27 +28,56 @@ class GeneralView(BaseMixin, TemplateView):
 
     def get_data(self, context):
         """Get all data for a page from Firestore."""
-        if context["section"]:
-            data = page_data.get(context['section'])
-        else:
-            data = page_data.get(context['page'])
-        if data is None:
-            return context
-        documents = data.get('documents')
-        collections = data.get('collections')
-        if documents:
-            for item in documents:
-                context[item['name']] = get_document(item['ref'])
-        if collections:
-            for item in collections:
-                context[item['name']] = get_collection(
-                    item['ref'],
-                    limit=item.get('limit'),
-                    order_by=item.get('order_by'),
-                    desc=item.get('desc'),
-                    filters=item.get('filters'),
-                )
+        namespaces = []
+        try:
+            namespace = context['page']
+            namespaces.append(page_data[namespace])
+        except KeyError:
+            pass
+        try:
+            namespace = context['section']
+            namespaces.append(page_data[namespace])
+        except KeyError:
+            pass
+        for namespace in namespaces:
+            try:
+                documents = namespace['documents']
+                for item in documents:
+                    context[item['name']] = get_document(item['ref'])
+            except KeyError:
+                pass
+            try:
+                collections = namespace['collections']
+                for item in collections:
+                    context[item['name']] = get_collection(
+                        item['ref'],
+                        limit=item.get('limit'),
+                        order_by=item.get('order_by'),
+                        desc=item.get('desc'),
+                        filters=item.get('filters'),
+                    )
+            except KeyError:
+                pass
         return context
+        # if context['section']:
+        #     data = page_data.get(context['section'])
+        # else:
+        #     data = page_data.get(context['page'])
+        # if data is None:
+        #     return context
+        # documents = data.get('documents', [])
+        # collections = data.get('collections', [])
+        # for item in documents:
+        #     context[item['name']] = get_document(item['ref'])
+        # for item in collections:
+        #     context[item['name']] = get_collection(
+        #         item['ref'],
+        #         limit=item.get('limit'),
+        #         order_by=item.get('order_by'),
+        #         desc=item.get('desc'),
+        #         filters=item.get('filters'),
+        #     )
+        # return context
 
     def get_docs(self, context):
         """Get the text documents for a given page."""

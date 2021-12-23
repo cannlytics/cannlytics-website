@@ -1,5 +1,5 @@
 /**
- * Module Bundler | Cannlytics Website
+ * Webpack Module Bundler | Cannlytics Website
  * Copyright (c) 2021 Cannlytics
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
