@@ -4,11 +4,82 @@ Copyright (c) 2021 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 10/15/2020
-Updated: 11/28/2021
+Updated: 12/24/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
+# pylint:disable=line-too-long
+from website.settings import DEFAULT_FROM_EMAIL
 
-# Page-specific Firestore documents and collections.
+app_context = {
+    'app_name': 'Cannlytics',
+    'contact_email': DEFAULT_FROM_EMAIL,
+    'contact_phone': '(828) 395-3954',
+    'contact_phonenumber': '18283953954',
+    "description": "Cannlytics is a suite of free software for cannabis-testing laboratories, empowering you with a state-of-the-art system.",
+    "footer": {
+        "index": [
+            {
+                "name": "Community",
+                "links": [
+                    {"title": "Labs", "page": "community"},
+                    {"title": "Producers", "page": "producers"},
+                    {"title": "Retailers", "page": "retailers"},
+                    {"title": "Integrators", "page": "integrators"},
+                    {"title": "Data Scientists", "page": "data-science"},
+                ]
+            },
+            {
+                "name": "Docs",
+                "links": [
+                    {"title": "API", "url": "https://docs.cannlytics.com/api/about"},
+                    {"title": "Developers", "url": "https://docs.cannlytics.com/developers/development"},
+                    {"title": "LIMS", "url": "https://docs.cannlytics.com/cannlytics/lims/lims"},
+                    {"title": "Metrc", "url": "https://docs.cannlytics.com/cannlytics/traceability/metrc"},
+                    {"title": "Users", "url": "https://docs.cannlytics.com/console/get-started"},
+                ]
+            },
+            {
+                "name": "About",
+                "links": [
+                    {"title": "Story", "url": "https://docs.cannlytics.com/about/about"},
+                    {"title": "Roadmap", "url": "https://docs.cannlytics.com/developers/roadmap"},
+                    {"title": "Whitepapers", "page": "whitepapers"},
+                    {"title": "Donations", "url": "https://opencollective.com/cannlytics-company"},
+                    {"title": "Support", "page": "support"},
+                ]
+            }
+        ]
+    },
+    # "header": {
+    #     "action": {"title": "Download", "url": "download"},
+    #     "links": [
+    #         {"slug": "community", "title": "Community"},
+    #         {"slug": "posts", "title": "Docs"},
+    #         {"slug": "contact", "title": "Contact"},
+    #     ]
+    # },
+    'homepage': 'https://cannlytics.com',
+    'logos': {
+        'light': 'website/images/logos/cannlytics_logo_with_phrase.svg',
+        'dark': 'website/images/logos/cannlytics_logo_with_phrase_dark.svg',
+        'favicon': 'images/logos/favicon.ico',
+    },
+    'policies': {
+        'license': 'https://docs.cannlytics.com/about/license',
+        'privacy': 'https://docs.cannlytics.com/about/privacy-policy',
+        'security': 'https://docs.cannlytics.com/about/security-policy',
+        'terms': 'https://docs.cannlytics.com/about/terms-of-service',
+    },
+    "social": [
+        {"title": "GitHub", "url": "https://github.com/cannlytics"},
+        {"title": "LinkedIn", "url": "https://linkedin.com/company/cannlytics"},
+    ],
+}
+
+#-----------------------------------------------------------------------
+# Page-specific data loaded from Firestore.
+#-----------------------------------------------------------------------
+
 page_data = {
     "contact": {
         "documents": [{"name": "recaptcha", "ref": "admin/recaptcha"}]
@@ -69,20 +140,27 @@ page_data = {
     }
 }
 
+#-----------------------------------------------------------------------
 # Page-specific markdown documents.
+#-----------------------------------------------------------------------
+
 page_docs = {
     "about": ["about"],
     "contributors": ["contribute"],
 }
 
-# Page-specific context.
-state = {
+#-----------------------------------------------------------------------
+# Page-specific material.
+#-----------------------------------------------------------------------
+
+material = {
     "account": {
-         "user_fields": [
+        "user_fields": [
             {"key": "name", "label": "Name"},
-            # {"key": "position", "label": "Position"},
-            {"type": "email", "key": "email", "label": "Email"},
+            {"key": "username", "label": "Username"},
+            {"key": "email", "label": "Email", "type": "email"},
             {"key": "phone_number", "label": "Phone"},
+            {"key": "position", "label": "Position"},
         ],
         "user_options": [
             {
@@ -102,43 +180,6 @@ state = {
     "contact": {
         "title": "Contact Us",
         "message": "You're welcome to contact us anytime about anything. Please enter your contact information and message and the team will get back to you as soon as possible.",
-    },
-    "general": {
-        "title": "Cannlytics",
-        "blurb": "Cannlytics is a suite of free software for cannabis-testing laboratories, empowering you with a state-of-the-art system.",
-        "email": "contact@cannlytics.com",
-        "phone": "(828) 395-3954",
-        "phone_number": "18283953954",
-        "social": [
-            {
-                "title": "GitHub",
-                "url": "https://github.com/cannlytics"
-            },
-            {
-                "title": "LinkedIn",
-                "url": "https://linkedin.com/company/cannlytics"
-            },
-        ]
-    },
-    "header": {
-        "action": {
-            "title": "Download",
-            "url": "download"
-        },
-        "links": [
-            {
-                "slug": "community",
-                "title": "Community"
-            },
-            {
-                "slug": "posts",
-                "title": "Docs"
-            },
-            {
-                "slug": "contact",
-                "title": "Contact"
-            },
-        ]
     },
     "homepage": {
         "hero": {
@@ -160,15 +201,14 @@ state = {
             },
             {
                 "title": "Analysis Tailored",
-                "message": "Cannlytics provides a user-friendly interface to quickly receive samples, perform analyses, collect and review results, and publish certificates of analysis (CoAs). There are also built in logistics, CRM (client relationship management), inventory management, and invoicing tools.",
+                "message": "Cannlytics provides a user-friendly interface to quickly receive samples, perform analyses, collect and review results, and publish certificates of analysis (CoAs). There are also built in logistics, CRM (client relationship management), inventory management, and invoicing tools.",
                 "image": "website/images/illustrations/outline/lab_microscope.svg",
                 "action": "Contribute now",
                 "action_url": "/community",
                 "action": "Begin customizing",
-                "action_url": "https://console.cannlytics.com",
             },
             {
-                "title": "Community Driven", # vs. People Centric (AB TEST)
+                "title": "Community Driven",
                 "message": "Built by scientist for scientists. Cannlytics empowers you with control over the development process, resources, and decision making authority. We believe that the Cannlytics community is the best judge of how Cannlytics can be improved, so, we have entrusted Cannlytics' source code with you.",
                 "image": "website/images/illustrations/outline/lab_microbiologist.svg",
                 "action": "Contribute now",
@@ -202,42 +242,42 @@ state = {
     "support": {
         "pricing_tiers": [
             {
-                "name": "Free",
-                "price": "👐",
-                "color": "green",
-                "action": "Sign up for free",
-                "url": "https://console.cannlytics.com",
+                "name": "Enterprise",
+                "price": "$1,200 / mo.",
+                "color": "purple",
+                "action": "Launch Now 🚀",
+                "url": "/subscriptions/checkout?name=Enterprise",
                 "attributes": [
-                    "All software",
-                    "All community material",
-                    "GitHub Issues",
+                    "Custom installation",
+                    "Access to admin tools",
+                    "Feature requests",
+                    "Talk with devs",
+                ],
+            },
+            {
+                "name": "Pro",
+                "price": "$420 / mo.",
+                "color": "orange",
+                "action": "Get Started 🛥️",
+                "url": "/subscriptions/checkout?name=Premium",
+                "attributes": [
+                    "Metrc integration*",
+                    "Access to dev tools",
+                    "Unlimited data storage",
                     "Email support",
                 ],
             },
             {
                 "name": "Premium",
-                "price": "$500 / mo.",
-                "color": "orange",
-                "action": "Get started",
-                "url": "/subscriptions/checkout/?name=Premium",
+                "price": "$4.20 / mo.",
+                "color": "green",
+                "action": "Sign Up ✍️",
+                "url": "https://console.cannlytics.com",
                 "attributes": [
-                    "Metrc integration",
-                    "Access to development builds",
-                    "Priority GitHub Issues",
-                    "Remote support",
-                ],
-            },
-            {
-                "name": "Enterprise",
-                "price": "$2000 / mo.",
-                "color": "purple",
-                "action": "Contact us",
-                "url": "/subscriptions/checkout/?name=Enterprise",
-                "attributes": [
-                    "Custom installation",
-                    "Access to internal tools",
-                    "Early access to new features",
-                    "3 on-site support days / year",
+                    "All datasets",
+                    "All videos",
+                    "All whitepapers",
+                    "API access",
                 ],
             },
         ],
@@ -251,40 +291,6 @@ state = {
             {"type": "text", "key": "position", "title": "Position"},
             {"type": "text", "key": "location", "title": "Location"},
         ],
-    },
-    "footer": {
-        "index": [
-            {
-                "name": "Community",
-                "links": [
-                    {"title": "Labs", "page": "community"},
-                    {"title": "Producers", "page": "producers"},
-                    {"title": "Retailers", "page": "retailers"},
-                    {"title": "Integrators", "page": "integrators"},
-                    {"title": "Data Scientists", "page": "data-science"},
-                ]
-            },
-            {
-                "name": "Docs",
-                "links": [
-                    {"title": "API", "url": "https://docs.cannlytics.com/api/about"},
-                    {"title": "Developers", "url": "https://docs.cannlytics.com/developers/development"},
-                    {"title": "LIMS", "url": "https://docs.cannlytics.com/cannlytics/lims/lims"},
-                    {"title": "Metrc", "url": "https://docs.cannlytics.com/cannlytics/traceability/metrc"},
-                    {"title": "Users", "url": "https://docs.cannlytics.com/console/get-started"},
-                ]
-            },
-            {
-                "name": "About",
-                "links": [
-                    {"title": "Story", "url": "https://docs.cannlytics.com/about/about"},
-                    {"title": "Roadmap", "url": "https://docs.cannlytics.com/developers/roadmap"},
-                    {"title": "Whitepapers", "page": "whitepapers"},
-                    {"title": "Donations", "url": "https://opencollective.com/cannlytics-company"},
-                    {"title": "Support", "page": "support"},
-                ]
-            }
-        ]
     },
 }
 
@@ -313,9 +319,8 @@ lab_state = {
         {"key": "secondary_color", "title": "Secondary color", "type": "color"},
         {"key": "favicon", "title": "Icon URL", "type": "textarea"},
         {"key": "image_url", "title": "Image URL", "type": "textarea"},
-        # TODO: Keep track of certifications
-        # - dea_licensed_hemp_lab
-        # - a2la_certified
+        {"key": "dea_licensed_hemp_lab", "title": "DEA Licensed Hemp Lab", "type": "checkbox"},
+        {"key": "a2la_certified", "title": "A2LA Certified", "type": "checkbox"},
     ],
     "tabs": [
         {"name": "Details", "section": "details", "active": "true"},

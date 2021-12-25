@@ -7,7 +7,7 @@
  * Updated: 11/23/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
- import { auth, getDocument, onAuthStateChanged } from '../firebase.js';
+ import { getDocument, onAuthChange } from '../firebase.js';
 
 
  export const videos = {
@@ -16,8 +16,9 @@
       /**
        * Authenticate the user to view a premium video.
        */
-      onAuthStateChanged(auth, (user) => {
+       onAuthChange(user => {
         if (user) {
+          // TODO: Implement premium videos.
           console.log('Current user:', user);
         } else {
           console.log('No user');

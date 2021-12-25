@@ -63,17 +63,13 @@ from website.views import (
 #     ])),
 # ]
 
+# TODO: Redirect /about to docs.cannlytics.com/about/about
+
 # Main URLs.
 urlpatterns = [
     path('', main.GeneralView.as_view(), name='index'),
     path('admin', admin.site.urls, name='admin'),
     path('api/', include([
-        path('internal/login', auth.login),
-        path('internal/logout', auth.logout),
-        path('internal/promotions', data.promotions, name='promotions'),
-        path('internal/send-message', email.send_message),
-        path('internal/subscribe', data.subscribe, name='subscribe'),
-        path('internal/subscriptions', api.get_user_subscriptions, name='subscriptions'),
         path('data/buy', data.buy_data),
         path('data/publish', data.publish_data),
         path('data/sell', data.sell_data),
@@ -86,6 +82,14 @@ urlpatterns = [
         # TODO: Add analyte pages.
         # TODO: Add analysis / prices pages.
     ])),
+    path('src/', include([
+        path('login', auth.login),
+        path('logout', auth.logout),
+        path('promotions', data.promotions, name='promotions'),
+        path('send-message', email.send_message),
+        path('subscribe', data.subscribe, name='subscribe'),
+        path('subscriptions', api.get_user_subscriptions, name='subscriptions'),
+    ])),
     path('community', labs.CommunityView.as_view(), name='community'),
     path('labs', labs.CommunityView.as_view(), name='labs'),  # Redundant?
     path('labs/new', labs.NewLabView.as_view()),
@@ -96,7 +100,7 @@ urlpatterns = [
     path('videos/<video_id>', videos.VideosView.as_view(), name='video'),
     path('<page>', main.GeneralView.as_view(), name='page'),
     path('<page>/<section>', main.GeneralView.as_view(), name='section'),
-    path('<page>/<section>/<str:unit>', main.GeneralView.as_view()),
+    path('<page>/<section>/<str:unit>', main.GeneralView.as_view(), name='unit'),
 ]
 
 # Serve static assets in development and production.

@@ -9,7 +9,7 @@
  * 
  * TODO: Refactor and move functions to better homes.
  */
-import { auth, checkGoogleLogIn, onAuthStateChanged } from '../firebase.js';
+import { checkGoogleLogIn, onAuthChange } from '../firebase.js';
 import { authRequest } from '../utils.js';
 
 async function checkForCredentials() {
@@ -42,7 +42,7 @@ export const website = {
     this.scrollToHash();
 
     // Check if a user is signed in.
-    onAuthStateChanged(auth, user => {
+    onAuthChange(user => {
       if (user) {
         document.getElementById('user-email').textContent = user.email;
         document.getElementById('user-name').textContent = user.displayName;
@@ -83,11 +83,13 @@ export const website = {
     /**
      * Checks if a user needs to accept cookies.
      */
-    var acceptCookies = localStorage.getItem('acceptCookies');
-    if (!acceptCookies) {
-      var toast = document.getElementById('accept-cookies');
-      toast.style.display = 'block';
-      toast.style.opacity = 1;
+    window.onload = function() {
+      var acceptCookies = localStorage.getItem('acceptCookies');
+      if (!acceptCookies) {
+        var toast = document.getElementById('accept-cookies');
+        toast.style.display = 'block';
+        toast.style.opacity = 1;
+      }
     }
   },
 
@@ -112,6 +114,7 @@ export const website = {
      */
     if (typeof(Storage) !== 'undefined') {
       var theme = localStorage.getItem('theme');
+      console.log('Current theme:', theme);
       if (!theme) {
         var hours = new Date().getHours();
         var dayTime = hours > 6 && hours < 20;

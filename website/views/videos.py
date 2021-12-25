@@ -11,10 +11,13 @@ License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main
 from math import ceil
 from random import randint
 
+# External imports.
+from django.views.generic import TemplateView
+
 # Internal imports
-from cannlytics.auth.auth import authorize_user
+from cannlytics.auth.auth import authenticate_request
 from cannlytics.firebase import get_document, get_collection
-from website.views.mixins import BaseMixin, TemplateView
+from website.views.mixins import BaseMixin
 
 
 class VideosView(BaseMixin, TemplateView):
@@ -27,7 +30,7 @@ class VideosView(BaseMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        video_id =  self.kwargs.get('video_id', '')
+        video_id = self.kwargs.get('video_id', '')
 
         # Get video data.
         video_stats = get_document('public/videos')
@@ -70,7 +73,7 @@ class VideosView(BaseMixin, TemplateView):
 
             # Handle sign-in for premium videos.
             if context.get('premium') or True:
-                claims, _, _ = authorize_user(self.request)
+                claims, _, _ = authenticate_request(self.request)
                 context['user_id'] = claims.get('user_id')
                 print('User ID:', context['user_id'])
 

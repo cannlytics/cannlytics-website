@@ -6,46 +6,41 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/7/2021
-  Updated: 11/25/2021
+  Updated: 12/24/2021
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
-
-  TODO:
-    - Ween off of jQuery.
-
-  FIXME:
-    - Remove ?{% now 'U' %} in production.
-    - Only include manifest in production?
 -->
 {% load static %}
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
   <meta name="theme-color" content="#281e52"/>
   <meta name="description" content="Superpower your lab with open-source cannabis analytics made with love.">
   <meta name="author" content="Keegan Skeate">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Title -->
-  <title>{% block title %}{% endblock title %}</title>
-
   <!-- Icons and Manifest -->
-  <link rel="icon" href="{% static 'website/images/favicon/cannlytics-icon.ico' %}">
-  <link rel="icon" type="image/png" href="{% static 'images/logos/favicon-32x32.png' %}" sizes="32x32">
-  <link rel="icon" type="image/png" href="{% static 'images/logos/favicon-16x16.png' %}" sizes="16x16">
-  <link rel="apple-touch-icon" href="{% static '/images/logos/apple-touch-icon.png' %}" sizes="180x180">
-  <link rel="mask-icon" href="{% static '/images/logos/safari-pinned-tab.svg' %}" color="#e48632">
+  <link rel="icon" href="{% static 'images/logos/favicon.ico' %}">
+  <link rel="icon" sizes="32x32" type="image/png" href="{% static 'images/logos/favicon-32x32.png' %}">
+  <link rel="icon" sizes="16x16" type="image/png" href="{% static 'images/logos/favicon-16x16.png' %}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static '/images/logos/apple-touch-icon.png' %}">
+  <link rel="mask-icon" color="#e48632" href="{% static '/images/logos/safari-pinned-tab.svg' %}">
   <link rel="shortcut icon" href="{% static '/images/logos/favicon.ico' %}" type="image/x-icon">
-  {% comment %} <link rel="manifest" href="{% static 'manifest.webmanifest' %}"> {% endcomment %}
+  
+  <!-- Manifest -->
+  <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
 
-  <!-- Page-specific stylesheets -->
-  {% block page_css %}{% endblock page_css %}
+  <!-- Title -->
+  <title>{% block title %}Cannlytics{% endblock title %}</title>
 
-  <!-- TODO: Ween off of jQuery. -->
+  <!-- jQuery -->
+  <!-- Optional: Ween off of jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 
   <!-- Cannlytics JavaScript and CSS Module -->
-  <!-- FIXME: Remove ?{% now 'U' %} in production. -->
-  <script src="{% static 'website/js/bundles/cannlytics.min.js' %}?{% now 'U' %}"></script>
+  <script id="cannlytics" src="{% static 'website/js/bundles/cannlytics.min.js'%}?{% if DEBUG %}{% now 'U' %}{% else %}{{ APP_VERSION_NUMBER }}{% endif %}"></script>
+
+  <!-- Page-specific stylesheets -->
+  {% block page_css %}{% endblock page_css %}
 
 </head>
 
@@ -60,9 +55,6 @@
     cannlytics.website.initialize();
   </script>
 
-  <!-- Page-specific JavaScript -->
-  {% block page_js %}{% endblock page_js %}
-
   <!-- Subscribe Dialog -->
   {% include "website/components/dialogs/subscribe_dialog.html" %}
 
@@ -74,6 +66,9 @@
 
   <!-- General Notifications -->
   {% include "website/components/notifications/notification_toast.html" %}
+
+  <!-- Page-specific JavaScript -->
+  {% block page_js %}{% endblock page_js %}
 
 </body>
 

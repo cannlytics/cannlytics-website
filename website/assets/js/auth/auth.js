@@ -1,53 +1,58 @@
 /**
- * Authentication JavaScript | Cannlytics Website
+ * Authentication JavaScript | Cannlytics Console
  * Copyright (c) 2021 Cannlytics
  * 
- * Authors: Keegan Skeate <contact@cannlytics.com>
- * Created: 1/17/2021
- * Updated: 11/23/2021
- * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+ * Authors: Keegan Skeate <keegan@cannlytics.com>
+ * Created: 12/4/2020
+ * Updated: 12/24/2021
+ * License: MIT License <https://github.com/cannlytics/cannlytics-console/blob/main/LICENSE>
  */
-import { auth as fbAuth, authErrors, createAccount, googleLogIn, logIn, logOut, onAuthStateChanged, sendPasswordReset } from '../firebase.js';
-import { authRequest, showNotification } from '../utils.js';
+ import {
+  authErrors,
+  confirmPasswordChange,
+  createAccount,
+  getCurrentUser,
+  googleLogIn,
+  logIn,
+  logOut,
+  onAuthChange,
+  sendPasswordReset,
+} from '../firebase.js';
+import {
+  apiRequest,
+  authRequest,
+  showNotification,
+} from '../utils.js';
 
 export const auth = {
 
-  // getUserData() {
-  //   /**
-  //    * Get a user's name, email, phone number, and photo URL.
-  //    */
-  //   const user = fbAuth.currentUser || {};
-  //   return {
-  //     email: user.email,
-  //     name: user.displayName,
-  //     phone_number: user.phoneNumber,
-  //     photo_url: user.photoURL,
-  //   }
-  // },
-  // FIXME: Replace ifUserDetected with onAuthChange
-  // function onAuthChange(callback) {
-  //   /**
-  //    * Perform an action when a user sign in or sign out is detected.
-  //    * @param {function} callback An action to perform when a user is detected.
-  //    *    Passed a `User` object..
-  //    */
-  //   return onAuthStateChanged(auth, callback);
-  // }
-  ifUserDetected(callback) {
+  async loginWhenUserDetected() {
     /**
-     * Perform a callback if/when a user is detected.
-     * @param {function} callback A callback to perform that gets the user as a parameter.
+     * Trigger server login and navigation to the dashboard when a user is detected.
+     * If it's the first time that the user has logged in, then their `email` and
+     * `photo_url` are saved to their user data in Firestore.
      */
-    onAuthStateChanged(fbAuth, (user) => {
-      if (user) callback(user);
+    onAuthChange(async (user) => {
+      if (!user) return;
+      await authRequest('/src/login');
+      if (user.metadata.createdAt == user.metadata.lastLoginAt) {
+        const { email } = user;
+        const data = { email, photo_url: `https://robohash.org/${email}?set=set1` };
+        try {
+          await apiRequest('/api/users', data);
+        } catch(error) {
+          showNotification('Login error', 'Authentication failed. Try again later.', /* type = */ 'error' );
+        }
+      }
+      window.location.href = window.location.origin;
     });
   },
 
   async resetPassword() {
     /**
-     * Send the user a password reset email.
+     * Reset a user's password.
      */
-    const email = document.getElementById('login-email').value;
+    const email = document.getElementById('sign-in-email').value;
     if (!email) {
       showNotification('Password reset error', 'Please enter your email to request a password reset.', /* type = */ 'error' );
       return;
@@ -64,28 +69,66 @@ export const auth = {
     }
   },
 
+  resetPasswordCodeCheck() {
+    /**
+     * Check if the password reset code is valid.
+     */
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get('oobCode');
+    verifyPasswordReset(code)
+      .then((email) => {
+        document.getElementById('sign-in-email').value = email;
+      })
+      .catch(()  => {
+        const invalidMessage = document.getElementById('password-reset-code-invalid-message');
+        const passwordResetForm = document.getElementById('password-reset-form');
+        passwordResetForm.classList.add('d-none');
+        invalidMessage.classList.remove('d-none');
+      });
+  },
+
+  resetPasswordConfirm() {
+    /**
+     * Confirm a password reset.
+     */
+    const newPassword = document.getElementById('sign-in-password').value;
+    const newPasswordConfirmation = document.getElementById('sign-in-password-confirmation').value;
+    if (newPassword !== newPasswordConfirmation) {
+      const message = 'The passwords you entered are not the same, please confirm your password.';
+      showNotification('Passwords do not match', message, /* type = */ 'error');
+      return;
+    }
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get('oobCode');
+    confirmPasswordChange(code, newPassword)
+      .then(() => {
+        window.location.href = '/account/password-reset-complete';
+      })
+      .catch(() => {
+        const message = 'The password reset link that you used is invalid. Please request a new password reset link.';
+        showNotification('Password reset error', message, /* type = */ 'error');
+      });
+  },
+
   async signIn(event) {
     /**
      * Sign in with username and password.
      * @param {Event} event A user-driven event.
      */
     event.preventDefault();
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
-    document.getElementById('login-button').classList.add('d-none');
-    document.getElementById('login-loading-button').classList.remove('d-none');
+    const email = document.getElementById('sign-in-email').value;
+    const password = document.getElementById('sign-in-password').value;
+    document.getElementById('sign-in-button').classList.add('d-none');
+    document.getElementById('sign-in-loading-button').classList.remove('d-none');
+    const persistence = document.getElementById('stay-signed-in').checked;
     try {
-      await logIn(email, password);
-      await authRequest('/api/internal/login');
-      const dialogElement = document.getElementById('login-dialog');
-      const modal = bootstrap.Modal.getInstance(dialogElement);
-      modal.hide();
+      await logIn(email, password, persistence);
     } catch(error) {
-      const message = authErrors[error.message] || 'Unknown error encountered while signing in.';
+      const message = authErrors[error.code] || 'Unknown error encountered while signing in.';
       showNotification('Sign in error', message, /* type = */ 'error' );
     }
-    document.getElementById('login-button').classList.remove('d-none');
-    document.getElementById('login-loading-button').classList.add('d-none');
+    document.getElementById('sign-in-button').classList.remove('d-none');
+    document.getElementById('sign-in-loading-button').classList.add('d-none');
   },
 
   signInWithGoogle() {
@@ -95,30 +138,58 @@ export const auth = {
     googleLogIn();
   },
 
+  signUp,
+
   async signOut() {
     /**
      * Sign a user out of their account.
      */
     await logOut();
-    await authRequest('/api/internal/logout');
+    await authRequest('/src/logout');
+    document.location.href = `${window.location.origin}/account/sign-out`;
   },
-
-  async signUp() {
+  
+  verifyUser() {
     /**
-     * Sign a user up for a Firebase account with a username and password.
+     * Send a user a verification email.
      */
-    const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password').value;
-    document.getElementById('signup-button').classList.add('d-none');
-    document.getElementById('signup-loading-button').classList.remove('d-none');
-    try {
-      await createAccount(email, password);
-      await authRequest('/api/internal/login');
-    } catch(error) {
-      showNotification('Sign up error', error.message, /* type = */ 'error');
-    }
-    document.getElementById('signup-button').classList.remove('d-none');
-    document.getElementById('signup-loading-button').classList.add('d-none');
+    const user = getCurrentUser();
+    user.sendEmailVerification().then(() => {
+      showNotification('Verification email sent', error.message, /* type = */ 'success');
+    }).catch((error) => {
+      showNotification('Verification error', error.message, /* type = */ 'error');
+    });
   },
 
+}
+
+export async function signUp() {
+  /**
+   * Sign a user up for a Firebase account with a username and password.
+   */
+  const terms = document.getElementById('login-terms-accepted');
+  if (!terms.checked) {
+    const message = 'Please agree with our terms of service and read our privacy policy to create an account.';
+    showNotification('Terms not accepted', message, /* type = */ 'error');
+    terms.classList.add('is-invalid');
+    return;
+  } else {
+    terms.classList.remove('is-invalid');
+  }
+  const email = document.getElementById('sign-up-email').value;
+  const password = document.getElementById('sign-up-password').value;
+  document.getElementById('sign-up-button').classList.add('d-none');
+  document.getElementById('sign-up-loading-button').classList.remove('d-none');
+  try {
+    await createAccount(email, password);
+  } catch(error) {
+    console.log(error.code);
+    const message = authErrors[error.code] || 'Unknown error encountered while signing in.';
+    document.getElementById('sign-up-button').classList.remove('d-none');
+    document.getElementById('sign-up-loading-button').classList.add('d-none');
+    showNotification('Sign up error', message, /* type = */ 'error');
+    return;
+  }
+  document.getElementById('sign-up-button').classList.remove('d-none');
+  document.getElementById('sign-up-loading-button').classList.add('d-none');
 }

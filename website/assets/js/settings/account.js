@@ -8,7 +8,7 @@
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 
-import { auth, onAuthStateChanged, updateUserPhoto, storageErrors } from '../firebase.js';
+import { onAuthChange, updateUserPhoto, storageErrors } from '../firebase.js';
 import { authRequest, deserializeForm, serializeForm, showNotification } from '../utils.js';
 
 export const accountSettings = {
@@ -24,7 +24,7 @@ export const accountSettings = {
     /**
      * Initialize the user account form.
      */
-    onAuthStateChanged(auth, user => {
+     onAuthChange(user => {
       if (user) {
         const fileElem = document.getElementById('user-photo-url');
         fileElem.addEventListener('change', this.uploadUserPhoto, false);

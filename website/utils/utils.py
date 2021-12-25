@@ -4,12 +4,12 @@ Copyright (c) 2021 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 12/23/2021
+Updated: 12/24/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
 from random import randint
-import re
+# import re
 import traceback
 from typing import Optional
 
@@ -58,7 +58,7 @@ def get_markdown(
         request,
         context,
         app,
-        dir,
+        directory,
         page=None,
         extensions=None,
         name='markdown',
@@ -68,7 +68,7 @@ def get_markdown(
         request (HttpRequest): An HTTP request.
         context (dict): A dictionary of page context.
         app (str): The project name.
-        dir (str): The directory where markdown files are located.
+        directory (str): The directory where markdown files are located.
         page (str): The page name for locating page-specific markdown.
         extensions (list): A list of extensions, a pre-selected list
             of useful extensions is used by default.
@@ -84,7 +84,7 @@ def get_markdown(
         # FIXME: Open markdown file in production directly, instead of with a request.
         file_name = staticfiles_storage.url(f'/{app}/docs/{page}.md')
         if DEBUG:
-            url = dir + file_name
+            url = directory + file_name
             markdown_file = open(url, 'r')
             text = markdown_file.read()
         else:
@@ -97,7 +97,7 @@ def get_markdown(
         )
         # Optional: Add copy code button
         # text = add_code_copy(text)
-    except Exception:
+    except:
         traceback.print_exc()
         context[name] = "<h1>Error loading page material.</h1> \
         <p>Our apologies, our server encountered a yet-to-be-fixed bug. \
@@ -106,23 +106,23 @@ def get_markdown(
     return context
 
 
-def add_code_copy(text):
-    """Add copy button to code blocks.
-    Args:
-        text (str): A block of HTML text.
-    Returns
-        (str): Returns the HTML text with copy buttons inserted.
-    """
-    # FIXME: Make this code work | https://programmersought.com/article/48614916658/
-    n = text.count('<div class="codehilite">', 0, len(text))
-    print('Codeblocks:', n)
-    for i in range(n):
-        text = re.sub(r'<div class="codehilite">',
-        '&nbsp;&nbsp;<button id="codecopy-{}" style="float: right;z-index:10" class="copybtn" '
-        'data-clipboard-action="copy" '
-        'data-clipboard-target="#code{}">Copy</button> '
-        '<div class="codehilite" id="code{}">'.format(i, i, i), text, 1)
-    return text
+# def add_code_copy(text):
+#     """Add copy button to code blocks.
+#     Args:
+#         text (str): A block of HTML text.
+#     Returns
+#         (str): Returns the HTML text with copy buttons inserted.
+#     """
+#     # FIXME: Make this code work | https://programmersought.com/article/48614916658/
+#     n = text.count('<div class="codehilite">', 0, len(text))
+#     print('Codeblocks:', n)
+#     for i in range(n):
+#         text = re.sub(r'<div class="codehilite">',
+#         '&nbsp;&nbsp;<button id="codecopy-{}" style="float: right;z-index:10" class="copybtn" '
+#         'data-clipboard-action="copy" '
+#         'data-clipboard-target="#code{}">Copy</button> '
+#         '<div class="codehilite" id="code{}">'.format(i, i, i), text, 1)
+#     return text
 
 
 def get_promo_code(num_chars: Optional[int] = 7) -> str:

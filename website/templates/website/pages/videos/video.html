@@ -20,7 +20,7 @@
   TODO:
     1. Add resources, such as links to the Github repository and downloadable files.
 -->
-{% load kebab_to_title %}
+{% load title_case %}
 <div class="video-page">
   <section class="container">
 
@@ -33,7 +33,7 @@
           </a>
         </li>
         <li class="breadcrumb-item active fs-6 lh-sm" aria-current="page">
-          {{ video_id|kebab_to_title }}
+          {{ video_id|title_case }}
         </li>
       </ol>
     </nav>

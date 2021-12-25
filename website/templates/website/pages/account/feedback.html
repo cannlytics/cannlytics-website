@@ -102,7 +102,7 @@
     }
 
     // Initialize the feedback form.
-    cannlytics.auth.ifUserDetected(function(user) {
+    cannlytics.firebase.onAuthChange(function(user) {
       document.getElementById('feedback-email').value = user.email;
       document.getElementById('feedback-name').value = user.displayName;
     });

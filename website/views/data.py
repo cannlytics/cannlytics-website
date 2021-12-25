@@ -6,6 +6,8 @@ Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
 Updated: 11/24/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+
+TODO: This file needs a major refactor!
 """
 # Standard imports
 import os

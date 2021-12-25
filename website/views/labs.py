@@ -4,19 +4,21 @@ Copyright (c) 2021 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 11/15/2021
-Updated: 11/15/2021
+Updated: 12/24/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
 import os
 
+# External imports.
+from django.views.generic import TemplateView
+
 # Internal imports
 from cannlytics.firebase import get_document, get_collection
 from website.state import lab_state
-from website.views.mixins import BaseMixin, TemplateView
+from website.views.mixins import BaseMixin
 
 
-APP = 'website'
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -42,9 +44,9 @@ class LabView(BaseMixin, TemplateView):
 
     def get_lab_data(self, context):
         """Get a lab's data from Firestore."""
-        slug = self.kwargs.get("lab")
+        slug = self.kwargs.get('lab')
         filters = [{'key': 'slug', 'operation': '==', 'value': slug}]
-        labs = get_collection("labs", filters=filters)
+        labs = get_collection('labs', filters=filters)
         if labs:
             context['lab'] = labs[0]
         else:

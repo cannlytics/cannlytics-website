@@ -3,15 +3,43 @@
 <!--
   Header | Cannlytics Website
   Created: 1/7/2021
-  Updated: 11/22/2021
+  Updated: 12/24/2021
+
+  TODO:
+    - Create mega header
+    https://www.codehim.com/bootstrap/bootstrap-5-mega-menu-responsive-examples/
+    https://codepen.io/typo3-freelancer/pen/poEvyGj
+
+    Links to make available:
+
+      * Data
+        - analysis: analyses, analytes, instruments pages
+        - labs, analyses, and prices
+        - public state data
+        - economic analyses and forecasts
+        - regulations
+
+      * Articles?
+
+      - ai
+      - data science
+      - api?
+      - videos
+      - traceability / metrc
+      - examples?
+      - store?
+      - events
+
+      - subscriptions
+      - support
 -->
 {% load static icon %}
 
 <!-- Banner offer -->
 {% include "website/components/banners/banner_support.html" with
   email="contact@cannlytics.com"
-  phone=general.phone
-  phone_number=general.phone_number
+  phone=app.contact_phone
+  phone_number=app.contact_phonenumber
   only
 %}
 
@@ -61,7 +89,7 @@
         <li class="nav-item h6 mb-0">
           <a
             class="nav-link btn-sm background-hover"
-            href="/data/"
+            href="{% url 'page' page='data' %}"
           >
             Data
           </a>
@@ -76,10 +104,25 @@
         </li>
         <li class="nav-item h6 mb-0">
           <a
-            class="nav-link btn-sm background-hover {% if 'contact' in request.path %}active{% endif %}"
-            href="/contact/"
+            class="nav-link btn-sm background-hover"
+            href="{% url 'index' %}#products"
           >
-            Contact
+            Products
+          </a>
+        </li>
+        <li class="nav-item h6 mb-0">
+          <a
+            class="nav-link btn-sm background-hover {% if 'support' in request.path %}active{% endif %}"
+            href="{% url 'page' page='support' %}"
+          >
+            Support
+          </a>
+        </li>
+        <li class="nav-item h6 mb-0">
+          <a
+            class="nav-link btn-sm background-hover"
+          >
+            More
           </a>
         </li>
       </ul>

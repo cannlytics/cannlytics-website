@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 11/17/2021
-  Updated: 11/25/2021
+  Updated: 12/24/2021
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
@@ -23,55 +23,79 @@
       primary_action_url='/contact'
       secondary_action='Browse opportunities'
       secondary_action_url='https://github.com/orgs/cannlytics/projects'
+      background_image="https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2FIllustration_Cannabis_sativa0.jpg?alt=media&token=7c1f2d17-1df6-46b4-b698-21eb5cc5c174"
+      background_position="80% 80%"
       image_url='website/images/illustrations/outline/lab_analyst_prep.svg'
       only
     %}
 
-    <!-- Team -->
+    <!-- Body -->
     <div class="container mt-5">
-      <h3 class="fw-bold mt-2">
-        Cannlytics is built with the love by...
-      </h3>
-      <p class="fs-6 text-secondary par-md">
-        <small>The Cannlytics team keeps the wheels turning, creates, makes, and delivers your software solutions and support.</small>
-      </p>
-      <div class="row mt-5">
-      {% for item in team %}
-        {% if item.active %}
-          <figure class="figure col-md-4">
-            <a href="{{ item.url }}" title="{{ item.name}}">
-              <img
-                class="figure-img img-fluid rounded-3"
-                src="{{ item.image }}"
-                style="height:150px"
-              >
-            </a>
-            <figcaption class="figure-caption w-50">
-              <div class="fs-5 text-dark fw-bold">{{ item.name}}</div>
-              <div class="text-secondary">{{ item.company}}</div>
-              <div class="text-secondary">{{ item.location}}</div>
-              <div class="text-secondary">{{ item.description}}</div>
-              <!-- Optional: Add phone number and email-->
-            </figcaption>
-          </figure>
-        {% endif %}
-      {% endfor %}
+
+      <!-- Introduction -->
+      <div class="markdown" style="max-width:560px;">
+        <svg class="pe-1" style="float:left;width:125px;height:125px;">
+          <use href="{% static "website/images/emojies/heart.svg" %}#heart-emoji"></use>
+        </svg>
+        <h1 class="pt-4 text-dark">Cannlytics is built with the love of...</h1>
       </div>
+
+      <!-- Team Grid -->
+      <div class="row mt-5">
+        {% for item in team %}
+          {% if item.active %}
+            <figure class="figure col-md-4">
+              <a href="{{ item.url }}" title="{{ item.name}}">
+                <img
+                  class="figure-img img-fluid rounded-3"
+                  src="{{ item.image }}"
+                  style="height:150px"
+                >
+              </a>
+              <figcaption class="figure-caption w-50">
+                <div class="fs-5 text-dark fw-bold">{{ item.name}}</div>
+                <div class="text-secondary">{{ item.company}}</div>
+                <div class="text-secondary">{{ item.location}}</div>
+                <div class="text-secondary">{{ item.description}}</div>
+                <!-- Optional: Add phone number and email-->
+              </figcaption>
+            </figure>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="markdown py-5" style="max-width:560px;">
+        <p class="mt-2">
+          These are the heros at Cannlytics who keep the wheels turning and who
+          create, make, and deliver your software solutions and support.
+        </p>
+      </div>
+
     </div>
 
     <!-- Joining the team -->
-    <div class="container">
-      <h3 class="fw-bold mt-5">
-        Interested in joining the team?
-      </h3>
-      <p class="fs-6 text-secondary par-md">
-        <small>Do you have the chops and / or passion to help deliver industry-leading
-        analytics, software, and support
-        to everyone in the cannabis industry? Then please email Keegan at
-        <a href="mailto:keegan@cannlytics.com" class="serif text-gradient">keegan@cannlytics.com</a>
-        and explain who, what, where, why, when, and how you can contrbiute to Cannlytics.
-        </small>
-      </p>
+    <div class="container mb-5 mt-3">
+      <div class="markdown py-5" style="max-width:560px;">
+        <svg class="pt-3 pe-3" style="float:left;width:125px;height:125px;">
+          <use href="{% static "website/images/emojies/handshake.svg" %}#handshake-emoji"></use>
+        </svg>
+        <h1 class="pt-4 text-dark">Interested in joining?</h1>
+        <p class="mt-2">
+          Do you have the chops and / or passion to help deliver industry-leading
+          analytics, software, and support
+          to everyone in the cannabis industry? Then please email the team at
+          <a href="mailto:dev@cannlytics.com" class="serif text-gradient">dev@cannlytics.com</a>
+          and explain who, what, where, why, when, and how you can contrbiute to Cannlytics.
+        </p>
+        <p class="text-start mt-3">
+          <a
+            class="btn btn-sm bg-gradient-green text-white"
+            href="{% url 'page' page='contact' %}"
+          >
+            <small>Join today</small> &rarr;
+          </a>
+        </p>
+      </div>
     </div>
   
   </div>

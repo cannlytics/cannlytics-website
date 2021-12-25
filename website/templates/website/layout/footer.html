@@ -49,20 +49,20 @@
             </div>
             <a
               class="medium-text"
-              href="tel:{{ general.phone_number }}"
+              href="tel:{{ app.contact_phonenumber }}"
               title="Call us."
             >
               <small class="light-text light-green-hover">
-                {{ general.phone }}
+                {{ app.contact_phone }}
               </small>
             </a>
             <a
               class="medium-text"
-              href="mailto:{{ general.phone }}"
+              href="mailto:{{ app.contact_phone }}"
               title="Email us anytime."
             >
               <small class="light-text light-green-hover">
-                {{ general.email }}
+                {{ app.contact_email }}
               </small>
             </a>
 
@@ -90,7 +90,7 @@
         </div>
 
         <!-- Index -->
-        {% for group in footer.index %}
+        {% for group in app.footer.index %}
           <div class="col mx-6 mx-md-3">
             <h6 class="h5 footer-header serif text-light mb-3 mt-2">
               {{ group.name }}

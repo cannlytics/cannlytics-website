@@ -4,7 +4,7 @@ Copyright (c) 2021 Cannlytics
 
 Author: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 11/26/2021
+Updated: 12/23/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 Django settings powered by environment variables and
@@ -25,6 +25,8 @@ from django.template import base
 # ------------------------------------------------------------#
 # Project variables.
 # ------------------------------------------------------------#
+
+# Define project namespaces.
 PROJECT_NAME = 'website'
 ROOT_URLCONF = f'{PROJECT_NAME}.urls'
 SECRET_SETTINGS_NAME = 'cannlytics_website_settings'
@@ -50,33 +52,33 @@ env_file = os.path.join(BASE_DIR, '.env')
 # Attempt to load the Project ID into the environment, safely failing on error.
 try:
     _, os.environ['GOOGLE_CLOUD_PROJECT'] = google.auth.default()
-# except google.exceptions.DefaultCredentialsError:
-except:
+except google.auth.exceptions.DefaultCredentialsError:
     pass
 
 # Use a local secret file, if provided.
+# Otherwise retrieve the secrets from Secret Manager.
 if os.path.isfile(env_file):
     env.read_env(env_file)
-
-# Retrieve the .env from Secret Manager.
-elif os.environ.get('GOOGLE_CLOUD_PROJECT', None):
-    project_id = os.environ.get('GOOGLE_CLOUD_PROJECT')
-    client = secretmanager.SecretManagerServiceClient()
-    name = f'projects/{project_id}/secrets/{SECRET_SETTINGS_NAME}/versions/latest'
-    payload = client.access_secret_version(name=name).payload.data.decode('UTF-8')
-    env.read_env(io.StringIO(payload))
 else:
-    raise Exception('No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.')
+    try:
+        project_id = os.environ['GOOGLE_CLOUD_PROJECT']
+        client = secretmanager.SecretManagerServiceClient()
+        name = f'projects/{project_id}/secrets/{SECRET_SETTINGS_NAME}/versions/latest'
+        payload = client.access_secret_version(name=name).payload.data.decode('UTF-8')
+        env.read_env(io.StringIO(payload))
+    except KeyError:
+        raise Exception('No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.')
 
 # Access the secret key.
 SECRET_KEY = env('SECRET_KEY')
 
-# Ensure PRODUCTION is set to True in your .env when publishing!
+# Get production status. When publishing, ensure PRODUCTION in .env is `True`.
 try:
     PRODUCTION = env('PRODUCTION')
 except:
     PRODUCTION = 'True'
-    DEBUG = False
+
+# Toggle Django debug mode.
 if PRODUCTION == 'True':
     DEBUG = False
 else:
@@ -86,6 +88,8 @@ else:
 # Apps
 # https://docs.djangoproject.com/en/3.1/ref/applications/
 # ------------------------------------------------------------#
+
+# Define apps used in the project.
 INSTALLED_APPS = [
     PROJECT_NAME,
     'django.contrib.admin',
@@ -103,8 +107,12 @@ INSTALLED_APPS = [
 # Middleware
 # https://docs.djangoproject.com/en/3.1/topics/http/middleware/
 # ------------------------------------------------------------#
+
+# Define middleware that is executed by Django.
+# WhiteNoise should be below SecurityMiddleWare and above all others.
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -118,6 +126,8 @@ MIDDLEWARE = [
 # Livereload
 # https://github.com/tjwalch/django-livereload-server
 # ------------------------------------------------------------#
+
+# Hot-reload for development.
 if PRODUCTION == 'False':
     INSTALLED_APPS.insert(0, 'livereload')
     MIDDLEWARE.insert(0, 'livereload.middleware.LiveReloadScript')
@@ -127,6 +137,8 @@ if PRODUCTION == 'False':
 # Templates
 # https://docs.djangoproject.com/en/3.1/ref/templates/language/
 # ------------------------------------------------------------#
+
+# Define where templates can be found and should be processed.
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -149,6 +161,8 @@ TEMPLATES = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 # ------------------------------------------------------------#
+
+# Define default language.
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'America/Los_Angeles'
 USE_I18N = True
@@ -159,6 +173,8 @@ USE_TZ = True
 # Security
 # https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/web_application_security
 # ------------------------------------------------------------#
+
+# Specify allowed domains depending on production or development status.
 ALLOWED_HOSTS = ['*']
 try:
     ALLOWED_HOSTS.append(env('CUSTOM_DOMAIN'))
@@ -182,6 +198,8 @@ SECURE_SSL_REDIRECT = False
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 # ------------------------------------------------------------#
+
+# An unused (under-utilized) SQL database required by Django.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -193,12 +211,14 @@ DATABASES = {
 # Email
 # https://docs.djangoproject.com/en/3.1/topics/email/
 # ------------------------------------------------------------#
+
+# Define variables to be able to send emails.
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 LIST_OF_EMAIL_RECIPIENTS = [env('EMAIL_HOST_USER')]
 
 # ------------------------------------------------------------#
@@ -218,6 +238,10 @@ STATIC_ROOT = os.path.abspath(
 
 # The relative path to serve files.
 STATIC_URL = '/static/'
+
+# Add support for forever-cacheable files and compression.
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WHITENOISE_MANIFEST_STRICT = False
 
 # ------------------------------------------------------------#
 # Sessions

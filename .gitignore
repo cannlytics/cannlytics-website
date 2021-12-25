@@ -38,3 +38,6 @@ __pycache__/*
 
 # Ignore built JavaScript and CSS bundles.
 *bundles/
+
+# Ignore duplicate static files.
+public/static/*
