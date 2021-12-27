@@ -14,6 +14,10 @@
   "files.exclude": {
     "**/__pycache__": true,
     "**/__init__.py": true,
+    ".admin": true,
+    "db.sqlite3": true,
+    "node_modules": true,
+    "package-lock.json": true,
   },
   "git.enabled": true,
   "git.enableSmartCommit": true,
@@ -69,6 +73,7 @@
     "daygrid",
     "djpass",
     "djuser",
+    "dotenv",
     "esmodules",
     "favicon",
     "firebaseapp",
@@ -104,7 +109,6 @@
     "quickstart",
     "readonly",
     "recaptcha",
-    "recapthca",
     "roadmap",
     "robohash",
     "runserver",
@@ -122,12 +126,6 @@
     "wsgi",
     "zondicons"
   ],
-  "yaml.customTags": [
-    "!ref"
-  ],
   "todo-tree.tree.showBadges": false,
-  "cSpell.ignoreWords": [
-    "hawcons"
-  ],
   "python.pythonPath": "C:\\Anaconda\\python.exe"
 }

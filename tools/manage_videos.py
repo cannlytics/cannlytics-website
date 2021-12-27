@@ -36,7 +36,7 @@ def upload_all_videos(datafile):
         doc_id = item['video_id']
         ref = f'public/videos/video_data/{doc_id}'
         firebase.update_document(ref, item)
-    
+
     # Update video statistics.
     firebase.update_document('public/videos', {'total_videos': len(data)})
     return data
@@ -47,11 +47,11 @@ def upload_latest_video(datafile):
     Args:
         datafile (str): The path to a .json file containing the video data.
     """
-    
+
     # Read in the video data.
     with open(datafile) as f:
         data = json.load(f)
-        
+
     # Get the current count of videos.
     doc = firebase.get_document('public/videos')
     number = doc['total_videos']
@@ -67,7 +67,7 @@ def upload_latest_video(datafile):
         item['number'] = number
         item['published'] = parser.parse(item['published_at'])
         firebase.update_document(ref, item)
-    
+
     # Update video statistics.
     firebase.update_document('public/videos', {'total_videos': len(data)})
     return data[-1]
@@ -82,12 +82,12 @@ if __name__ == '__main__':
     firebase.initialize_firebase()
     directory = env('VIDEO_DIR')
     datafile = f'{directory}/videos/videos.json'
-    
+
     # Upload the latest video
     # print('Uploading latest video...')
     # video_data = upload_latest_video(datafile)
     # print('Uploaded video:\n', video_data)
-    
+
     # Upload the entire video archive data.
     print('Uploading video archive data...')
     video_data = upload_all_videos(datafile)

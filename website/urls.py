@@ -4,7 +4,7 @@ Copyright (c) 2021 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/29/2020
-Updated: 11/26/2021
+Updated: 12/25/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports.
@@ -24,6 +24,13 @@ from website.views import (
     main,
     videos,
 )
+
+# Pages to create:
+
+# data/state
+# data/regulations
+# testing
+# economics
 
 # FIXME: Fix all broken links.
 

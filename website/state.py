@@ -203,9 +203,8 @@ material = {
                 "title": "Analysis Tailored",
                 "message": "Cannlytics provides a user-friendly interface to quickly receive samples, perform analyses, collect and review results, and publish certificates of analysis (CoAs). There are also built in logistics, CRM (client relationship management), inventory management, and invoicing tools.",
                 "image": "website/images/illustrations/outline/lab_microscope.svg",
-                "action": "Contribute now",
-                "action_url": "/community",
                 "action": "Begin customizing",
+                "action_url": "/community",
             },
             {
                 "title": "Community Driven",

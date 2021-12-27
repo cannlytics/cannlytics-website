@@ -16,7 +16,7 @@ import sys
 root = '../'
 sys.path.append(root)
 from cannlytics import firebase # pylint: disable=import-error
-from website_tools import upload_archived_data
+from datasets import upload_dataset
 
 
 def upload_verifications():
@@ -38,7 +38,7 @@ def upload_verifications():
     # Specify the JSON data file and upload the archived data.
     print(f'Uploading {collection_name} data...')
     datafile = f'{root}/.datasets/{collection_name}.json'
-    data = upload_archived_data(
+    data = upload_dataset(
         datafile,
         collection=f'public/{collection_name}/{subcollection_name}',
         id_key=id_key,

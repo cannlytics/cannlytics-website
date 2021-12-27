@@ -550,11 +550,11 @@ body.dark .sliding-action:hover {
   top: 1rem;
 }
 
-a.background-hover:hover {
-  background-color: #50fa7b33;
+.background-hover:hover {
+  background-color: #50fa7b33 !important;
 }
-body.dark a.background-hover:hover {
-  background-color: #ffa60033;
+body.dark .background-hover:hover {
+  background-color: #ffa60033 !important;
 }
 
 /* Small light buttons */

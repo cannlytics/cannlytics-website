@@ -1,18 +1,22 @@
 # Dockerfile | Cannlytics Website
+# Copyright (c) Cannlytics
+#
+# Auhtors: Keegan Skeate <keegan@cannlytics.com>
 # Created: 1/5/2021
+# Updated: 12/25/2021
+# License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
-# For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.8-slim-buster
 # Use the official lightweight Python image.
 # https://hub.docker.com/_/python
-# FROM python:3.9-slim
+# For more information, please refer to https://aka.ms/vscode-docker-python
+FROM python:3.9-slim-buster
 
 # Service must listen to $PORT environment variable.
 # This default value facilitates local development.
 ENV PORT 8080
 
 # Keeps Python from generating .pyc files in the container
-# ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
 # Setting this ensures that print statements and log messages
 # promptly appear in Cloud Logging.
@@ -30,15 +34,11 @@ WORKDIR $APP_HOME
 COPY . ./
 
 # Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights
-# RUN useradd appuser && chown -R appuser /app
-# USER appuser
-
-# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-# File wsgi.py was not found in subfolder:cannlytics. Please enter the Python path to wsgi file.
-# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "pythonPath.to.wsgi"]
+RUN useradd appuser && chown -R appuser /app
+USER appuser
 
 # Run the web service on container startup. Here we use the gunicorn
-# webserver, with one worker process and 8 threads.
+# webserver, with one worker process and 8 threads (default).
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
 # See:

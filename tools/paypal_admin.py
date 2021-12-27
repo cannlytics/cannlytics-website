@@ -54,7 +54,7 @@ def get_paypal_access_token(
     """Get a PayPal access token.
     Args:
         client_id (str): Your PayPal client ID.
-        secrtet (str): Your PayPal secret.
+        secret (str): Your PayPal secret.
         base (str): The base API URL, with the live URL as the default.
     Returns:
         (str): The PayPal access token.
@@ -73,7 +73,7 @@ def get_paypal_subscription_plans(
         page=None,
         page_size=None,
         total_required=True,
-        base = 'https://api-m.paypal.com',
+        base='https://api-m.paypal.com',
 ):
     """Get PayPal subscription plans.
     Args:
@@ -109,10 +109,10 @@ if __name__ == '__main__':
     client_id = env('PAYPAL_CLIENT_ID')
     secret = env('PAYPAL_SECRET')
     access_token = get_paypal_access_token(client_id, secret)
-    
+
     # Get all subscription plans.
     plans = get_paypal_subscription_plans(access_token)
-    
+
     # UNTESTED: Cancel an individual subscription.
     # cancel_paypal_subscription(
     #     access_token,

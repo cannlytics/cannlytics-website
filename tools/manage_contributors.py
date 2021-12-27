@@ -18,7 +18,7 @@ import sys
 from github import Github
 
 # Internal imports.
-sys.path.append('../../')
+sys.path.append('../')
 from cannlytics.firebase import initialize_firebase, update_document
 
 

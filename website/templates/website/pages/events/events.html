@@ -8,10 +8,6 @@
   Created: 2/3/2021
   Updated: 11/25/2021
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
-
-  TODO:
-    - Add events:
-      https://necann.com/
 -->
 {% extends "website/index.html" %}
 {% block title %}Events | Cannlytics{% endblock %}
@@ -47,10 +43,10 @@
               {{ item.description }}
             </p>
             <a
-              class="btn btn-sm bg-gradient-green text-white mb-5"
+              class="btn btn-sm bg-gradient-green serif text-white mb-5"
               href="{{ item.url }}"
             >
-              Register
+              Register &rarr;
             </a>
           </div>
           <div class="col col-md-6 d-flex justify-content-center {% if forloop.counter|divisibleby:2 %}order-md-1 ps-0 pe-5 {% else %}ps-5{% endif %}">

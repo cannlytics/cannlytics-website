@@ -79,8 +79,8 @@ def login(request, *args, **argv): #pylint: disable=unused-argument
 
 def logout(request, *args, **argv): #pylint: disable=unused-argument
     """Functional view to remove a user session."""
+    claims = authenticate_request(request)
     try:
-        claims = authenticate_request(request)
         uid = claims['uid']
         update_document(f'users/{uid}', {'signed_in': False})
         create_log(
@@ -93,22 +93,19 @@ def logout(request, *args, **argv): #pylint: disable=unused-argument
         revoke_refresh_tokens(claims['sub'])
         response = JsonResponse({'success': True}, status=200)
         response['Set-Cookie'] = '__session=None; Path=/'
-        response['Cache-Control'] = 'public, max-age=300, s-maxage=900'
         request.session['__session'] = ''
         return response
-    except:
+    except KeyError:
         response = JsonResponse({'success': False}, status=205)
         response['Set-Cookie'] = '__session=None; Path=/'
-        response['Cache-Control'] = 'public, max-age=300, s-maxage=900'
         request.session['__session'] = ''
         return response
 
 
 def subscribe(request):
-    """
-    Subscribe a user to newsletters,
-    sending them a notification with the ability to unsubscribe,
-    and create a Cannlytics account if requested, sending a welcome email.
+    """Subscribe a user to newsletters, sending them a notification with the
+    ability to unsubscribe. Creates a Cannlytics account and sends a welcome
+    email if the user does not have an account yet.
     """
 
     # Ensure that the user has a valid email.
@@ -133,30 +130,28 @@ def subscribe(request):
     data['promo_code'] = promo_code
     update_document(f'subscribers/{timestamp}', data)
 
-    # Send a welcome email. (Optional: Use HTML template.)
-    # template_url = 'website/emails/newsletter_subscription_thank_you.html'
     # Create an account if one does not exist.
-    # TODO: Load messages from state?
+    # Optional: Load messages from state?
     try:
         name = (data.get('first_name', '') + data.get('last_name', '')).strip()
         _, password = create_user(name, user_email)
-        send_mail(
-            subject='Welcome to the Cannlytics Platform',
-            message=f'Congratulations,\n\nYou can now login to the Cannlytics console (https://console.cannlytics.com) with the following credentials.\n\nEmail: {user_email}\nPassword: {password}\n\nAlways here to help,\nThe Cannlytics Team',
-            from_email=DEFAULT_FROM_EMAIL,
-            recipient_list=[user_email],
-            fail_silently=False,
-            # html_message = render_to_string(template_url, {'context': 'values'}) # Optional: Send HTML email
-        )
+        message = f'Congratulations,\n\nYou can now login to the Cannlytics console (https://console.cannlytics.com) with the following credentials.\n\nEmail: {user_email}\nPassword: {password}\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
+        subject = 'Welcome to the Cannlytics Platform'
     except:
-        send_mail(
-            subject='Welcome to the Cannlytics Newsletter',
-            message=f'Congratulations,\n\nWelcome to the Cannlytics newsletter. You can download data with the promo code:\n\n{promo_code}\n\nPlease stay tuned for more material.\n\nAlways here to help,\nThe Cannlytics Team',
-            from_email=DEFAULT_FROM_EMAIL,
-            recipient_list=[user_email],
-            fail_silently=False,
-            # html_message = render_to_string(template_url, {'context': 'values'}) # Optional: Send HTML email
-        )
+        message = f'Congratulations,\n\nWelcome to the Cannlytics newsletter. You can download data with the promo code:\n\n{promo_code}\n\nPlease stay tuned for more material.\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
+        subject = 'Welcome to the Cannlytics Newsletter'
+
+    # Send a welcome / thank you email.
+    # (Optional: Use HTML template.)
+    # template_url = 'website/emails/newsletter_subscription_thank_you.html'
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=DEFAULT_FROM_EMAIL,
+        recipient_list=[user_email],
+        fail_silently=False,
+        # html_message = render_to_string(template_url, {'context': 'values'})
+    )
 
     # Return a success message.
     response = {'success': True, 'message': 'User successfully subscribed.'}
