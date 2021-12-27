@@ -7,9 +7,7 @@
  * Updated: 7/31/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-
-// import { firestore } from 'firebase';
-import { auth } from '../firebase.js';
+import { authRequest } from '../utils.js';
 
 export const lab = {
 
@@ -41,13 +39,13 @@ export const lab = {
     }
 
     // Keep track of changes.
-    var form = document.querySelector('form');
-    var data = Object.fromEntries(new FormData(form));
+    const form = document.querySelector('form');
+    const data = Object.fromEntries(new FormData(form));
 
     // Show buttons.
-    var editButton = document.getElementById('edit-button');
-    var cancelButton = document.getElementById('cancel-button');
-    var saveButton = document.getElementById('save-button');
+    const editButton = document.getElementById('edit-button');
+    const cancelButton = document.getElementById('cancel-button');
+    const saveButton = document.getElementById('save-button');
     if (edit) {
       editButton.classList.add('visually-hidden');
       cancelButton.classList.remove('visually-hidden');
@@ -58,15 +56,14 @@ export const lab = {
       cancelButton.classList.add('visually-hidden');
       saveButton.classList.add('visually-hidden');
       Object.keys(this.lab).forEach((key) => {
-        var input = document.getElementById(`input-${key}`);
-        input.value = this.lab[key];
+        document.getElementById(`input-${key}`).value = this.lab[key];
       });
     }
 
     // Toggle inputs.
-    var inputs = document.getElementsByClassName('form-control');
-    for (var i = 0; i < inputs.length; i++) {
-      var input = inputs.item(i);
+    const inputs = document.getElementsByClassName('form-control');
+    for (let i = 0; i < inputs.length; i++) {
+      const input = inputs.item(i);
       if (edit) { // Begin editing.
         input.readOnly = false;
         input.classList.remove('form-control-plaintext');
@@ -88,7 +85,7 @@ export const lab = {
     // TODO: Post data to the API.
   },
 
-  updateLab(event) {
+  async updateLab(event) {
     /**
      * Update a lab through the API.
      * @param {Event} event A user-driven event.
@@ -99,77 +96,47 @@ export const lab = {
     const form = new FormData(event.target);
     const data = Object.fromEntries(form.entries());
 
-    // Get the user's token and post the lab data to the API for processing.
-    auth.currentUser.getIdToken(/* forceRefresh */ true).then((token) => {
-      fetch(`${window.location.origin}/api/labs`, {
-        method: 'post',
-        credentials: 'same-origin',
-        headers: {
-            // 'X-CSRFToken': getCookie('csrftoken'), // necessary?
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(data)
-      });
-        // TODO: Show toast of save success with items changed.
-        // .then(response => response.json())
-        // .then((data) => {
-        //   console.log('Data:', data);
-        // })
-        // .catch((error) => {
-        //   console.log('Error:', error);
-        // });
-    }).catch((error) => {
-      // Handle error
-    });
+    // Post the lab data.
+    authRequest('/api/labs', data);
+    
+    // TODO: Show toast of save success with items changed.
 
   },
 
-  getLabAnalyses(id) {
+  async getLabAnalyses(id) {
     /**
      * Get analyses for a lab.
      * @param {String} id The ID of a lab.
      */
-    return new Promise((resolve, reject) => {
-      var headers = { headers: { 'Accept': 'application/json' } };
-      fetch(`${window.location.origin}/api/labs/${id}/logs`, headers)
-        .then(response => response.json())
-        .then(data => resolve(data.data));
-      });
+    return await authRequest(`/api/labs/${id}/analyses`);
   },
 
-  getLabLogs(id) {
+  async getLabLogs(id) {
     /**
      * Get change logs for a lab.
      * @param {String} id The ID of a lab.
      */
-    return new Promise((resolve, reject) => {
-      var headers = { headers: { 'Accept': 'application/json' } };
-      fetch(`${window.location.origin}/api/labs/${id}/analyses`, headers)
-        .then(response => response.json())
-        .then(data => resolve(data.data));
-      });    
+     return await authRequest(`/api/labs/${id}/logs`); 
   },
 
-  initializeAnalyses(id) {
+  async initializeAnalyses(id) {
     /**
      * Initialize analyses for a lab.
      * @param {String} id The ID of a lab.
      */
-    this.getLabAnalyses(id).then((data) => {
-      // TODO: Show the data!
-    });
+    const data = this.getLabAnalyses(id);
+    // TODO: Show the data!
+    console.log('Found analyses:', data);
   },
 
-  initializeLogs(id) {
+  async initializeLogs(id) {
     /**
      * Initialize logs for a lab.
      * @param {String} id The ID of a lab.
      */
-    this.getLabLogs(id).then((data) => {
-      // TODO: Show the data!
-    });
+    const data = this.getLabLogs(id);
+    // TODO: Show the data!
+    console.log('Found analyses:', data);
 
   },
 

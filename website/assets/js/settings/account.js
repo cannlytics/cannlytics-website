@@ -4,11 +4,11 @@
  * 
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 11/28/2021
- * Updated: 11/28/2021
+ * Updated: 12/27/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 
-import { onAuthChange, updateUserPhoto, storageErrors } from '../firebase.js';
+import { onAuthChange, updateUserPhoto } from '../firebase.js';
 import { authRequest, deserializeForm, serializeForm, showNotification } from '../utils.js';
 
 export const accountSettings = {
@@ -39,16 +39,16 @@ export const accountSettings = {
         userForm.reset();
         deserializeForm(userForm, userData);
       } else {
-        window.location.href = `${window.location.origin}\\account\\sign-up`;
+        window.location.href = `${window.location.origin}/account/sign-up`;
       }
     });
   },
 
-  saveAccount() {
+  async saveAccount() {
     /**
     * Saves a user's account fields.
     */
-   // FIXME:
+   // FIXME: Test.
     const user = auth.currentUser;
     const data = serializeForm('user-form');
     if (data.email !== user.email) {
@@ -57,28 +57,33 @@ export const accountSettings = {
     if (data.name !== user.displayName) {
       user.updateProfile({ displayName: data.name });
     }
-    authRequest('https://console.cannlytics.com/api/users', data).then(() => {
+    const response = await authRequest('/api/users', data);
+    if (response.success) {
       const message = 'Your account data has been successfully saved.'
       showNotification('Account saved', message, /* type = */ 'success');
-    });
+    } else {
+      const message = 'An error occurred when saving your account.'
+      showNotification('Error saving your account', message, /* type = */ 'error');
+    }
   },
 
-  uploadUserPhoto() {
+  async uploadUserPhoto() {
     /**
      * Upload a user's photo through the API.
      */
-    // FIXME:
+    // FIXME: Test.
     if (this.files.length) {
       showNotification('Uploading photo', 'Uploading your profile picture...', /* type = */ 'wait');
-      updateUserPhoto(this.files[0]).then((downloadURL) => {
-        authRequest('https://console.cannlytics.com/api/users', { photo_url: downloadURL });
+      const downloadURL = await updateUserPhoto(this.files[0]);
+      const response = await authRequest('/api/users', { photo_url: downloadURL });
+      if (response.success) {
         document.getElementById('user-photo-url').src = downloadURL;
         document.getElementById('user-photo').src = downloadURL;
         const message = 'Successfully uploaded your profile picture.';
         showNotification('Uploading photo complete', message, /* type = */ 'success');
-      }).catch((error) => {
-        showNotification('Photo Change Error', storageErrors[error.code], /* type = */ 'error');
-      });
+      } else {
+        showNotification('Photo Change Error', response.message, /* type = */ 'error');
+      };
     }
   },
 

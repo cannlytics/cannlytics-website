@@ -20,7 +20,7 @@ export const payments = {
     /**
      * Cancel a user's subscription.
      */
-    // TODO: Get clientId and secret.
+    // FIXME: Prefer to do this through the API. (Will need to get clientId and secret.)
     headers.set('Authorization', 'Basic ' + Buffer.from(username + ":" + password).toString('base64'));
     const options = { headers };
     fetch(url, options)
@@ -48,47 +48,45 @@ export const payments = {
     /**
      * Get the current user's subscriptions.
      */
-    const response = await authRequest('/api/internal/subscriptions');
+    const response = await authRequest('/src/subscriptions');
     return response.data;
   },
 
-  logPromo() {
+  async logPromo() {
     /**
      * Log a promotional event.
      */
-    var code = getUrlParameter('source');
+    const code = getUrlParameter('source');
     if (!code) return;
-    var data = { 'promo_code': code };
-    fetch(`${window.location.origin}/promotions/`, {
-      method: 'POST', 
-      body: JSON.stringify(data),
-      headers: { 'Accept': 'application/json' },
-    });
+    const data = { 'promo_code': code };
+    await authRequest('/src/promotions', data);
   },
 
-  // FIXME:
-  subscribe(subscription) {
+  async subscribe(subscription) {
     /**
      * Save account information,
      * then navigate to the confirmation page.
      * @param {Subscription} subscription A subscription class.
      */
+    // FIXME: Test.
     const form = document.getElementById('account-information');
     let data;
     if (form) {
       data = Object.fromEntries(new FormData(form).entries());
       data = { ...data, ...subscription };
     } else {
-      var userEmail = document.getElementById('email-input').value;
+      const userEmail = document.getElementById('email-input').value;
       data = { email: userEmail };
     }
-    fetch(`${window.location.origin}/api/internal/subscribe`, {
-      method: 'POST', 
-      body: JSON.stringify(data),
-      headers: { 'Accept': 'application/json' },
-    });
-    window.location.href = `${window.location.origin}/subscriptions/subscribed`;
+    const response = await authRequest('/src/subscribe', data);
+    if (response.success) {
+      window.location.href = `${window.location.origin}/subscriptions/subscribed`;
+    } else {
+      // TODO: Show error message.
+    }
   },
+
+  // OLD | refactor if needed.
   // subscribe() {
   //   /* Subscribe to newsletter functionality. */
   //   var emailInput = document.getElementById('email-input');

@@ -7,11 +7,7 @@
  * Updated: 11/23/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-
- // TODO: Create list of labs.
- // Example: https://github.com/elapouya/django-listing
-
-import { showNotification } from '../utils.js';
+import { authRequest, showNotification } from '../utils.js';
 
 export const community = {
 
@@ -24,7 +20,7 @@ export const community = {
 
   // Functions
 
-  initialize() {
+  async initialize() {
     /**
      * Initialize the community page.
      */
@@ -33,7 +29,7 @@ export const community = {
     this.map = this.createMap();
 
     // Create marker spiderfier for overlapping markers.
-    var oms = new OverlappingMarkerSpiderfier(this.map, {
+    const oms = new OverlappingMarkerSpiderfier(this.map, {
       markersWontMove: true,
       markersWontHide: true,
       basicFormatEvents: true,
@@ -41,18 +37,16 @@ export const community = {
     });
 
     // Get all of the labs.
-    this.getLabs().then((data) => {
+    const data = await this.getLabs();
 
-      // Create info windows for each lab.
-      var markers = this.createInfoWindows(this.map, oms, data);
+    // Create info windows for each lab.
+    const markers = this.createInfoWindows(this.map, oms, data);
 
-      // Cluster dense markers.
-      this.createMarkerClusterer(this.map, markers);
+    // Cluster dense markers.
+    this.createMarkerClusterer(this.map, markers);
 
-      // Wire up search.
-      this.setupSearch(this.map);
-
-    });
+    // Wire up search.
+    this.setupSearch(this.map);
 
   },
 
@@ -77,7 +71,7 @@ export const community = {
      * @param {Array} data A list of data used in creating info-windows.
      * @returns {Array}
      */
-    var logView = this.logView;
+    // var logSearch = this.logSearch;
     var createWindow = this.createMarkerInfoWindow;
     var infowindow = new google.maps.InfoWindow();
     var markers = [];
@@ -126,7 +120,7 @@ export const community = {
           infowindow.open(map, marker);
 
           // Log which labs are viewed.
-          logView(item.id, 'window_views');
+          // logSearch(item.id, 'window_views');
         }
       })(marker));
 
@@ -210,23 +204,23 @@ export const community = {
     return content;
   },
 
-  logView(id, field) {
-    /**
-     * Record when people search or view for a lab.
-     * @param {String} id The ID for the log.
-     * @param {String} field The page viewed.
-     */
-    const timestamp = new Date().toISOString();
-    const update = { updated_at: timestamp };
-    throw new NotImplementedException();
-    // FIXME: Update stats in Django.
-    // update[field] = firestore.FieldValue.increment(1);
-    // updateDocument(`labs/${id}`, update);
-    // updateDocument(`public/logs/website_logs/${timestamp}`, {
-    //   action: `Incremented ${field} for ${id}.`,
-    //   updated_at: timestamp,
-    // });
-  },
+  // Optional: Log which labs people search for.
+  // logSearch(id, field) {
+  //   /**
+  //    * Record when people search or view for a lab.
+  //    * @param {String} id The ID for the log.
+  //    * @param {String} field The page viewed.
+  //    */
+  //   const timestamp = new Date().toISOString();
+  //   const update = { updated_at: timestamp };
+  //   throw new NotImplementedException();
+  //   // update[field] = firestore.FieldValue.increment(1);
+  //   // updateDocument(`labs/${id}`, update);
+  //   // updateDocument(`public/logs/website_logs/${timestamp}`, {
+  //   //   action: `Incremented ${field} for ${id}.`,
+  //   //   updated_at: timestamp,
+  //   // });
+  // },
 
   onInput() {
     /**
@@ -251,7 +245,7 @@ export const community = {
     const point = this.points[value];
     map.panTo(new google.maps.LatLng(point.latitude, point.longitude));
     map.setZoom(15);
-    this.logView(item.id, 'searches');
+    // this.logSearch(item.id, 'searches');
   },
 
   setupSearch(map) {
@@ -271,25 +265,20 @@ export const community = {
     });
   },
 
-  getLabs() {
+  async getLabs() {
     /**
      * Get labs with API.
-     * @returns {Promise}
+     * @returns {list}
      */
-    return new Promise((resolve, reject) => {
-      var headers = { headers: { 'Accept': 'application/json' } };
-      fetch(`${window.location.origin}/api/labs`, headers)
-        .then(response => response.json())
-        .then(data => resolve(data.data));
-      });
+    return await authRequest('/api/labs');
   },
 
   showPromo() {
     /**
      * Show the promo code field.
      */
-    var promoButton = document.getElementById('promo-button');
-    var promoInputGroup = document.getElementById('promo-input-group');
+    const promoButton = document.getElementById('promo-button');
+    const promoInputGroup = document.getElementById('promo-input-group');
     promoButton.style.display = 'none';
     if (promoInputGroup.classList.contains('visually-hidden')) {
       promoInputGroup.classList.remove('visually-hidden');
@@ -330,8 +319,8 @@ export const community = {
     }
 
     // Hide dialog.
-    var downloadDialog = document.getElementById('downloadDialog');
-    var modal = bootstrap.Modal.getInstance(downloadDialog);
+    const downloadDialog = document.getElementById('downloadDialog');
+    const modal = bootstrap.Modal.getInstance(downloadDialog);
     modal.hide();
 
   },
