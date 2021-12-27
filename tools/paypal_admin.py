@@ -8,7 +8,12 @@ Created: 11/29/2021
 Updated: 11/29/2021
 License: MIT License <https://opensource.org/licenses/MIT>
 """
-import environ
+# Standard imports.
+import os
+from typing import List, Optional
+
+# External imports.
+from dotenv import dotenv_values
 import requests
 
 # API defaults.
@@ -21,10 +26,10 @@ HEADERS = {
 
 
 def cancel_paypal_subscription(
-        access_token,
-        subscription_id,
-        reason='No reason provided.',
-        base = 'https://api-m.paypal.com',
+        access_token: str,
+        subscription_id: str,
+        reason: Optional[str] = 'No reason provided.',
+        base: Optional[str] = 'https://api-m.paypal.com',
 ):
     """Cancel a PayPal subscription for an individual subscriber.
     Args:
@@ -40,17 +45,14 @@ def cancel_paypal_subscription(
     headers = {**HEADERS, **authorization}
     data = {'reason': reason}
     response = requests.post(url, data=data, headers=headers)
-    if response.status_code == 200:
-        return True
-    else:
-        return False
+    return response.status_code == 200
 
 
 def get_paypal_access_token(
-        client_id,
-        secret,
-        base='https://api-m.paypal.com'
-):
+        client_id: str,
+        secret: str,
+        base: Optional[str] = 'https://api-m.paypal.com',
+) -> str:
     """Get a PayPal access token.
     Args:
         client_id (str): Your PayPal client ID.
@@ -67,14 +69,14 @@ def get_paypal_access_token(
     return body['access_token']
 
 
-def get_paypal_subscription_plans(
-        access_token,
-        product_id=None,
-        page=None,
-        page_size=None,
-        total_required=True,
-        base='https://api-m.paypal.com',
-):
+def get_paypal_subscription_plans( #pylint: disable=too-many-arguments
+        access_token: str,
+        product_id: Optional[str] = None,
+        page: Optional[int] = None,
+        page_size: Optional[int] = None,
+        total_required: Optional[bool] = True,
+        base: Optional[str] = 'https://api-m.paypal.com',
+) -> List[dict]:
     """Get PayPal subscription plans.
     Args:
         access_token (str): A required access token.
@@ -103,15 +105,22 @@ def get_paypal_subscription_plans(
 
 if __name__ == '__main__':
 
+    # Set credentials.
+    try:
+        config = dotenv_values('../.env')
+        credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
+    except KeyError:
+        config = dotenv_values('.env')
+        credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
+
     # Get a PayPal access token.
-    env = environ.Env()
-    env.read_env('../.env')
-    client_id = env('PAYPAL_CLIENT_ID')
-    secret = env('PAYPAL_SECRET')
-    access_token = get_paypal_access_token(client_id, secret)
+    paypal_client_id = config['PAYPAL_CLIENT_ID']
+    paypal_secret = config['PAYPAL_SECRET']
+    paypal_access_token = get_paypal_access_token(paypal_client_id, paypal_secret)
 
     # Get all subscription plans.
-    plans = get_paypal_subscription_plans(access_token)
+    plans = get_paypal_subscription_plans(paypal_access_token)
 
     # UNTESTED: Cancel an individual subscription.
     # cancel_paypal_subscription(

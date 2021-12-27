@@ -64,9 +64,3 @@ if __name__ == '__main__':
 
     # Make functions available from the command line.
     globals()[sys.argv[1]]()
-
-    # Get and save event data.
-    # event_data = get_event_data()
-
-    # Upload event data.
-    # upload_event_data()

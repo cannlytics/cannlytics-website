@@ -4,25 +4,68 @@ Copyright (c) 2021 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/9/2021
-Updated: 11/24/2021
+Updated: 12/27/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
-Resources:
-    https://pygithub.readthedocs.io/en/latest/examples/MainClass.html#get-user-by-name
+
+Dependencies:
+
+    - PyGithub: https://pygithub.readthedocs.io/en/latest/examples/MainClass.html#get-user-by-name
+
+    ```
+    pip install PyGithub
+    ```
+
+Command-line examples:
+
+    Get and save data.
+
+    ```
+    python tools/manage_contributors.py get_contributor_data
+    ```
+
+    Upload data.
+
+    ```
+    python tools/manage_contributors.py upload_contributor_data
+    ```
 """
 # Standard imports.
 import os
-import environ
 import sys
 
 # External imports.
+from dotenv import dotenv_values
 from github import Github
 
 # Internal imports.
 sys.path.append('../')
-from cannlytics.firebase import initialize_firebase, update_document
+sys.path.append('./')
+from cannlytics.firebase import ( #pylint: disable=import-error, wrong-import-position
+    initialize_firebase,
+    update_document,
+)
+from datasets import get_dataset #pylint: disable=wrong-import-position
+
+# Set credentials.
+try:
+    config = dotenv_values('../.env')
+    credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
+except KeyError:
+    config = dotenv_values('.env')
+    credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
 
 
-def upload_github_contributors(org_name):
+def get_contributor_data():
+    """Get contributor data from Firestore."""
+    ref = 'public/contributors/contributor_data'
+    try:
+        return get_dataset(ref, datafile='.datasets/contributors.json')
+    except FileNotFoundError:
+        return get_dataset(ref, datafile='../.datasets/contributors.json')
+
+
+def upload_contributors(org_name):
     """Get Github contributors and save them to Firestore.
     Args:
         org_name (str): The name of a GitHub organization.
@@ -51,15 +94,8 @@ def upload_github_contributors(org_name):
                 update_document(f'public/contributors/contributor_data/{user.id}', data)
     return users
 
+
 if __name__ == '__main__':
 
-    # Specify credentials for Firebase.
-    env = environ.Env()
-    env.read_env('../../.env')
-    credentials = env('GOOGLE_APPLICATION_CREDENTIALS')
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
-
-    # Save all contributors.
-    print('Saving contributors.')
-    contributors = upload_github_contributors(org_name='Cannlytics')
-    print('Saved all contributors:', len(contributors))
+    # Make functions available from the command line.
+    globals()[sys.argv[1]]()

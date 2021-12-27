@@ -1,53 +1,66 @@
 """
-Upload Verifications | Cannlytics Website
+Manage Verifications | Cannlytics Website
 Copyright (c) 2021 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 11/15/2021
-Updated: 11/15/2021
+Updated: 12/26/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+
+Command-line examples:
+
+    Get and save data.
+
+    ```
+    python tools/manage_verifications.py get_verification_data
+    ```
+
+    Upload data.
+
+    ```
+    python tools/manage_verifications.py upload_verification_data
+    ```
 """
 # Standard imports
-from dotenv import dotenv_values
 import os
+import sys
+
+# External imports
+from dotenv import dotenv_values
 
 # Internal imports
-import sys
-root = '../'
-sys.path.append(root)
-from cannlytics import firebase # pylint: disable=import-error
-from datasets import upload_dataset
+from datasets import get_dataset, upload_dataset
 
-
-def upload_verifications():
-    """Upload state traceability system verification data.
-    Expects the data in a JSON file in a .datasets folder in the
-    root directory with the same name as the collection name."""
-
-    # Specificy collection-specific variables.
-    collection_name = 'verifications'
-    subcollection_name = 'verification_data'
-    id_key='state'
-
-    # Initialize Firebase.
-    config = dotenv_values(f'{root}.env')
+# Set credentials.
+try:
+    config = dotenv_values('../.env')
     credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
-    firebase.initialize_firebase()
+except KeyError:
+    config = dotenv_values('.env')
+    credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
 
-    # Specify the JSON data file and upload the archived data.
-    print(f'Uploading {collection_name} data...')
-    datafile = f'{root}/.datasets/{collection_name}.json'
-    data = upload_dataset(
-        datafile,
-        collection=f'public/{collection_name}/{subcollection_name}',
-        id_key=id_key,
-        stats_doc=f'public/{collection_name}',
-    )
-    print(f'Uploaded {collection_name} data.')
-    print('Total documents:', len(data))
+
+def get_verification_data():
+    """Get verification data from Firestore."""
+    ref = 'public/verifications/verification_data'
+    try:
+        return get_dataset(ref, datafile='.datasets/verifications.json')
+    except FileNotFoundError:
+        return get_dataset(ref, datafile='../.datasets/verifications.json')
+
+
+def upload_verification_data():
+    """Upload verification data from local `.datasets`."""
+    ref = 'public/verifications/verification_data'
+    stats_doc = 'public/verifications'
+    try:
+        upload_dataset('.datasets/verifications.json', ref, stats_doc=stats_doc)
+    except FileNotFoundError:
+        upload_dataset('../.datasets/verifications.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':
-    
-    upload_verifications()
+
+    # Make functions available from the command line.
+    globals()[sys.argv[1]]()
