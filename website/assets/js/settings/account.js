@@ -7,9 +7,19 @@
  * Updated: 12/27/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-
-import { onAuthChange, updateUserPhoto } from '../firebase.js';
-import { authRequest, deserializeForm, serializeForm, showNotification } from '../utils.js';
+import {
+  changeEmail,
+  getCurrentUser,
+  onAuthChange,
+  updateUserPhoto,
+  updateUserDisplayName,
+} from '../firebase.js';
+import {
+  authRequest,
+  deserializeForm,
+  serializeForm,
+  showNotification,
+} from '../utils.js';
 
 export const accountSettings = {
 
@@ -29,7 +39,6 @@ export const accountSettings = {
         const fileElem = document.getElementById('user-photo-url');
         fileElem.addEventListener('change', this.uploadUserPhoto, false);
         document.getElementById('account-photo').src = user.photoURL;
-        console.log(user);
         const userData = {
           name: user.displayName,
           email: user.email,
@@ -48,14 +57,14 @@ export const accountSettings = {
     /**
     * Saves a user's account fields.
     */
-   // FIXME: Test.
-    const user = auth.currentUser;
+    // FIXME: API returns 500 error.
+    const user = getCurrentUser();
     const data = serializeForm('user-form');
     if (data.email !== user.email) {
-      user.updateEmail(data.email);
+      await changeEmail(data.email);
     }
     if (data.name !== user.displayName) {
-      user.updateProfile({ displayName: data.name });
+      await updateUserDisplayName(data.name);
     }
     const response = await authRequest('/api/users', data);
     if (response.success) {
@@ -71,7 +80,7 @@ export const accountSettings = {
     /**
      * Upload a user's photo through the API.
      */
-    // FIXME: Test.
+    // FIXME: API error.
     if (this.files.length) {
       showNotification('Uploading photo', 'Uploading your profile picture...', /* type = */ 'wait');
       const downloadURL = await updateUserPhoto(this.files[0]);

@@ -1,16 +1,19 @@
 <!doctype html>
 <html>
 <!--
-  Community Page | Cannlytics Website
+  Testing Page | Cannlytics Website
   Copyright (c) 2021 Cannlytics
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 11/24/2020
-  Updated: 12/23/2021
+  Updated: 12/27/2021
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+
+  TODO: The ability to request to add labs.
+  Is your lab missing? Enter your details to get added to the map.
 -->
 {% extends "website/index.html" %}
-{% block title %}Community | Cannlytics{% endblock %}
+{% block title %}Testing | Cannlytics{% endblock %}
 {% load static %}
 {% block page_css %}
   <style>
@@ -44,17 +47,14 @@
 {% block material %}
   <div class="community container">
 
-  <!-- TODO: The ability to request to add labs. -->
-  <!-- Is your lab missing? Enter your details to get added to the map. -->
-
     <!-- Hero -->
     <div class="row featurette mt-5">
       <div class="col-md-7">
         <h2 class="display-6 serif text-dark pb-3 mt-0">
-          Welcome to the Cannlytics Community.
+          Welcome to the Cannlytics Testing Center
         </h2>
         <p class="h5 double-line text-dark text-start text-muted">
-          A vibrant community of cannabis-testing developers and scientists.
+          A vibrant hub for cannabis-testers, scientists, and everyone in the cannabis industry.
         </p>
       </div>
       <div class="col-md-5">
@@ -66,42 +66,82 @@
     </div>
   </div>
 
-  <!-- Lab Map -->
-  <div class="mt-5">
-    {% include "./labs/map.html" %}
-  </div>
+  <!-- Tabs -->
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link fs-6 {% if section == 'labs' or not section %}active{% endif %}"
+        href="{% url 'section' page='testing' section='labs'  %}"
+      >
+        <small class="serif">Labs</small>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link fs-6 {% if section == 'map' %}active{% endif %}"
+        href="{% url 'section' page='testing' section='map'  %}"
+      >
+        <small class="serif">Map</small>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link fs-6 {% if section == 'regulations' %}active{% endif %}"
+        href="{% url 'section' page='testing' section='regulations'  %}"
+      >
+        <small class="serif">Regulations</small>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link fs-6 {% if section == 'analyses' %}active{% endif %}"
+        href="{% url 'section' page='testing' section='analyses'  %}"
+      >
+        <small class="serif">Analyses</small>
+      </a>
+    </li>
+  </ul>
 
-  <!-- Community markdown -->
-  <div class="container markdown py-3">
+  <!-- Tab Body -->
+  {% if section == 'labs' %}
+
+    TODO: Table of labs.
+
+  {% elif section == 'map' %}
+    
+    TODO: Map of labs.
+
+  {% elif section == 'map' %}
+    
+    TODO: Table of regulations.
+  
+    {% elif section == 'map' %}
+    
+    TODO: Table of regulations.
+
+  {% endif %}
+
+  <!-- Lab Map -->
+  {% comment %} <div class="mt-5">
+    {% include "./labs/map.html" %}
+  </div> {% endcomment %}
+
+  <!-- Markdown -->
+  {% comment %} <div class="container markdown py-3">
     {{ markdown | safe }}
     <p class="text-start">
       <a class="btn btn-sm btn-sm-light btn-md-light" href="https://console.cannlytics.com/sign-up">
         <small>Join the community today</small> &rarr;
       </a>
     </p>
-  </div>
+  </div> {% endcomment %}
 
 {% endblock %}
 
-<!-- Community JavaScript -->
+<!-- JavaScript -->
 {% block page_js %}
 
-  <!-- Google Maps JavaScript -->
-  <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier/1.0.3/oms.min.js"></script>
-  <script type="text/javascript">
 
-    // Initialize Google Map
-    var script = document.createElement('script');
-    var apiKey = {{ api_key|safe }}[0]; // Passing API key from Django.
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
-    script.defer = true;
-    window.initMap = function() {
-      cannlytics.community.initialize();
-    }
-    document.head.appendChild(script);
-
-  </script>
 
 {% endblock page_js %}
 </html>

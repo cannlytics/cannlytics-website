@@ -114,7 +114,6 @@ export const website = {
      */
     if (typeof(Storage) !== 'undefined') {
       var theme = localStorage.getItem('theme');
-      console.log('Current theme:', theme);
       if (!theme) {
         var hours = new Date().getHours();
         var dayTime = hours > 6 && hours < 20;
@@ -189,8 +188,7 @@ export const website = {
      * Show any material that requires authentication.
      * @param {bool} authenticated Whether or not the user is authenticated.
      */
-    // FIXME: Janky.
-    console.log('Toggling authenticated material:', authenticated);
+    // TODO: Improve this function to remove jank.
     const indicatesAuth = document.getElementsByClassName('indicates-auth');
     const requiresAuth = document.getElementsByClassName('requires-auth');
     for (var i = 0; i < indicatesAuth.length; i++) {

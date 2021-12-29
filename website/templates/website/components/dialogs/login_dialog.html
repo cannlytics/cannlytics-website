@@ -117,8 +117,8 @@
 
               <!-- Reset Password -->
               <a
+                class="background-hover fs-6"
                 href="https://console.cannlytics.com/account/password-reset"
-                class="fs-6"
               >
                 <small class="serif text-dark">Lost password?</small>
               </a>
@@ -126,7 +126,7 @@
               <!-- Sign In -->
               <button
                 id="login-button"
-                class="ms-1 btn btn-sm btn-set-width bg-gradient-green text-white"
+                class="ms-1 btn btn-sm btn-set-width bg-gradient-green serif text-white"
                 style="max-width:250px;"
                 type="button"
                 onclick="cannlytics.auth.signIn(event)"
@@ -158,6 +158,7 @@
             <p class="text-dark text-center h6 font-weight-light mt-5">
               <small>New to Cannlytics?
                 <a
+                  class="background-hover"
                   href="https://console.cannlytics.com/account/sign-up"
                 >
                   <b class="serif text-dark">Sign up!</b>
@@ -173,12 +174,14 @@
 
   <!-- JavaScript -->
   <script>
+
     // Add sign-in on enter on login password field.
     const input = document.getElementById('login-password');
     input.addEventListener('keyup', function(event) {
       event.preventDefault();
       if (event.keyCode === 13) cannlytics.auth.signIn(event);
     });
+
   </script>
 
 </html>

@@ -4,7 +4,7 @@ Copyright (c) 2021 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/29/2020
-Updated: 12/25/2021
+Updated: 12/27/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports.
@@ -16,92 +16,37 @@ from django_robohash.views import robohash
 
 # Internal imports.
 from website.views import (
-    api,
     auth,
-    data,
     email,
-    labs,
     main,
+    market,
+    subscriptions,
+    testing,
     videos,
 )
-
-# Pages to create:
-
-# data/state
-# data/regulations
-# testing
-# economics
-
-# FIXME: Fix all broken links.
-
-# 404:
-    # /robots.txt/
-    # /ads.txt/
-
-# 500 errors:
-    # /subscribe/
-
-# Broken API endpoints:
-    # /api/labs/
-
-# Missing pages:
-    # /docs/website/publishing/
-    # /docs/
-    # docs/app/get-started/
-    # /docs/website/installation/contributing/
-    # /docs/website/publishing/
-    # /docs/website/architecture
-    # /docs/api/regulations/
-    # /docs/api/instruments/
-    # /docs/api/authentication/
-    # /docs/lims/get-started/
-    # /docs/api/labs/
-    # /docs/console/installation/
-    # /docs/api/limits/
-    # /docs/about/faq/
-    # /docs/api/lab_results/
-
-# TODO: Redirects from old pages to stable links.
-# https://stackoverflow.com/questions/35903832/how-to-redirect-to-external-url-in-django
-# urlpatterns += [
-#     path('docs/', include([
-#         path('', api.labs),
-#         path('labs/', api.labs),
-#     ])),
-# ]
-
-# TODO: Redirect /about to docs.cannlytics.com/about/about
 
 # Main URLs.
 urlpatterns = [
     path('', main.GeneralView.as_view(), name='index'),
-    path('admin', admin.site.urls, name='admin'),
-    path('api/', include([
-        path('data/buy', data.buy_data),
-        path('data/publish', data.publish_data),
-        path('data/sell', data.sell_data),
-        path('labs', api.labs),
-        path('labs/<uuid:org_id>', api.labs),
-        path('labs/<uuid:org_id>/analyses', api.lab_analyses),
-        path('labs/<uuid:org_id>/logs', api.lab_logs),
-        path('labs/download', data.download_lab_data),
-        # TODO: Add regulations / limits pages.
-        # TODO: Add analyte pages.
-        # TODO: Add analysis / prices pages.
-    ])),
+    # Optional: Remove /admin if it is not needed. Less code, more secure.
+    # path('admin', admin.site.urls, name='admin'),
+    path('api/', include('api.urls'), name='api'),
     path('src/', include([
         path('login', auth.login),
         path('logout', auth.logout),
-        path('promotions', data.promotions, name='promotions'),
+        path('promotions', market.promotions, name='promotions'),
         path('send-message', email.send_message),
-        path('subscribe', data.subscribe, name='subscribe'),
-        path('subscriptions', api.get_user_subscriptions, name='subscriptions'),
+        path('subscribe', subscriptions.subscribe, name='subscribe'),
+        path('subscriptions', subscriptions.get_user_subscriptions, name='subscriptions'),
+        # TODO: Add back method for downloading lab data?
+        # path('labs/download', data.download_lab_data),
     ])),
-    path('community', labs.CommunityView.as_view(), name='community'),
-    path('labs', labs.CommunityView.as_view(), name='labs'),  # Redundant?
-    path('labs/new', labs.NewLabView.as_view()),
-    path('labs/<lab>', labs.LabView.as_view()),
-    # TODO: Add analyses and prices to lab pages.
+    path('testing', testing.CommunityView.as_view(), name='testing'),
+    path('testing/labs', testing.CommunityView.as_view(), name='labs'),  # Redundant?
+    path('testing/labs/new', testing.NewLabView.as_view()),
+    path('testing/labs/<lab>', testing.LabView.as_view()),
+    path('testing/analyses', testing.LabView.as_view()),
+    path('testing/regulations', testing.LabView.as_view()),
     path('robohash/<string>', robohash, name='robohash'),
     path('videos', videos.VideosView.as_view(), name='videos'),
     path('videos/<video_id>', videos.VideosView.as_view(), name='video'),

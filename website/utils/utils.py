@@ -36,7 +36,7 @@ EXTENSIONS = [
     'smarty',
     'tables',
     TocExtension(permalink='#'),
-    'mdx_math', # FIXME: Parse LaTeX
+    'mdx_math', # Optional: Parse LaTeX
     'pymdownx.arithmatex',
     'pymdownx.emoji',
 ]
@@ -81,7 +81,7 @@ def get_markdown(
     if page is None:
         page = context['page']
     try:
-        # FIXME: Open markdown file in production directly, instead of with a request.
+        # Optional: Prefer to open markdown file directly, instead of with a request.
         file_name = staticfiles_storage.url(f'/{app}/docs/{page}.md')
         if DEBUG:
             url = directory + file_name
@@ -106,6 +106,8 @@ def get_markdown(
     return context
 
 
+
+# Optional: Add a copy button to code blocks | https://programmersought.com/article/48614916658/
 # def add_code_copy(text):
 #     """Add copy button to code blocks.
 #     Args:
@@ -113,7 +115,6 @@ def get_markdown(
 #     Returns
 #         (str): Returns the HTML text with copy buttons inserted.
 #     """
-#     # FIXME: Make this code work | https://programmersought.com/article/48614916658/
 #     n = text.count('<div class="codehilite">', 0, len(text))
 #     print('Codeblocks:', n)
 #     for i in range(n):
@@ -134,7 +135,7 @@ def get_promo_code(num_chars: Optional[int] = 7) -> str:
     """
     code_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     code = ''
-    for _ in enumerate(num_chars):
+    for _ in range(num_chars):
         slice_start = randint(0, len(code_chars) - 1)
         code += code_chars[slice_start: slice_start + 1]
     return code.lower()

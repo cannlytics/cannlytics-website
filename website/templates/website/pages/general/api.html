@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<!--
+  API Page | Cannlytics Website
+  Copyright (c) 2021 Cannlytics
+
+  Authors: Keegan Skeate <contact@cannlytics.com>
+  Created: 12/27/2020
+  Updated: 12/27/2021
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
+{% extends "website/index.html" %}
+{% load static %}
+{% block title %}API | Cannlytics{% endblock %}
+{% block material %}
+  <div class="contributors large-bottom-margin">
+
+    <!-- Hero -->
+    {% include "website/components/heros/hero_banner.html" with
+      title='API'
+      description=''
+      primary_action='Learn now'
+      primary_action_url='https://docs.cannlytics.com/api/about'
+      secondary_action='Browse examples'
+      secondary_action_url='https://github.com/cannlytics/cannlytics-api'
+      background_image="https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2FIllustration_Cannabis_sativa0.jpg?alt=media&token=7c1f2d17-1df6-46b4-b698-21eb5cc5c174"
+      background_position="80% 80%"
+      image_url='website/images/illustrations/multi-tone/transmit.svg'
+      only
+    %}
+
+    <!-- About -->
+    {% include "website/components/content/introduction.html" with
+      title="The Cannlytics API"
+      description=''
+      action="Integrate Now"
+      image_id="satellite-emoji"
+      image_ref="website/images/emojies/satellite.svg"
+      link="https://console.cannlytics.com/account/sign-in"
+    %}
+  
+  </div>
+
+  <!-- Vines -->
+  {% include "website/components/art/vines.html" %}
+
+{% endblock material %}
+
+</html>

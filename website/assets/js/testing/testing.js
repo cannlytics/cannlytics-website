@@ -9,7 +9,7 @@
  */
 import { authRequest, showNotification } from '../utils.js';
 
-export const community = {
+export const testing = {
 
   // State
 
@@ -22,7 +22,7 @@ export const community = {
 
   async initialize() {
     /**
-     * Initialize the community page.
+     * Initialize the testing page.
      */
     
     // Draw the map.

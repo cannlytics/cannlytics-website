@@ -5,7 +5,7 @@ Copyright (c) 2021 Cannlytics
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 5/1/2021
 Updated: 12/9/2021
-License: MIT License <https://github.com/cannlytics/cannlytics-console/blob/main/LICENSE>
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 from urllib.parse import quote
 from django import http

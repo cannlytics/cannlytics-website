@@ -19,20 +19,21 @@ export const data = {
     return await authRequest(`/api/datasets/${id}`);
   },
 
-  async getDataMarketStats () {
+  async getDataMarketStats() {
     /**
      * Get metadata about the data market.
      */
     return await authRequest('/api/market');
   },
 
-  async getStateDatasets () {
+  async getStateData(id) {
     /**
      * Get metadata about a given state's data.
      * @param {String} id A state ID. Typically the lowercase state abbreviation.
      *    e.g. `nc` for North Carolina.
      */
-    return await authRequest(`/api/datasets/state/${id}`);
+    if (id) return await authRequest(`/api/data/state/${id}`);
+    return await authRequest('/api/data/state');
   },
 
   downloadDataset() {

@@ -5,7 +5,7 @@
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 12/4/2020
  * Updated: 12/24/2021
- * License: MIT License <https://github.com/cannlytics/cannlytics-console/blob/main/LICENSE>
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
  import {
   authErrors,

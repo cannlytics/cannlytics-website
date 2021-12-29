@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 5/27/2021
-  Updated: 11/25/2021
+  Updated: 12/28/2021
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
@@ -66,7 +66,15 @@
     <ul class="serif mt-3">
       <li class="mb-3">
         <a
-          href="../data/market"
+          href="{% url 'page' page='testing' %}"
+          class="serif text-dark fw-bold background-hover"
+        >
+          Laboratories, analyses, and prices
+        </a>
+      </li>
+      <li class="mb-3">
+        <a
+          href="{% url 'section' page='data' section='market' %}"
           class="serif text-dark fw-bold background-hover"
         >
           Market <span class="badge rounded-pill bg-warning">New</span>
@@ -74,7 +82,7 @@
       </li>
       <li class="mb-3">
         <a
-          href="../data#state-data"
+          href="{% url 'section' page='data' section='state' %}"
           class="serif text-dark fw-bold background-hover"
         >
           State Cannabis Data
@@ -82,10 +90,10 @@
       </li>
       <li class="mb-3">
         <a
-          href="/labs"
+          href="{% url 'section' page='data' section='regulations' %}"
           class="serif text-dark fw-bold background-hover"
         >
-          Laboratories
+          Regulations
         </a>
       </li>
     </ul>
@@ -117,27 +125,6 @@
         <h5>States</h5>
       </div> {% endcomment %}
 
-      <!-- Legend -->
-      <!-- FIXME: Place better -->
-      <div
-        id="map-legend"
-        class="card bg-dark ms-4 pt-3 px-3 d-none"
-        style="border:none !important;height:75;"
-      >
-        <div class="d-flex align-items-center">
-          <input readonly disabled type="color" class="form-control form-control-color" value="#45B649" style="border:none !important;width:25px;height:25px;">
-          <div class="serif text-dark fs-6"><small>Recreational</small></div>
-        </div>
-        <div class="d-flex align-items-center">
-          <input readonly disabled type="color" class="form-control form-control-color" value="#96e6a1" style="border:none !important;width:25px;height:25px;">
-          <div class="serif text-dark fs-6"><small>Medical</small></div>
-        </div>
-        <div class="d-flex align-items-center">
-          <input readonly disabled type="color" class="form-control form-control-color" value="#DBDB93" style="border:none !important;width:25px;height:25px;">
-          <div class="serif text-dark fs-6"><small>Not Permitted</small></div>
-        </div>
-      </div>
-
       <!-- State detail card -->
       <div class="row row-wrap">
       {% for i in '0'|make_list %}
@@ -156,13 +143,14 @@
                 View State Data
               </a>
             </div>
+            <!-- TODO: Add hide button -->
             <div class="d-flex align-items-center mb-3">
               <span id="recreational_status_{{ i }}" class="badge rounded-pill bg-success me-2 d-none">Recreational</span>
               <span id="medicinal_status_{{ i }}" class="badge rounded-pill bg-info d-none">Medicinal</span>
             </div>
             <div class="card-text text-dark fs-6"><small id="state_total_licensees_{{ i }}" class="serif"></small></div>
             <div class="card-text text-dark fs-6"><small id="state_population_{{ i }}" class="serif"></small></div>
-            <!-- FIXME: Report licensees per 100,000 people -->
+            <!-- TODO: Report licensees per 100,000 people -->
             <div class="card-text text-dark fs-6"><small id="licensees_per_capita_{{ i }}" class="serif"></small></div>
             <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_{{ i }}" class="serif"></small></div>
             <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_per_capita_{{ i }}" class="serif"></small></div>
@@ -184,9 +172,28 @@
     <!-- Tooltip -->
     <div class="col col-md-5 card m-3" id="tooltip"></div>
 
-    <!-- Data Source Caption (Optional: Load from Firestore?) -->
-    <figcaption class="figure-caption text-secondary markdown pt-3" style="max-width:540px;">
-      <h6 class="text-dark sans-serif fw-bold mt-3">
+    <!-- Legend -->
+    <div
+      id="map-legend"
+      class="card col-3 bg-transparent no-border mt-3"
+    >
+      <div class="d-flex align-items-center">
+        <input readonly disabled type="color" class="form-control form-control-sm form-control-color no-border bg-none" value="#45B649">
+        <div class="serif text-dark fs-6"><small>Recreational</small></div>
+      </div>
+      <div class="d-flex align-items-center">
+        <input readonly disabled type="color" class="form-control form-control-sm form-control-color no-border bg-none" value="#96e6a1">
+        <div class="serif text-dark fs-6"><small>Medical</small></div>
+      </div>
+      <div class="d-flex align-items-center">
+        <input readonly disabled type="color" class="form-control form-control-sm form-control-color no-border bg-none" value="#DBDB93">
+        <div class="serif text-dark fs-6"><small>Not Permitted</small></div>
+      </div>
+    </div>
+
+    <!-- Data Source Caption -->
+    <figcaption class="figure-caption text-secondary markdown mt-3" style="max-width:540px;">
+      <h6 class="text-dark sans-serif fw-bold">
         Data Sources
       </h6>
       Resident population is published by the
@@ -196,11 +203,7 @@
 
   </section>
 
-      <!-- Information d-flex flex-direction-column-->
-      {% comment %} <div class="col-lg-3">
-      </div> {% endcomment %}
-
-  <!-- National Statistics -->
+  <!-- TODO: National Statistics -->
   {% comment %} {% include "website/pages/data/data_components/national_realtime_statistics.html" %} {% endcomment %}
 
 {% endblock material %}
@@ -291,12 +294,12 @@
           //} else {
           //  statesSelected.push(event.id);
           //}
-          console.log('Looking for:', `state-overview-card-${cardId}`);
           document.getElementById(`state-overview-card-${cardId}`).classList.remove('d-none');
           document.getElementById(`state_name_${cardId}`).textContent = `${event.n} (${event.id})`;
-          cannlytics.data.getDataSet(`public/data/state_data/${event.id.toLowerCase()}`).then(function (stateData) {
+          cannlytics.data.getStateData(event.id.toLowerCase()).then(function (response) {
+            var stateData = response.data;
             document.getElementById(`state_population_${cardId}`).textContent = `Population: ${stateData.population}`;
-            document.getElementById(`state_data_button_${cardId}`).href = `${window.location.href}state/${event.id.toLowerCase()}`;
+            document.getElementById(`state_data_button_${cardId}`).href = `${window.location.href}/state/${event.id.toLowerCase()}`;
             if (stateData.total_licensees) {
               document.getElementById(`state_total_licensees_${cardId}`).classList.remove('d-none');
               document.getElementById(`state_total_licensees_${cardId}`).textContent = `Total Licensees: ${stateData.total_licensees}`;
@@ -360,12 +363,12 @@
 
       // Format data, setting color conditionally on recreational / medicinal status.
       var data = {};
-      response.forEach(function(obs) {
+      response.data.forEach(function(obs) {
         if (obs === undefined) obs = {}
         if (obs.recreational) obs.color = '#45B649';
         else if (obs.medicinal) obs.color = '#96e6a1';
         else obs.color = '#DBDB93';
-        // FIXME: Pass index
+        // Optional: Pass index?
         if (obs.state_data) document.getElementById('state_data_button_0').classList.remove('d-none');
         data[obs.state] = obs;
       });

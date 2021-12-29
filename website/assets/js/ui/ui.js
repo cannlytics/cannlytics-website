@@ -5,7 +5,7 @@
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 5/2/2021
  * Updated: 12/16/2021
- * License: MIT License <https://github.com/cannlytics/cannlytics-console/blob/main/LICENSE>
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Modal, Tooltip } from 'bootstrap';
 import { deserializeForm, serializeForm, getCookie, hasClass } from '../utils.js';
@@ -24,8 +24,8 @@ export function hideLoadingButton(buttonId) {
    * Hide a by-default hidden loading button given the ID of its button counterpart.
    * @param {String} buttonId The element ID of the loading button.
    */
-  document.getElementById(buttonId).classList.add('d-none');
-  document.getElementById(`${buttonId}-loading`).classList.remove('d-none');
+  document.getElementById(`${buttonId}-loading`).classList.add('d-none');
+  document.getElementById(buttonId).classList.remove('d-none');
 };
 
 export function showModal(id) {

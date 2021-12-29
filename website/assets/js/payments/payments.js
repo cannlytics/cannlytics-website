@@ -8,7 +8,8 @@
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { getDocument } from '../firebase.js';
-import { authRequest, getUrlParameter } from '../utils.js';
+import { authRequest, getUrlParameter, showNotification, validateEmail } from '../utils.js';
+import { hideLoadingButton, showLoadingButton } from '../ui/ui.js';
 
 export const payments = {
 
@@ -64,25 +65,32 @@ export const payments = {
 
   async subscribe(subscription) {
     /**
-     * Save account information,
-     * then navigate to the confirmation page.
+     * Subscribe email, then navigate to the confirmation page.
      * @param {Subscription} subscription A subscription class.
      */
-    // FIXME: Test.
     const form = document.getElementById('account-information');
     let data;
+    showLoadingButton('subscribe-button');
     if (form) {
       data = Object.fromEntries(new FormData(form).entries());
       data = { ...data, ...subscription };
     } else {
       const userEmail = document.getElementById('email-input').value;
+      if (!validateEmail(userEmail)) {
+        const message = 'Please provide a valid email.'
+        showNotification('Invalid email', message, /* type = */ 'error');
+        hideLoadingButton('subscribe-button');
+        return;
+      }
       data = { email: userEmail };
     }
     const response = await authRequest('/src/subscribe', data);
     if (response.success) {
       window.location.href = `${window.location.origin}/subscriptions/subscribed`;
     } else {
-      // TODO: Show error message.
+      const message = 'An error occurred when saving your account.'
+      showNotification('Error saving your account', response.message, /* type = */ 'error');
+      hideLoadingButton('subscribe-button');
     }
   },
 

@@ -2,6 +2,7 @@
 # Created 1/5/2021
 # Updated: 12/24/2021
 
+# cannlytics==0.0.9 # TODO: Use the standard `cannlytics` package in production.
 datetime==4.3
 django==4.0
 django-environ==0.8.1
@@ -19,6 +20,7 @@ pandas==1.2.1 # Used only in cannlytics module.
 python-dotenv==0.19.2
 pymdown-extensions==9.1
 python-markdown-math==0.8
+openpyxl==3.0.9 # Used only in cannlytics module.
 ulid-py==1.1.0 # Used only in cannlytics module.
 waitress==2.0.0
 whitenoise==5.3.0

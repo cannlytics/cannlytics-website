@@ -19,9 +19,9 @@ app_context = {
     "footer": {
         "index": [
             {
-                "name": "Community",
+                "name": "Solutions",
                 "links": [
-                    {"title": "Labs", "page": "community"},
+                    {"title": "Labs", "page": "testing"},
                     {"title": "Producers", "page": "producers"},
                     {"title": "Retailers", "page": "retailers"},
                     {"title": "Integrators", "page": "integrators"},
@@ -195,21 +195,21 @@ material = {
             {
                 "title": "Smart Integrations",
                 "message": "We believe that everyone benefits when people are able to study and tinker with their software. With the freedom provided by Cannlytics, users control their software and what it does for them.",
-                "image": "website/images/illustrations/outline/lab_tablet.svg",
-                "action": "View options",
+                "image": "website/images/illustrations/cannlytics_developer.svg",
+                "action": "Begin customizing",
                 "action_url": "/support",
             },
             {
                 "title": "Analysis Tailored",
                 "message": "Cannlytics provides a user-friendly interface to quickly receive samples, perform analyses, collect and review results, and publish certificates of analysis (CoAs). There are also built in logistics, CRM (client relationship management), inventory management, and invoicing tools.",
-                "image": "website/images/illustrations/outline/lab_microscope.svg",
-                "action": "Begin customizing",
+                "image": "website/images/illustrations/cannlytics_scientist.svg",
+                "action": "View capabilities",
                 "action_url": "/community",
             },
             {
                 "title": "Community Driven",
-                "message": "Built by scientist for scientists. Cannlytics empowers you with control over the development process, resources, and decision making authority. We believe that the Cannlytics community is the best judge of how Cannlytics can be improved, so, we have entrusted Cannlytics' source code with you.",
-                "image": "website/images/illustrations/outline/lab_microbiologist.svg",
+                "message": "Built by scientist for scientists. Cannlytics empowers you with control over the development process, resources, and decision making authority. We believe that the Cannlytics community is the best judge of how Cannlytics can be improved, so, we have entrusted the Cannlytics source code with you.",
+                "image": "website/images/illustrations/cannlytics_collaboration.svg",
                 "action": "Contribute now",
                 "action_url": "/community",
             }

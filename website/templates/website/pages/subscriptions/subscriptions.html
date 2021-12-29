@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/17/2021
-  Updated: 12/23/2021
+  Updated: 12/28/2021
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
@@ -85,12 +85,11 @@
                 </svg> First access to data sets</small>
               </li>
             </ul>
-            <!-- FIXME: Link with url -->
             <a
               id="premium-button"
               type="button"
               class="btn w-100 bg-gradient-orange serif text-white"
-              href="/subscriptions/checkout?name=Newsletter"
+              href="{% url section page='subscriptions' section='checkout' %}?name=Newsletter"
             >
               Go premium
             </a>
@@ -109,9 +108,6 @@
         If you need software support....
       </p>
     </div>
-
-
-
 
   </div>
 
