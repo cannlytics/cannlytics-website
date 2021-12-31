@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 11/28/2021
- * Updated: 12/27/2021
+ * Updated: 12/31/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import {
@@ -39,33 +39,31 @@ export const accountSettings = {
         const fileElem = document.getElementById('user-photo-url');
         fileElem.addEventListener('change', this.uploadUserPhoto, false);
         document.getElementById('account-photo').src = user.photoURL;
-        const userData = {
-          name: user.displayName,
-          email: user.email,
-          phone_number: user.phoneNumber || '',
-        };
-        const userForm = document.forms['user-form'];
-        userForm.reset();
-        deserializeForm(userForm, userData);
+        this.resetAccountForm();
       } else {
         window.location.href = `${window.location.origin}/account/sign-up`;
       }
     });
   },
 
+  async resetAccountForm() {
+    /**
+     * Reset the user account form.
+     */
+    const { data } = await authRequest('/api/users');
+    const userForm = document.forms['user-form'];
+    userForm.reset();
+    deserializeForm(userForm, data);
+  },
+
   async saveAccount() {
     /**
     * Saves a user's account fields.
     */
-    // FIXME: API returns 500 error.
     const user = getCurrentUser();
     const data = serializeForm('user-form');
-    if (data.email !== user.email) {
-      await changeEmail(data.email);
-    }
-    if (data.name !== user.displayName) {
-      await updateUserDisplayName(data.name);
-    }
+    if (data.email !== user.email) await changeEmail(data.email);
+    if (data.name !== user.displayName) await updateUserDisplayName(data.name);
     const response = await authRequest('/api/users', data);
     if (response.success) {
       const message = 'Your account data has been successfully saved.'
@@ -80,7 +78,6 @@ export const accountSettings = {
     /**
      * Upload a user's photo through the API.
      */
-    // FIXME: API error.
     if (this.files.length) {
       showNotification('Uploading photo', 'Uploading your profile picture...', /* type = */ 'wait');
       const downloadURL = await updateUserPhoto(this.files[0]);
@@ -88,6 +85,7 @@ export const accountSettings = {
       if (response.success) {
         document.getElementById('user-photo-url').src = downloadURL;
         document.getElementById('user-photo').src = downloadURL;
+        document.getElementById('account-photo').src = downloadURL;
         const message = 'Successfully uploaded your profile picture.';
         showNotification('Uploading photo complete', message, /* type = */ 'success');
       } else {

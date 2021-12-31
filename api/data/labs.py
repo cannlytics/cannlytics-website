@@ -4,7 +4,7 @@ Copyright (c) Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 5/30/2021
-Updated: 7/31/2021
+Updated: 12/31/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 Description: API endpoints to interface with lab data, data about labs and data
@@ -27,19 +27,6 @@ from cannlytics.firebase import (
     get_document,
     update_document,
 )
-
-
-# @api_view(['GET'])
-# def lab(request, format=None):
-#     """Get or update information about a lab."""
-
-#     # Query labs.
-#     if request.method == 'GET':
-#         limit = request.query_params.get('limit', None)
-#         order_by = request.query_params.get('order_by', 'state')
-#         # TODO: Get any filters from dict(request.query_params)
-#         labs = get_collection('labs', order_by=order_by, limit=limit, filters=[])
-#         return Response({'success': True, 'data': labs}, content_type='application/json')
 
 
 @api_view(['GET'])
@@ -83,6 +70,51 @@ def labs(request, license_number=None):
     response = {'success': True, 'data': data}
     return Response(response, status=200)
 
+
+@api_view(['GET', 'POST'])
+def lab_logs(request, org_id, format=None):
+    """Get or create lab logs."""
+
+    if request.method == 'GET':
+        data = get_collection(f'labs/{org_id}/logs')
+        return Response({ 'data': data}, content_type='application/json')
+
+    elif request.method == 'POST':
+        # TODO: Create a log.
+        return Response({'success': True, 'data': 'Under construction'}, content_type='application/json')
+
+
+@api_view(['GET', 'POST'])
+def lab_analyses(request, org_id, format=None):
+    """
+    Get or update (TODO) lab analyses.
+    """
+
+    if request.method == 'GET':
+        data = get_collection(f'labs/{org_id}/analyses')
+        return Response({ 'data': data}, content_type='application/json')
+
+    elif request.method == 'POST':
+        # TODO: Create an analysis.
+        return Response({'success': True, 'data': 'Under construction'}, content_type='application/json')
+
+
+#------------------------------------------------------------------------------
+# SCRAP
+#------------------------------------------------------------------------------
+
+# @api_view(['GET'])
+# def lab(request, format=None):
+#     """Get or update information about a lab."""
+
+#     # Query labs.
+#     if request.method == 'GET':
+#         limit = request.query_params.get('limit', None)
+#         order_by = request.query_params.get('order_by', 'state')
+#         # OLDTODO: Get any filters from dict(request.query_params)
+#         labs = get_collection('labs', order_by=order_by, limit=limit, filters=[])
+#         return Response({'success': True, 'data': labs}, content_type='application/json')
+
 # @api_view(['GET', 'POST'])
 # def labs(request, format=None):
 #     """Get or update information about labs."""
@@ -91,7 +123,7 @@ def labs(request, license_number=None):
 #     if request.method == 'GET':
 #         limit = request.query_params.get('limit', None)
 #         order_by = request.query_params.get('order_by', 'state')
-#         # TODO: Get any filters from dict(request.query_params)
+#         # OLDTODO: Get any filters from dict(request.query_params)
 #         labs = get_collection('labs', order_by=order_by, limit=limit, filters=[])
 #         return Response({'success': True, 'data': labs}, content_type='application/json')
 
@@ -106,7 +138,7 @@ def labs(request, license_number=None):
 #             response = {'success': False, 'message': 'Invalid authentication.'}
 #             return Response(response, content_type='application/json')
 
-#         # FIXME: Ensure that lab's can only edit their own lab.
+#         # OLDFIXME: Ensure that lab's can only edit their own lab.
 #         return Response({'success': False, 'message': 'Not implemented yet :('}, content_type='application/json')
 
 #         # # Get the posted lab data.
@@ -114,7 +146,7 @@ def labs(request, license_number=None):
 #         # org_id = lab['id']
 #         # lab['slug'] = slugify(lab['name'])
 
-#         # # TODO: Handle adding labs.
+#         # # OLDTODO: Handle adding labs.
 #         # # Create uuid, latitude, and longitude, other fields?
 
 #         # # Determine any changes.
@@ -146,31 +178,3 @@ def labs(request, license_number=None):
 #         # update_document(f'labs/{org_id}', lab)
 
 #         # return Response(log_entry, status=status.HTTP_201_CREATED)
-
-
-@api_view(['GET', 'POST'])
-def lab_logs(request, org_id, format=None):
-    """Get or create lab logs."""
-
-    if request.method == 'GET':
-        data = get_collection(f'labs/{org_id}/logs')
-        return Response({ 'data': data}, content_type='application/json')
-
-    elif request.method == 'POST':
-        # TODO: Create a log.
-        return Response({'success': True, 'data': 'Under construction'}, content_type='application/json')
-
-
-@api_view(['GET', 'POST'])
-def lab_analyses(request, org_id, format=None):
-    """
-    Get or update (TODO) lab analyses.
-    """
-
-    if request.method == 'GET':
-        data = get_collection(f'labs/{org_id}/analyses')
-        return Response({ 'data': data}, content_type='application/json')
-
-    elif request.method == 'POST':
-        # TODO: Create an analysis.
-        return Response({'success': True, 'data': 'Under construction'}, content_type='application/json')

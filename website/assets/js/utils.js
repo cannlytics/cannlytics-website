@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 2/21/2021
- * Updated: 12/9/2021
+ * Updated: 12/31/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Toast } from 'bootstrap';
@@ -223,13 +223,11 @@ export function showNotification(title, message, type, delay = 3500) {
   toastEl.classList.remove('d-none');
   if (type) {
     const types = ['error', 'success', 'wait'];
+    document.getElementById(`notification-error-icon`).classList.add('d-none');
+    document.getElementById(`notification-success-icon`).classList.add('d-none');
+    document.getElementById(`notification-wait-icon`).classList.add('d-none');
     types.forEach((t) => {
-      console.log(type);
-      if (type === t) {
-        document.getElementById(`notification-${type}-icon`).classList.remove('d-none');
-      } else {
-        document.getElementById(`notification-${type}-icon`).classList.add('d-none');
-      }
+      if (type === t) document.getElementById(`notification-${type}-icon`).classList.remove('d-none');
     });
   }
   const toast = new Toast(toastEl, { delay });

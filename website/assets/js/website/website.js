@@ -9,6 +9,7 @@
  * 
  * TODO: Refactor and move functions to better homes.
  */
+import { Toast } from 'bootstrap';
 import { checkGoogleLogIn, onAuthChange } from '../firebase.js';
 import { setTableTheme } from '../ui/ui.js';
 import { authRequest } from '../utils.js';
@@ -43,7 +44,7 @@ export const website = {
     this.scrollToHash();
 
     // Check if a user is signed in.
-    onAuthChange(user => {
+    onAuthChange(async user => {
       if (user) {
         document.getElementById('user-email').textContent = user.email;
         document.getElementById('user-name').textContent = user.displayName;
@@ -53,6 +54,12 @@ export const website = {
           document.getElementById('user-photo').src = `/robohash/${user.email}/?width=60&height=60`
         }
         this.toggleAuthenticatedMaterial(true);
+        await authRequest('/src/auth/login');
+        if (user.metadata.createdAt == user.metadata.lastLoginAt) {
+          const { email } = user;
+          const data = { email, photo_url: `https://robohash.org/${email}?set=set1` };
+          await apiRequest('/api/users', data);
+        }
       } else {
         this.toggleAuthenticatedMaterial(false);
         checkForCredentials();
@@ -65,8 +72,8 @@ export const website = {
     /**
      * Initialize Bootstrap toasts.
      */
-    var toast = document.getElementById('cookie-toast');
-    new bootstrap.Toast(toast, { autohide: false });
+    const element = document.getElementById('cookie-toast');
+    new Toast(element, { autohide: false });
   },
 
   acceptCookies() {
@@ -74,7 +81,7 @@ export const website = {
      * Save choice that user accepted cookies.
      */
     localStorage.setItem('acceptCookies', true);
-    var toast = document.getElementById('accept-cookies');
+    const toast = document.getElementById('accept-cookies');
     toast.style.display = 'none';
     toast.style.opacity = 0;
     // TODO: Make entry in Firestore for cookie accepted?
@@ -85,9 +92,9 @@ export const website = {
      * Checks if a user needs to accept cookies.
      */
     window.onload = function() {
-      var acceptCookies = localStorage.getItem('acceptCookies');
+      const acceptCookies = localStorage.getItem('acceptCookies');
       if (!acceptCookies) {
-        var toast = document.getElementById('accept-cookies');
+        const toast = document.getElementById('accept-cookies');
         toast.style.display = 'block';
         toast.style.opacity = 1;
       }
@@ -98,13 +105,13 @@ export const website = {
     /**
      * Change the website's theme.
      */
-    var theme = localStorage.getItem('theme');
+    let theme = localStorage.getItem('theme');
     if (!theme) {
-      var hours = new Date().getHours();
-      var dayTime = hours > 6 && hours < 20;
+      const hours = new Date().getHours();
+      const dayTime = hours > 6 && hours < 20;
       theme = dayTime ? 'light' : 'dark';
     }
-    var newTheme = (theme === 'light') ? 'dark' : 'light';
+    const newTheme = (theme === 'light') ? 'dark' : 'light';
     this.setTheme(newTheme);
     setTableTheme();
     localStorage.setItem('theme', newTheme);
@@ -115,10 +122,10 @@ export const website = {
      * Set the theme when the website loads.
      */
     if (typeof(Storage) !== 'undefined') {
-      var theme = localStorage.getItem('theme');
+      let theme = localStorage.getItem('theme');
       if (!theme) {
-        var hours = new Date().getHours();
-        var dayTime = hours > 6 && hours < 20;
+        const hours = new Date().getHours();
+        const dayTime = hours > 6 && hours < 20;
         if (!dayTime) this.setTheme('dark');
         return;
       }
@@ -155,11 +162,9 @@ export const website = {
     /**
      * Scroll to any an from any hash in the URL.
      */
-    var hash = window.location.hash.substring(1);
-    var element = document.getElementById(hash);
-    if (element) {
-      element.scrollIntoView();
-    }
+    const hash = window.location.hash.substring(1);
+    const element = document.getElementById(hash);
+    if (element) element.scrollIntoView();
   },
 
   copyToClipboard(text) {
@@ -169,7 +174,7 @@ export const website = {
     */
     // Optional: Improve getting only text from between tags.
     // https://aaronluna.dev/blog/add-copy-button-to-code-blocks-hugo-chroma/
-    var tags = [
+    const tags = [
       /<span class="p">/g,
       /<\/span>/g,
       /<span class="nx">/g,
@@ -193,11 +198,11 @@ export const website = {
     // TODO: Improve this function to remove jank.
     const indicatesAuth = document.getElementsByClassName('indicates-auth');
     const requiresAuth = document.getElementsByClassName('requires-auth');
-    for (var i = 0; i < indicatesAuth.length; i++) {
+    for (let i = 0; i < indicatesAuth.length; i++) {
       if (authenticated) indicatesAuth.item(i).classList.add('visually-hidden');
       else indicatesAuth.item(i).classList.remove('visually-hidden');
     }
-    for (var i = 0; i < requiresAuth.length; i++) {
+    for (let i = 0; i < requiresAuth.length; i++) {
       if (authenticated) requiresAuth.item(i).classList.remove('visually-hidden');
       else requiresAuth.item(i).classList.add('visually-hidden');
     }
