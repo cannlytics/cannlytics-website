@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 2/13/2021
-  Updated: 11/28/2021
+  Updated: 12/31/2021
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
@@ -108,7 +108,10 @@
       class="d-flex flex-column align-items-start justify-content-center mt-5"
     >
       <p class="text-center text-small fs-6 font-weight-light">
-        <a class="text-dark fs-6" href="/account/sign-in">
+        <a
+          class="background-hover text-dark fs-6"
+          href="{% url 'section' page='account' section='sign-in' %}"
+        >
           <small>Click here to sign into an existing account</small>
         </a>
       </p>

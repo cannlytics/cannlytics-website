@@ -63,35 +63,43 @@ export const payments = {
     await authRequest('/src/market/promotions', data);
   },
 
+  async subscribeToFreeNewsletter() {
+    /**
+     * Subscribe the user to the free newsletter.
+     */
+    
+  },
+
   async subscribe(subscription) {
     /**
      * Subscribe email, then navigate to the confirmation page.
-     * @param {Subscription} subscription A subscription class.
+     * @param {String} subscription A subscription class.
      */
-    const form = document.getElementById('account-information');
-    let data;
-    showLoadingButton('subscribe-button');
-    if (form) {
-      data = Object.fromEntries(new FormData(form).entries());
-      data = { ...data, ...subscription };
-    } else {
-      const userEmail = document.getElementById('email-input').value;
-      if (!validateEmail(userEmail)) {
-        const message = 'Please provide a valid email.'
-        showNotification('Invalid email', message, /* type = */ 'error');
-        hideLoadingButton('subscribe-button');
-        return;
-      }
-      data = { email: userEmail };
-    }
-    const response = await authRequest('/src/payments/subscribe', data);
-    if (response.success) {
-      window.location.href = `${window.location.origin}/subscriptions/subscribed`;
-    } else {
-      const message = 'An error occurred when saving your account.'
-      showNotification('Error saving your account', response.message, /* type = */ 'error');
-      hideLoadingButton('subscribe-button');
-    }
+    console.log('TODO: Subscribe the user to:', subscription);
+    // const form = document.getElementById('account-information');
+    // let data;
+    // showLoadingButton('subscribe-button');
+    // if (form) {
+    //   data = Object.fromEntries(new FormData(form).entries());
+    //   data = { ...data, ...subscription };
+    // } else {
+    //   const userEmail = document.getElementById('email-input').value;
+    //   if (!validateEmail(userEmail)) {
+    //     const message = 'Please provide a valid email.'
+    //     showNotification('Invalid email', message, /* type = */ 'error');
+    //     hideLoadingButton('subscribe-button');
+    //     return;
+    //   }
+    //   data = { email: userEmail };
+    // }
+    // const response = await authRequest('/src/payments/subscribe', data);
+    // if (response.success) {
+    //   window.location.href = `${window.location.origin}/subscriptions/subscribed`;
+    // } else {
+    //   const message = 'An error occurred when saving your account.'
+    //   showNotification('Error saving your account', response.message, /* type = */ 'error');
+    //   hideLoadingButton('subscribe-button');
+    // }
   },
 
   // OLD | refactor if needed.

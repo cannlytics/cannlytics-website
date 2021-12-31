@@ -118,7 +118,7 @@
               <!-- Reset Password -->
               <a
                 class="background-hover fs-6"
-                href="https://console.cannlytics.com/account/password-reset"
+                href="{% url 'section' page='account' section='password-reset' %}"
               >
                 <small class="serif text-dark">Lost password?</small>
               </a>
@@ -159,7 +159,7 @@
               <small>New to Cannlytics?
                 <a
                   class="background-hover"
-                  href="https://console.cannlytics.com/account/sign-up"
+                  href="{% url 'section' page='account' section='sign-up' %}"
                 >
                   <b class="serif text-dark">Sign up!</b>
                 </a>

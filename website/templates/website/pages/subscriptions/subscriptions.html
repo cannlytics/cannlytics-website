@@ -26,7 +26,7 @@
   <!-- Pricing Options -->
   <div class="container mb-5 mt-3">
 
-    <div class="row">
+    <div class="row d-flex align-items-center">
 
     <!-- Description -->
     <div class="col markdown py-5" style="max-width:560px;">
@@ -50,7 +50,7 @@
 
       <!-- Premium Tier -->
       <div class="col-12 col-md-5">
-        <div class="card h-100 mb-4 shadow-sm">
+        <div class="card mb-4 shadow-sm">
           <div class="card-header bg-gradient-orange">
             <h4 class="text-white my-0 font-weight-normal">Premium</h4>
           </div>
@@ -62,34 +62,34 @@
               <li class="fs-6 mb-1"><small class="serif text-dark">
                 <svg class="" style="width:24px;height:24px;">
                   <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
-                </svg> Access to all videos</small>
+                </svg>All datasets</small>
               </li>
               <li class="fs-6 mb-1"><small class="serif text-dark">
                 <svg class="" style="width:24px;height:24px;">
                   <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
-                </svg> Access to all whitepapers</small>
+                </svg>All videos</small>
               </li>
               <li class="fs-6 mb-1"><small class="serif text-dark">
                 <svg class="" style="width:24px;height:24px;">
                   <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
-                </svg> Analytics console</small>
+                </svg>All whitepapers</small>
               </li>
               <li class="fs-6 mb-1"><small class="serif text-dark">
                 <svg class="" style="width:24px;height:24px;">
                   <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
-                </svg> Community material</small>
+                </svg>API access</small>
               </li>
-              <li class="fs-6 mb-1"><small class="serif text-dark">
+              {% comment %} <li class="fs-6 mb-1"><small class="serif text-dark">
                 <svg class="" style="width:24px;height:24px;">
                   <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
                 </svg> First access to data sets</small>
-              </li>
+              </li> {% endcomment %}
             </ul>
             <a
               id="premium-button"
               type="button"
               class="btn w-100 bg-gradient-orange serif text-white"
-              href="{% url section page='subscriptions' section='checkout' %}?name=Newsletter"
+              href="{% url 'section' page='subscriptions' section='checkout' %}?name=Newsletter"
             >
               Go premium
             </a>

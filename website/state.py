@@ -162,15 +162,15 @@ material = {
         "user_options": [
             {
                 "title": "Change your password",
-                "url": "/account/password-reset",
+                "section": "password-reset",
             },
             {
-                "title": "Manage your subscription",
-                "url": "/account/subscription",
+                "title": "Manage your subscriptions",
+                "section": "subscriptions",
             },
             {
                 "title": "Make a suggestion",
-                "url": "/account/feedback",
+                "section": "feedback",
             },
         ],
     },
@@ -254,7 +254,7 @@ material = {
                 "name": "Pro",
                 "price": "$420 / mo.",
                 "color": "orange",
-                "action": "Get Started 🛥️",
+                "action": "Get Started 🚤",
                 "url": "/subscriptions/checkout?name=Premium",
                 "attributes": [
                     "Metrc integration*",
@@ -263,19 +263,19 @@ material = {
                     "Email support",
                 ],
             },
-            {
-                "name": "Premium",
-                "price": "$4.20 / mo.",
-                "color": "green",
-                "action": "Sign Up ✍️",
-                "url": "https://console.cannlytics.com",
-                "attributes": [
-                    "All datasets",
-                    "All videos",
-                    "All whitepapers",
-                    "API access",
-                ],
-            },
+            # {
+            #     "name": "Premium",
+            #     "price": "$4.20 / mo.",
+            #     "color": "green",
+            #     "action": "Sign Up ✍️",
+            #     "url": "https://console.cannlytics.com",
+            #     "attributes": [
+            #         "All datasets",
+            #         "All videos",
+            #         "All whitepapers",
+            #         "API access",
+            #     ],
+            # },
         ],
     },
     "partners": {
