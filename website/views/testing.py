@@ -22,11 +22,11 @@ from website.views.mixins import BaseMixin
 FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
-class CommunityView(BaseMixin, TemplateView):
-    """Community page."""
+class TestingView(BaseMixin, TemplateView):
+    """Testing page."""
 
     def get_template_names(self):
-        return ['website/pages/community/community.html']
+        return ['website/pages/testing/testing.html']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -40,7 +40,7 @@ class LabView(BaseMixin, TemplateView):
     """View for lab detail pages."""
 
     def get_template_names(self):
-        return ['website/pages/community/labs/lab.html']
+        return ['website/pages/testing/labs/lab.html']
 
     def get_lab_data(self, context):
         """Get a lab's data from Firestore."""
@@ -66,7 +66,7 @@ class NewLabView(BaseMixin, TemplateView):
     """View for adding a lab."""
 
     def get_template_names(self):
-        return ['website/pages/community/labs/new.html']
+        return ['website/pages/testing/labs/new.html']
 
     def get_context_data(self, **kwargs):
         """Get the context for a page."""

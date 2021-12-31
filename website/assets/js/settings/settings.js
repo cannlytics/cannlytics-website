@@ -7,9 +7,8 @@
  * Updated: 11/28/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
- import { accountSettings } from './account.js';
- 
- 
- export const settings = {
-   ...accountSettings,
- };
+import { accountSettings } from './account.js';
+
+export const settings = {
+  ...accountSettings,
+};

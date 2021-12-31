@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 12/26/2020
-  Updated: 11/25/2021
+  Updated: 12/30/2021
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
@@ -85,14 +85,14 @@
         </div>
 
         <!-- Change log -->
-        <div
+        {% comment %} <div
           id="logs"
           class="tab-pane fade"
           role="tabpanel"
           aria-labelledby="logs-tab"
         >
           {% include "./logs.html" with lab=lab only%}
-        </div>
+        </div> {% endcomment %}
 
       </div><!-- End of tab content -->
 
@@ -104,7 +104,7 @@
 <!-- Lab JavaScript -->
 {% block page_js %}
   <script>
-    cannlytics.community.logView("{{ lab.id }}", 'page_views'); // Passing org ID from Django.
+    // cannlytics.community.logView("{{ lab.id }}", 'page_views'); // Passing org ID from Django.
   </script>
 {% endblock page_js %}
 

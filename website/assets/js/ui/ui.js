@@ -8,7 +8,58 @@
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Modal, Tooltip } from 'bootstrap';
-import { deserializeForm, serializeForm, getCookie, hasClass } from '../utils.js';
+import { deserializeForm, serializeForm, hasClass } from '../utils.js';
+
+// Unused? Generalize?
+// showPromo() {
+//   /**
+//    * Show the promo code field.
+//    */
+//   const promoButton = document.getElementById('promo-button');
+//   const promoInputGroup = document.getElementById('promo-input-group');
+//   promoButton.style.display = 'none';
+//   if (promoInputGroup.classList.contains('visually-hidden')) {
+//     promoInputGroup.classList.remove('visually-hidden');
+//   }
+// }
+
+export function addSelectOptions(id, options) {
+  /**
+   * Adds select options to an existing select.
+   * @param {String} id The element ID of a select in the UI.
+   * @param {Array} options A list of options, which are label / value pairs.
+   */
+  const select = document.getElementById(id);
+  options.forEach(option => {
+    const newOption = document.createElement('option');
+    newOption.value = option.value;
+    newOption.innerHTML = option.label;
+    select.appendChild(newOption);
+  });
+}
+
+export function getTheme() {
+  /**
+   * Get the current theme.
+   */
+  return (document.body.classList.contains('dark')) ? 'dark' : 'light';
+}
+
+export function setTableTheme() {
+  /**
+   * Set the appropriate theme for tables based on the current theme,
+   * toggling the Ag-Grid theme too.
+   */
+  let nuisanceTableClass = 'ag-theme-alpine-dark';
+  let finalTableClass = 'ag-theme-alpine';
+  if (hasClass(document.body, 'dark')) {
+    nuisanceTableClass = 'ag-theme-alpine';
+    finalTableClass = 'ag-theme-alpine-dark';
+  }
+  let tables = document.getElementsByClassName(nuisanceTableClass);
+  [...tables].forEach( x => x.classList.add(finalTableClass) );
+  [...tables].forEach( x => x.classList.remove(nuisanceTableClass) );
+}
 
 export function showLoadingButton(buttonId) {
   /**

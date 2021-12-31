@@ -34,7 +34,7 @@ export const auth = {
      */
     onAuthChange(async (user) => {
       if (!user) return;
-      await authRequest('/src/login');
+      await authRequest('/src/auth/login');
       if (user.metadata.createdAt == user.metadata.lastLoginAt) {
         const { email } = user;
         const data = { email, photo_url: `https://robohash.org/${email}?set=set1` };
@@ -145,7 +145,7 @@ export const auth = {
      * Sign a user out of their account.
      */
     await logOut();
-    await authRequest('/src/logout');
+    await authRequest('/src/auth/logout');
     document.location.href = `${window.location.origin}/account/sign-out`;
   },
   

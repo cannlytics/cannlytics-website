@@ -23,7 +23,7 @@
   <div class="row mb-3">
 
     <!-- User image -->
-    <div class="col col-md-5 mx-3 mb-3">
+    <div class="col col-md-5 mb-3">
       <div class="row mb-2">
         <label
           for="user-photo-url"
@@ -52,7 +52,7 @@
     </div>
 
     <!-- Account fields -->
-    <div class="col-md-6 px-4">
+    <div class="col-md-6 px-4 mx-3">
       <form id="user-form">
         {% for item in account.user_fields %}        
           <div class="row mb-3">
@@ -103,7 +103,7 @@
   </div>
 
   <!-- Other Account options -->
-  <div class="col-md-6 px-3">
+  <div class="col-md-6">
     <h5 class="fs-5 lh-base serif text-dark mb-0 mt-5">
       Other account options
     </h5>
@@ -111,7 +111,7 @@
       {% for item in account.user_options %}   
         <a
           href="{{ item.url }}"
-          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center text-dark"
+          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center text-dark background-hover"
           aria-current="true"
         >
           <small class="serif">{{ item.title }}</small>

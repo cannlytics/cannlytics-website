@@ -10,6 +10,7 @@
  * TODO: Refactor and move functions to better homes.
  */
 import { checkGoogleLogIn, onAuthChange } from '../firebase.js';
+import { setTableTheme } from '../ui/ui.js';
 import { authRequest } from '../utils.js';
 
 async function checkForCredentials() {
@@ -105,6 +106,7 @@ export const website = {
     }
     var newTheme = (theme === 'light') ? 'dark' : 'light';
     this.setTheme(newTheme);
+    setTableTheme();
     localStorage.setItem('theme', newTheme);
   },
 

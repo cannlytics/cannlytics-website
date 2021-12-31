@@ -49,7 +49,7 @@ export const payments = {
     /**
      * Get the current user's subscriptions.
      */
-    const response = await authRequest('/src/subscriptions');
+    const response = await authRequest('/src/payments/subscriptions');
     return response.data;
   },
 
@@ -60,7 +60,7 @@ export const payments = {
     const code = getUrlParameter('source');
     if (!code) return;
     const data = { 'promo_code': code };
-    await authRequest('/src/promotions', data);
+    await authRequest('/src/market/promotions', data);
   },
 
   async subscribe(subscription) {
@@ -84,7 +84,7 @@ export const payments = {
       }
       data = { email: userEmail };
     }
-    const response = await authRequest('/src/subscribe', data);
+    const response = await authRequest('/src/payments/subscribe', data);
     if (response.success) {
       window.location.href = `${window.location.origin}/subscriptions/subscribed`;
     } else {

@@ -18,7 +18,7 @@ export const errorSettings = {
      * @param {Object} data Error data.
      */
     try {
-      authRequest('/src/send-message', data);
+      authRequest('/src/email/send-message', data);
       const message = 'Thank you for reporting this error. We will try to address it as soon as possible.';
       showNotification('Error report sent', message, /* type = */ 'success');
     } catch(error) {

@@ -284,3 +284,14 @@ export const validateEmail = (email) => {
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
 };
+
+/*---------------------------------------------------------------------
+Data Helpers
+--------------------------------------------------------------------*/
+
+export const sortArrayOfObjects = (array, field) => {
+  /**
+   * Sort an array of objects by a given field.
+   */
+  return array.sort((a, b) => (a[field] > b[field]) ? 1 : ((b[field] > a[field]) ? -1 : 0));
+}

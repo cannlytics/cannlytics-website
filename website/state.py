@@ -81,9 +81,6 @@ app_context = {
 #-----------------------------------------------------------------------
 
 page_data = {
-    "contact": {
-        "documents": [{"name": "recaptcha", "ref": "admin/recaptcha"}]
-    },
     "contributors": {
         "collections": [{"name": "contributors", "ref": "public/contributors/contributor_data"}],
     },
@@ -293,6 +290,7 @@ material = {
     },
 }
 
+# TODO: Save in Firestore?
 # Context for lab pages.
 lab_state = {
     "detail_fields": [
@@ -324,6 +322,6 @@ lab_state = {
     "tabs": [
         {"name": "Details", "section": "details", "active": "true"},
         {"name": "Analyses", "section": "analyses"},
-        {"name": "Change log", "section": "logs"},
+        # {"name": "Change log", "section": "logs"},
     ]
 }

@@ -32,33 +32,9 @@ from cannlytics.firebase import (
     update_document,
 )
 from api.auth.auth import authenticate_request #pylint: disable=import-error
+
+# FIXME:
 from api.traceability.traceability import initialize_traceability
-
-
-@api_view(['GET'])
-def labs(request):
-    """Get laboratory information (public API endpoint)."""
-
-    # Get organization(s).
-    if request.method == 'GET':
-        filters = []
-        order_by = 'name'
-
-        # Get a specific organization.
-        organization_id = request.query_params.get('organization_id')
-        print('Organization ID:', organization_id)
-        if organization_id and organization_id != 'undefined':
-            filters.append({'key': 'slug', 'operation': '==', 'value': organization_id})
-
-        # Get all organizations in a state
-        state = request.query_params.get('state')
-        print('State:', state)
-        if state:
-            filters.append({'key': 'state', 'operation': '==', 'value': state})
-
-        # Query and return the docs.
-        docs = get_collection('labs', filters=filters, order_by=order_by, desc=True)
-        return Response({'data': docs}, status=200)
 
 
 @api_view(['GET'])

@@ -4,7 +4,7 @@ Copyright (c) Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 4/21/2021
-Updated: 12/15/2021
+Updated: 12/30/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 Description: API URLs to interface with cannabis analytics.
@@ -21,10 +21,7 @@ from api.auth import auth
 from api.base import base
 from api.certificates import certificates
 from api.contacts import contacts
-from api.data.authors import scholars
-from api.data import data
-from api.data.labs import labs
-from api.data.regulations import regulations
+from api.data import data, labs, regulations
 from api.instruments import instruments
 from api.inventory import inventory
 from api.invoices import invoices
@@ -79,15 +76,9 @@ urlpatterns = [
     ])),
     path('data', include([
         path('', data.datasets),
-        path('/labs', labs),
-        path('/regulations', regulations),
-        path('/scholars', scholars),
+        path('/regulations', regulations.regulations),
         path('/state', data.state_data),
         path('/state/<state>', data.state_data),
-        # path('/buy', data.buy_data),
-        # path('/publish', data.publish_data),
-        # path('/sell', data.sell_data),
-        # TODO: Add test-requirements?
     ])),
     path('people', include([
         path('', contacts.people),
@@ -122,14 +113,13 @@ urlpatterns = [
         path('/<user_id>', users.users),
         path('/<user_id>/settings', users.users),
     ])),
+    path('labs', include([
+        path('', labs.labs),
+        path('/<license_number>', labs.labs),
+        path('/<license_number>/analyses', labs.lab_analyses),
+        path('/<license_number>/logs', labs.lab_logs),
+    ])),
     path('organizations', include([
-        path('', organizations.organizations),
-        path('/labs', organizations.labs), # TODO: Replace with ?type=lab
-        # path('labs', api.labs),
-        # path('labs/<uuid:org_id>', api.labs),
-        # path('labs/<uuid:org_id>/analyses', api.lab_analyses),
-        # path('labs/<uuid:org_id>/analytes', api.lab_analytes),
-        # path('labs/<uuid:org_id>/logs', api.lab_logs),
         path('/<organization_id>', organizations.organizations),
         path('/<organization_id>/settings', organizations.organizations),
         path('/<organization_id>/team', organizations.organization_team),
