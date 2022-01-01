@@ -8,7 +8,7 @@ The Cannlytics API allows users to seamlessly integrate with all of the function
 | -------- | ------- | ----------- |
 | `\auth\authenticate`   | `POST`   | Create an authorized session. |
 | `\auth\login`   | `POST`   | Sign into your Firebase user account. |
-| `\auth\logout`   | `POST`   | Sign out of your Firebase user account and end your authorized session. |
+| `\auth\logout`   | `POST`   | Sign out of your Firebase user account and end your session. |
 | `\analyses` | `GET`, `POST`, `DELETE` | Manage analyses. |
 | `\analytes` | `GET`, `POST`, `DELETE` | Manage analyses. |
 | `\instruments` | `GET`, `POST`, `DELETE` | Manage instruments. |

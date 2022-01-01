@@ -1,6 +1,6 @@
 """
 Manage Partners | Cannlytics Website
-Copyright (c) 2021 Cannlytics
+Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 9/10/2021

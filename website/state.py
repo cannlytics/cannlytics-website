@@ -1,10 +1,10 @@
 """
 State Variables | Cannlytics Website
-Copyright (c) 2021 Cannlytics
+Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 10/15/2020
-Updated: 12/24/2021
+Updated: 1/1/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # pylint:disable=line-too-long

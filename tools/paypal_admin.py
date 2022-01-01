@@ -1,6 +1,6 @@
 """
 PayPal Subscription Management
-Copyright (c) 2021 Cannlytics
+Copyright (c) 2021-2022 Cannlytics
 
 Author: Keegan Skeate
 Contact: <keegan@cannlytics.com>

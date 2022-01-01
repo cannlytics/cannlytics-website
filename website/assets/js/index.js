@@ -1,10 +1,10 @@
 /**
  * Cannlytics Module Index | Cannlytics Website
- * Copyright (c) 2021 Cannlytics
+ * Copyright (c) 2021-2022 Cannlytics
  * 
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 1/6/2021
- * Updated: 11/28/2021
+ * Updated: 1/1/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { auth } from './auth/auth.js';

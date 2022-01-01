@@ -10,7 +10,7 @@
 -->
 {% load static %}
 <div class="container mb-5 mt-3">
-  <div class="markdown py-5" style="max-width:560px;">
+  <div class="markdown pt-5" style="max-width:560px;">
     <svg class="pt-3 pe-3" style="float:left;width:125px;height:125px;">
       <use href="{% static image_ref %}#{{ image_id }}"></use>
     </svg>
@@ -18,6 +18,8 @@
     <p class="mt-2">
       {{ description }}
     </p>
+  </div>
+  <div class="pb-5" style="max-width:560px;">
     <p class="text-start mt-3">
       <a
         class="btn btn-sm bg-gradient-green text-white"

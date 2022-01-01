@@ -1,10 +1,10 @@
 /**
  * Webpack Module Bundler | Cannlytics Website
- * Copyright (c) 2021 Cannlytics
+ * Copyright (c) 2021-2022 Cannlytics
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/5/2021
- * Updated: 11/25/2021
+ * Updated: 1/1/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 */
 const appName = 'website';
@@ -65,7 +65,7 @@ module.exports = env => {
             },
             {
               // Compiles Sass to CSS.
-              loader: 'sass-loader'
+              loader: 'sass-loader',
             },
           ],
         },
@@ -80,10 +80,10 @@ module.exports = env => {
         },
       ],
     },
-    // optimization: {
-    //   minimize: env.production, // Minimize JavaScript in production.
-    //   minimizer: [new TerserPlugin({ parallel: true })],
-    // },
+    optimization: {
+      minimize: env.production, // Minimize JavaScript in production.
+      minimizer: [new TerserPlugin({ parallel: true })],
+    },
     plugins: [
       new Dotenv(), // Make .env variables available in entry file.
     ],

@@ -1,6 +1,6 @@
 /**
  * User Interface JavaScript | Cannlytics Website
- * Copyright (c) 2021 Cannlytics
+ * Copyright (c) 2021-2022 Cannlytics
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 5/2/2021
