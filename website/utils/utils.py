@@ -35,7 +35,7 @@ EXTENSIONS = [
     'nl2br',
     'smarty',
     'tables',
-    TocExtension(permalink='#'),
+    # TocExtension(permalink='#'),
     'mdx_math', # Optional: Parse LaTeX
     'pymdownx.arithmatex',
     'pymdownx.emoji',
@@ -83,13 +83,13 @@ def get_markdown(
     try:
         # Optional: Prefer to open markdown file directly, instead of with a request.
         file_name = staticfiles_storage.url(f'/{app}/docs/{page}.md')
-        if DEBUG:
-            url = directory + file_name
-            markdown_file = open(url, 'r')
-            text = markdown_file.read()
-        else:
-            url = request.build_absolute_uri(file_name)
-            text = requests.get(url).text
+        # if DEBUG:
+        #     url = directory + file_name
+        #     markdown_file = open(url, 'r')
+        #     text = markdown_file.read()
+        # else:
+        url = request.build_absolute_uri(file_name)
+        text = requests.get(url).text
         context[name] = markdown(
             text,
             extensions=extensions,

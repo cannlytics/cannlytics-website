@@ -133,6 +133,7 @@ body.dark .brand-font {
 
 .markdown h1 {
   font-weight: 600;
+  font-size: 2.5rem;
 }
 .markdown h2 {
   margin-top: 3rem;
@@ -180,22 +181,22 @@ body.dark .brand-font {
 }
 
 /* Paragraph anchors */
-.markdown h1 a,
-.markdown h2 a,
-.markdown h3 a,
-.markdown h4 a {
-  color: #2daf8e;
-  visibility: hidden;
-  text-decoration: none;
-  margin-left: .5rem;
-  padding: 0 .25rem;
-}
-.markdown h1:hover a,
-.markdown h2:hover a,
-.markdown h3:hover a,
-.markdown h4:hover a {
-  visibility: visible;
-}
+// .markdown h1 a,
+// .markdown h2 a,
+// .markdown h3 a,
+// .markdown h4 a {
+//   color: #2daf8e;
+//   visibility: hidden;
+//   text-decoration: none;
+//   margin-left: .5rem;
+//   padding: 0 .25rem;
+// }
+// .markdown h1:hover a,
+// .markdown h2:hover a,
+// .markdown h3:hover a,
+// .markdown h4:hover a {
+//   visibility: visible;
+// }
 
 /* Markdown links */
 .markdown a {
@@ -217,6 +218,12 @@ body.dark .markdown a {
 }
 body.dark .markdown a:hover {
   background-color: #ffa60033;
+}
+body.dark .markdown h1,
+body.dark .markdown h2,
+body.dark .markdown h3,
+body.dark .markdown h4 {
+  color: #f8f8f8 !important;
 }
 
 /*--------------------------------------------------------------------------
@@ -336,34 +343,34 @@ body.dark .bg-cannlytics-green {
 
 /* Text gradients */
 .text-gradient {
-  background: -webkit-linear-gradient(-45deg,#45B649, #1f622f);
-  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background: -webkit-linear-gradient(-45deg,#45B649, #1f622f);
+  background-clip: text;
 }
 body.dark .text-gradient {
   background: -webkit-linear-gradient(-45deg,#45B649, #96e6a1);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  // background-clip: text;
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
 }
 body.dark .text-gradient-reverse {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   background: -webkit-linear-gradient(-45deg, #96e6a1, #45B649);
   background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 .text-gradient-orange {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   background: -webkit-linear-gradient(-45deg,#e53a23ff, #B9220E);
   background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 body.dark .text-gradient-orange {
-  background: -webkit-linear-gradient(-45deg,#ffa600, #e53a23ff);
-  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background: -webkit-linear-gradient(-45deg,#ffa600, #e53a23ff);
+  background-clip: text;
 }
 
 /* Background gradients */
@@ -373,8 +380,8 @@ body.dark .text-gradient-orange {
 }
 a.bg-gradient-green:hover,
 button.bg-gradient-green:hover {
-  background: #3f7f34ff;
   background: -webkit-linear-gradient(-45deg,#3f7f34ff, #5C9D52);
+  background: #3f7f34ff;
 }
 .bg-gradient-orange {
   transition: opacity 0.3s;
@@ -433,14 +440,14 @@ body.dark .light-green-fade {
   align-items: center;
 }
 .two-columns {
-  columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
+  columns: 2;
 }
 .three-columns {
-  columns: 3;
   -webkit-columns: 3;
   -moz-columns: 3;
+  columns: 3;
 }
 .hidden-item {
   display: none !important;

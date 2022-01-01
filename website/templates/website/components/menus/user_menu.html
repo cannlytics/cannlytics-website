@@ -15,42 +15,70 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link dropdown-toggle py-0" href="#" id="navbarUserMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-      <img id="user-photo" class="rounded-circle" style="max-width:60px; max-height:60px;" src="">
+    <a
+      class="nav-link dropdown-toggle py-0"
+      href="#" id="navbarUserMenu"
+      role="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+      aria-label="User Menu"
+    >
+      <img
+        id="user-photo"
+        class="rounded-circle"
+        style="max-width:60px; max-height:60px;"
+        src=""
+        title="User Menu"
+      >
     </a>
     <ul
       class="dropdown-menu dropdown-menu-end bg-light shadow mx-2"
       aria-labelledby="navbarUserMenu"
       style="z-index:10000; right:1rem !important; top:8rem; position: fixed !important;"
     >
-      <div class="px-3 pt-1">
+      <li class="px-3 pt-1">
         <h5 class="fs-6 serif text-dark" id="user-name"></h5>
         <h6 class="fs-6"><small class="serif text-secondary" id="user-email"></small></h6>
-      </div>
+      </li>
       <li><hr class="dropdown-divider"></li>
       <li>
-        <a class="dropdown-item background-hover" href="{% url 'page' page='account' %}">
+        <a
+          class="dropdown-item background-hover"
+          href="{% url 'page' page='account' %}"
+        >
           <small class="serif">Your account</small>
         </a>
       </li>
       <li>
-        <a class="serif dropdown-item background-hover" href="{% url 'section' page='account' section='password-reset' %}">
+        <a
+          class="serif dropdown-item background-hover"
+          href="{% url 'section' page='account' section='password-reset' %}"
+        >
           <small class="serif">Change your password</small>
         </a>
       </li>
       <li>
-        <a class="serif dropdown-item background-hover" href="{% url 'section' page='account' section='subscription' %}">
+        <a
+          class="serif dropdown-item background-hover"
+          href="{% url 'section' page='account' section='subscription' %}"
+        >
           <small class="serif">Manage your subscription</small>
         </a>
       </li>
       <li>
-        <a class="serif dropdown-item background-hover" href="{% url 'section' page='account' section='feedback' %}">
+        <a
+          class="serif dropdown-item background-hover"
+          href="{% url 'section' page='account' section='feedback' %}"
+        >
           <small class="serif">Make a suggestion</small>
         </a>
       </li>
       <!-- Optional: Sign out oddly does no highlight on hover correctly. Worth an optional fix. -->
       <li>
-        <button class="serif dropdown-item background-hover" onClick="cannlytics.auth.signOut()">
+        <button
+          class="serif dropdown-item background-hover"
+          onClick="cannlytics.auth.signOut()"
+        >
           <small class="serif ">Sign Out</small>
         </button>
       </li>

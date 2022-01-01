@@ -174,7 +174,7 @@ export const labs = {
       onGridReady: event => setTableTheme(),
       onRowClicked: event => {
         const { data } = event;
-        localStorage.setItem('lab', JSON.stringify(data));
+        // localStorage.setItem('lab', JSON.stringify(data));
         window.location.href = `${window.location.origin}/testing/labs/${data.license}`;
       },
     };
@@ -208,8 +208,8 @@ export const labs = {
     /**
      * Initialize lab details page.
      */
-    const data = JSON.parse(localStorage.getItem('lab'));
-    console.log('Lab data in storage:', data);
+    // const data = JSON.parse(localStorage.getItem('lab'));
+    // console.log('Lab data in storage:', data);
     // deserializeForm(document.forms[`${modelSingular}-form`], data)
     // const form = document.querySelector('form');
     // form.addEventListener('submit', this.updateLab);

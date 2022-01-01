@@ -96,10 +96,12 @@ def get_page_data(context: dict) -> dict:
 
 def get_page_docs(request: Any, context: dict) -> dict:
     """Get any text documents for a given page."""
+    print('Docs:', context['page'])
     docs = page_docs.get(context['page'])
     if docs:
+        print('Getting page docs:', docs)
         for doc in docs:
-            name = doc.replace('-', '_')
+            name = doc.replace('-', '_').replace('/', '_')
             context = get_markdown(
                 request,
                 context,

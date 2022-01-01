@@ -80,7 +80,7 @@ export const website = {
     /**
      * Save choice that user accepted cookies.
      */
-    localStorage.setItem('acceptCookies', true);
+    localStorage.setItem('cannlytics_accept_cookies', true);
     const toast = document.getElementById('accept-cookies');
     toast.style.display = 'none';
     toast.style.opacity = 0;
@@ -92,7 +92,7 @@ export const website = {
      * Checks if a user needs to accept cookies.
      */
     window.onload = function() {
-      const acceptCookies = localStorage.getItem('acceptCookies');
+      const acceptCookies = localStorage.getItem('cannlytics_accept_cookies');
       if (!acceptCookies) {
         const toast = document.getElementById('accept-cookies');
         toast.style.display = 'block';
@@ -105,7 +105,7 @@ export const website = {
     /**
      * Change the website's theme.
      */
-    let theme = localStorage.getItem('theme');
+    let theme = localStorage.getItem('cannlytics_theme');
     if (!theme) {
       const hours = new Date().getHours();
       const dayTime = hours > 6 && hours < 20;
@@ -114,7 +114,7 @@ export const website = {
     const newTheme = (theme === 'light') ? 'dark' : 'light';
     this.setTheme(newTheme);
     setTableTheme();
-    localStorage.setItem('theme', newTheme);
+    localStorage.setItem('cannlytics_theme', newTheme);
   },
 
   setInitialTheme() {
@@ -122,7 +122,7 @@ export const website = {
      * Set the theme when the website loads.
      */
     if (typeof(Storage) !== 'undefined') {
-      let theme = localStorage.getItem('theme');
+      let theme = localStorage.getItem('cannlytics_theme');
       if (!theme) {
         const hours = new Date().getHours();
         const dayTime = hours > 6 && hours < 20;
@@ -130,7 +130,7 @@ export const website = {
         return;
       }
       this.setTheme(theme);
-      localStorage.setItem('theme', theme);
+      localStorage.setItem('cannlytics_theme', theme);
     } else {
       document.getElementById('theme-toggle').style.display = 'none';
     }

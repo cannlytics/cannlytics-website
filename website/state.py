@@ -50,14 +50,6 @@ app_context = {
             }
         ]
     },
-    # "header": {
-    #     "action": {"title": "Download", "url": "download"},
-    #     "links": [
-    #         {"slug": "community", "title": "Community"},
-    #         {"slug": "posts", "title": "Docs"},
-    #         {"slug": "contact", "title": "Contact"},
-    #     ]
-    # },
     'homepage': 'https://cannlytics.com',
     'logos': {
         'light': 'website/images/logos/cannlytics_logo_with_phrase.svg',
@@ -74,76 +66,6 @@ app_context = {
         {"title": "GitHub", "url": "https://github.com/cannlytics"},
         {"title": "LinkedIn", "url": "https://linkedin.com/company/cannlytics"},
     ],
-}
-
-#-----------------------------------------------------------------------
-# Page-specific data loaded from Firestore.
-#-----------------------------------------------------------------------
-
-page_data = {
-    "contributors": {
-        "collections": [{"name": "contributors", "ref": "public/contributors/contributor_data"}],
-    },
-    "market": {
-        "collections": [
-            {
-                "name": "datasets",
-                "ref": "public/market/datasets",
-                "limit": 10,
-                "order_by": "published_at",
-                "desc": True
-            }
-        ],
-    },
-    "events": {
-        "collections": [{"name": "events", "ref": "public/events/event_data"}],
-    },
-    "homepage": {
-        "collections": [
-            {
-                "name": "video_archive",
-                "ref": "public/videos/video_data",
-                "limit": 3,
-                "order_by": "published_at",
-                "desc": True
-            },
-            {
-                "name": "verifications",
-                "ref": "public/verifications/verification_data",
-                "limit": None,
-                "order_by": "state",
-            },
-        ],
-    },
-    "partners": {
-        "collections": [{"name": "partners_list", "ref": "public/partners/partner_data"}],
-    },
-    "team": {
-        "collections": [{"name": "team", "ref": "public/team/team_members"}],
-    },
-    "videos": {
-        "collections": [
-            {
-                "name": "video_archive",
-                "ref": "public/videos/video_data",
-                "limit": 10,
-                "order_by": "published_at",
-                "desc": True
-            }
-        ],
-    },
-    "whitepapers": {
-        "collections": [{"name": "whitepapers", "ref": "public/whitepapers/whitepaper_data"}],
-    }
-}
-
-#-----------------------------------------------------------------------
-# Page-specific markdown documents.
-#-----------------------------------------------------------------------
-
-page_docs = {
-    "about": ["about"],
-    "contributors": ["contribute"],
 }
 
 #-----------------------------------------------------------------------
@@ -235,6 +157,21 @@ material = {
             }
         ]
     },
+    "subscriptions": {
+        "premium": {
+            "name": "Premium",
+            "price": "$4.20 / mo.",
+            "color": "green",
+            "action": "Sign Up ✍️",
+            "url": "https://console.cannlytics.com",
+            "attributes": [
+                "All datasets",
+                "All videos",
+                "All whitepapers",
+                "API access",
+            ],
+        },
+    },
     "support": {
         "pricing_tiers": [
             {
@@ -254,7 +191,7 @@ material = {
                 "name": "Pro",
                 "price": "$420 / mo.",
                 "color": "orange",
-                "action": "Get Started 🚤",
+                "action": "Get Started 🏃‍♀️",
                 "url": "/subscriptions/checkout?name=Premium",
                 "attributes": [
                     "Metrc integration*",
@@ -263,34 +200,10 @@ material = {
                     "Email support",
                 ],
             },
-            # {
-            #     "name": "Premium",
-            #     "price": "$4.20 / mo.",
-            #     "color": "green",
-            #     "action": "Sign Up ✍️",
-            #     "url": "https://console.cannlytics.com",
-            #     "attributes": [
-            #         "All datasets",
-            #         "All videos",
-            #         "All whitepapers",
-            #         "API access",
-            #     ],
-            # },
-        ],
-    },
-    "partners": {
-        "fields": [
-            {"type": "email", "key": "email", "title": "Email"},
-            {"type": "text", "key": "name", "title": "Name"},
-            {"type": "text", "key": "twitter", "title": "Twitter", "group": "@"},
-            {"type": "text", "key": "linkedin", "title": "LinkedIn"},
-            {"type": "text", "key": "position", "title": "Position"},
-            {"type": "text", "key": "location", "title": "Location"},
         ],
     },
 }
 
-# TODO: Save in Firestore?
 # Context for lab pages.
 lab_state = {
     "detail_fields": [
@@ -324,4 +237,73 @@ lab_state = {
         {"name": "Analyses", "section": "analyses"},
         # {"name": "Change log", "section": "logs"},
     ]
+}
+
+#-----------------------------------------------------------------------
+# Page-specific data loaded from Firestore.
+#-----------------------------------------------------------------------
+
+page_data = {
+    "contributors": {
+        "collections": [{"name": "contributors", "ref": "public/contributors/contributor_data"}],
+    },
+    "market": {
+        "collections": [
+            {
+                "name": "datasets",
+                "ref": "public/market/datasets",
+                "limit": 10,
+                "order_by": "published_at",
+                "desc": True
+            }
+        ],
+    },
+    "events": {
+        "collections": [{"name": "events", "ref": "public/events/event_data"}],
+    },
+    "homepage": {
+        "collections": [
+            {
+                "name": "video_archive",
+                "ref": "public/videos/video_data",
+                "limit": 3,
+                "order_by": "published_at",
+                "desc": True
+            },
+            {
+                "name": "verifications",
+                "ref": "public/verifications/verification_data",
+                "limit": None,
+                "order_by": "state",
+            },
+        ],
+    },
+    "partners": {
+        "collections": [{"name": "partners_list", "ref": "public/partners/partner_data"}],
+    },
+    "team": {
+        "collections": [{"name": "team", "ref": "public/team/team_members"}],
+    },
+    "videos": {
+        "collections": [
+            {
+                "name": "video_archive",
+                "ref": "public/videos/video_data",
+                "limit": 10,
+                "order_by": "published_at",
+                "desc": True
+            }
+        ],
+    },
+    "whitepapers": {
+        "collections": [{"name": "whitepapers", "ref": "public/whitepapers/whitepaper_data"}],
+    }
+}
+
+#-----------------------------------------------------------------------
+# Page-specific markdown documents.
+#-----------------------------------------------------------------------
+
+page_docs = {
+    "api": ["api/about"]
 }

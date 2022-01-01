@@ -6,6 +6,7 @@
   Updated: 11/16/2021
   Params:
     image_url
+    image_size (optional)
     title
     description
     primary_action
@@ -22,11 +23,17 @@
 
     <!-- Image -->
     {% if "website" in image_url%}
-      <img src="{% static image_url %}"
-        style="max-height:120px;"
+      <img
+        alt="{{ alt_title }}"
+        src="{% static image_url %}"
+        style="max-height:{% if image_size %}{{ image_size }}{% else %}120px{% endif %};"
       >
     {% elif image_url %}
-      <img src="{{ image_url }}" style="max-height:120px;">
+      <img
+        alt="{{ alt_title }}"
+        src="{{ image_url }}"
+        style="max-height:{% if image_size %}{{ image_size }}{% else %}120px{% endif %};"
+      >
     {% endif %}
 
     <!-- Title -->
