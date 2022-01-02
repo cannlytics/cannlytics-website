@@ -253,11 +253,16 @@ body.dark .markdown h4 {
 .markdown table td {
   padding: 6px 13px !important;
 }
-.markdown code, .markdown tt {
+.markdown code,
+.markdown tt {
   padding: 0.2em 0.4em !important;
   margin: 0 !important;
-  font-size: 85% !important;
+  font-size: 97.5% !important;
   border-radius: 6px !important;
+}
+
+.markdown td {
+  font-size: 87.5% !important;
 }
 
 // Light Markdown tables.
@@ -418,34 +423,34 @@ body.dark .bg-cannlytics-green {
 
 /* Text gradients */
 .text-gradient {
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background: -webkit-linear-gradient(-45deg,#45B649, #1f622f);
   background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 body.dark .text-gradient {
   background: -webkit-linear-gradient(-45deg,#45B649, #96e6a1);
-  // background-clip: text;
-  // -webkit-background-clip: text;
-  // -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 body.dark .text-gradient-reverse {
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background: -webkit-linear-gradient(-45deg, #96e6a1, #45B649);
   background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .text-gradient-orange {
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background: -webkit-linear-gradient(-45deg,#e53a23ff, #B9220E);
   background-clip: text;
-}
-body.dark .text-gradient-orange {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+body.dark .text-gradient-orange {
   background: -webkit-linear-gradient(-45deg,#ffa600, #e53a23ff);
   background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Background gradients */
@@ -455,8 +460,8 @@ body.dark .text-gradient-orange {
 }
 a.bg-gradient-green:hover,
 button.bg-gradient-green:hover {
-  background: -webkit-linear-gradient(-45deg,#3f7f34ff, #5C9D52);
   background: #3f7f34ff;
+  background: -webkit-linear-gradient(-45deg,#3f7f34ff, #5C9D52);
 }
 .bg-gradient-orange {
   transition: opacity 0.3s;

@@ -44,7 +44,7 @@ app_context = {
                     {"title": "Story", "url": "https://docs.cannlytics.com/about/about"},
                     {"title": "Roadmap", "url": "https://docs.cannlytics.com/developers/roadmap"},
                     {"title": "Whitepapers", "page": "whitepapers"},
-                    {"title": "Donations", "url": "https://opencollective.com/cannlytics-company"},
+                    {"title": "Sponsor", "page": "sponsors"},
                     {"title": "Support", "page": "support"},
                 ]
             }
@@ -155,6 +155,30 @@ material = {
                 "image": "website/images/screenshots/console_help_light.png",
                 "image_dark": "website/images/screenshots/console_help_dark.png",
             }
+        ]
+    },
+    "sponsors": {
+        "tiers": [
+            {
+                "price": "$1,600",
+                "frequency": "one time",
+                "reward": "The founder and CEO of Cannlytics will give a talk at your conference.",
+            },
+            {
+                "price": "$100",
+                "frequency": "a month",
+                "reward": "Your logo or name is displayed on the Cannlytics website homepage.",
+            },
+            {
+                "price": "$60",
+                "frequency": "one time",
+                "reward": "You earn a one hour pair-programming session with a lead Cannlytics developer.",
+            },
+            {
+                "price": "$14.20",
+                "frequency": "a month",
+                "reward": "Your logo or name goes is included in each Cannlytics README to be displayed on GitHub.",
+            },
         ]
     },
     "subscriptions": {
@@ -305,5 +329,12 @@ page_data = {
 #-----------------------------------------------------------------------
 
 page_docs = {
-    "api": ["api/about"]
+    "api": ["api"],
+    "data-science": ["data-science"],
+    "data": ["data"],
+    "economics": ["economics", "forecasting"],
+    "integrators": ["integrators"],
+    "producers": ["producers", "processors"],
+    "regulations": ["regulations"],
+    "retailers": ["retailers"],
 }

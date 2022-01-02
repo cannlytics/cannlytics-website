@@ -6,11 +6,12 @@ The Cannlytics API allows users to seamlessly integrate with all of the function
 
 | Endpoint | Methods | Description |
 | -------- | ------- | ----------- |
-| `\auth\authenticate`   | `POST`   | Create an authorized session. |
-| `\auth\login`   | `POST`   | Sign into your Firebase user account. |
-| `\auth\logout`   | `POST`   | Sign out of your Firebase user account and end your session. |
 | `\analyses` | `GET`, `POST`, `DELETE` | Manage analyses. |
 | `\analytes` | `GET`, `POST`, `DELETE` | Manage analyses. |
+| `\areas` | `GET`, `POST`, `DELETE` | Manage areas. |
+| `\certificates` | `GET`, `POST`, `DELETE` | Manage certificates of analysis. |
+| `\contacts` | `GET`, `POST`, `DELETE` | Manage your contacts. |
+| `\data` | `GET` | Get the public data that you need, including data of labs, cannabis markets, and regulations. |
 | `\instruments` | `GET`, `POST`, `DELETE` | Manage instruments. |
 | `\inventory` | `GET`, `POST`, `DELETE` | Manage inventory items. |
 | `\invoices` | `GET`, `POST`, `DELETE` | Manage invoices. |
@@ -21,10 +22,7 @@ The Cannlytics API allows users to seamlessly integrate with all of the function
 | `\traceability` | `GET`, `POST`, `DELETE` | Manage interactions with your state traceability system. |
 | `\transfers` | `GET`, `POST`, `DELETE` | Manage transfers. |
 | `\users` | `GET`, `POST` | Manage user data. |
-
-<!-- | `\regulations` | Get regulatory data for different states. | -->
-<!-- | `\limits` | Get action limits for certain compounds in different states. | -->
-<!--  Data about cannabis testing labs can be retrieved from the Cannlytics API. -->
+| `\waste` | `GET`, `POST`, `DELETE` | Manage your controlled waste. |
 
 ## Get Started with the Cannlytics API
 
@@ -32,4 +30,4 @@ Getting started making requests to the Cannlytics API can be done in 3 quick ste
 
 1. First, [create a Cannlytics account](https://console.cannlytics.com/account/sign-up).
 2. Second, [create an API key](https://console.cannlytics.com/settings/api).
-3. Third, begin making requests to the Cannlytics API with your API Key in an `Authorization: Bearer <token>` header.
+3. Finally, you can begin making requests to the Cannlytics API by sending your API Key in an `Authorization: Bearer <token>` header in your requests.
