@@ -1,4 +1,4 @@
-# Functionality for Integrators
+# Integrator Solutions
 
 Do you have a software solution that requires integration with Metrc? You can utilize the [Cannlytics Engine](https://github.com/cannlytics/cannlytics-engine) to quickly and easily interface with Metrc. The Cannlytics Engine is powerful and has allowed for Cannlytics to effortlessly become a validated integrator in numerous states. With the Cannlytics Engine you can become validated with Metrc in any state in a matter of hours if not minutes.
 

@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/9/2021
-  Updated: 1/1/2022
+  Updated: 1/2/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
@@ -24,6 +24,7 @@
       secondary_action='Browse opportunities'
       secondary_action_url='https://opencollective.com/cannlytics-company'
       image_url="website/images/emojies/money.svg"
+      image_size="175px"
       only
     %}
 
@@ -33,7 +34,7 @@
         <svg class="pe-1" style="float:left;width:125px;height:125px;">
           <use href="{% static "website/images/emojies/money.svg" %}#money-emoji"></use>
         </svg>
-        <h1 class="pt-4 text-dark">Call for Funding</h1>
+        <h1 id="funding" class="pt-4 text-dark">Call for Funding</h1>
         <p class="mt-2">
           Cannlytics is currently looking for investors who envision a <strong>win-win</strong> future with the Cannlytics team.
           Accredited investors* are welcome to email Keegan Skeate at
@@ -66,47 +67,69 @@
 
     <!-- List sponsorship packages -->
     <div class="container mb-5 mt-3">
-      <div class="markdown pt-5" style="max-width:560px;">
+      <div class="markdown" style="max-width:560px;">
         <svg class="pe-1" style="float:left;width:125px;height:125px;">
           <use href="{% static "website/images/emojies/money.svg" %}#money-emoji"></use>
         </svg>
-        <h1 class="pt-4 text-dark">Sponsor Cannlytics</h1>
+        <h1 id="sponsor" class="pt-4 text-dark">Sponsor Cannlytics</h1>
         <p class="mt-2">
           Would you like to help advance cannabis analytics and data science
           and make everyone's lives a little simpler, easier, and better?
           A small sponsorship can go a long way. If you help sponsor Cannlytics,
           then we will do our best to make it worth your while.
         </p>
-        <div class="col-6">
-          <div class="card my-2 p-3 border rounded">
-            <div class="d-flex justify-content-between">
-              <h4>Sponsorship Packages</h4>
+        <div class="col">
+          <div class="card my-3 p-3 border rounded text-dark">
+            <div class="d-flex justify-content-between mb-3 mt-2">
+              <h3 class="m-0">Sponsorship Packages</h3>
               <button
-                class="nav-link"
-                onclick=""
+                id="select-all-tiers-button"
+                class="btn btn-sm nav-link text-dark fw-bold background-hover"
               >
                 Select all
               </button>
             </div>
             {% for item in sponsors.tiers %}
               <div class="d-flex justify-content-between mb-3">
-                <div class="form-check">
+                <div class="form-check pe-3">
                   <input
                     class="form-check-input"
                     type="checkbox"
                     value=""
-                    id="flexCheckDefault"
+                    id="sponsor-tier-{{ item.tier }}"
+                    onchange="cannlytics.payments.toggleSponsorCheckout(this)"
                   >
                   <label
-                    class="form-check-label"
-                    for="flexCheckDefault"
+                    class="app-action background-hover form-check-label"
+                    for="sponsor-tier-{{ item.tier }}"
                   >
                     {{ item.reward }}
                   </label>
                 </div>
-                <div>{{ item.price }}</div>
+                <div class="text-secondary text-nowrap">{{ item.price }}</div>
               </div>
             {% endfor %}
+          </div>
+          <div class="d-flex justify-content-end">
+            <button
+              id="cancel-button"
+              class="btn btn-sm btn-sm-light serif me-2 d-none"
+            >
+              Cancel
+            </button>
+            <a
+              id="checkout-button"
+              class="btn btn-sm bg-gradient-orange text-white serif me-2 d-none"
+              href="{% url 'section' page='subscriptions' section='checkout'  %}"
+            >
+              Checkout
+            </a>
+            <button
+              id="save-button"
+              class="btn btn-sm bg-gradient-green text-white serif d-none"
+            >
+              Save
+            </button>
           </div>
           <!-- TODO: Check out if a user selects (new) sponsorship tiers -->
         </div>
@@ -120,4 +143,11 @@
 
 {% endblock material %}
 
+<!-- JavaScript -->
+{% block page_js %}
+{{ user.sponsorships|json_script:"sponsorships" }}
+<script type="application/javascript">
+  cannlytics.payments.initializeSponsorships();
+</script>
+{% endblock page_js %}
 </html>

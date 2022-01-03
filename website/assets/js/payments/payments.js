@@ -13,6 +13,12 @@ import { hideLoadingButton, showLoadingButton } from '../ui/ui.js';
 
 export const payments = {
 
+  // State.
+
+  sponsorshipTiers: ['1', '2', '3', '4'],
+
+  // Functions.
+
   // FIXME: Cancel subscription with PayPal API.
   // https://developer.paypal.com/docs/api/reference/get-an-access-token/
   // https://developer.paypal.com/docs/api/overview/#get-an-access-token
@@ -51,6 +57,92 @@ export const payments = {
      */
     const response = await authRequest('/src/payments/subscriptions');
     return response.data;
+  },
+
+  initializeSupport() {
+    /**
+     * Initialize the user's current level of support.
+     */
+  },
+
+  initializeSponsorships() {
+    /**
+     * Initialize the user's current sponsorship tiers.
+     */
+    const userSponsorships = JSON.parse(document.getElementById('sponsorships').textContent);
+    document.getElementById('select-all-tiers-button').addEventListener('click', this.selectAllSponsorshipTiers);
+    document.getElementById('save-button').addEventListener('click', this.saveSponsorshipTiers);
+    document.getElementById('cancel-button').addEventListener('click', this.cancelNewSponsorships);
+    this.sponsorshipTiers.forEach(id => {
+      const tierInput = document.getElementById(`sponsor-tier-${id}`);
+      if (userSponsorships.includes(id)) tierInput.checked = true;
+      // tierInput.onchange = this.toggleSponsorCheckout;
+    });
+  },
+
+  cancelNewSponsorships() {
+    /**
+     * Cancels a user's newly selected sponsorships.
+     */
+    document.getElementById('checkout-button').classList.add('d-none');
+    document.getElementById('save-button').classList.add('d-none');
+    document.getElementById('cancel-button').classList.add('d-none');
+    const userSponsorships = JSON.parse(document.getElementById('sponsorships').textContent);
+    cannlytics.payments.sponsorshipTiers.forEach(id => {
+      const tierInput = document.getElementById(`sponsor-tier-${id}`);
+      if (userSponsorships.includes(id)) tierInput.checked = true;
+      else tierInput.checked = false;
+    });
+  },
+
+  saveSponsorshipTiers() {
+    /**
+     * Save the user's sponsorship tiers.
+     */
+    // TODO: Save a user's sponsorship tiers.
+  },
+
+  selectAllSponsorshipTiers() {
+    /**
+     * Select all sponsorship tiers.
+     */
+    const tiers = ['1', '2', '3', '4'];
+    tiers.forEach(function(id) {
+      document.getElementById(`sponsor-tier-${id}`).checked = true;
+    });
+    document.getElementById('checkout-button').classList.remove('d-none');
+    document.getElementById('cancel-button').classList.remove('d-none');
+  },
+
+  toggleSponsorCheckout(input) {
+    /**
+     * Show checkout if a user is selecting new sponsorship options,
+     * show save if a user deselects a current sponsorship, and
+     * hide the checkout button if the user returns to their original tiers.
+     */
+    const tier = input.id.replace('sponsor-tier-', '');
+    const userSponsorships = JSON.parse(document.getElementById('sponsorships').textContent) || [];
+    if (input.checked) {
+      if (!userSponsorships.includes(tier)) {
+        const newTiers = JSON.parse(localStorage.getItem('cannlytics_new_sponsor_tiers')) || userSponsorships;
+        newTiers.push(tier);
+        localStorage.setItem('cannlytics_new_sponsor_tiers', JSON.stringify(newTiers));
+        document.getElementById('checkout-button').classList.remove('d-none');
+        document.getElementById('cancel-button').classList.remove('d-none');
+      }
+    } else {
+      let newTiers = JSON.parse(localStorage.getItem('cannlytics_new_sponsor_tiers')) || userSponsorships;
+      newTiers = newTiers.filter(item => item !== tier)
+      localStorage.setItem('cannlytics_new_sponsor_tiers', JSON.stringify(newTiers));
+      if (newTiers !== userSponsorships) {
+        document.getElementById('save-button').classList.remove('d-none');
+        document.getElementById('cancel-button').classList.remove('d-none');
+      } else {
+        document.getElementById('checkout-button').classList.add('d-none');
+        document.getElementById('save-button').classList.add('d-none');
+        document.getElementById('cancel-button').classList.add('d-none');
+      }
+    }
   },
 
   async logPromo() {

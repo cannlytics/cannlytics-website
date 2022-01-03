@@ -113,6 +113,7 @@ INSTALLED_APPS = [
 # WhiteNoise should be below SecurityMiddleWare and above all others.
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django_permissions_policy.PermissionsPolicyMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -121,6 +122,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     f'{PROJECT_NAME}.core.middleware.AppendOrRemoveSlashMiddleware',
+    # 'csp.middleware.CSPMiddleware',
+    # 'csp.context_processors.nonce',
 ]
 
 # ------------------------------------------------------------#
@@ -193,7 +196,38 @@ except:
 if PRODUCTION == 'False':
     ALLOWED_HOSTS.extend(['*', 'localhost:8000', '127.0.0.1'])
 
+# CSP_DEFAULT_SRC = ["'none'"]
+# CSP_SCRIPT_SRC = [
+#     'https://cdn.jsdelivr.net',
+#     'https://code.jquery.com',
+#     'https://www.paypal.com',
+# ]
+# CSP_STYLE_SRC = []
+# CSP_IMG_SRC = ["'self'"]
+# CSP_INCLUDE_NONCE_IN = ["script-src"]
+
+SECURE_BROWSER_XSS_FILTER = True # Provides a little extra protection against Cross-Site Scripting.
 SECURE_SSL_REDIRECT = False
+SECURE_HSTS_SECONDS = 30 # Enable Strict-Transport-Security. Gradually work up to 1 year (31536000).
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+PERMISSIONS_POLICY = {
+    'accelerometer': [],
+    'autoplay': [],
+    'camera': [],
+    'display-capture': [],
+    'document-domain': [],
+    'encrypted-media': [],
+    'fullscreen': [],
+    'geolocation': [],
+    'gyroscope': [],
+    'magnetometer': [],
+    'microphone': [],
+    'midi': [],
+    'payment': [],
+    'usb': [],
+}
 
 # ------------------------------------------------------------#
 # Database

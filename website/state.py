@@ -159,25 +159,29 @@ material = {
     },
     "sponsors": {
         "tiers": [
+            # {
+            #     "price": "$1,600",
+            #     "frequency": "one time",
+            #     "reward": "The founder and CEO of Cannlytics will give a talk at your conference.",
+            #     "tier": "1",
+            # },
             {
-                "price": "$1,600",
-                "frequency": "one time",
-                "reward": "The founder and CEO of Cannlytics will give a talk at your conference.",
+                "price": "$240 / mo.",
+                "frequency": "a month",
+                "reward": "One hour of pair-programming with a lead Cannlytics developer each week.",
+                "tier": "3",
             },
             {
-                "price": "$100",
+                "price": "$100 / mo.",
                 "frequency": "a month",
                 "reward": "Your logo or name is displayed on the Cannlytics website homepage.",
+                "tier": "2",
             },
             {
-                "price": "$60",
-                "frequency": "one time",
-                "reward": "You earn a one hour pair-programming session with a lead Cannlytics developer.",
-            },
-            {
-                "price": "$14.20",
+                "price": "$14.20 / mo.",
                 "frequency": "a month",
                 "reward": "Your logo or name goes is included in each Cannlytics README to be displayed on GitHub.",
+                "tier": "4",
             },
         ]
     },
@@ -329,9 +333,10 @@ page_data = {
 #-----------------------------------------------------------------------
 
 page_docs = {
+    "ai": ["ai"],
     "api": ["api"],
     "data-science": ["data-science"],
-    "data": ["data"],
+    "data": ["data", "regulations"],
     "economics": ["economics", "forecasting"],
     "integrators": ["integrators"],
     "producers": ["producers", "processors"],
