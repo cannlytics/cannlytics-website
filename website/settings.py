@@ -196,38 +196,82 @@ except:
 if PRODUCTION == 'False':
     ALLOWED_HOSTS.extend(['*', 'localhost:8000', '127.0.0.1'])
 
-# CSP_DEFAULT_SRC = ["'none'"]
+# FIXME: PAYPAL DOES NOT WORK ANYMORE!!!
+# CSP_DEFAULT_SRC = [
+#     # "'none'",
+#     # "'self'",
+#     # 'connect-src',
+#     'https://www.google-analytics.com',
+#     'https://firebase.googleapis.com',
+#     'https://firestore.googleapis.com',
+#     'https://fonts.gstatic.com',
+#     'https://identitytoolkit.googleapis.com',
+#     'http://127.0.0.1:8000',
+#     '*',
+#     # '//127.0.0.1:35729',
+#     # '//127.0.0.1:8080',
+# ]
+# CSP_FRAME_SRC = [
+#     '*',
+#     "https://docs.google.com",
+#     'https://ghbtns.com',
+#     'https://www.paypal.com/',
+# ]
+# CSP_IMG_SRC = [
+#     # "'self'",
+#     '*',
+#     'https://www.google.com',
+#     'https://googleads.g.doubleclick.net',
+#     'https://www.facebook.com',
+#     'https://t.paypal.com',
+#     'https://www.paypalobjects.com/',
+#     'https://px.ads.linkedin.com',
+#     'https://firebasestorage.googleapis.com',
+#     'data:',
+# ]
+# # CSP_INCLUDE_NONCE_IN = ["script-src"]
 # CSP_SCRIPT_SRC = [
+#     "'unsafe-eval'",
+#     "'unsafe-inline'",
+#     # 'script-src-elem',
 #     'https://cdn.jsdelivr.net',
 #     'https://code.jquery.com',
+#     'https://www.googletagmanager.com',
+#     # 'https://identitytoolkit.googleapis.com',
 #     'https://www.paypal.com',
+#     'https://www.paypalobjects.com',
+#     'http://127.0.0.1:8000',
+#     'http://127.0.0.1:35729',
+#     'ws://127.0.0.1:8080/ws',
 # ]
-# CSP_STYLE_SRC = []
-# CSP_IMG_SRC = ["'self'"]
-# CSP_INCLUDE_NONCE_IN = ["script-src"]
+# CSP_STYLE_SRC = [
+#     "'unsafe-inline'",
+#     'https://fonts.googleapis.com',
+#     # "style-src-elem"
+# ]
 
-SECURE_BROWSER_XSS_FILTER = True # Provides a little extra protection against Cross-Site Scripting.
+# SECURE_BROWSER_XSS_FILTER = True # Provides a little extra protection against Cross-Site Scripting.
 SECURE_SSL_REDIRECT = False
-SECURE_HSTS_SECONDS = 30 # Enable Strict-Transport-Security. Gradually work up to 1 year (31536000).
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_SECONDS = 30 # Enable Strict-Transport-Security. Gradually work up to 1 year (31536000).
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
 
-PERMISSIONS_POLICY = {
-    'accelerometer': [],
-    'autoplay': [],
-    'camera': [],
-    'display-capture': [],
-    'document-domain': [],
-    'encrypted-media': [],
-    'fullscreen': [],
-    'geolocation': [],
-    'gyroscope': [],
-    'magnetometer': [],
-    'microphone': [],
-    'midi': [],
-    'payment': [],
-    'usb': [],
-}
+# PERMISSIONS_POLICY = {
+#     'accelerometer': [],
+#     'autoplay': [],
+#     'camera': [],
+#     'display-capture': [],
+#     'document-domain': [],
+#     'encrypted-media': [],
+#     'fullscreen': [],
+#     'geolocation': [],
+#     'gyroscope': [],
+#     'magnetometer': [],
+#     'microphone': [],
+#     'midi': [],
+#     'payment': [],
+#     'usb': [],
+# }
 
 # ------------------------------------------------------------#
 # Database

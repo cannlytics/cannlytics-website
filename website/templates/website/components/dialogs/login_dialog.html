@@ -86,14 +86,14 @@
                 <input
                   name="email"
                   type="email"
-                  id="login-email"
+                  id="sign-in-email"
                   class="form-control form-control-sm"
                   placeholder="Email address"
                   required
                   autofocus
                   spellcheck="false"
                 >
-                <label for="login-email">Email address</label>
+                <label for="sign-in-email">Email address</label>
               </div>
             </div>
 
@@ -103,13 +103,13 @@
                 <input
                   name="password"
                   type="password"
-                  id="login-password"
+                  id="sign-in-password"
                   class="form-control form-control-sm"
                   placeholder="Password"
                   required
                   autofocus
                 >
-                <label for="login-password">Password</label>
+                <label for="sign-in-password">Password</label>
               </div>
             </div>
 
@@ -126,7 +126,7 @@
 
               <!-- Sign In -->
               <button
-                id="login-button"
+                id="sign-in-button"
                 class="ms-1 btn btn-sm btn-set-width bg-gradient-green serif text-white"
                 style="max-width:250px;"
                 type="button"
@@ -135,7 +135,7 @@
                 Sign In
               </button>
               <button
-                id="login-loading-button"
+                id="sign-in-loading-button"
                 class="ms-1 btn btn-sm btn-set-width bg-gradient-green text-white d-none"
                 type="button"
                 title="Loading"
@@ -178,7 +178,7 @@
   <script>
 
     // Add sign-in on enter on login password field.
-    const input = document.getElementById('login-password');
+    const input = document.getElementById('sign-in-password');
     input.addEventListener('keyup', function(event) {
       event.preventDefault();
       if (event.keyCode === 13) cannlytics.auth.signIn(event);

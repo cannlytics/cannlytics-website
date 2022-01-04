@@ -157,34 +157,34 @@ material = {
             }
         ]
     },
-    "sponsors": {
-        "tiers": [
-            # {
-            #     "price": "$1,600",
-            #     "frequency": "one time",
-            #     "reward": "The founder and CEO of Cannlytics will give a talk at your conference.",
-            #     "tier": "1",
-            # },
-            {
-                "price": "$240 / mo.",
-                "frequency": "a month",
-                "reward": "One hour of pair-programming with a lead Cannlytics developer each week.",
-                "tier": "3",
-            },
-            {
-                "price": "$100 / mo.",
-                "frequency": "a month",
-                "reward": "Your logo or name is displayed on the Cannlytics website homepage.",
-                "tier": "2",
-            },
-            {
-                "price": "$14.20 / mo.",
-                "frequency": "a month",
-                "reward": "Your logo or name goes is included in each Cannlytics README to be displayed on GitHub.",
-                "tier": "4",
-            },
-        ]
-    },
+    # "sponsors": {
+    #     "tiers": [
+    #         # {
+    #         #     "price": "$1,600",
+    #         #     "frequency": "one time",
+    #         #     "reward": "The founder and CEO of Cannlytics will give a talk at your conference.",
+    #         #     "tier": "1",
+    #         # },
+    #         {
+    #             "price": "$240 / mo.",
+    #             "frequency": "a month",
+    #             "reward": "One hour of pair-programming with a lead Cannlytics developer each week.",
+    #             "tier": "3",
+    #         },
+    #         {
+    #             "price": "$100 / mo.",
+    #             "frequency": "a month",
+    #             "reward": "Your logo or name is displayed on the Cannlytics website homepage.",
+    #             "tier": "2",
+    #         },
+    #         {
+    #             "price": "$14.20 / mo.",
+    #             "frequency": "a month",
+    #             "reward": "Your logo or name goes is included in each Cannlytics README to be displayed on GitHub.",
+    #             "tier": "4",
+    #         },
+    #     ]
+    # },
     "subscriptions": {
         "premium": {
             "name": "Premium",
@@ -308,6 +308,22 @@ page_data = {
     },
     "partners": {
         "collections": [{"name": "partners_list", "ref": "public/partners/partner_data"}],
+    },
+    "sponsors": {
+        "collections": [{
+            "name": "sponsorships",
+            "ref": "public/subscriptions/sponsorships",
+            "order_by": "cost",
+            "desc": True,
+        }],
+    },
+    "subscriptions": {
+        "collections": [{
+            "name": "sponsorships",
+            "ref": "public/subscriptions/sponsorships",
+            "order_by": "cost",
+            "desc": True,
+        }],
     },
     "team": {
         "collections": [{"name": "team", "ref": "public/team/team_members"}],

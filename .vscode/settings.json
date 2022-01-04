@@ -31,6 +31,9 @@
     "editor.tabSize": 4,
     "editor.rulers": [79, 100],
   },
+  "[javascript]": {
+    "editor.rulers": [80, 100],
+  },
   "todo-tree.highlights.customHighlight": {
     "TODO": {
       "foreground": "#0BA67F",
@@ -54,6 +57,7 @@
     "arithmatex",
     "autohide",
     "boxplot",
+    "Cann",
     "cannabinoid",
     "cannlypedia",
     "cannlytics",

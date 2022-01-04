@@ -13,10 +13,11 @@
 {% load get_env %}
 {% block title %}Checkout | Cannlytics{% endblock %}
 {% block page_css %}
-
-  <!-- PayPal Client-->
-  <script src="https://www.paypal.com/sdk/js?client-id={{ 'PAYPAL_CLIENT_ID'|get_env }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
-
+<style>
+  #subscription-title:first-letter {
+    text-transform:capitalize;
+  }
+</style>
 {% endblock %}
 
 <!-- Checkout template -->
@@ -55,7 +56,9 @@
         </ul>
 
         <!-- PayPal buttons -->
-        <div id="paypal-button-container"></div>
+        {% comment %} <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="paypal"> {% endcomment %}
+          <div id="paypal-button-container"></div>
+        {% comment %} </form> {% endcomment %}
 
       </div>
 
@@ -123,7 +126,7 @@
                   name="email"
                   type="email"
                   placeholder=""
-                  value=""
+                  value="{{ user.email }}"
                 >
               </div>
             </div>
@@ -186,51 +189,23 @@
     </div>
   </div><!-- End of form-->
 
-  <!-- Checkout JavaScript -->
-  <script>
-
-    // Initialize subscriptions.
-    (async function initializeCheckout () {
-    
-      // Get subscription data.
-      var planName = '{{ request.GET.name }}';
-      var subscriptionData = await cannlytics.payments.getSubscription(planName);
-      var planID = subscriptionData['plan_id'];
-
-      // Fill-in the template.
-      document.getElementById('subscription-title').textContent = planName;
-      document.getElementById('subscription-description').textContent = subscriptionData['plan_description'];
-      document.getElementById('subscription-price').textContent = subscriptionData['price'];
-      document.getElementById('subscription-price-now').textContent = subscriptionData['price_now'] + ' now';
-
-      // Initialize PayPal buttons.
-      paypal.Buttons({
-        style: {
-            shape: 'rect',
-            color: 'silver',
-            layout: 'horizontal',
-            label: 'subscribe',
-        },
-        createSubscription: function(data, actions) {
-          // Optional: Validate the form.
-          return actions.subscription.create({ 'plan_id': planID });
-        },
-        onApprove: function(data, actions) {
-          var subscription = { ...data, ...{ 'plan_id': planID } };
-          cannlytics.payments.subscribe(subscription);
-        },
-        onError: function (error) {
-          alert('Uknown error subscribing. Please contact contact@cannlytics.com. Thank you for your patience and we will deliver you support.');
-        },
-      }).render('#paypal-button-container');
-
-    })();
-
-  </script>
-
   </div>
 {% endblock material %}
 
-<!-- TODO: Separate JavaScript into page_js?-->
+<!-- JavaScript -->
+{% block page_js %}
+
+<!-- Make plan name available through JavaScript -->
+{{ request.GET.name|json_script:"plan_name" }}
+
+<script src="https://www.paypal.com/sdk/js?client-id={{ 'PAYPAL_CLIENT_ID'|get_env }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+<script>
+
+  // Initialize subscriptions.
+  cannlytics.payments.initializeCheckout();
+
+</script>
+
+{% endblock page_js %}
 
 </html>

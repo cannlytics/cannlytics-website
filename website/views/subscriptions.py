@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 11/24/2021
+Updated: 1/4/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
@@ -16,17 +16,20 @@ from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.core.validators import validate_email
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from cannlytics.auth.auth import authenticate_request
 
 # Internal imports.
+from cannlytics.auth.auth import authenticate_request
 from cannlytics.firebase import (
     add_to_array,
     create_user,
     get_document,
     update_document,
+)
+from cannlytics.paypal import (
+    cancel_paypal_subscription,
+    get_paypal_access_token,
 )
 from website.settings import DEFAULT_FROM_EMAIL
 from website.utils.utils import get_promo_code
@@ -41,6 +44,7 @@ def subscribe(request):
     # Ensure that the user has a valid email.
     data = loads(request.body)
     try:
+        uid = data['uid']
         user_email = data['email']
         validate_email(user_email)
     except ValidationError:
@@ -51,7 +55,7 @@ def subscribe(request):
     promo_code = get_promo_code(8)
     add_to_array('promos/data', 'promo_codes', promo_code)
 
-    # Record subscription in Firestore.
+    # Record the subscription in Firestore.
     now = datetime.now()
     timestamp = now.strftime('%Y-%m-%d_%H-%M-%S')
     iso_time = now.isoformat()
@@ -59,6 +63,13 @@ def subscribe(request):
     data['updated_at'] = iso_time
     data['promo_code'] = promo_code
     update_document(f'subscribers/{timestamp}', data)
+
+    # Save the user's subscription ID.
+    # TODO: Test that this works.
+    plan_name = data['plan_name']
+    user_data = {}
+    user_data[f'{plan_name}_subscription_id'] = data['id']
+    update_document(f'user/{uid}', user_data)
 
     # Create an account if one does not exist.
     # Optional: Load messages from state?
@@ -68,7 +79,7 @@ def subscribe(request):
         message = f'Congratulations,\n\nYou can now login to the Cannlytics console (https://console.cannlytics.com) with the following credentials.\n\nEmail: {user_email}\nPassword: {password}\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
         subject = 'Welcome to the Cannlytics Platform'
     except:
-        message = f'Congratulations,\n\nWelcome to the Cannlytics newsletter. You can download data with the promo code:\n\n{promo_code}\n\nPlease stay tuned for more material.\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
+        message = f'Congratulations,\n\nYou are now subscribed to Cannlytics.\n\nPlease stay tuned for more material or email {DEFAULT_FROM_EMAIL} to begin.\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
         subject = 'Welcome to the Cannlytics Newsletter'
 
     # Send a welcome / thank you email.
@@ -100,3 +111,53 @@ def get_user_subscriptions(request):
     except KeyError:
         response = {'success': False, 'message': 'Invalid authentication.'}
         return Response(response, content_type='application/json')
+
+
+def unsubscribe(request):
+    """Unsubscribe a user from a PayPal subscription."""
+
+    # Authenticate the user.
+    claims = authenticate_request(request)
+    try:
+        uid = claims['uid']
+    except KeyError:
+        response = {'success': False, 'message': 'Unable to authenticate.'}
+        return JsonResponse(response, safe=False)
+
+    # Get the subscription they wish to unsubscribe from.
+    data = loads(request.body)
+    plan_name = data['plan_name']
+
+    # Unsubscribe the user with the PayPal SDK.
+    # TODO: Test that this works.
+    try:
+        # TODO: Prefer to retrieve PayPal secrets from Secret Manager.
+        paypal_secrets = get_document('admin/paypal')
+        paypal_client_id = paypal_secrets['paypal_client_id']
+        paypal_secret = paypal_secrets['paypal_secret']
+        paypal_access_token = get_paypal_access_token(paypal_client_id, paypal_secret)
+        user_data = get_document(f'users/{uid}')
+        subscription_id = user_data[f'{plan_name}_subscription_id']
+        cancel_paypal_subscription(paypal_access_token, subscription_id)
+    except:
+        subscription_id = 'Unidentified'
+
+    # Notify the staff.
+    staff_message = """Confirm that the following subscription has been canceled:
+    User: {}
+    Email: {}
+    Plan: {}
+    Subscription ID: {}
+    """.format(uid, claims['email'], plan_name, subscription_id)
+    send_mail(
+        subject='User unsubscribed from a PayPal subscription.',
+        message=staff_message,
+        from_email=DEFAULT_FROM_EMAIL,
+        recipient_list=[DEFAULT_FROM_EMAIL],
+        fail_silently=False,
+    )
+
+    # Return a success message.
+    message = 'Successfully unsubscribed from subscription.'
+    response = {'success': True, 'message': message}
+    return JsonResponse(response, safe=False)

@@ -39,7 +39,8 @@ urlpatterns = [
         path('market/publish', market.publish_data),
         path('market/sell', market.sell_data),
         path('payments/subscribe', subscriptions.subscribe, name='subscribe'),
-        path('payments/subscriptions', subscriptions.get_user_subscriptions, name='subscriptions'),
+        path('payments/subscriptions', subscriptions.get_user_subscriptions),
+        path('payments/unsubscribe', subscriptions.unsubscribe),
     ])),
     path('testing', include([
         path('', testing.TestingView.as_view(), name='testing'),

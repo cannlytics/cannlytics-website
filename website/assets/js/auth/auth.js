@@ -7,7 +7,8 @@
  * Updated: 12/24/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
- import {
+import { Modal } from 'bootstrap';
+import {
   authErrors,
   confirmPasswordChange,
   createAccount,
@@ -120,7 +121,10 @@ export const auth = {
     const password = document.getElementById('sign-in-password').value;
     document.getElementById('sign-in-button').classList.add('d-none');
     document.getElementById('sign-in-loading-button').classList.remove('d-none');
-    const persistence = document.getElementById('stay-signed-in').checked;
+    let persistence = true;
+    try {
+      persistence = document.getElementById('stay-signed-in').checked;
+    } catch(error) { /* No persistence option. */ }
     try {
       await logIn(email, password, persistence);
     } catch(error) {
@@ -129,6 +133,10 @@ export const auth = {
     }
     document.getElementById('sign-in-button').classList.remove('d-none');
     document.getElementById('sign-in-loading-button').classList.add('d-none');
+    // try {
+      const modal = Modal.getInstance(document.getElementById('login-dialog'));
+      modal.hide();
+    // } catch(error) { /* No login dialog. */ }
   },
 
   signInWithGoogle() {
@@ -140,13 +148,13 @@ export const auth = {
 
   signUp,
 
-  async signOut() {
+  async signOut(redirect = true) {
     /**
      * Sign a user out of their account.
      */
     await logOut();
     await authRequest('/src/auth/logout');
-    document.location.href = `${window.location.origin}/account/sign-out`;
+    if (redirect) document.location.href = `${window.location.origin}/account/sign-out`;
   },
   
   verifyUser() {

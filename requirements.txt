@@ -5,7 +5,7 @@
 # cannlytics==0.0.9 # TODO: Use the standard `cannlytics` package in production.
 datetime==4.3
 django==4.0
-django-csp==3.7
+# django-csp==3.7
 django-environ==0.8.1
 django-feather==0.3.0
 django-livereload-server==0.4

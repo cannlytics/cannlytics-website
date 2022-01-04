@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 8/22/2021
-Updated: 8/22/2021
+Updated: 1/3/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports
@@ -25,7 +25,7 @@ def send_message(request, *args, **argv): #pylint: disable=unused-argument
     claims = authenticate_request(request)
     try:
         uid = claims['uid']
-    except:
+    except KeyError:
         return redirect('/account/sign-in')
     name = request.POST.get('name')
     subject = request.POST.get('subject')
