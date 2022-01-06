@@ -1,8 +1,9 @@
 # Python Requirements | Cannlytics Website
 # Created 1/5/2021
-# Updated: 1/2/2022
+# Updated: 1/5/2022
 
-# cannlytics==0.0.9 # TODO: Use the standard `cannlytics` package in production.
+# Optional: Use the standard `cannlytics` package in production.
+# cannlytics==0.0.9
 datetime==4.3
 django==4.0
 # django-csp==3.7

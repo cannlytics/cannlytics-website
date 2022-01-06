@@ -3,7 +3,7 @@
 #
 # Auhtors: Keegan Skeate <keegan@cannlytics.com>
 # Created: 1/5/2021
-# Updated: 12/25/2021
+# Updated: 1/5/2022
 # License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 # Use the official lightweight Python image.
@@ -32,6 +32,9 @@ WORKDIR $APP_HOME
 
 # Copy local code to the container image.
 COPY . ./
+
+# Add the project's root to Python's paths list to ensure that modules are found.
+ENV PYTHONPATH "${PYTHONPATH}:${$APP_HOME}"
 
 # Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights
 RUN useradd appuser && chown -R appuser /app

@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 12/24/2021
+Updated: 1/5/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
@@ -20,10 +20,7 @@ from markdown import markdown
 from markdown.extensions.toc import TocExtension
 from pymdownx import emoji
 
-# Internal imports
-from website.settings import DEBUG
-
-# TODO: Style blockquotes
+# Optional: Style blockquotes
 # https://facelessuser.github.io/pymdown-extensions/extensions/emoji/
 
 EXTENSIONS = [
@@ -82,12 +79,10 @@ def get_markdown(
         page = context['page']
     try:
         # Optional: Prefer to open markdown file directly, instead of with a request.
+        # url = directory + file_name
+        # markdown_file = open(url, 'r')
+        # text = markdown_file.read()
         file_name = staticfiles_storage.url(f'/{app}/docs/{page}.md')
-        # if DEBUG:
-        #     url = directory + file_name
-        #     markdown_file = open(url, 'r')
-        #     text = markdown_file.read()
-        # else:
         url = request.build_absolute_uri(file_name)
         text = requests.get(url).text
         context[name] = markdown(
