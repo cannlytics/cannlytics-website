@@ -78,7 +78,7 @@ try:
 except:
     PRODUCTION = 'True'
 
-# Toggle Django debug mode.
+# Toggle Django debug mode if not in production.
 if PRODUCTION == 'True':
     DEBUG = False
 else:
@@ -179,22 +179,21 @@ USE_TZ = True
 # ------------------------------------------------------------#
 
 # Specify allowed domains depending on production or development status.
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
+if PRODUCTION != 'True':
+    ALLOWED_HOSTS.extend(['*'])
 try:
     ALLOWED_HOSTS.append(env('CUSTOM_DOMAIN'))
-except:
+except KeyError:
     pass
 try:
     ALLOWED_HOSTS.append(env('FIREBASE_HOSTING_URL'))
-except:
+except KeyError:
     pass
 try:
     ALLOWED_HOSTS.append(env('CLOUD_RUN_URL'))
-except:
+except KeyError:
     pass
-
-if PRODUCTION == 'False':
-    ALLOWED_HOSTS.extend(['*', 'localhost:8000', '127.0.0.1'])
 
 # FIXME: PAYPAL DOES NOT WORK ANYMORE!!!
 # CSP_DEFAULT_SRC = [

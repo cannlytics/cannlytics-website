@@ -15,7 +15,7 @@ FROM python:3.9-slim-buster
 # This default value facilitates local development.
 ENV PORT 8080
 
-# Keeps Python from generating .pyc files in the container
+# Keeps Python from generating .pyc files in the container.
 ENV PYTHONDONTWRITEBYTECODE 1
 
 # Setting this ensures that print statements and log messages

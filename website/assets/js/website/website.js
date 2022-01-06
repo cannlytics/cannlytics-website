@@ -4,28 +4,12 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 12/3/2020
- * Updated: 11/25/2021
+ * Updated: 1/5/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
- * 
- * TODO: Refactor and move functions to better homes.
  */
-import { Toast } from 'bootstrap';
 import { checkGoogleLogIn, onAuthChange } from '../firebase.js';
 import { setTableTheme } from '../ui/ui.js';
-import { authRequest } from '../utils.js';
-
-async function checkForCredentials() {
-  /**
-   * Check if a user has signed in through a redirect from
-   * an authentication provider, such as Google.
-   */
-  try {
-    await checkGoogleLogIn();
-    await authRequest('/api/internal/login');
-  } catch(error) {
-    // No Google sign-in token.
-  }
-}
+import { authRequest, hasClass } from '../utils.js';
 
 export const website = {
 
@@ -33,9 +17,6 @@ export const website = {
     /**
      * Initialize the website's features and functionality.
      */
-
-    // Initialize accept cookies notification.
-    this.acceptCookiesCheck();
 
     // Set the theme.
     this.setInitialTheme();
@@ -51,13 +32,15 @@ export const website = {
         if (user.photoURL) {
           document.getElementById('user-photo').src = user.photoURL;
         } else {
-          document.getElementById('user-photo').src = `/robohash/${user.email}/?width=60&height=60`
+          const robohash = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
+          document.getElementById('user-photo').src = robohash;
         }
         this.toggleAuthenticatedMaterial(true);
         await authRequest('/src/auth/login');
         if (user.metadata.createdAt == user.metadata.lastLoginAt) {
           const { email } = user;
-          const data = { email, photo_url: `https://robohash.org/${email}?set=set1` };
+          const defaultPhoto = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
+          const data = { email, photo_url: defaultPhoto };
           await apiRequest('/api/users', data);
         }
       } else {
@@ -68,36 +51,25 @@ export const website = {
 
   },
 
-  initializeToasts() {
-    /**
-     * Initialize Bootstrap toasts.
-     */
-    const element = document.getElementById('cookie-toast');
-    new Toast(element, { autohide: false });
-  },
-
   acceptCookies() {
     /**
-     * Save choice that user accepted cookies.
+     * Save the user's choice to accept cookies.
      */
-    localStorage.setItem('cannlytics_accept_cookies', true);
+    localStorage.setItem('cannlytics_cookies', true);
     const toast = document.getElementById('accept-cookies');
     toast.style.display = 'none';
     toast.style.opacity = 0;
-    // TODO: Make entry in Firestore for cookie accepted?
   },
 
   acceptCookiesCheck() {
     /**
-     * Checks if a user needs to accept cookies.
+     * Checks if a user has or has not accepted cookies.
      */
-    window.onload = function() {
-      const acceptCookies = localStorage.getItem('cannlytics_accept_cookies');
-      if (!acceptCookies) {
-        const toast = document.getElementById('accept-cookies');
-        toast.style.display = 'block';
-        toast.style.opacity = 1;
-      }
+    const acceptCookies = localStorage.getItem('cannlytics_cookies');
+    if (!acceptCookies) {
+      const toast = document.getElementById('accept-cookies');
+      toast.style.display = 'block';
+      toast.style.opacity = 1;
     }
   },
 
@@ -141,21 +113,8 @@ export const website = {
      * Set the website's theme.
      * @param {String} theme The theme to set: `light` or `dark`.
      */
-    if (theme === 'light') {
-      document.body.className = 'base';
-    } else if (! this.hasClass(document.body, 'dark')) {
-      document.body.className += ' dark';
-    }
-  },
-
-  hasClass(element, className) {
-    /**
-     * Check if an element has a class.
-     * @param {Element} element An HTML element.
-     * @param {String} className The class to check in the element's class list.
-     * @returns {bool}
-     */
-    return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
+    if (theme === 'light') document.body.className = 'base';
+    else if (!hasClass(document.body, 'dark')) document.body.className += ' dark';
   },
 
   scrollToHash () {
@@ -167,35 +126,11 @@ export const website = {
     if (element) element.scrollIntoView();
   },
 
-  copyToClipboard(text) {
-    /**
-     * Prompt a user to copy a block of code to their clipboard.
-     * @param {String} text The text to copy to the clipboard.
-    */
-    // Optional: Improve getting only text from between tags.
-    // https://aaronluna.dev/blog/add-copy-button-to-code-blocks-hugo-chroma/
-    const tags = [
-      /<span class="p">/g,
-      /<\/span>/g,
-      /<span class="nx">/g,
-      /<span class="o">/g,
-      /<span class="s2">/g,
-      /<span class="kn">/g,
-      /<span class="n">/g,
-      /<span class="nn">/g,
-    ];
-    tags.forEach((tag) => {
-      text = text.replace(tag, '');
-    });
-    window.prompt('Copy to clipboard: Press Ctrl+C, then Enter', text);
-  },
-
   toggleAuthenticatedMaterial(authenticated = false) {
     /**
      * Show any material that requires authentication.
      * @param {bool} authenticated Whether or not the user is authenticated.
      */
-    // TODO: Improve this function to remove jank.
     const indicatesAuth = document.getElementsByClassName('indicates-auth');
     const requiresAuth = document.getElementsByClassName('requires-auth');
     for (let i = 0; i < indicatesAuth.length; i++) {
@@ -208,4 +143,17 @@ export const website = {
     }
   },
 
+}
+
+async function checkForCredentials() {
+  /**
+   * Check if a user has signed in through a redirect from
+   * an authentication provider, such as Google.
+   */
+  try {
+    await checkGoogleLogIn();
+    await authRequest('/api/internal/login');
+  } catch(error) {
+    // No Google sign-in token.
+  }
 }

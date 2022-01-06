@@ -205,8 +205,9 @@ export function hasClass(element, className) {
   * Check if an element has a class.
   * @param {Element} element An element to check for a certain class.
   * @param {String} className The class string to check for in an element.
+  * @returns {bool}
   */
-  return (' ' + element.className + ' ').indexOf(' ' + className + ' ') > -1;
+  return (` ${element.className} `).indexOf(` ${className} `) > -1;
 }
 
 export function showNotification(title, message, type, delay = 3500) {

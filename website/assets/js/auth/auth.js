@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 12/4/2020
- * Updated: 12/24/2021
+ * Updated: 1/5/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Modal } from 'bootstrap';
@@ -36,13 +36,15 @@ export const auth = {
     onAuthChange(async (user) => {
       if (!user) return;
       await authRequest('/src/auth/login');
-      if (user.metadata.createdAt == user.metadata.lastLoginAt) {
+      if (user.metadata.createdAt === user.metadata.lastLoginAt) {
         const { email } = user;
-        const data = { email, photo_url: `https://robohash.org/${email}?set=set1` };
+        const defaultPhoto = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
+        const data = { email, photo_url: defaultPhoto };
         try {
           await apiRequest('/api/users', data);
         } catch(error) {
           showNotification('Login error', 'Authentication failed. Try again later.', /* type = */ 'error' );
+          return;
         }
       }
       window.location.href = window.location.origin;

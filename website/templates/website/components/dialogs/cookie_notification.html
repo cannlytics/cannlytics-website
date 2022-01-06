@@ -4,10 +4,6 @@
   Cookie notification
   Created: 1/9/20201
   Updated: 11/26/2021
-
-  TODO:
-    - Make the notification hidden by default, currently
-    the cookie notification is shown if not already accepted.
 -->
 {% load icon %}
 <div
@@ -47,4 +43,7 @@
     </div>
   </div>
 </div>
+<script>
+  cannlytics.website.acceptCookiesCheck();
+</script>
 </html>

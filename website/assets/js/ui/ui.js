@@ -341,10 +341,38 @@ export const navigationHelpers = {
   
 };
 
+const uiManipulation = {
+
+  copyToClipboard(text) {
+    /**
+     * Prompt a user to copy a block of code to their clipboard.
+     * @param {String} text The text to copy to the clipboard.
+    */
+    // Optional: Improve getting only text from between tags.
+    // https://aaronluna.dev/blog/add-copy-button-to-code-blocks-hugo-chroma/
+    const tags = [
+      /<span class="p">/g,
+      /<\/span>/g,
+      /<span class="nx">/g,
+      /<span class="o">/g,
+      /<span class="s2">/g,
+      /<span class="kn">/g,
+      /<span class="n">/g,
+      /<span class="nn">/g,
+    ];
+    tags.forEach((tag) => {
+      text = text.replace(tag, '');
+    });
+    window.prompt('Copy to clipboard: Press Ctrl+C, then Enter', text);
+  },
+
+};
+
 export const ui = {
   ...formHelpers,
   ...initHelpers,
   ...navigationHelpers,
+  ...uiManipulation,
   hideLoadingButton,
   showLoadingButton,
   hideModal,
