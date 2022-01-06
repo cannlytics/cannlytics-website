@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 1/4/2022
+Updated: 1/5/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
@@ -49,7 +49,7 @@ def subscribe(request):
         validate_email(user_email)
     except ValidationError:
         response = {'success': False, 'message': 'Invalid email in request body.'}
-        return JsonResponse(response, safe=False)
+        return JsonResponse(response)
 
     # Create a promo code that can be used to download data.
     promo_code = get_promo_code(8)
@@ -96,7 +96,7 @@ def subscribe(request):
 
     # Return a success message.
     response = {'success': True, 'message': 'User successfully subscribed.'}
-    return JsonResponse(response, safe=False)
+    return JsonResponse(response)
 
 
 @api_view(['GET'])
@@ -122,7 +122,7 @@ def unsubscribe(request):
         uid = claims['uid']
     except KeyError:
         response = {'success': False, 'message': 'Unable to authenticate.'}
-        return JsonResponse(response, safe=False)
+        return JsonResponse(response)
 
     # Get the subscription they wish to unsubscribe from.
     data = loads(request.body)
@@ -160,4 +160,4 @@ def unsubscribe(request):
     # Return a success message.
     message = 'Successfully unsubscribed from subscription.'
     response = {'success': True, 'message': message}
-    return JsonResponse(response, safe=False)
+    return JsonResponse(response)

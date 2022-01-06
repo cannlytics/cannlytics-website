@@ -236,7 +236,13 @@ export const payments = {
     });
     try {
       await authRequest('/api/users', { sponsorships });
-      // FIXME: Cancel a user's PayPal recurring donation.
+      // FIXME: Cancel a user's PayPal recurring donation through the API.
+      const staffMessage = {
+        'name': 'CannBot',
+        'subject': 'PayPal Recurring Donation Needs to be Canceled',
+        'message': "A user has canceled a recurring PayPal donation. Please manually ensure the user's recurring donation is canceled.",
+      };
+      await authRequest('/src/email/send-message', staffMessage);
     } catch(error) {
       const message = 'An error occurred while changing your sponsorships. Please try again later or email support.';
       showNotification('Error Saving Sponsorships', message, /* type = */ 'error');

@@ -76,6 +76,7 @@
     "copybtn",
     "csrftoken",
     "daygrid",
+    "devs",
     "djpass",
     "djuser",
     "dotenv",

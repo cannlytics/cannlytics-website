@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 11/24/2021
+Updated: 1/5/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
@@ -112,9 +112,9 @@ def promotions(request):
         add_to_array(f'promos/events/promo_stats/{promo_hash}', 'viewed_at', timestamp)
         # Optional: If user has an account,
         # record which user visited in viewed_by collection.
-        return JsonResponse({'message': {'success': True}}, safe=False)
+        return JsonResponse({'message': {'success': True}})
     except:
-        return JsonResponse({'message': {'success': False}}, safe=False)
+        return JsonResponse({'message': {'success': False}})
 
 
 @csrf_exempt
