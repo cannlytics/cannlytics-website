@@ -56,15 +56,6 @@
                 Search and viewing statistics
               </small></li>
             </ul>
-            <!-- FIXME: -->
-            {% comment %} <button
-              id="promo-button"
-              class="btn btn-sm btn-light"
-              onclick="cannlytics.community.showPromo();"
-            >
-              {% icon "tag" class="me-1" height="24px" width="24px" %}
-              Use promo code
-            </button> {% endcomment %}
             <div id="promo-input-group" class="visually-hidden input-group mb-3">
               <input
                 id="promo-input"
@@ -96,13 +87,12 @@
         >
           Download free data
         </button>
-        <!-- TODO: Pass plan_id from Django from Firestore -->
         <a
           type="button"
           class="btn flex-grow-1 bg-gradient-orange text-white"
-          href="/subscriptions/checkout?id=P-7PY14290YP4037846MACLL6Q"
+          href="/subscriptions/checkout?name=premium"
         >
-          Get all data for $1
+          Get all data for $4.20 / mo.
         </a>
       </div>
 

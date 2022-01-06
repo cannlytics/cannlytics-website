@@ -207,7 +207,7 @@ material = {
                 "price": "$1,200 / mo.",
                 "color": "purple",
                 "action": "Launch Now 🚀",
-                "url": "/subscriptions/checkout?name=Enterprise",
+                "url": "/subscriptions/checkout?name=enterprise",
                 "attributes": [
                     "Custom installation",
                     "Access to admin tools",
@@ -220,7 +220,7 @@ material = {
                 "price": "$420 / mo.",
                 "color": "orange",
                 "action": "Get Started 🏃‍♀️",
-                "url": "/subscriptions/checkout?name=Premium",
+                "url": "/subscriptions/checkout?name=premium",
                 "attributes": [
                     "Metrc integration*",
                     "Access to dev tools",
