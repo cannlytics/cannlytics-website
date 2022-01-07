@@ -16,14 +16,12 @@
 
   <!-- Hero Banner -->
   {% include "website/components/heros/hero_banner.html" with
-    title='Economics'
+    title='Economics and Forecasting'
     description=""
-    primary_action='Learn more'
-    primary_action_url='/videos'
+    primary_action='Contract Now'
+    primary_action_url='/contact'
     secondary_action='Browse solutions'
     secondary_action_url='https://github.com/cannlytics'
-    background_image="https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2FIllustration_Cannabis_sativa0.jpg?alt=media&token=7c1f2d17-1df6-46b4-b698-21eb5cc5c174"
-    background_position="80% 80%"
     only
   %}
 
@@ -33,13 +31,10 @@
       <svg class="pe-1" style="float:left;width:125px;height:125px;">
         <use href="{% static "website/images/emojies/money.svg" %}#money-emoji"></use>
       </svg>
-      <h1 class="pt-4 text-dark">Economic Analysis</h1>
-      <p class="mt-2">
-        
-      </p>
+      {{ economics|safe }}
       <p class="text-start mt-3">
         <a
-          class="btn btn-sm-light btn-md-light"
+          class="btn btn-sm bg-gradient-green text-white"
           href="https://console.cannlytics.com/account/sign-up"
         >
           <small>Utilize the app today</small> &rarr;
@@ -50,17 +45,14 @@
 
   <!-- Forecasting -->
   <div class="container mb-5 mt-3">
-    <div class="markdown py-5" style="max-width:560px;">
+    <div class="markdown" style="max-width:560px;">
       <svg class="pe-1" style="float:left;width:125px;height:125px;">
         <use href="{% static "website/images/emojies/money.svg" %}#money-emoji"></use>
       </svg>
-      <h1 class="pt-4 text-dark">Forecasting</h1>
-      <p class="mt-2">
-        
-      </p>
+      {{ forecasting|safe }}
       <p class="text-start mt-3">
         <a
-          class="btn btn-sm-light btn-md-light"
+          class="btn btn-sm bg-gradient-orange text-white"
           href="https://console.cannlytics.com/account/sign-up"
         >
           <small>Utilize the app today</small> &rarr;

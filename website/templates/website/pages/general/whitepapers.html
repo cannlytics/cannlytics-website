@@ -39,7 +39,7 @@
               {{ item.subtitle }}
             </h3>
             {% if item.published_at == "Coming soon" %}
-              <span class="text-warning fw-bold">Coming soon</span>
+              <span class="text-warning fw-bold">On Demand</span>
             {% else %}
               <div>Published: {{ item.published_at|date:"F j, Y" }}</div>
             {% endif %}
@@ -49,14 +49,14 @@
             </p>
             <a
               class="btn btn-sm bg-gradient-green text-white mb-5 mt-2"
-              href="/subscriptions/checkout?name={{ item.plan_name }}"
+              href="{% url 'section' page='subscriptions' section='checkout'  %}?name=premium"
             >
-              Pre-order
+              Order Now
             </a>
           </div>
           <div class="col col-md-6 d-flex justify-content-center {% if forloop.counter|divisibleby:2 %}order-md-1 ps-0 pe-5 {% else %}ps-5{% endif %}">
             <figure class="figure">
-              <a href="/subscriptions/checkout?name={{ item.plan_name }}">
+              <a href="{% url 'section' page='subscriptions' section='checkout'  %}?name=premium">
                 <img
                   src="{{ item.image }}"
                   class="figure-img img-fluid rounded shadow"
@@ -71,14 +71,30 @@
   </div><!-- End of Whitepapers -->
 
 
-  <!-- TODO: Call for papers
-  
-  Topics?
-
-
-  Submission guidelines?
-
+  <!-- Call for papers
+    Topics?
+    Submission guidelines?
   -->
+  <div class="container mb-5 mt-3">
+    <div class="markdown py-5" style="max-width:560px;">
+      <svg class="pe-1" style="float:left;width:125px;height:125px;">
+        <use href="{% static "website/images/emojies/money.svg" %}#money-emoji"></use>
+      </svg>
+      <h1 class="pt-4 text-dark">Call for Papers</h1>
+      <p class="mt-2">
+        If you are writing about cannabis or the cannabis industry, then we would
+        love to publish your paper. 
+      </p>
+      <p class="text-start mt-4">
+        <a
+          class="btn btn-sm bg-gradient-green text-white"
+          href="{% url 'page' page='contact' %}"
+        >
+          <small>Submit your paper today</small> &rarr;
+        </a>
+      </p>
+    </div>
+  </div>
 
 {% endblock %}
 

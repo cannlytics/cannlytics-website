@@ -333,11 +333,11 @@ body.dark p.text-secondary small {
   color: #9baec8 !important;
 }
 ::-moz-selection {
-  color: #1a1a1a;
+  color: #1a1a1a !important;
   background: #96e6a1;
 }
 ::selection {
-  color: #1a1a1a;
+  color: #1a1a1a !important;
   background: #96e6a1;
 }
 
@@ -1368,6 +1368,12 @@ body.dark .navbar-toggler-icon {
 body.dark .nav-link:hover,
 body.dark .nav-link.active {
   color: #fff !important;
+}
+
+.dropdown-mega:hover .dropdown-menu {
+  display: flex;
+  left: 0 !important;
+  margin-top: 0; // remove the gap so it doesn't close
 }
 
 /*--------------------------------------------------------------------------

@@ -11,10 +11,10 @@ License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main
 from website.settings import DEFAULT_FROM_EMAIL
 
 app_context = {
-    'app_name': 'Cannlytics',
-    'contact_email': DEFAULT_FROM_EMAIL,
-    'contact_phone': '(828) 395-3954',
-    'contact_phonenumber': '18283953954',
+    "app_name": "Cannlytics",
+    "contact_email": DEFAULT_FROM_EMAIL,
+    "contact_phone": "(828) 395-3954",
+    "contact_phonenumber": "18283953954",
     "description": "Cannlytics is a suite of free software for cannabis-testing laboratories, empowering you with a state-of-the-art system.",
     "footer": {
         "index": [
@@ -50,17 +50,17 @@ app_context = {
             }
         ]
     },
-    'homepage': 'https://cannlytics.com',
-    'logos': {
-        'light': 'website/images/logos/cannlytics_logo_with_phrase.svg',
-        'dark': 'website/images/logos/cannlytics_logo_with_phrase_dark.svg',
-        'favicon': 'images/logos/favicon.ico',
+    "homepage": "https://cannlytics.com",
+    "logos": {
+        "light": "website/images/logos/cannlytics_logo_with_phrase.svg",
+        "dark": "website/images/logos/cannlytics_logo_with_phrase_dark.svg",
+        "favicon": "images/logos/favicon.ico",
     },
-    'policies': {
-        'license': 'https://docs.cannlytics.com/about/license',
-        'privacy': 'https://docs.cannlytics.com/about/privacy-policy',
-        'security': 'https://docs.cannlytics.com/about/security-policy',
-        'terms': 'https://docs.cannlytics.com/about/terms-of-service',
+    "policies": {
+        "license": "https://docs.cannlytics.com/about/license",
+        "privacy": "https://docs.cannlytics.com/about/privacy-policy",
+        "security": "https://docs.cannlytics.com/about/security-policy",
+        "terms": "https://docs.cannlytics.com/about/terms-of-service",
     },
     "social": [
         {"title": "GitHub", "url": "https://github.com/cannlytics"},
