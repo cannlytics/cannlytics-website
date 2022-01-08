@@ -16,6 +16,36 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;600&display=swap');
 
 /*--------------------------------------------------------------------------
+  Color utilities
+---------------------------------------------------------------------------*/
+
+// @import "bootstrap/scss/functions";
+// @import "bootstrap/scss/variables";
+// @import "bootstrap/scss/mixins";
+// @import "bootstrap/scss/utilities";
+
+// $all-colors: map-merge-multiple($grays);
+
+// $utilities: map-merge(
+//   $utilities,
+//   (
+//     "background-color": map-merge(
+//       map-get($utilities, "background-color"),
+//       (
+//         values: map-merge(
+//           map-get(map-get($utilities, "background-color"), "values"),
+//           (
+//             $all-colors
+//           ),
+//         ),
+//       ),
+//     ),
+//   )
+// );
+
+// @import "bootstrap/scss/utilities/api";
+
+/*--------------------------------------------------------------------------
   Main tags
 ---------------------------------------------------------------------------*/
 

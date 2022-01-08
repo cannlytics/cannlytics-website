@@ -10,8 +10,11 @@
 import { checkGoogleLogIn, onAuthChange } from '../firebase.js';
 import { setTableTheme } from '../ui/ui.js';
 import { authRequest, hasClass } from '../utils.js';
+import { contact } from './contact.js';
 
 export const website = {
+
+  ...contact,
 
   initialize() {
     /**

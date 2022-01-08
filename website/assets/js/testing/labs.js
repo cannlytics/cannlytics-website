@@ -152,13 +152,51 @@ export const labs = {
       //   },
       // },
       // { name:'Photo', field:'photoP' ,cellTemplate:"<img src='https://angularjs.org/img/AngularJS-large.png' />"}
-      { headerName: 'Lab', field: 'name', sortable: true, filter: true },
-      { headerName: 'State', field: 'state', sortable: true, filter: true },
-      { headerName: 'Analyses', field: 'analyses', sortable: true, filter: true },
-      { headerName: 'License', field: 'license', sortable: true, filter: true },
-      { headerName: 'Email', field: 'email', sortable: true, filter: true }, // TODO: Require user to sign in for this field.
-      { headerName: 'Phone', field: 'phone', sortable: true, filter: true }, // TODO: Require user to sign in for this field.
-      { headerName: 'Address', field: 'formatted_address', sortable: true, filter: true },
+      {
+        headerName: 'Lab',
+        field: 'name',
+        sortable: true,
+        filter: true,
+      },
+      {
+        headerName: 'State',
+        field: 'state',
+        sortable: true,
+        filter: true,
+        width: 60,
+      },
+      {
+        headerName: 'Analyses', field: 'analyses',
+        sortable: true,
+        filter: true,
+        cellRenderer: renderAnalyses,
+      },
+      {
+        headerName: 'License',
+        field: 'license',
+        sortable: true,
+        filter: true,
+      },
+      // TODO: Require user to sign in for this field.
+      {
+        headerName: 'Email',
+        field: 'email',
+        sortable: true,
+        filter: true,
+      },
+      // TODO: Require user to sign in for this field.
+      {
+        headerName: 'Phone',
+        field: 'phone',
+        sortable: true,
+        filter: true,
+      },
+      {
+        headerName: 'Address',
+        field: 'formatted_address',
+        sortable: true,
+        filter: true,
+      },
     ];
 
     // TODO: Style analyses as chips.
@@ -333,4 +371,40 @@ export const labs = {
     document.getElementById('view-less-labs').classList.add('d-none');
   },
 
+  suggestAnalyses() {
+    /**
+     * Suggest analyses for a given lab to the staff.
+     */
+    // TODO:
+  },
+
+  suggestLab() {
+    /**
+     * Suggest a lab to the staff.
+     */
+    // TODO:
+  },
+
+  suggestPrices() {
+    /**
+     * Suggest analyses prices for a given lab to the staff.
+     */
+    // TODO:
+  },
+
 }
+
+const renderAnalyses = (params) => {
+  /**
+   * Render analyses as chips in an AG grid table.
+   * @param {Object} params The parameters passed by AG grid.
+   */
+  const analyses = params.value || [];
+  if (analyses.length) {
+    let html = '';
+    analyses.forEach((analysis) => {
+      // TODO: Assign color based on analysis.
+      html+= `<span class="badge rounded-pill">${analysis}</span>`;
+    });
+  } else return `<button class="btn btn-sm nav-link">Suggest analyses</button>`;
+};

@@ -4,13 +4,12 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 8/22/2021
-Updated: 1/5/2022
+Updated: 1/7/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports
 from django.core.mail import send_mail
 from django.http import JsonResponse
-from django.shortcuts import redirect
 
 # Internal imports
 from cannlytics.auth.auth import authenticate_request
@@ -24,12 +23,9 @@ def send_message(request, *args, **argv): #pylint: disable=unused-argument
     sign-in page.
     """
     claims = authenticate_request(request)
-    try:
-        uid = claims['uid']
-        user_email = claims['email']
-    except KeyError:
-        return redirect('/account/sign-in')
-    name = request.POST.get('name', claims['name'])
+    uid = claims.get('uid', 'User not signed in.')
+    user_email = claims.get('email', 'User not signed in.')
+    name = request.POST.get('name', claims.get('name', 'Unknown'))
     subject = request.POST.get('subject', 'Cannlytics Website Message')
     message = request.POST.get('message', 'No message body.')
     sender = request.POST.get('email', DEFAULT_FROM_EMAIL)

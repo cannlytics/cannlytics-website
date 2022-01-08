@@ -40,28 +40,53 @@ export const data = {
     /**
      * Download a given dataset.
      */
-    // TODO: Implement.
+    authRequest('/api/market/download-lab-data');
   },
 
-  publishDataset() {
+  async publishDataset() {
     /**
      * Publish a given dataset on the data market.
      */
-    // TODO: Implement.
+    const response = authRequest('/api/market/download-lab-data');
+    if (response.success) {
+      const message = 'Your dataset has been published.'
+      showNotification('Data Published', message, /* type = */ 'success');
+    } else {
+      const message = 'An error occurred when saving your account.'
+      showNotification('Error Publishing Data', message, /* type = */ 'error');
+    }
   },
 
   sellDataset() {
     /**
      * Sell a given dataset on the data market.
      */
-    // TODO: Implement.
+    // TODO: Get dataset details from the UI.
+    const dataset = {};
+    const response = authRequest('/api/market/sell', dataset);
+    if (response.success) {
+      const message = 'Your dataset is now for sale.'
+      showNotification('Data Listed for Sale', message, /* type = */ 'success');
+    } else {
+      const message = 'An error occurred when listing your data for sale.'
+      showNotification('Error Listing Data for Sale', message, /* type = */ 'error');
+    }
   },
 
   buyDataset() {
     /**
      * Buy a given dataset on the data market.
      */
-    // TODO: Implement.
+    // TODO: Get dataset details from the UI.
+    const dataset = {};
+    const response = authRequest('/api/market/buy', dataset);
+    if (response.success) {
+      const message = 'Your have successfully bought a dataset.'
+      showNotification('Data Purchased', message, /* type = */ 'success');
+    } else {
+      const message = 'An error occurred when purchasing this dataset.'
+      showNotification('Error Purchasing Data', message, /* type = */ 'error');
+    }
   },
 
 };

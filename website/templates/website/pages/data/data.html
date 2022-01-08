@@ -52,7 +52,7 @@
       view the
       <a
         class="serif text-dark fw-bold background-hover"
-        href="https://github.com/cannlytics/cannlytics/tree/main/tools/data"
+        href="https://github.com/cannlytics"
       >
         tools in the GitHub repository
       </a>.
@@ -79,7 +79,7 @@
       </li>
       <li class="mb-3">
         <a
-          href="{% url 'section' page='data' section='state' %}"
+          href="{% url 'page' page='data' %}#state-data"
           class="serif text-dark fw-bold background-hover"
         >
           State Cannabis Data
@@ -87,7 +87,7 @@
       </li>
       <li class="mb-3">
         <a
-          href="{% url 'section' page='data' section='regulations' %}"
+          href="{% url 'page' page='data' %}#regulations"
           class="serif text-dark fw-bold background-hover"
         >
           Regulations
@@ -109,6 +109,9 @@
       to collect and provide access to these data points in a simple, standard manner.
     </p>
   </section>
+
+  <!-- Under Construction -->
+  {% include "website/components/notifications/under_construction.html" %}
 
   <!-- Data Card -->
   <section class="container card px-0">
@@ -201,8 +204,8 @@
   <!-- TODO: National Statistics -->
   {% comment %} {% include "website/pages/data/data_components/national_realtime_statistics.html" %} {% endcomment %}
 
-  <!-- Learn More -->
-  <div class="container my-3">
+  <!-- Public Data -->
+  <div id="public-data" class="container my-3">
     <div class="markdown py-5" style="max-width:560px;">
       <svg class="pe-1" style="float:left;width:125px;height:125px;">
         <use href="{% static "website/images/emojies/technologist.svg" %}#technologist-emoji"></use>
@@ -211,16 +214,16 @@
       <p class="text-start mt-4">
         <a
           class="btn btn-sm bg-gradient-green text-white"
-          href="https://console.cannlytics.com/account/sign-up"
+          href="{% url 'page' page='contact' %}?topic=data"
         >
-          <small>Utilize the app today</small> &rarr;
+          <small>Get our open data</small> &rarr;
         </a>
       </p>
     </div>
   </div>
 
-  <!-- Learn More -->
-  <div class="container my-3">
+  <!-- Regulations -->
+  <div id="regulations" class="container my-3">
     <div class="markdown py-5" style="max-width:560px;">
       <svg class="pe-1" style="float:left;width:125px;height:125px;">
         <use href="{% static "website/images/emojies/classical-building.svg" %}#classical-building-emoji"></use>
@@ -229,9 +232,9 @@
       <p class="text-start mt-4">
         <a
           class="btn btn-sm bg-gradient-orange text-white"
-          href="https://console.cannlytics.com/account/sign-up"
+          href="{% url 'page' page='contact' %}?topic=regulations"
         >
-          <small>Utilize the app today</small> &rarr;
+          <small>Ask us about regulations</small> &rarr;
         </a>
       </p>
     </div>

@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <keegan@cannlytics.com>
   Created: 1/6/2021
-  Updated: 11/25/2021
+  Updated: 1/7/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
   
   Optional Improvements:
@@ -43,9 +43,9 @@
         <form
           id="contact-form"
           class="mt-4 pe-sm-5"
-          action="/src/email/send-message"
+          action=""
           method="post"
-          onsubmit="return onSubmit(this);"
+          onsubmit="return cannlytics.website.submitContactForm();"
         >
 
           <!-- CSRF Token -->
@@ -58,12 +58,13 @@
             </label>
             <div class="col-sm-10">
               <input
-                type="text"
                 id="name_input"
+                type="text"
                 class="form-control form-control-sm"
                 name="name"
                 spellcheck="false"
                 type="text"
+                value="{{ user.name }}"
               >
             </div>
           </div>
@@ -81,24 +82,48 @@
                 name="email"
                 spellcheck="false"
                 type="email"
+                value="{{ user.email }}"
               >
             </div>
           </div>
 
           <!-- Subject -->
-          <div class="row mb-3">
+          {% comment %} <div class="row mb-3">
             <label class="col-sm-2 col-form-label col-form-label-sm serif">
               Subject
             </label>
             <div class="col-sm-10">
               <input
-                type="text"
                 id="subject_input"
+                type="text"
                 class="form-control form-control-sm"
                 name="subject"
                 spellcheck="false"
                 type="text"
               >
+            </div>
+          </div> {% endcomment %}
+
+          <!-- Topic -->
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm serif">
+              Topic
+            </label>
+            <div class="col-sm-10">
+              <select
+                id="topic_input"
+                class="form-select form-select-sm"
+                aria-label="Topic"
+                onchange="cannlytics.website.setContactFormTopic(this.value);"
+              >
+                <option selected value="general">General Inquiry</option>
+                <option value="custom">Custom Development</option>
+                <option value="data">Seeking Cannabis Data</option>
+                <option value="join">Joining Cannlytics</option>
+                <option value="paper">Submitting a Paper</option>
+                <option value="partner">Partner with Cannlytics</option>
+                <option value="regulations">Asking about Regulations</option>
+              </select>
             </div>
           </div>
 
@@ -116,11 +141,25 @@
             </label>
           </div>
 
-          <!-- ReCaptcha -->
-          <div class="g-recaptcha" data-sitekey="{{ recaptcha.site_key }}"></div>
-
-          <!-- Submit -->
-          <div class="d-flex align-items-center justify-content-end">
+          <!-- Submit with simple math check -->
+          <div class="d-flex align-items-center justify-content-between mt-1">
+            <div class="row">
+              <label class="col col-9 col-form-label col-form-label-sm serif">
+                🤖 Check: What is <span id="math-check-min"></span> + <span id="math-check-max"></span>?
+              </label>
+              <div class="col-sm-3">
+                <input
+                  id="math_input"
+                  type="text"
+                  class="form-control form-control-sm"
+                  name="math"
+                  spellcheck="false"
+                  type="number"
+                  min="0"
+                  max="10"
+                >
+              </div>
+            </div>
             <input
               class="btn btn-sm bg-gradient-green text-white"
               type="submit"
@@ -145,24 +184,8 @@
 
 <!-- JavaScript -->
 {% block page_js %}
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script>
-    function onSubmit(form) {
-      /**
-        * Submit the contact form after validation.
-        */
-      var email = form.email.value;
-      if (email === null || email === '') {
-        cannlytics.showNotification('Email required', 'Please enter a valid email so we can reply to your message.', 'error');
-        return false;
-      }
-      var message = form.message.value;
-      if (message === null || message === '') {
-        cannlytics.showNotification('Message required', 'Please enter a message so we can reply to you.', 'error');
-        return false;
-      }
-      return true;
-    }
+    cannlytics.website.initializeContactForm();
   </script>
 {% endblock %}
 

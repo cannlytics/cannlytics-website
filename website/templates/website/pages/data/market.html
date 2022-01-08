@@ -104,6 +104,14 @@
     image_url=' '
     only
   %} {% endcomment %}
+  {% include "website/components/heros/hero_banner.html" with
+    title='Data Market'
+    description='The first open-source cannabis data market.'
+    image_url=' '
+    only
+  %}
+
+  {% if False %}
 
   <!-- Section -->
   <section class="container mb-2">
@@ -239,6 +247,14 @@
 
     <!-- TODO: Table of recently published data sets -->
     {% comment %} <h5 class="sans-serif text-dark fs-5 mt-5 mb-3">Recently Published</h5> {% endcomment %}
+
+
+    {% else %}
+
+      <!-- Under Construction -->
+      {% include "website/components/notifications/under_construction.html" %}
+
+    {% endif %}
     
 
   </section><!-- End of section -->
@@ -246,19 +262,17 @@
 {% endblock material %}
 
 <!-- JavaScript -->
-{% block page_js %}
+{% comment %} {% block page_js %}
+<script>
 
-  <script>
+  // Get state data from Firestore.
+  cannlytics.data.getDataMarketStats().then(function(response) {
 
-    // Get state data from Firestore.
-    cannlytics.data.getDataMarketStats().then(function(response) {
+    // Set the number of profiles and datasets.
+    document.getElementById('total_profiles').value = response.total_profiles ?? 0;
+    document.getElementById('total_datasets').value = response.total_datasets ?? 0;
 
-      // Set the number of profiles and datasets.
-      document.getElementById('total_profiles').value = response.total_profiles ?? 0;
-      document.getElementById('total_datasets').value = response.total_datasets ?? 0;
+  });
 
-    });
-
-  </script>
-
-{% endblock page_js %}
+</script>
+{% endblock page_js %} {% endcomment %}
