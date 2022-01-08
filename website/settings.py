@@ -22,6 +22,9 @@ import google.auth
 from google.cloud import secretmanager
 from django.template import base
 
+# Internal imports.
+from cannlytics.firebase import access_secret_version
+
 # ------------------------------------------------------------#
 # Project variables.
 # ------------------------------------------------------------#
@@ -62,9 +65,7 @@ if os.path.isfile(env_file):
 else:
     try:
         project_id = os.environ['GOOGLE_CLOUD_PROJECT']
-        client = secretmanager.SecretManagerServiceClient()
-        name = f'projects/{project_id}/secrets/{SECRET_SETTINGS_NAME}/versions/latest'
-        payload = client.access_secret_version(name=name).payload.data.decode('UTF-8')
+        payload = access_secret_version(project_id, SECRET_SETTINGS_NAME, 'latest')
         env.read_env(io.StringIO(payload))
     except KeyError:
         raise Exception('No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found.')

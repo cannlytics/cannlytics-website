@@ -4,12 +4,13 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 1/5/2022
+Updated: 1/7/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
 from datetime import datetime
 from json import loads
+import os
 
 # External imports
 from django.core.exceptions import ValidationError
@@ -22,6 +23,7 @@ from rest_framework.response import Response
 # Internal imports.
 from cannlytics.auth.auth import authenticate_request
 from cannlytics.firebase import (
+    access_secret_version,
     add_to_array,
     create_user,
     get_document,
@@ -44,7 +46,6 @@ def subscribe(request):
     # Ensure that the user has a valid email.
     data = loads(request.body)
     try:
-        uid = data['uid']
         user_email = data['email']
         validate_email(user_email)
     except ValidationError:
@@ -62,14 +63,20 @@ def subscribe(request):
     data['created_at'] = iso_time
     data['updated_at'] = iso_time
     data['promo_code'] = promo_code
-    update_document(f'subscribers/{timestamp}', data)
+    update_document(f'subscribers/{user_email}', data)
 
-    # Save the user's subscription ID.
-    # TODO: Test that this works.
-    plan_name = data['plan_name']
-    user_data = {}
-    user_data[f'{plan_name}_subscription_id'] = data['id']
-    update_document(f'user/{uid}', user_data)
+    # Save the user's subscription.
+    try:
+        plan_name = data['plan_name']
+        uid = data['uid']
+        user_data = {}
+        if data.get('newsletter'):
+            user_data['newsletter'] = True
+        else:
+            user_data[f'{plan_name}_subscription_id'] = data['id']
+        update_document(f'user/{uid}', user_data)
+    except KeyError:
+        pass
 
     # Create an account if one does not exist.
     # Optional: Load messages from state?
@@ -129,12 +136,12 @@ def unsubscribe(request):
     plan_name = data['plan_name']
 
     # Unsubscribe the user with the PayPal SDK.
-    # TODO: Test that this works.
     try:
-        # TODO: Prefer to retrieve PayPal secrets from Secret Manager.
-        paypal_secrets = get_document('admin/paypal')
-        paypal_client_id = paypal_secrets['paypal_client_id']
-        paypal_secret = paypal_secrets['paypal_secret']
+        project_id = os.environ['GOOGLE_CLOUD_PROJECT']
+        payload = access_secret_version(project_id, 'paypal', 'latest')
+        paypal_secrets = loads(payload)
+        paypal_client_id = paypal_secrets['client_id']
+        paypal_secret = paypal_secrets['secret']
         paypal_access_token = get_paypal_access_token(paypal_client_id, paypal_secret)
         user_data = get_document(f'users/{uid}')
         subscription_id = user_data[f'{plan_name}_subscription_id']

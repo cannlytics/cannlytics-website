@@ -69,10 +69,10 @@
           <!-- Subscribe -->
           <div id="subscribe" class="subscription w-100">
             <input
-              id="email-input"
+              id="sign-up-email"
               class="form-control form-control-sm my-2"
               type="email"
-              aria-describedby="emailHelp"
+              aria-describedby="subscribe-button"
               placeholder="Subscribe to data reports ↬"
             >
             <button
@@ -225,7 +225,7 @@
   <script>
 
     // Add subscribe to input on enter.
-    document.getElementById('email-input').addEventListener('keydown', function(event) {
+    document.getElementById('sign-up-email').addEventListener('keydown', function(event) {
       if (event.keyCode === 13) cannlytics.payments.subscribe();
     });
 

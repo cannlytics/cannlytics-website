@@ -397,14 +397,14 @@ export const payments = {
       data = Object.fromEntries(new FormData(form).entries());
       data = { ...data, ...subscription };
     } else {
-      const userEmail = document.getElementById('email-input').value;
+      const userEmail = document.getElementById('sign-up-email').value;
       if (!validateEmail(userEmail)) {
         const message = 'Please provide a valid email.'
         showNotification('Invalid email', message, /* type = */ 'error');
         hideLoadingButton('subscribe-button');
         return;
       }
-      data = { email: userEmail };
+      data = { email: userEmail, newsletter: true };
     }
     const response = await authRequest('/src/payments/subscribe', data);
     if (response.success) {

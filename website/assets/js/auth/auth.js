@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 12/4/2020
- * Updated: 1/5/2022
+ * Updated: 1/7/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Modal } from 'bootstrap';
@@ -177,7 +177,7 @@ export async function signUp() {
   /**
    * Sign a user up for a Firebase account with a username and password.
    */
-  const terms = document.getElementById('login-terms-accepted');
+  const terms = document.getElementById('sign-up-terms-accepted');
   if (!terms.checked) {
     const message = 'Please agree with our terms of service and read our privacy policy to create an account.';
     showNotification('Terms not accepted', message, /* type = */ 'error');
@@ -192,8 +192,9 @@ export async function signUp() {
   document.getElementById('sign-up-loading-button').classList.remove('d-none');
   try {
     await createAccount(email, password);
+    const newsletter = document.getElementById('newsletter-signup');
+    if (newsletter.checked) await cannlytics.payments.subscribe();
   } catch(error) {
-    console.log(error.code);
     const message = authErrors[error.code] || 'Unknown error encountered while signing in.';
     document.getElementById('sign-up-button').classList.remove('d-none');
     document.getElementById('sign-up-loading-button').classList.add('d-none');

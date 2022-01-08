@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 8/21/2021
- * Updated: 12/27/2021
+ * Updated: 1/7/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { authRequest } from '../utils.js';

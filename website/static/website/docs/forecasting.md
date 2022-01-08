@@ -4,16 +4,16 @@ Prediction is an uncertain science, but we believe that the best forecast for th
 
 Cannlytics practices, preaches, and strictly adheres to the 10 commandments of forecasting:
 
-1.
-2.
-3.
-4.
-5.
-6.
-7.
-8.
-9.
-10.
+1. Know what you are forecasting.
+2. Understand the purpose of forecasting.
+3. Acknowledge the cost of the forecast error.
+4. Rationalize the forecast horizon.
+5. Understand the choice of variables.
+6. Rationalize the forecasting model used.
+7. Know how to present the results.
+8. Know how to decipher the forecast results.
+9. Use recursive methods.
+10. Understand that forecasting models evolve over time.
 
 Reference: Silvia, J, Iqbal, A, et. al (2014), `Economic and Business Forecasting'.
 

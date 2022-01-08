@@ -115,16 +115,22 @@
 
             <!-- Options -->
             <div class="d-flex justify-content-between align-items-center">
-
-              <!-- Reset Password -->
-              <a
-                class="background-hover fs-6"
-                href="{% url 'section' page='account' section='password-reset' %}"
-              >
-                <small class="serif text-dark">Lost password?</small>
-              </a>
-
-              <!-- Sign In -->
+              <div>
+                <div class="form-check">
+                  <input id="stay-signed-in" class="app-action form-check-input" type="checkbox" value="" checked>
+                  <label class="app-action background-hover form-check-label fs-6" for="stay-signed-in"><small>
+                    Stay signed in?
+                  </small></label>
+                </div>
+                <p class="text-center text-small fs-6 font-weight-light mb-1 mt-2">
+                  <a
+                    class="background-hover text-secondary text-small fs-6"
+                    href="{% url 'section' page='account' section='password-reset' %}"
+                  >
+                    <small class="sans-serif">Lost password?</small>
+                  </a>
+                </p>
+              </div>
               <button
                 id="sign-in-button"
                 class="ms-1 btn btn-sm btn-set-width bg-gradient-green serif text-white"
@@ -143,8 +149,7 @@
               >
                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
               </button>
-            
-            </div><!-- End of Options -->
+            </div>
 
             <!-- Google Sign In Alternative -->
             <div class="fs-6 text-center my-3">

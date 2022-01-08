@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
- * Updated: 12/30/2021
+ * Updated: 1/7/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 export const map = {
@@ -224,9 +224,9 @@ export const map = {
     /**
      * Pan to a marker on selection.
      */
-    var val = document.getElementById('searchInput').value;
-    var opts = document.getElementById('searchOptions').childNodes;
-    for (var i = 0; i < opts.length; i++) {
+    const val = document.getElementById('searchInput').value;
+    const opts = document.getElementById('searchOptions').childNodes;
+    for (let i = 0; i < opts.length; i++) {
       if (opts[i].value === val) {
         this.panToMarker(this.map, opts[i].value)
         break;

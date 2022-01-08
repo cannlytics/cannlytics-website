@@ -172,7 +172,8 @@
       </ul>
 
       <!-- Right Navigation (Not signed in) -->
-      <ul class="navbar-nav indicates-auth align-items-center me-3 d-none">
+      <ul class="navbar-nav align-items-center me-3 indicates-auth visually-hidden">
+        {% if section != 'sign-in' %}
         <li class="nav-item h6 mb-0">
           <a
             class="nav-link btn-sm app-action background-hover text-nowrap me-2 fw-bold"
@@ -182,6 +183,7 @@
             Sign in
           </a>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a
             type="button"

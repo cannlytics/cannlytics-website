@@ -6,10 +6,11 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/9/2021
-  Updated: 11/25/2021
+  Updated: 1/7/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
+{% load static %}
 {% block title %}Whitepapers | Cannlytics{% endblock %}
 {% block material %}
 
@@ -68,27 +69,26 @@
         </div>
       {% endfor %}
     </div>
-  </div><!-- End of Whitepapers -->
+  </div>
 
 
-  <!-- Call for papers
-    Topics?
-    Submission guidelines?
+  <!-- Call for Papers
+    Optional: Metion topics and/or submission guidelines?
   -->
   <div class="container mb-5 mt-3">
     <div class="markdown py-5" style="max-width:560px;">
-      <svg class="pe-1" style="float:left;width:125px;height:125px;">
-        <use href="{% static "website/images/emojies/money.svg" %}#money-emoji"></use>
+      <svg class="pe-1 pt-3" style="float:left;width:125px;height:125px;">
+        <use href="{% static "website/images/emojies/scroll.svg" %}#scroll-emoji"></use>
       </svg>
-      <h1 class="pt-4 text-dark">Call for Papers</h1>
+      <h1 class="pt-2 text-dark">Call for Papers</h1>
       <p class="mt-2">
         If you are writing about cannabis or the cannabis industry, then we would
-        love to publish your paper. 
+        love to publish your paper.
       </p>
       <p class="text-start mt-4">
         <a
           class="btn btn-sm bg-gradient-green text-white"
-          href="{% url 'page' page='contact' %}"
+          href="{% url 'page' page='contact' %}?r=paper"
         >
           <small>Submit your paper today</small> &rarr;
         </a>

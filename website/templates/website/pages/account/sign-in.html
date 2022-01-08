@@ -6,35 +6,36 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 2/18/2021
-  Updated: 11/28/2021
+  Updated: 1/7/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
 {% load static icon %}
-{% block title %}Sign In | Cannlytics{% endblock %}
+{% block title %}Sign In | Cannlytics{% endblock title %}
+{% block page_css %}
+<style>
+  #google-signin {
+    background: url({% static 'website/images/logos/signin-assets/btn_google_signin_dark_normal_web@2x.png' %});
+    width: 191px;
+    height: 46px;
+    background-size: contain;
+  }
+  #google-signin:hover {
+    background: url({% static 'website/images/logos/signin-assets/btn_google_signin_dark_focus_web@2x.png' %});
+    width: 191px;
+    height: 46px;
+    background-size: contain;
+  }
+  #google-signin:active {
+    background: url({% static 'website/images/logos/signin-assets/btn_google_signin_dark_pressed_web@2x.png' %});
+    width: 191px;
+    height: 46px;
+    background-size: contain;
+  }
+</style>
+{% endblock page_css %}
 {% block material %}
 <section class="container pt-5" style="max-width:475px;">
-  <!-- Login Style -->
-  <style>
-    #google-signin {
-      background: url({% static 'website/images/logos/signin-assets/btn_google_signin_dark_normal_web@2x.png' %});
-      width: 191px;
-      height: 46px;
-      background-size: contain;
-    }
-    #google-signin:hover {
-      background: url({% static 'website/images/logos/signin-assets/btn_google_signin_dark_focus_web@2x.png' %});
-      width: 191px;
-      height: 46px;
-      background-size: contain;
-    }
-    #google-signin:active {
-      background: url({% static 'website/images/logos/signin-assets/btn_google_signin_dark_pressed_web@2x.png' %});
-      width: 191px;
-      height: 46px;
-      background-size: contain;
-    }
-  </style>
 
   <!-- Message -->
   <h2 class="serif text-dark">
@@ -47,7 +48,7 @@
   <!-- Email -->
   <div class="mb-3 row">
     <label
-      for="login-email"
+      for="sign-in-email"
       class="col-sm-2 col-form-label col-form-label-sm pe-2"
     >
       Email
@@ -56,7 +57,7 @@
       <input
         type="email"
         class="form-control form-control-sm"
-        id="login-email"
+        id="sign-in-email"
         required
         autofocus
         spellcheck="false"
@@ -67,7 +68,7 @@
   <!-- Password -->
   <div class="mb-3 row">
     <label
-      for="login-password"
+      for="sign-in-password"
       class="col-sm-2 col-form-label col-form-label-sm pe-2"
     >
       Password
@@ -76,22 +77,30 @@
       <input
         type="password"
         class="form-control form-control-sm"
-        id="login-password"
+        id="sign-in-password"
         required
       >
     </div>
   </div>
 
   <!-- Sign in  -->
-  <div class="d-flex justify-content-between w-100 mt-3">
-    <p class="text-center text-small fs-6 font-weight-light mb-1">
+  <div class="d-flex justify-content-between align-items-start w-100 mt-3">
+    <div>
+      <div class="form-check">
+        <input id="stay-signed-in" class="app-action form-check-input" type="checkbox" value="" checked>
+        <label class="app-action background-hover form-check-label fs-6" for="stay-signed-in">
+          <small>Stay signed in?</small>
+        </label>
+      </div>
+      <p class="text-center text-small fs-6 font-weight-light mb-1 mt-2">
         <a
           class="background-hover text-secondary text-small fs-6"
           href="{% url 'section' page='account' section='password-reset' %}"
         >
-          <small class="sans-serif">Forgot password?</small>
+          <small class="sans-serif">Lost password?</small>
         </a>
       </p>
+    </div>
     <button
       id="sign-in-button"
       class="ms-1 btn btn-sm btn-set-width bg-gradient-green text-white"
@@ -111,17 +120,6 @@
     </button>
   </div>
 
-  <!-- Remember Me -->
-  <!-- TODO: Implement remember user option | custom checkbox color -->
-  {% comment %} <div class="d-flex justify-content-between">
-    <div class="custom-control custom-checkbox mb-3">
-      <input type="checkbox" class="custom-control-input app-action" id="input_remember_password">
-      <label class="custom-control-label app-action" for="input_remember_password">
-        Stay signed in?
-      </label>
-    </div>
-  </div> {% endcomment %}
-
   <!-- Google Sign In -->
   <div class="serif text-dark text-center my-3">
     &mdash;&nbsp;or&nbsp;&mdash;
@@ -129,8 +127,8 @@
   <div class="d-grid gap-2 justify-content-center">
     <a id="google-signin" class="app-action" onclick="cannlytics.auth.signInWithGoogle()"></a>
   </div>
-  <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_focus_web@2x.png' %}"/>
-  <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_pressed_web@2x.png' %}"/>
+  <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_focus_web@2x.png' %}">
+  <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_pressed_web@2x.png' %}">
 
   <!-- Sign up -->
   <div class="d-flex align-items-center justify-content-center">
@@ -150,16 +148,6 @@
     </div>
   </div>
 
-  <!-- JavaScript to add actions to inputs -->
-  <script>
-    var node = document.getElementById('login-password');
-    node.addEventListener('keyup', function(event) {
-      if (event.key === 'Enter') {
-        cannlytics.auth.signIn(event);
-      }
-    });
-  </script>
-
 </section>
 
 <!-- Vines -->
@@ -170,11 +158,21 @@
 <!-- JavaScript -->
 {% block page_js %}
   <script>
+
     // Initialize the sign in form.
     cannlytics.firebase.onAuthChange(function(user) {
       window.location.href = `${window.location.origin}\\account`;
     });
-  </script
+
+    // Add sign in on enter.
+    var node = document.getElementById('sign-in-password');
+    node.addEventListener('keyup', function(event) {
+      if (event.key === 'Enter') {
+        cannlytics.auth.signIn(event);
+      }
+    });
+
+  </script>
 {% endblock page_js %}
 
 </html>
