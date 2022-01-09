@@ -74,6 +74,7 @@
               type="email"
               aria-describedby="subscribe-button"
               placeholder="Subscribe to data reports ↬"
+              {% if user.email and not user.newsletter %}value="{{ user.email }}"{% endif %}
             >
             <button
               id="subscribe-button"

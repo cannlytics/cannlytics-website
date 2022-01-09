@@ -25,6 +25,7 @@ from cannlytics.auth.auth import authenticate_request
 from cannlytics.firebase import (
     access_secret_version,
     add_to_array,
+    create_log,
     create_user,
     get_document,
     update_document,
@@ -58,7 +59,6 @@ def subscribe(request):
 
     # Record the subscription in Firestore.
     now = datetime.now()
-    timestamp = now.strftime('%Y-%m-%d_%H-%M-%S')
     iso_time = now.isoformat()
     data['created_at'] = iso_time
     data['updated_at'] = iso_time
@@ -66,11 +66,12 @@ def subscribe(request):
     update_document(f'subscribers/{user_email}', data)
 
     # Save the user's subscription.
+    plan_name = data['plan_name']
     try:
-        plan_name = data['plan_name']
-        uid = data['uid']
+        claims = authenticate_request(request)
+        uid = claims['uid']
         user_data = {}
-        if data.get('newsletter'):
+        if plan_name == 'newsletter':
             user_data['newsletter'] = True
         else:
             user_data[f'{plan_name}_subscription_id'] = data['id']
@@ -101,6 +102,16 @@ def subscribe(request):
         # html_message = render_to_string(template_url, {'context': 'values'})
     )
 
+    # Create an activity log.
+    create_log(
+        ref='logs/website/subscriptions',
+        claims=claims,
+        action=f'User ({user_email}) subscribed to {plan_name}.',
+        log_type='subscription',
+        key='subscribe',
+        changes=data,
+    )
+
     # Return a success message.
     response = {'success': True, 'message': 'User successfully subscribed.'}
     return JsonResponse(response)
@@ -127,6 +138,7 @@ def unsubscribe(request):
     claims = authenticate_request(request)
     try:
         uid = claims['uid']
+        user_email = claims['email']
     except KeyError:
         response = {'success': False, 'message': 'Unable to authenticate.'}
         return JsonResponse(response)
@@ -155,13 +167,23 @@ def unsubscribe(request):
     Email: {}
     Plan: {}
     Subscription ID: {}
-    """.format(uid, claims['email'], plan_name, subscription_id)
+    """.format(uid, user_email, plan_name, subscription_id)
     send_mail(
         subject='User unsubscribed from a PayPal subscription.',
         message=staff_message,
         from_email=DEFAULT_FROM_EMAIL,
         recipient_list=[DEFAULT_FROM_EMAIL],
         fail_silently=False,
+    )
+
+    # Create an activity log.
+    create_log(
+        ref='logs/website/subscriptions',
+        claims=claims,
+        action=f'User ({user_email}) unsubscribed from {plan_name}.',
+        log_type='subscription',
+        key='subscribe',
+        changes=data,
     )
 
     # Return a success message.

@@ -41,6 +41,7 @@
     "@popperjs/core": "^2.10.2",
     "@primer/css": "^19.1.1",
     "@primer/octicons": "^11.0.0",
+    "ag-grid-community": "^26.2.1",
     "babel-preset-es2015": "^6.24.1",
     "bootstrap": "^5.1.3",
     "firebase": "^9.6.0",

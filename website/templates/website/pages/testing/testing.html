@@ -6,70 +6,29 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 11/24/2020
-  Updated: 1/7/2022
+  Updated: 1/9/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
-
-  TODO: The ability to request to add labs.
-  Is your lab missing? Enter your details to get added to the map.
 -->
 {% extends "website/index.html" %}
 {% block title %}Testing | Cannlytics{% endblock %}
-{% load static icon %}
+{% load static %}
 {% block page_css %}
 
   <!-- AG-Grid CSS and JavaScript -->
   {% include "website/components/tables/ag_grid_scripts.html" %}
 
-  <!-- Google Maps Style -->
-  <style>
-    .open-in-new::after {
-      content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
-      margin: 0 3px 0 5px;
-    }
-    .figure-caption a {
-      color: inherit;
-      border-bottom: 1px dashed #000;
-      text-decoration: none;
-    }
-    .figure-caption a:hover {
-      background-color: rgba(229,58,35,.2);
-    }
-    body.dark .gm-style-iw-c,
-    body.dark .gm-style-iw-d {
-      background-color: #343434;
-    }
-    body.dark .gm-style-iw-d a {
-      color: #50fa7b;
-    }
-    body.dark .btn-light {
-      color: #1a1a1a !important;
-    }
-    .gm-style .gm-style-iw-c  {
-      padding: 0;
-    }
-  </style>
-
 {% endblock %}
 {% block material %}
 <div class="container">
 
-    <!-- Hero -->
-  <div class="row featurette mt-5">
-    <div class="col-md-7">
-      <h2 class="display-6 serif text-dark pb-3 mt-0">
-        Welcome to the Cannlytics Testing Center
-      </h2>
-      <p class="h5 double-line text-dark text-start text-muted">
-        A vibrant hub for cannabis-testers, scientists, and everyone in the cannabis industry.
-      </p>
-    </div>
-    <div class="col-md-5">
-      <img
-        src="{% static 'website/images/illustrations/cannlytics_collaboration.svg' %}"
-        width="100%"
-      >
-    </div>
-  </div>
+  <!-- Hero Banner -->
+  {% include "website/components/heros/hero_banner.html" with
+    title="Cannlytics Testing Center"
+    description="Welcome to a vibrant hub for<br>laboratories, scientists, researchers, and<br>everyone else in the cannabis industry."
+    image_url="website/images/emojies/scientist.svg"
+    title_skinny="true"
+    only
+  %}
 
   <!-- Tabs -->
   <ul class="nav nav-tabs">
@@ -107,152 +66,26 @@
     </li>
   </ul>
 
-  <!-- Tab Body -->
+  <!-- Dynamic Tab Body -->
   {% if section == 'labs' or not section %}
 
-    <!-- Options -->
-    <div class="mt-3 mb-2 d-flex align-items-center justify-content-between">
-      
-      <!-- Header -->
-      <div>
-        <h4 class="text-dark mb-0">Testing Labs</h4>
-      </div>
-
-      <!-- Filters -->
-      <div class="d-flex justify-content-end">
-
-        <!-- Search -->
-        <div
-          id="lab-table-search"
-          class="d-flex align-items-center w-50 pe-0 me-2"
-        >
-          <input
-            aria-label="Search"
-            id="searchInput"
-            class="nav-search-input form-control form-control-sm w-100"
-            placeholder="Search"
-            list="searchOptions"
-            name="org_id"
-            oninput="cannlytics.testing.searchLabTable(this)"
-            type="text"
-          >
-          <datalist id="searchOptions"></datalist>
-          <button
-            id="searchButton"
-            class="nav-search-button btn btn-default p-0"
-            style="transform:translateX(-32px);width:0;"
-          >
-            {% icon 'search' width="16px" height="16px" class="text-secondary" %}
-          </button>
-        </div><!-- End of search -->
-
-        <!-- Clear Search Button -->
-        <div>
-          <button
-            id="clear-button"
-            class="btn btn-sm-light btn-md-light d-none me-2"
-            onclick="cannlytics.app.searchLabTableClear();"
-            title="Clear search"
-          >
-            {% icon 'x-circle' width="16px" height="16px" class="text-secondary" %}
-          </button>
-        </div>
-
-        <!-- State select -->
-        <select
-          id="lab-state-selection"
-          class="form-select form-select-sm btn-sm-light btn-md-light"
-          aria-label="State select"
-          style="width:80px;"
-          onchange="cannlytics.testing.filterLabsByState(this);"
-        >
-          <option selected value="all">All States</option>
-        </select>
-
-        <!-- TODO: Download button that prompts user to sign in if not already signed in. -->
-
-      </div><!-- End of filters -->
-
-    </div><!-- End of options -->
-
-    <!-- TODO: Loading placeholder -->
-    {% comment %} <div id="loading-placeholder">
-      {% include "console/components/placeholders/loading_placeholder.html" with
-        height='350px'
-        width='100%'
-        only
-      %}
-    </div> {% endcomment %}
-
-    <!-- AG Grid Table -->
-    <div id="data-table" class="d-none">
-      <div
-        id="labs-table"
-        class="ag-theme-alpine-dark"
-        style="height:750px; width:100%;"
-      ></div>
-    </div>
-
-    <!-- More options -->
-    <div class="d-flex justify-content-end mt-1">
-      <button
-        id="view-all-labs"
-        class="btn btn-sm btn-sm-light btn-md-light"
-        onclick="cannlytics.testing.viewAllLabs();"
-      >
-        View All
-      </button>
-      <button
-        id="view-less-labs"
-        class="btn btn-sm btn-sm-light btn-md-light d-none"
-        onclick="cannlytics.testing.viewLessLabs();"
-      >
-        View Less
-      </button>
-    </div>
+    {% include "website/pages/testing/components/lab_list.html" %}
 
   {% elif section == 'map' %}
     
-    TODO: Map of labs.
+    {% include "website/pages/testing/components/lab_map.html" %}
 
-  {% elif section == 'map' %}
+  {% elif section == 'regulations' %}
     
-    TODO: Table of regulations.
+    {% include "website/pages/testing/components/analyses_list.html" %}
   
-    {% elif section == 'map' %}
+  {% elif section == 'analyses' %}
     
-    TODO: Table of regulations.
+    {% include "website/pages/testing/components/regulations_list.html" %}
 
   {% endif %}
-
-  <!-- Lab Map -->
-  {% comment %} <div class="mt-5">
-    {% include "./labs/map.html" %}
-  </div> {% endcomment %}
-
-  <!-- Markdown -->
-  {% comment %} <div class="container markdown py-3">
-    {{ markdown | safe }}
-    <p class="text-start">
-      <a class="btn btn-sm btn-sm-light btn-md-light" href="https://console.cannlytics.com/sign-up">
-        <small>Join the community today</small> &rarr;
-      </a>
-    </p>
-  </div> {% endcomment %}
 
 </div>
 {% endblock %}
 
-<!-- JavaScript -->
-{% block page_js %}
-
-<script>
-
-  // Initialize labs table.
-  console.log('Initializing table...');
-  cannlytics.testing.initializeLabsTable();
-
-</script>
-
-{% endblock page_js %}
 </html>

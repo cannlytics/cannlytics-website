@@ -366,6 +366,13 @@ const uiManipulation = {
     window.prompt('Copy to clipboard: Press Ctrl+C, then Enter', text);
   },
 
+  hideElement(id) {
+    /**
+     * Hide a specific element in the user interface,
+     */
+    document.getElementById(id).classList.add('d-none');
+  },
+
 };
 
 export const ui = {

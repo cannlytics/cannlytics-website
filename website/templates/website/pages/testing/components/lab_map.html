@@ -6,10 +6,37 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/20/2021
-  Updated: 12/28/2021
+  Updated: 1/9/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% load icon %}
+<style>
+  .open-in-new::after {
+    content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+    margin: 0 3px 0 5px;
+  }
+  .figure-caption a {
+    color: inherit;
+    border-bottom: 1px dashed #000;
+    text-decoration: none;
+  }
+  .figure-caption a:hover {
+    background-color: rgba(229,58,35,.2);
+  }
+  body.dark .gm-style-iw-c,
+  body.dark .gm-style-iw-d {
+    background-color: #343434;
+  }
+  body.dark .gm-style-iw-d a {
+    color: #50fa7b;
+  }
+  body.dark .btn-light {
+    color: #1a1a1a !important;
+  }
+  .gm-style .gm-style-iw-c  {
+    padding: 0;
+  }
+</style>
 <div class="container lab-locator py-4">
 
   <!-- Introduction -->
@@ -65,13 +92,14 @@
       </a> {% endcomment %}
 
       <!-- Download Data -->
-      <button
+      <!-- FIXME: Handle this? -->
+      {% comment %} <button
         class="btn btn-outline-primary"
         data-bs-toggle="modal"
         data-bs-target="#downloadDialog"
       >
         Download data
-      </button>
+      </button> {% endcomment %}
 
     </div>
   
@@ -104,22 +132,34 @@
   <!-- Download data dialog -->
   {% include "website/components/dialogs/download_data_dialog.html" %}
 
-  <!-- Google Maps JavaScript -->
-  <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier/1.0.3/oms.min.js"></script>
-  <script type="text/javascript">
-
-    // Initialize Google Map
-    var script = document.createElement('script');
-    var apiKey = {{ api_key|safe }}[0]; // Passing API key from Django.
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
-    script.defer = true;
-    window.initMap = function() {
-      cannlytics.community.initialize();
-    }
-    document.head.appendChild(script);
-
-  </script>
-
 </div>
+
+<!-- Add Lab Button -->
+<div class="d-flex align-items-center justify-content-center mb-5">
+  <div class="d-flex flex-column align-items-start justify-content-center mt-5">
+    <p class="text-dark text-center text-small fs-6 font-weight-light">
+      Is your lab missing? 
+      <a
+        class="background-hover fs-6 fw-bold text-dark serif"
+        href="{% url 'lab' lab='new' %}"
+      >
+        Have your lab added to the map &rarr;
+      </a>
+    </p>
+  </div>
+</div>
+
+<!-- JavaScript -->
+{% block page_js %}
+{{ google.google_maps_api_key|json_script:"api_key" }}
+<script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier/1.0.3/oms.min.js"></script>
+<script type="text/javascript">
+
+  // Initialize Google Map
+  cannlytics.testing.loadGoogleMaps();
+
+</script>
+{% endblock page_js %}
+
 </html>

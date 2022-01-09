@@ -4,36 +4,26 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/18/2020
-Updated: 11/24/2021
+Updated: 1/8/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
-# Standard imports.
-from datetime import datetime
-from json import loads
-
 # External imports.
-from django.core.exceptions import ValidationError
-from django.core.mail import send_mail
-from django.core.validators import validate_email
 from django.http import JsonResponse
 
 # Internal imports.
 from cannlytics.auth.auth import authenticate_request
 from cannlytics.firebase import (
-    add_to_array,
     create_log,
     create_session_cookie,
-    create_user,
     initialize_firebase,
     revoke_refresh_tokens,
     update_document,
     verify_token,
 )
 from website.settings import DEFAULT_FROM_EMAIL, SESSION_COOKIE_AGE
-from website.utils.utils import get_promo_code
 
 
-def login(request, *args, **argv): #pylint: disable=unused-argument
+def login(request):
     """Functional view to create a user session."""
     try:
 
@@ -77,7 +67,7 @@ def login(request, *args, **argv): #pylint: disable=unused-argument
         return JsonResponse({'success': False, 'message': message}, status=401)
 
 
-def logout(request, *args, **argv): #pylint: disable=unused-argument
+def logout(request):
     """Functional view to remove a user session."""
     claims = authenticate_request(request)
     try:

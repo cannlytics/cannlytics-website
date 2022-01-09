@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/7/2022
- * Updated: 1/7/2022
+ * Updated: 1/8/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { getUrlParameter } from '../utils.js';
@@ -20,6 +20,14 @@ export const contact = {
       message: 'I am seeking your open cannabis data.',
       subject: 'Seeking Cannabis Data',
     },
+    economics: {
+      message: 'I am seeking assistance with economic analysis.',
+      subject: 'Seeking Economic Analysis',
+    },
+    forecasting: {
+      message: 'I am seeking forecasting.',
+      subject: 'Seeking Forecasting',
+    },
     general: {
       message: 'I am reaching out, please email me back.',
       subject: 'Contacting Cannlytics',
@@ -27,6 +35,18 @@ export const contact = {
     join: {
       message: 'I am interested in joining Cannlytics.',
       subject: 'Joining Cannlytics',
+    },
+    invest: {
+      message: 'I am interested in investing in Cannlytics.',
+      subject: 'Invest in Cannlytics',
+    },
+    lims: {
+      message: 'I am interested in using the Cannlytics LIMS.',
+      subject: 'Cannlytics LIMS',
+    },
+    metrc: {
+      message: 'I am interested in using Cannlytics to integrate with Metrc.',
+      subject: 'Metrc Integration',
     },
     paper: {
       message: 'I have a paper to submit.',
@@ -41,22 +61,18 @@ export const contact = {
       subject: 'Asking about Regulations',
     },
   },
-
   mathCheckTotal: 0,
 
   initializeContactForm() {
     /**
-     * Initialize the contact form.
+     * Initialize the contact form by creating a simple math check
+     * and loading any canned contact message.
      */
-
-    // Create a simple math check.
     const min = this.randomIntFromInterval(0, 5);
     const max = this.randomIntFromInterval(0, 4);
     this.mathCheckTotal = min + max;
     document.getElementById('math-check-min').textContent = min;
     document.getElementById('math-check-max').textContent = max;
-
-    // Load any canned contact message.
     this.setContactFormTopic();
   },
 

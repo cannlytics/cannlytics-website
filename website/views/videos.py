@@ -34,7 +34,7 @@ class VideosView(BaseMixin, TemplateView):
 
         # Get video data.
         video_stats = get_document('public/videos')
-        total_videos = video_stats['total_videos']
+        total_videos = video_stats['total']
 
         # Get specific video data.
         if video_id:

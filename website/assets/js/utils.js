@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 2/21/2021
- * Updated: 12/31/2021
+ * Updated: 1/9/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Toast } from 'bootstrap';
@@ -195,7 +195,7 @@ export function parameterizeForm(form) {
 * Credit: https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
 */
 export function formatBytes(a,b=2){if(0===a)return"0 Bytes";const c=0>b?0:b,d=Math.floor(Math.log(a)/Math.log(1024));return parseFloat((a/Math.pow(1024,d)).toFixed(c))+" "+["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"][d]};
- 
+
 /*---------------------------------------------------------------------
 UI Helpers
 --------------------------------------------------------------------*/
@@ -287,6 +287,23 @@ export const validateEmail = (email) => {
 /*---------------------------------------------------------------------
 Data Helpers
 --------------------------------------------------------------------*/
+
+export const downloadBlob = (blob, filename) => {
+  /**
+   * Download a blob by creating an element in the user interface.
+   * @param {Blob} blob A file blob.
+   * @param {String} filename A name for the file.
+   */
+  const newBlob = new Blob([blob]);
+  const blobUrl = window.URL.createObjectURL(newBlob);
+  const link = document.createElement('a');
+  link.href = blobUrl;
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  link.parentNode.removeChild(link);
+  window.URL.revokeObjectURL(blob);
+}
 
 export const sortArrayOfObjects = (array, field) => {
   /**

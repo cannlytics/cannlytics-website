@@ -87,23 +87,6 @@
             </div>
           </div>
 
-          <!-- Subject -->
-          {% comment %} <div class="row mb-3">
-            <label class="col-sm-2 col-form-label col-form-label-sm serif">
-              Subject
-            </label>
-            <div class="col-sm-10">
-              <input
-                id="subject_input"
-                type="text"
-                class="form-control form-control-sm"
-                name="subject"
-                spellcheck="false"
-                type="text"
-              >
-            </div>
-          </div> {% endcomment %}
-
           <!-- Topic -->
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label col-form-label-sm serif">
@@ -112,17 +95,22 @@
             <div class="col-sm-10">
               <select
                 id="topic_input"
+                name="subject"
                 class="form-select form-select-sm"
                 aria-label="Topic"
                 onchange="cannlytics.website.setContactFormTopic(this.value);"
               >
                 <option selected value="general">General Inquiry</option>
+                <option value="lims">Cannlytics LIMS</option>
                 <option value="custom">Custom Development</option>
-                <option value="data">Seeking Cannabis Data</option>
                 <option value="join">Joining Cannlytics</option>
-                <option value="paper">Submitting a Paper</option>
+                <option value="metrc">Metrc Integration</option>
                 <option value="partner">Partner with Cannlytics</option>
-                <option value="regulations">Asking about Regulations</option>
+                <option value="data">Seeking Cannabis Data</option>
+                <option value="economics">Seeking Economic Analysis</option>
+                <option value="forecasting">Seeking Forecasting</option>
+                <option value="paper">Submitting a Paper</option>
+                <option value="regulations">Question about Regulations</option>
               </select>
             </div>
           </div>

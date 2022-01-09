@@ -66,10 +66,10 @@ export const accountSettings = {
     if (data.name !== user.displayName) await updateUserDisplayName(data.name);
     const response = await authRequest('/api/users', data);
     if (response.success) {
-      const message = 'Your account data has been successfully saved.'
+      const message = 'Your account data has been successfully saved.';
       showNotification('Account saved', message, /* type = */ 'success');
     } else {
-      const message = 'An error occurred when saving your account.'
+      const message = 'An error occurred when saving your account.';
       showNotification('Error saving your account', message, /* type = */ 'error');
     }
   },

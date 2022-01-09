@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 5/18/2021
-  Updated: 12/26/2021
+  Updated: 1/8/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
@@ -19,47 +19,48 @@
   <!-- Hero Banner -->
   {% include "website/components/heros/hero_banner.html" with
     title="Articles"
-    description="Please peruse the article archive."
+    description="Please peruse the Cannlytics article archive.<br>Here you will find articles about Cannlytics and<br>people who use Cannlytics to advance science."
     image_url='website/images/emojies/newspaper.svg'
     only
   %}
 
-  {% comment %}
-  TODO: Get articles from database and list dynamically.
-  
-  Vivid Microscopy, a medical products producer in the USA,
-  who Cannlytics is proud to call a Cannlytics user.
-  {% endcomment %}
+  <!-- List of Articles -->
+  <div class="container markdown mb-5" style="max-width:560px;">
+    {% for item in articles %}
+      <div class="blog-post">
+        {% if item.svg %}
+          <svg class="pe-1" style="float:left;width:125px;height:125px;">
+            <use href="{% static item.image %}{{ item.image_id }}"></use>
+          </svg>
+        {% endif %}
+        <a href="{{ item.url }}">
+          <h3 class="blog-post-title background-hover fw-bold mb-2">
+            {{ item.title }}
+          </h3>
+        </a>
+        <h6 class="blog-post-meta text-secondary">
+          <small class="serif">
+            {{ item.published_at_formatted }} by
+            <a class="serif text-dark" href="{{ item.author_url }}">
+              {{ item.author }}
+            </a>
+          </small>
+        </h6>
+        <p class="fst-italic">
+          {{ item.excerpt|safe }}
+        </p>
+        <a
+          class="btn btn-sm bg-gradient-green text-white mt-3"
+          href="{{ item.url }}"
+        >
+          <small class="serif">Read more &rarr;</small>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
 
-  <!-- List -->
-  <div class="container markdown" style="max-width:560px;">
-
-    <div class="blog-post">
-      <a href="https://apnews.com/press-release/pr-newswire/university-of-louisville-technology-science-64b4448495f57d24d41da802914b6794">
-        <h3 class="blog-post-title background-hover fw-bold mb-2">
-          Vivid Microscopy probe demonstrates oxidative stress on cardiac tissue in University of Louisville research
-        </h3>
-      </a>
-      <h6 class="blog-post-meta text-secondary">
-        <small class="serif">
-          May 18, 2021 by
-          <a class="serif text-dark" href="https://apnews.com/press-release/pr-newswire/university-of-louisville-technology-science-64b4448495f57d24d41da802914b6794">
-            AP News
-          </a>
-        </small>
-      </h6>
-      <p>
-        Vivid Microscopy, an emerging biotech company in the United States, today announced the production of a high content screening probe that can image and sort cells based on the levels of thiol-based oxidative stress. This probe, SEMKUR-IM, utilizes florescent technology to identify cell injury without damaging tissue samples.
-      </p>
-      <a
-        class="btn btn-sm-light btn-md-light mt-3"
-        href="https://apnews.com/press-release/pr-newswire/university-of-louisville-technology-science-64b4448495f57d24d41da802914b6794"
-      >
-        <small class="serif">Read more &rarr;</small>
-      </a>
-    </div>
-
-  </div>  
+  <!-- Vines -->
+  {% include "website/components/art/vines.html" %}
 
 {% endblock %}
 </html>

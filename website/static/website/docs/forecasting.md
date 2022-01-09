@@ -15,7 +15,7 @@ Cannlytics practices, preaches, and strictly adheres to the 10 commandments of f
 9. Use recursive methods.
 10. Understand that forecasting models evolve over time.
 
-Reference: Silvia, J, Iqbal, A, et. al (2014), `Economic and Business Forecasting'.
+<small>Reference: Silvia, J, Iqbal, A, et. al (2014), `Economic and Business Forecasting'.</small>
 
 If you have key performance indicators (KPIs), market conditions, or anything at all that you would benefit from having a forecast of, then Cannlytics can deliver a forecast to you so fast and at such a low marginal cost that we believe in short time that you'll be hard pressed to have any data that you don't want forecasted into the future.
 

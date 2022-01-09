@@ -74,7 +74,7 @@
           href="{% url 'section' page='data' section='market' %}"
           class="serif text-dark fw-bold background-hover"
         >
-          Market <span class="badge rounded-pill bg-warning">Coming Soon</span>
+          Market <span class="badge rounded-pill bg-warning text-black">Coming Soon</span>
         </a>
       </li>
       <li class="mb-3">
@@ -133,13 +133,21 @@
           <div class="card-body px-3 bg-transparent">
             <div class="d-flex align-items-center justify-content-between mb-3">
               <h5 id="state_name_{{ i }}" class="card-title serif text-dark fs-5 mb-0"></h5>
-              <a
-                id="state_data_button_{{ i }}"
-                class="btn btn-sm btn-sm-light ms-2 d-none"
-                href=""
-              >
-                View State Data
-              </a>
+              <div class="d-flex align-items-center">
+                <button
+                  class="btn btn-sm btn-sm-light ms-2"
+                  onclick="cannlytics.ui.hideElement('state-overview-card-{{ i }}')"
+                >
+                  Close
+                </button>
+                <a
+                  id="state_data_button_{{ i }}"
+                  class="btn btn-sm btn-sm-light ms-2 d-none"
+                  href=""
+                >
+                  View State Data
+                </a>
+              </div>
             </div>
             <!-- TODO: Add hide button -->
             <div class="d-flex align-items-center mb-3">
@@ -332,7 +340,7 @@
           document.getElementById(`state_name_${cardId}`).textContent = `${event.n} (${event.id})`;
           cannlytics.data.getStateData(event.id.toLowerCase()).then(function (response) {
             var stateData = response.data;
-            document.getElementById(`state_population_${cardId}`).textContent = `Population: ${stateData.population}`;
+            document.getElementById(`state_population_${cardId}`).textContent = `Population (2020): ${stateData.population}`;
             document.getElementById(`state_data_button_${cardId}`).href = `${window.location.href}/state/${event.id.toLowerCase()}`;
             if (stateData.total_licensees) {
               document.getElementById(`state_total_licensees_${cardId}`).classList.remove('d-none');
@@ -381,7 +389,7 @@
         <h4 class="text-start fs-4 p-1 mb-1">${n}</h4>
         <table class="fs-6 text-start">
           <tr>
-            <td class="serif pe-2 p-1">Population:</td>
+            <td class="serif pe-2 p-1">Population (2020):</td>
             <td class="serif p-1 p-1">${d.population}</td>
           </tr>`;
       if (d.total_licensees) tooltip += `<tr><td class="serif p-1">Licensees:</td><td class="serif p-1">${d.total_licensees}</td></tr>`;

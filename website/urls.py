@@ -4,19 +4,19 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/29/2020
-Updated: 12/30/2021
+Updated: 1/9/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports.
 from django.conf import settings
 from django.conf.urls import handler404, handler500 #pylint: disable=unused-import
-from django.contrib import admin
 from django.urls import include, path
 from django_robohash.views import robohash
 
 # Internal imports.
 from website.views import (
     auth,
+    data,
     email,
     main,
     market,
@@ -32,9 +32,9 @@ urlpatterns = [
     path('src/', include([
         path('auth/login', auth.login),
         path('auth/logout', auth.logout),
+        path('data/download-lab-data', data.download_lab_data),
         path('email/send-message', email.send_message),
         path('market/buy', market.buy_data),
-        path('market/download-lab-data', market.download_lab_data),
         path('market/promotions', market.promotions, name='promotions'),
         path('market/publish', market.publish_data),
         path('market/sell', market.sell_data),

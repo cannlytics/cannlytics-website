@@ -351,7 +351,7 @@ export const payments = {
   async initializeCheckout() {
     
     // Get subscription data.
-    const planName = JSON.parse(document.getElementById('plan_name').textContent);;
+    const planName = JSON.parse(document.getElementById('plan_name').textContent);
     const subscriptionData = await this.getSubscription(planName);
     const planID = subscriptionData['plan_id'];
 
@@ -404,13 +404,13 @@ export const payments = {
         hideLoadingButton('subscribe-button');
         return;
       }
-      data = { email: userEmail, newsletter: true };
+      data = { email: userEmail, plan_name: 'newsletter' };
     }
     const response = await authRequest('/src/payments/subscribe', data);
     if (response.success) {
       window.location.href = `${window.location.origin}/subscriptions/subscribed`;
     } else {
-      const message = 'An error occurred when saving your account.'
+      const message = 'An error occurred when saving your account.';
       showNotification('Error saving your account', response.message, /* type = */ 'error');
       hideLoadingButton('subscribe-button');
     }
@@ -427,7 +427,7 @@ export const payments = {
      */
     await authRequest('/api/payments/unsubscribe', { plan_name: planName });
     if (response.success) {
-      const message = 'An error occurred when saving your account.'
+      const message = 'An error occurred when saving your account.';
       showNotification('Subscription canceled', message, /* type = */ 'success');
     } else {
       const message = 'An error occurred when canceling your subscription. Please email support.';

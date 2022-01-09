@@ -38,7 +38,7 @@
 
     <!-- Title -->
     {% if title %}
-      <h1 class="display-6 text-dark fw-bold mt-3 mb-2">
+      <h1 class="display-6 text-dark fw-bold {% if not title_skinny %}mt-3{% endif %} mb-2">
         {{ title }}
       </h1>
     {% endif %}

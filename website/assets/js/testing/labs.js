@@ -4,12 +4,13 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
- * Updated: 7/31/2021
+ * Updated: 1/9/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { authRequest, showNotification } from '../utils.js';
 import { addSelectOptions, setTableTheme } from '../ui/ui.js';
-import { sortArrayOfObjects } from '../utils.js';
+import { downloadBlob, sortArrayOfObjects } from '../utils.js';
+import { getCurrentUser } from '../firebase.js';
 
 export const labs = {
 
@@ -26,49 +27,40 @@ export const labs = {
      * Submit a lab to be added to the directory through the API.
      * @param {Event} event A user-driven event.
      */
-    // TODO: Get lab data.
-
-    // TODO: Post data to the API.
+    // FIXME: Ensure that this works / is needed?
+    event.preventDefault();
+    const form = new FormData(event.target);
+    const data = Object.fromEntries(form.entries());
+    authRequest('/api/labs', data);
+    if (response.success) {
+      const message = 'Successfully added lab.'
+      showNotification('Lab Added', message, /* type = */ 'success');
+    } else {
+      const message = 'An error occurred when trying to add lab data. Ensure that you have permission to edit this lab.';
+      showNotification('Error Adding Lab', message, /* type = */ 'error');
+    }
   },
 
-  async downloadLabs() {
+  async downloadLabData() {
     /**
-     * Download either free or premium data sets.
+     * Download lab data, prompting the user to sign in if they are not already.
      */
-
-    // Get any promo code.
-    const promoCode = document.getElementById('promo-input').value;
-
-    // Download data.
-    const url = `${window.location.origin}/api/labs/download`;
-    const time = new Date().toISOString().slice(0, 19).replace(/T|:/g, '-');
-    const filename = `labs-${time}.csv`;
-    try {
-      const res = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${promoCode}`
-        }
-      });
-      const blob = await res.blob();
-      const newBlob = new Blob([blob]);
-      const blobUrl = window.URL.createObjectURL(newBlob);
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.setAttribute('download', filename);
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(blob);
-    } catch(error) {
-      showNotification('Download error', error, /* type = */ 'error' );
+    const user = getCurrentUser();
+    if (!user) {
+      const modal = Modal.getInstance(document.getElementById('sign-in-dialog'));
+      modal.show();
+      return;
     }
-
-    // Hide dialog.
-    const downloadDialog = document.getElementById('downloadDialog');
-    const modal = bootstrap.Modal.getInstance(downloadDialog);
-    modal.hide();
-
+    const url = `${window.location.origin}/src/data/download-lab-data`;
+    const time = new Date().toISOString().slice(0, 19).replace(/T|:/g, '-');
+    try {
+      const res = await authRequest(url);
+      const blob = await res.blob();
+      downloadBlob(blob, /* filename = */ `labs-${time}.csv`);
+    } catch(error) {
+      const message = 'Error downloading lab data. Please try again later and/or contact support.';
+      showNotification('Download Error', message, /* type = */ 'error' );
+    }
   },
 
   filterLabsByState(event) {
@@ -76,9 +68,7 @@ export const labs = {
      * Filter the table of labs by a given state.
      * @param {Element} event The 
      */
-    console.log(event);
     const state = event.value;
-    console.log('Filter labs by state:', state);
     const subset = [];
     this.labs.forEach(lab => {
       if (lab.state === state || state === 'all') subset.push(lab);
@@ -130,28 +120,16 @@ export const labs = {
     this.labs = sortArrayOfObjects(this.labs, 'state');
     console.log('Found labs:', this.labs);
 
-    // Hide the placeholder and show the table.
-    // document.getElementById('loading-placeholder').classList.add('d-none');
-    // document.getElementById('data-placeholder').classList.add('d-none');
-    // document.getElementById('simple-table-options').classList.remove('d-none');
-    document.getElementById('data-table').classList.remove('d-none');
-
-    // TODO: Render image (image_url) or favicon?.
-
-
     // Define columns.
     const columnDefs = [
-      // {
-      //   headerName: '', 
-      //   field: 'favicon', 
-      //   width: 60,
-      //   sortable: false, 
-      //   autoHeight: true,
-      //   cellRenderer: (params) => {
-      //     return `<span><img src="${params.value}"></span>`;
-      //   },
-      // },
-      // { name:'Photo', field:'photoP' ,cellTemplate:"<img src='https://angularjs.org/img/AngularJS-large.png' />"}
+      {
+        headerName: '', 
+        field: 'slug', 
+        width: 60,
+        sortable: false, 
+        autoHeight: true,
+        cellRenderer: renderViewLabButton,
+      },
       {
         headerName: 'Lab',
         field: 'name',
@@ -163,13 +141,14 @@ export const labs = {
         field: 'state',
         sortable: true,
         filter: true,
-        width: 60,
+        width: 100,
       },
       {
         headerName: 'Analyses', field: 'analyses',
         sortable: true,
         filter: true,
         cellRenderer: renderAnalyses,
+        width: 240,
       },
       {
         headerName: 'License',
@@ -177,19 +156,19 @@ export const labs = {
         sortable: true,
         filter: true,
       },
-      // TODO: Require user to sign in for this field.
       {
         headerName: 'Email',
         field: 'email',
         sortable: true,
         filter: true,
+        cellRenderer: renderAuthRequired,
       },
-      // TODO: Require user to sign in for this field.
       {
         headerName: 'Phone',
         field: 'phone',
         sortable: true,
         filter: true,
+        cellRenderer: renderAuthRequired,
       },
       {
         headerName: 'Address',
@@ -199,25 +178,20 @@ export const labs = {
       },
     ];
 
-    // TODO: Style analyses as chips.
-
     // Specify the table options.
     this.gridOptions = {
       columnDefs: columnDefs,
-      // defaultColDef: { flex: 1,  minWidth: 175 },
       pagination: true,
       paginationAutoPageSize: true,
       rowClass: 'app-action',
-      // rowHeight: 25,
       onGridReady: event => setTableTheme(),
-      onRowClicked: event => {
-        const { data } = event;
-        // localStorage.setItem('lab', JSON.stringify(data));
-        window.location.href = `${window.location.origin}/testing/labs/${data.license}`;
-      },
     };
 
-    // Render the table
+    // Hide the placeholder and show the table.
+    document.getElementById('loading-placeholder').classList.add('d-none');
+    document.getElementById('data-table').classList.remove('d-none');
+
+    // Render the table.
     const table = document.querySelector('#labs-table');
     table.innerHTML = '';
     new agGrid.Grid(table, this.gridOptions);
@@ -226,7 +200,6 @@ export const labs = {
     // Add available state filters.
     let stateOptions = this.labs.map(x => { return { label: x.state, value: x.state } });
     stateOptions = stateOptions.filter((v , i, a) => a.findIndex(t => (t.value === v.value)) === i);
-    // stateOptions = stateOptions.sort((a, b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
     stateOptions = sortArrayOfObjects(stateOptions, 'value');
     addSelectOptions('lab-state-selection', stateOptions);
 
@@ -242,18 +215,19 @@ export const labs = {
     console.log('Found analyses:', data);
   },
 
-  initializeLabDetails() {
+  async initializeLabDetails(license) {
     /**
      * Initialize lab details page.
+     * @param {String} license The license number of the lab.
      */
-    // const data = JSON.parse(localStorage.getItem('lab'));
-    // console.log('Lab data in storage:', data);
-    // deserializeForm(document.forms[`${modelSingular}-form`], data)
-    // const form = document.querySelector('form');
-    // form.addEventListener('submit', this.updateLab);
-    // if (auth.currentUser) {
-    //   document.getElementById('edit-button').classList.remove('visually-hidden');
-    // }
+    // FIXME: Ensure that this works.
+    const data = await authRequest(`/api/labs/${license}`)
+    deserializeForm(document.forms[`${modelSingular}-form`], data)
+    const form = document.querySelector('form');
+    form.addEventListener('submit', this.updateLab);
+    if (auth.currentUser) {
+      document.getElementById('edit-button').classList.remove('visually-hidden');
+    }
   },
 
   async initializeLogs(id) {
@@ -262,8 +236,8 @@ export const labs = {
      * @param {String} id The ID of a lab.
      */
     const data = this.getLabLogs(id);
-    // TODO: Show the data!
-    console.log('Found analyses:', data);
+    // TODO: Show the a lab logs!
+    console.log('Found logs:', data);
 
   },
 
@@ -271,6 +245,7 @@ export const labs = {
     /**
      * Search the lab table for a given query.
      */
+    // FIXME: Search the lab list.
     console.log('Query:', event.value);
   },
 
@@ -334,17 +309,17 @@ export const labs = {
      * Update a lab through the API.
      * @param {Event} event A user-driven event.
      */
-
-    // Get the form data.
     event.preventDefault();
     const form = new FormData(event.target);
     const data = Object.fromEntries(form.entries());
-
-    // Post the lab data.
     authRequest('/api/labs', data);
-    
-    // TODO: Show toast of save success with items changed.
-
+    if (response.success) {
+      const message = 'Successfully updated lab.'
+      showNotification('Lab Updated', message, /* type = */ 'success');
+    } else {
+      const message = 'An error occurred when trying to update lab data. Ensure that you have permission to edit this lab.';
+      showNotification('Error Updating Lab', message, /* type = */ 'error');
+    }
   },
 
   viewAllLabs() {
@@ -364,8 +339,8 @@ export const labs = {
      * @param {Boolean} original Whether or not the table should be returned to its original size.
      */
     const currentHeight = document.getElementById('labs-table').style.height;
-    if (parseInt(currentHeight, 10) > 750 || original) {
-      document.getElementById('labs-table').style.height = '750px';
+    if (parseInt(currentHeight, 10) > 540 || original) {
+      document.getElementById('labs-table').style.height = '540px';
     }
     document.getElementById('view-all-labs').classList.remove('d-none');
     document.getElementById('view-less-labs').classList.add('d-none');
@@ -399,12 +374,50 @@ const renderAnalyses = (params) => {
    * Render analyses as chips in an AG grid table.
    * @param {Object} params The parameters passed by AG grid.
    */
+  console.log(params.value);
   const analyses = params.value || [];
   if (analyses.length) {
     let html = '';
-    analyses.forEach((analysis) => {
-      // TODO: Assign color based on analysis.
-      html+= `<span class="badge rounded-pill">${analysis}</span>`;
-    });
+    try {
+      analyses.forEach((analysis) => {
+        // TODO: Style analyses as chips: Assign color based on analysis.
+        html+= `<span class="badge rounded-pill">${analysis}</span>`;
+      });
+    } catch(error) {}
+    return html;
   } else return `<button class="btn btn-sm nav-link">Suggest analyses</button>`;
 };
+
+const renderAuthRequired = (params) => {
+  /**
+   * Render analyses as chips in an AG grid table.
+   * @param {Object} params The parameters passed by AG grid.
+   */
+  const user = getCurrentUser();
+  if (user) {
+    if (params.value) return `<span>${params.value}</span>`;
+    else return '';
+  } else return `<button class="btn btn-sm nav-link">Sign In or Sign Up to See</button>`;
+};
+
+const renderViewLabButton = (params) => {
+  return `
+  <a href="${window.location.origin}/testing/labs/${params.value}">
+    <svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+      <g id="color">
+        <ellipse cx="43.9713" cy="25.4757" rx="11.1657" ry="11.1656" transform="matrix(0.5379 -0.843 0.843 0.5379 -1.1578 48.8391)" fill="#FFFFFF" stroke="none"/>
+        <path fill="#92D3F5" stroke="none" d="M53.4402,31.8458c1.461-2.289,2.284-6.5149,1.6981-9.1673c-0.4014-1.8161-2.6553-3.8396-3.8988-5.1585 c0.6487,2.3544,1.0384,7.3509-2.1852,11.9716c-2.7358,3.9212-6.6908,5.6353-8.9477,6.0576 C44.3554,36.8323,50.9377,35.7667,53.4402,31.8458z"/>
+        <path fill="#D0CFCE" stroke="none" d="M51.7774,13.2414c-3.2684-2.0837-7.1512-2.7717-10.9373-1.9372c-3.785,0.8366-7.0182,3.097-9.1041,6.3645 c-4.3036,6.746-2.3176,15.7369,4.4283,20.0415c6.745,4.3047,15.7348,2.3197,20.0415-4.4273 c2.0849-3.2675,2.7728-7.1524,1.9362-10.9374C57.3054,18.5604,55.046,15.3273,51.7774,13.2414z M53.6137,31.629 c-2.1788,3.4147-5.8819,5.2814-9.6611,5.2814c-2.1045,0.0009-4.2319-0.5785-6.1343-1.7924 c-5.3172-3.3926-6.8818-10.4791-3.4892-15.7954c1.6436-2.5754,4.1915-4.3576,7.1747-5.0159 c2.9841-0.6584,6.0444-0.1176,8.6208,1.5269c2.5755,1.6426,4.3567,4.1905,5.016,7.1747 C55.7999,25.9914,55.2572,29.0526,53.6137,31.629z"/>
+        <path fill="#3F3F3F" stroke="none" d="M31.4429,40.2651l-6.918,10.335l-3.7106,5.8155c-0.4778,0.75,0.3797,3.2105,1.1294,3.6888 c0.3613,0.2305,2.5325,0.011,2.5325,0.011L36,42.9231L31.4429,40.2651z"/>
+      </g>
+      <g id="hair"/>
+      <g id="skin"/>
+      <g id="skin-shadow"/>
+      <g id="line">
+        <ellipse cx="43.9712" cy="25.4757" rx="14.6372" ry="14.6372" transform="matrix(0.5379 -0.843 0.843 0.5379 -1.1578 48.8391)" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+        <ellipse cx="43.9713" cy="25.4757" rx="11.1657" ry="11.1656" transform="matrix(0.5379 -0.843 0.843 0.5379 -1.1578 48.8391)" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+        <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M31.3102,39.9657l4.4057,2.811L25.22,59.2267c-0.7499,1.1753-2.344,1.4986-3.5606,0.7224l0,0 c-1.2166-0.7763-1.595-2.3582-0.8451-3.5335L31.3102,39.9657z"/>
+      </g>
+    </svg>
+  </a>`;
+}

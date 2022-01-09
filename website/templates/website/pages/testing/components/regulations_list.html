@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<!--
+  Regulations List | Cannlytics Website
+  Copyright (c) 2022 Cannlytics
+
+  Authors: Keegan Skeate <contact@cannlytics.com>
+  Created: 1/9/2022
+  Updated: 1/9/2022
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
+
+  <!-- TODO: Table of reglations (state-by-state) -->
+
+  <!-- Placeholder -->
+  <div class="col mt-5 placeholder">
+    {% include "website/components/placeholders/placeholder.html" with
+      url="#"
+      image="website/images/illustrations/chemistry_table.svg"
+      image_height="120px"
+      title="Analyses coming soon"
+      message="Soon, you can start populating analyses to offer cannabis-testing services to the community. Analyses added for this lab will be listed here."
+      only
+    %}
+    {% comment %} {% include "website/components/placeholders/placeholder.html" with
+      url="#"
+      image="website/images/illustrations/chemistry_table.svg"
+      image_height="120px"
+      title="Add Analyses"
+      message="Start populating analyses to offer cannabis-testing services to the community. Analyses added for this lab will be listed here."
+      action="Add analysis"
+      only
+    %} {% endcomment %}
+  </div>
+
+  <!-- Analyses JavaScript -->
+  <script>
+    // cannlytics.lab.initializeAnalyses("{{ lab.id }}"); // Passing org ID from Django.
+  </script>
+
+</html>

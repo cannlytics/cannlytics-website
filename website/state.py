@@ -272,8 +272,22 @@ lab_state = {
 #-----------------------------------------------------------------------
 
 page_data = {
+    "articles": {
+        "collections": [
+            {
+                "name": "articles",
+                "ref": "public/articles/article_data",
+                "limit": 10,
+                "order_by": "published_at",
+                "desc": True
+            }
+        ],
+    },
     "contributors": {
         "collections": [{"name": "contributors", "ref": "public/contributors/contributor_data"}],
+    },
+    "map": {
+        "documents":[{"name": "google", "ref": "admin/google"}],
     },
     "market": {
         "collections": [

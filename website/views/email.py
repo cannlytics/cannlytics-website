@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 8/22/2021
-Updated: 1/7/2022
+Updated: 1/8/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports
@@ -13,10 +13,11 @@ from django.http import JsonResponse
 
 # Internal imports
 from cannlytics.auth.auth import authenticate_request
+from cannlytics.firebase import create_log
 from website.settings import DEFAULT_FROM_EMAIL, LIST_OF_EMAIL_RECIPIENTS
 
 
-def send_message(request, *args, **argv): #pylint: disable=unused-argument
+def send_message(request):
     """Send a message from the website to the Cannlytics admin through email.
     The user must be signed into their account to send a message. If the user
     does not send an authenticated request, then they are redirected to the
@@ -24,7 +25,7 @@ def send_message(request, *args, **argv): #pylint: disable=unused-argument
     """
     claims = authenticate_request(request)
     uid = claims.get('uid', 'User not signed in.')
-    user_email = claims.get('email', 'User not signed in.')
+    user_email = claims.get('email', 'Unknown')
     name = request.POST.get('name', claims.get('name', 'Unknown'))
     subject = request.POST.get('subject', 'Cannlytics Website Message')
     message = request.POST.get('message', 'No message body.')
@@ -39,6 +40,14 @@ def send_message(request, *args, **argv): #pylint: disable=unused-argument
         from_email=sender,
         recipient_list=recipients,
         fail_silently=False,
+    )
+    create_log(
+        ref='logs/website/email',
+        claims=claims,
+        action=f'User ({user_email}) sent the staff an email.',
+        log_type='email',
+        key='send_message',
+        changes={'message': message, 'name': name, 'subject': subject, 'uid': uid},
     )
     response = {'success': True, 'message': 'Message sent to admin.'}
     return JsonResponse(response)

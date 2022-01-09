@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
- * Updated: 1/7/2022
+ * Updated: 1/9/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 export const map = {
@@ -17,6 +17,20 @@ export const map = {
   markerGreen: 'https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fmaps%2Fmarkers%2Fmarker-green.png?alt=media&token=0d4813e6-c9c9-4b21-9b4f-b9879750438a',
 
   // Functions
+
+  loadGoogleMaps() {
+    /**
+     * Load Google Maps then initialize the map with lab data.
+     */
+    const apiKey = JSON.parse(document.getElementById('api_key').textContent);
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+    script.defer = true;
+    window.initMap = function() {
+      this.initializeMap();
+    }
+    document.head.appendChild(script);
+  },
 
   async initializeMap() {
     /**
@@ -70,21 +84,21 @@ export const map = {
      * @returns {Array}
      */
     // var logSearch = this.logSearch;
-    var createWindow = this.createMarkerInfoWindow;
-    var infowindow = new google.maps.InfoWindow();
-    var markers = [];
-    var searchOptions = '';
+    const createWindow = this.createMarkerInfoWindow;
+    const infowindow = new google.maps.InfoWindow();
+    const markers = [];
+    let searchOptions = '';
     data.forEach((item, index) => {
 
       // Alternate marker colors.
       // TODO: Use green for DEA registered hemp testing laboratories.
       // https://www.ams.usda.gov/rules-regulations/hemp/dea-laboratories
-      var icon;
+      let icon;
       if (index % 2) icon = this.markerOrange;
       else icon = this.markerOrange;     
 
       // Create marker.
-      var marker = new google.maps.Marker({
+      const marker = new google.maps.Marker({
         icon: icon,
         position: new google.maps.LatLng(item.latitude, item.longitude),
         map: map,
@@ -96,7 +110,7 @@ export const map = {
         return function() {
 
           // Ensure that the website is valid.
-          var url = item.website;
+          let url = item.website;
           if (url) {
             if (!url.startsWith('http')) {
               url = `http://${url}`;
@@ -111,13 +125,13 @@ export const map = {
           }
           
           // Format the content.
-          var content = createWindow(item);
+          const content = createWindow(item);
 
           // Attach the content to the infowindow.
           infowindow.setContent(content);
           infowindow.open(map, marker);
 
-          // Log which labs are viewed.
+          // TODO: Log which labs are viewed?
           // logSearch(item.id, 'window_views');
         }
       })(marker));
@@ -125,7 +139,7 @@ export const map = {
       // Add marker to list of markers.
       markers.push(marker);
       oms.addMarker(marker);
-      var name = item.trade_name ?? item.name;
+      const name = item.trade_name ?? item.name;
       this.points[name] = { latitude: item.latitude, longitude: item.longitude };
       searchOptions += `<option value="${name}"/>`;
     });
@@ -165,8 +179,8 @@ export const map = {
      * @param {Object} item Information to render in the info-window.\
      * @returns {String}
      */
-    var name = item.trade_name ?? item.name;
-    var content = `<div class="text-dark p-3">`;
+    const name = item.trade_name ?? item.name;
+    let content = `<div class="text-dark p-3">`;
     content += `
       <a href="/labs/${item.slug}/" target="_blank">
         <img src="${item.image_url}" class="float-start me-3 mb-3" style="max-width:150px;max-height:75px;">
@@ -189,7 +203,7 @@ export const map = {
       content += `Email: <a class="btn btn-sm btn-light" href="/labs/${item.slug}/?edit=true">Recommend an email</a><br>`;
     }
     if (item.website) {
-      var url = item.website;
+      let url = item.website;
       if (!url.startsWith('https')) url = `https://${url}`;
       content += `Website: <a href="${url}" target="_blank">${item.website}</a>`;
     } else {
@@ -251,8 +265,8 @@ export const map = {
      * Setup search for the map.
      * @param {Map} map The Google map.
      */
-    var searchButton = document.getElementById('searchButton');
-    var searchInput = document.getElementById('searchInput');
+    const searchButton = document.getElementById('searchButton');
+    const searchInput = document.getElementById('searchInput');
     searchButton.addEventListener('click', () => {
       this.panToMarker(map, searchInput.value)
     });
