@@ -1,6 +1,6 @@
 """
 Lab Data Endpoints | Cannlytics API
-Copyright (c) Cannlytics
+Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 5/30/2021
@@ -30,7 +30,7 @@ from cannlytics.firebase import (
 
 
 @api_view(['GET'])
-def labs(request, license_number=None):
+def lab_data(request, license_number=None):
     """Get laboratory information (public API endpoint)."""
     data = []
     if request.method == 'GET':

@@ -1,6 +1,6 @@
 """
 Settings | Cannlytics API
-Copyright (c) Cannlytics
+Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/22/2021

@@ -7,30 +7,49 @@
  * Updated: 1/9/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-export const map = {
+
+const getGoogleClusterInlineSvg = function(color) {
+  var encoded = window.btoa('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-100 -100 200 200"><defs><g id="a" transform="rotate(45)"><path d="M0 47A47 47 0 0 0 47 0L62 0A62 62 0 0 1 0 62Z" fill-opacity="0.7"/><path d="M0 67A67 67 0 0 0 67 0L81 0A81 81 0 0 1 0 81Z" fill-opacity="0.5"/><path d="M0 86A86 86 0 0 0 86 0L100 0A100 100 0 0 1 0 100Z" fill-opacity="0.3"/></g></defs><g fill="' + color + '"><circle r="42"/><use xlink:href="#a"/><g transform="rotate(120)"><use xlink:href="#a"/></g><g transform="rotate(240)"><use xlink:href="#a"/></g></g></svg>');
+  return ('data:image/svg+xml;base64,' + encoded);
+};
+
+export const labMap = {
 
   // State
-
   map: null,
   points: {},
   markerOrange: 'https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fmaps%2Fmarkers%2Fmarker-orange.png?alt=media&token=264e0fe3-30db-4dd2-be61-8d6e46e5dcea',
   markerGreen: 'https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fmaps%2Fmarkers%2Fmarker-green.png?alt=media&token=0d4813e6-c9c9-4b21-9b4f-b9879750438a',
+  markerClusterStyles: [
+    {
+      anchorText: [12, 0],
+      width: 42,
+      height: 42,
+      url: getGoogleClusterInlineSvg('#ff7f0e'),
+      textColor: '#ffffff',
+      textSize: 13,
+    },
+    {
+      anchorText: [16, 0],
+      width: 50,
+      height: 50,
+      url: getGoogleClusterInlineSvg('#2ca02c'),
+      textColor: '#ffffff',
+      textSize: 13,
+    },
+    {
+      anchorText: [24, 0],
+      width: 68,
+      height: 68,
+      url: getGoogleClusterInlineSvg('#9467bd'),
+      textColor: '#ffffff',
+      textSize: 13
+    },
+  ],
 
-  // Functions
-
-  loadGoogleMaps() {
-    /**
-     * Load Google Maps then initialize the map with lab data.
-     */
-    const apiKey = JSON.parse(document.getElementById('api_key').textContent);
-    const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
-    script.defer = true;
-    window.initMap = function() {
-      this.initializeMap();
-    }
-    document.head.appendChild(script);
-  },
+  /*----------------------------------------------------------------------------
+   * Lab Map Initialization
+   *--------------------------------------------------------------------------*/
 
   async initializeMap() {
     /**
@@ -50,12 +69,15 @@ export const map = {
 
     // Get all of the labs.
     const data = await this.getLabs();
+    console.log('Found labs:', data.length);
 
     // Create info windows for each lab.
-    const markers = this.createInfoWindows(this.map, oms, data);
+    const markers = await this.createInfoWindows(this.map, oms, data);
+    console.log('Created markers:', markers.length);
 
     // Cluster dense markers.
-    this.createMarkerClusterer(this.map, markers);
+    const markerCluster = this.createMarkerClusterer(cannlytics.testing.map, markers);
+    console.log('Marker cluster:', markerCluster);
 
     // Wire up search.
     this.setupSearch(this.map);
@@ -75,7 +97,7 @@ export const map = {
     });
   },
 
-  createInfoWindows(map, oms, data) {
+  async createInfoWindows(map, oms, data) {
     /**
      * Create markers with info windows.
      * @param {Map} map The Google map.
@@ -164,12 +186,11 @@ export const map = {
      * @param {Array} markers A list of markers to render.
      * @returns {MarkerClusterer}
      */
-    // TODO: replace imagePath with local path.
     return new MarkerClusterer(map, markers, {
       gridSize: 50,
       maxZoom: 10,
       minimumClusterSize: 4,
-      imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
+      styles: this.markerClusterStyles,
     });
   },
 
@@ -212,27 +233,13 @@ export const map = {
     content += `</p></div>`;
     if (item.description) content += `<p class="fs-6 mt-3"><small class="serif">${item.description}</small></p>`
     content += `</div>`;
-    // TODO: Add analyses with prices
+    // TODO: Add analyses with prices.
     return content;
   },
 
-  // Optional: Log which labs people search for.
-  // logSearch(id, field) {
-  //   /**
-  //    * Record when people search or view for a lab.
-  //    * @param {String} id The ID for the log.
-  //    * @param {String} field The page viewed.
-  //    */
-  //   const timestamp = new Date().toISOString();
-  //   const update = { updated_at: timestamp };
-  //   throw new NotImplementedException();
-  //   // update[field] = firestore.FieldValue.increment(1);
-  //   // updateDocument(`labs/${id}`, update);
-  //   // updateDocument(`public/logs/website_logs/${timestamp}`, {
-  //   //   action: `Incremented ${field} for ${id}.`,
-  //   //   updated_at: timestamp,
-  //   // });
-  // },
+  /*----------------------------------------------------------------------------
+   * Lab Map Functionality
+   *--------------------------------------------------------------------------*/
 
   onInput() {
     /**
@@ -276,5 +283,23 @@ export const map = {
       }
     });
   },
+
+  // Optional: Log which labs people search for.
+  // logSearch(id, field) {
+  //   /**
+  //    * Record when people search or view for a lab.
+  //    * @param {String} id The ID for the log.
+  //    * @param {String} field The page viewed.
+  //    */
+  //   const timestamp = new Date().toISOString();
+  //   const update = { updated_at: timestamp };
+  //   throw new NotImplementedException();
+  //   // update[field] = firestore.FieldValue.increment(1);
+  //   // updateDocument(`labs/${id}`, update);
+  //   // updateDocument(`public/logs/website_logs/${timestamp}`, {
+  //   //   action: `Incremented ${field} for ${id}.`,
+  //   //   updated_at: timestamp,
+  //   // });
+  // },
 
 }

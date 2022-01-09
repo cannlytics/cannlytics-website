@@ -1,6 +1,6 @@
 """
 Certificates Views | Cannlytics API
-Copyright (c) Cannlytics
+Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 7/19/2021

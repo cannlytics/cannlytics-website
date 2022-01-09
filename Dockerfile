@@ -1,5 +1,5 @@
 # Dockerfile | Cannlytics Website
-# Copyright (c) Cannlytics
+# Copyright (c) 2021-2022 Cannlytics
 #
 # Auhtors: Keegan Skeate <keegan@cannlytics.com>
 # Created: 1/5/2021

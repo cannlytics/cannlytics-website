@@ -10,9 +10,9 @@
 import { Toast } from 'bootstrap';
 import { getUserToken } from './firebase.js';
 
-/*---------------------------------------------------------------------
-Auth Helpers
---------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------
+ * Auth Helpers
+ *----------------------------------------------------------------------------*/
 
 export const authRequest = async (endpoint, data, options) => {
   /**
@@ -133,9 +133,9 @@ export const Password = {
 
 };
 
-/*---------------------------------------------------------------------
-Form Helpers
---------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------
+ * Form Helpers
+ *----------------------------------------------------------------------------*/
 
 export function serializeForm(elementId, keepAll = false) {
   /**
@@ -143,7 +143,7 @@ export function serializeForm(elementId, keepAll = false) {
   * @param {string} elementId The ID of the form element.
   * @param {bool} keepAll Whether or not to keep all the null fields,
   *    `false` by default.
-  * @returns {Map}
+  * @returns {Object}
   */
   let form;
   if (typeof elementId === 'string') {
@@ -196,9 +196,9 @@ export function parameterizeForm(form) {
 */
 export function formatBytes(a,b=2){if(0===a)return"0 Bytes";const c=0>b?0:b,d=Math.floor(Math.log(a)/Math.log(1024));return parseFloat((a/Math.pow(1024,d)).toFixed(c))+" "+["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"][d]};
 
-/*---------------------------------------------------------------------
-UI Helpers
---------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------
+ * UI Helpers
+ *----------------------------------------------------------------------------*/
  
 export function hasClass(element, className) {
   /**
@@ -235,9 +235,9 @@ export function showNotification(title, message, type, delay = 3500) {
   toast.show()
 }
 
-/*---------------------------------------------------------------------
-Text Helpers
---------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------
+ * Text Helpers
+ *----------------------------------------------------------------------------*/
  
 export function getUrlParameter(name) {
   /** Get a specific parameter from the URL.
@@ -284,9 +284,9 @@ export const validateEmail = (email) => {
     );
 };
 
-/*---------------------------------------------------------------------
-Data Helpers
---------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------
+ * Data Helpers
+ *----------------------------------------------------------------------------*/
 
 export const downloadBlob = (blob, filename) => {
   /**
@@ -308,6 +308,9 @@ export const downloadBlob = (blob, filename) => {
 export const sortArrayOfObjects = (array, field) => {
   /**
    * Sort an array of objects by a given field.
+   * @param {Array} array An array of objects to be sorted.
+   * @param {String} field The field of the objects to use to sort.
+   * @returns {Array}
    */
   return array.sort((a, b) => (a[field] > b[field]) ? 1 : ((b[field] > a[field]) ? -1 : 0));
 }

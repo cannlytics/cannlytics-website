@@ -133,6 +133,7 @@
     "ungrouped",
     "urandom",
     "wsgi",
+    "xlink",
     "zondicons"
   ],
   "todo-tree.tree.showBadges": false,

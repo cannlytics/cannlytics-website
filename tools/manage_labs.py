@@ -1,9 +1,9 @@
 """
-Manage Regulations | Cannlytics Website
-Copyright (c) 2021-2022 Cannlytics
+Manage Lab Data | Cannlytics Website
+Copyright (c) 2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
-Created: 12/26/2021
+Created: 1/9/2022
 Updated: 1/9/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
@@ -12,13 +12,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_regulations.py get_regulation_data
+    python tools/manage_labs.py get_lab_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_regulations.py upload_regulation_data
+    python tools/manage_labs.py upload_lab_data
     ```
 """
 # Standard imports.
@@ -32,22 +32,22 @@ from dotenv import dotenv_values
 from datasets import get_dataset, upload_dataset
 
 # Define references.
-FILENAME = 'regulations.json'
+FILENAME = 'labs.json'
 DOC = 'public/data'
-REF = f'{DOC}/regulations'
-ID = 'state'
+REF = f'{DOC}/labs'
+ID = 'license_number'
 
 
-def get_regulation_data():
-    """Get regulation data from Firestore."""
+def get_lab_data():
+    """Get lab data from Firestore."""
     try:
         return get_dataset(REF, datafile=f'.datasets/{FILENAME}')
     except FileNotFoundError:
         return get_dataset(REF, datafile=f'../.datasets/{FILENAME}')
 
 
-def upload_regulation_data():
-    """Upload regulation data from local `.datasets`."""
+def upload_lab_data():
+    """Upload lab data from local `.datasets`."""
     try:
         upload_dataset(f'.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
     except FileNotFoundError:

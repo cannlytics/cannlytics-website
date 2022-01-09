@@ -36,9 +36,6 @@ def set_updated_at(ref: str):
     """Set the `updated_at` field on all documents in a collection.
     Args:
         ref (str): The original collection.
-        dest (str): The new collection.
-        delete (bool): Wether or not to delete the original documents,
-            `False` by default.
     """
     print(f'Setting `updated_at` for all documents in {ref}...')
     updated_at = datetime.now().isoformat()

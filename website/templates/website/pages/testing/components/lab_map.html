@@ -53,7 +53,7 @@
       </p>
 
       <!-- Search -->
-      <!-- TODO: Let people search by analysis and compare prices -->
+      <!-- TODO: Let people search by analysis and compare prices. -->
       <div
         id="search"
         class="d-flex flex-grow-1 nav-search-form mb-3"
@@ -65,7 +65,7 @@
           placeholder="Search"
           list="searchOptions"
           name="org_id"
-          oninput="cannlytics.community.onInput()"
+          oninput="cannlytics.testing.onInput()"
           type="text"
         >
         <datalist id="searchOptions"></datalist>
@@ -130,7 +130,8 @@
   </figure>
 
   <!-- Download data dialog -->
-  {% include "website/components/dialogs/download_data_dialog.html" %}
+  <!-- FIXME: -->
+  {% comment %} {% include "website/components/dialogs/download_data_dialog.html" %} {% endcomment %}
 
 </div>
 
@@ -151,15 +152,10 @@
 
 <!-- JavaScript -->
 {% block page_js %}
-{{ google.google_maps_api_key|json_script:"api_key" }}
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier/1.0.3/oms.min.js"></script>
-<script type="text/javascript">
-
-  // Initialize Google Map
-  cannlytics.testing.loadGoogleMaps();
-
-</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google.google_maps_api_key }}&callback=cannlytics.testing.initializeMap"></script>
 {% endblock page_js %}
 
 </html>

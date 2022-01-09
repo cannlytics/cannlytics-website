@@ -1,6 +1,6 @@
 """
 URLs | Cannlytics API
-Copyright (c) Cannlytics
+Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 4/21/2021
@@ -21,7 +21,11 @@ from api.auth import auth
 from api.base import base
 from api.certificates import certificates
 from api.contacts import contacts
-from api.data import data, labs, regulations
+from api.data import data
+from api.data.analysis_data import analysis_data
+from api.data.lab_data import lab_data, lab_analyses, lab_logs
+from api.data.regulation_data import regulation_data
+from api.data.state_data import state_data
 from api.instruments import instruments
 from api.inventory import inventory
 from api.invoices import invoices
@@ -76,9 +80,12 @@ urlpatterns = [
     ])),
     path('data', include([
         path('', data.datasets),
-        path('/regulations', regulations.regulations),
-        path('/state', data.state_data),
-        path('/state/<state>', data.state_data),
+        path('/analyses', analysis_data),
+        path('/analyses/<analysis_id', analysis_data),
+        path('/regulations', regulation_data),
+        path('/regulations/<state>', regulation_data),
+        path('/state', state_data),
+        path('/state/<state>', state_data),
     ])),
     path('people', include([
         path('', contacts.people),
@@ -114,10 +121,10 @@ urlpatterns = [
         path('/<user_id>/settings', users.users),
     ])),
     path('labs', include([
-        path('', labs.labs),
-        path('/<license_number>', labs.labs),
-        path('/<license_number>/analyses', labs.lab_analyses),
-        path('/<license_number>/logs', labs.lab_logs),
+        path('', lab_data),
+        path('/<license_number>', lab_data),
+        path('/<license_number>/analyses', lab_analyses),
+        path('/<license_number>/logs', lab_logs),
     ])),
     path('organizations', include([
         path('/<organization_id>', organizations.organizations),

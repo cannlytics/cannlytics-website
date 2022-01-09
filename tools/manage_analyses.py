@@ -33,8 +33,9 @@ from datasets import get_dataset, upload_dataset
 
 # Define references.
 FILENAME = 'analyses.json'
-DOC = 'public/analyses'
-REF = f'{DOC}/analysis_data'
+DOC = 'public/data'
+REF = f'{DOC}/analyses'
+ID = 'analysis_id'
 
 
 def get_analysis_data():
@@ -48,9 +49,9 @@ def get_analysis_data():
 def upload_analysis_data():
     """Upload analysis data from local `.datasets`."""
     try:
-        upload_dataset(f'.datasets/{FILENAME}', REF, stats_doc=DOC)
+        upload_dataset(f'.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
     except FileNotFoundError:
-        upload_dataset(f'../.datasets/{FILENAME}', REF, stats_doc=DOC)
+        upload_dataset(f'../.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
 
 
 if __name__ == '__main__':

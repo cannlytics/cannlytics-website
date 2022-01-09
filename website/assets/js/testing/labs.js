@@ -15,110 +15,26 @@ import { getCurrentUser } from '../firebase.js';
 export const labs = {
 
   // State
-
+  analyses: [],
   gridOptions: {},
   lab: {},
   labs: [],
 
-  // Functions
-
-  addLab(event) {
-    /**
-     * Submit a lab to be added to the directory through the API.
-     * @param {Event} event A user-driven event.
-     */
-    // FIXME: Ensure that this works / is needed?
-    event.preventDefault();
-    const form = new FormData(event.target);
-    const data = Object.fromEntries(form.entries());
-    authRequest('/api/labs', data);
-    if (response.success) {
-      const message = 'Successfully added lab.'
-      showNotification('Lab Added', message, /* type = */ 'success');
-    } else {
-      const message = 'An error occurred when trying to add lab data. Ensure that you have permission to edit this lab.';
-      showNotification('Error Adding Lab', message, /* type = */ 'error');
-    }
-  },
-
-  async downloadLabData() {
-    /**
-     * Download lab data, prompting the user to sign in if they are not already.
-     */
-    const user = getCurrentUser();
-    if (!user) {
-      const modal = Modal.getInstance(document.getElementById('sign-in-dialog'));
-      modal.show();
-      return;
-    }
-    const url = `${window.location.origin}/src/data/download-lab-data`;
-    const time = new Date().toISOString().slice(0, 19).replace(/T|:/g, '-');
-    try {
-      const res = await authRequest(url);
-      const blob = await res.blob();
-      downloadBlob(blob, /* filename = */ `labs-${time}.csv`);
-    } catch(error) {
-      const message = 'Error downloading lab data. Please try again later and/or contact support.';
-      showNotification('Download Error', message, /* type = */ 'error' );
-    }
-  },
-
-  filterLabsByState(event) {
-    /**
-     * Filter the table of labs by a given state.
-     * @param {Element} event The 
-     */
-    const state = event.value;
-    const subset = [];
-    this.labs.forEach(lab => {
-      if (lab.state === state || state === 'all') subset.push(lab);
-    });
-    this.gridOptions.api.setRowData(subset);
-    if (state === 'all') this.viewLessLabs(/* original = */ true);
-    else this.viewAllLabs();
-  },
-
-  async getLabs() {
-    /**
-     * Get labs with API.
-     * @returns {list}
-     */
-    const { data } = await authRequest('/api/labs');
-    return data;
-  },
-
-  async getLab() {
-    /**
-     * Get lab data with API.
-     * @returns {list}
-     */
-    const { data } = await authRequest(`/api/labs/${license_number}`);
-    return data;
-  },
-
-  async getLabAnalyses(id) {
-    /**
-     * Get analyses for a lab.
-     * @param {String} id The ID of a lab.
-     */
-    return await authRequest(`/api/labs/${id}/analyses`);
-  },
-
-  async getLabLogs(id) {
-    /**
-     * Get change logs for a lab.
-     * @param {String} id The ID of a lab.
-     */
-     return await authRequest(`/api/labs/${id}/logs`); 
-  },
+  /*----------------------------------------------------------------------------
+   * Lab UI Initialization
+   *--------------------------------------------------------------------------*/
 
   async initializeLabsTable() {
     /**
      * Initialize a table of labs.
      */
     this.labs = await this.getLabs();
-    this.labs = sortArrayOfObjects(this.labs, 'state');
     console.log('Found labs:', this.labs);
+    this.labs = sortArrayOfObjects(this.labs, 'state');
+
+    // Get analyses from the API.
+    this.analyses = await this.getAnalyses();
+    console.log('Analyses:', this.analyses);
 
     // Define columns.
     const columnDefs = [
@@ -205,16 +121,6 @@ export const labs = {
 
   },
 
-  async initializeAnalyses(id) {
-    /**
-     * Initialize analyses for a lab.
-     * @param {String} id The ID of a lab.
-     */
-    const data = this.getLabAnalyses(id);
-    // TODO: Show the data!
-    console.log('Found analyses:', data);
-  },
-
   async initializeLabDetails(license) {
     /**
      * Initialize lab details page.
@@ -238,7 +144,130 @@ export const labs = {
     const data = this.getLabLogs(id);
     // TODO: Show the a lab logs!
     console.log('Found logs:', data);
+  },
 
+  /*----------------------------------------------------------------------------
+   * Lab API Utilities
+   *--------------------------------------------------------------------------*/
+
+  async getAnalyses() {
+    /**
+     * Get analyses through the API.
+     * @returns {Array}
+     */
+    const { data } = await authRequest('/api/data/analyses');
+    return data;
+  },
+
+  async getAnalysis(id) {
+    /**
+     * Get analyses through the API.
+     * @param {String} id The ID of an analysis.
+     * @returns {Object}
+     */
+     const { data } = await authRequest(`/api/data/analyses/${id}`);
+     return data;
+  },
+
+  async getLabs() {
+    /**
+     * Get labs through the API.
+     * @returns {Array}
+     */
+    const { data } = await authRequest('/api/labs');
+    return data;
+  },
+
+  async getLab(licenseNumber) {
+    /**
+     * Get lab data through the API.
+     * @param {String} licenseNumber The ID of a lab.
+     * @returns {Object}
+     */
+    const { data } = await authRequest(`/api/labs/${licenseNumber}`);
+    return data;
+  },
+
+  async getLabAnalyses(id) {
+    /**
+     * Get analyses for a lab.
+     * @param {String} id The ID of a lab.
+     */
+    const { data } = await authRequest(`/api/labs/${id}/analyses`);
+    return data;
+  },
+
+  async getLabLogs(id) {
+    /**
+     * Get change logs for a lab.
+     * @param {String} id The ID of a lab.
+     */
+    const { data } = await authRequest(`/api/labs/${id}/logs`);
+    return data;
+  },
+
+  /*----------------------------------------------------------------------------
+   * Lab Functionality
+   *--------------------------------------------------------------------------*/
+
+  addLab(event) {
+    /**
+     * Submit a lab to be added to the directory through the API.
+     * @param {Event} event A user-driven event.
+     */
+    // FIXME: Ensure that this works / is needed?
+    event.preventDefault();
+    const form = new FormData(event.target);
+    const data = Object.fromEntries(form.entries());
+    authRequest('/api/labs', data);
+    if (response.success) {
+      const message = 'Successfully added lab.'
+      showNotification('Lab Added', message, /* type = */ 'success');
+    } else {
+      const message = 'An error occurred when trying to add lab data. Ensure that you have permission to edit this lab.';
+      showNotification('Error Adding Lab', message, /* type = */ 'error');
+    }
+  },
+
+  /*----------------------------------------------------------------------------
+   * Lab List Functionality
+   *--------------------------------------------------------------------------*/
+
+  async downloadLabData() {
+    /**
+     * Download lab data, prompting the user to sign in if they are not already.
+     */
+    const user = getCurrentUser();
+    if (!user) {
+      const modal = Modal.getInstance(document.getElementById('sign-in-dialog'));
+      modal.show();
+      return;
+    }
+    const url = `${window.location.origin}/src/data/download-lab-data`;
+    const time = new Date().toISOString().slice(0, 19).replace(/T|:/g, '-');
+    try {
+      const res = await authRequest(url);
+      const blob = await res.blob();
+      downloadBlob(blob, /* filename = */ `labs-${time}.csv`);
+    } catch(error) {
+      const message = 'Error downloading lab data. Please try again later and/or contact support.';
+      showNotification('Download Error', message, /* type = */ 'error' );
+    }
+  },
+
+  filterLabsByState(event) {
+    /**
+     * Filter the table of labs by a given state.
+     * @param {Element} event The 
+     */
+    const state = event.value;
+    const subset = [];
+    this.labs.forEach(lab => {
+      if (lab.state === state || state === 'all') subset.push(lab);
+    });
+    this.gridOptions.api.setRowData(subset);
+    if (state === 'all') this.viewLessLabs(/* original = */ true);
+    else this.viewAllLabs();
   },
 
   searchLabTable(event) {
@@ -369,6 +398,10 @@ export const labs = {
 
 }
 
+/*------------------------------------------------------------------------------
+  * Lab Utility Functions
+  *---------------------------------------------------------------------------*/
+
 const renderAnalyses = (params) => {
   /**
    * Render analyses as chips in an AG grid table.
@@ -376,11 +409,13 @@ const renderAnalyses = (params) => {
    */
   console.log(params.value);
   const analyses = params.value || [];
+  console.log('Lab analyses:', analyses);
   if (analyses.length) {
     let html = '';
     try {
       analyses.forEach((analysis) => {
         // TODO: Style analyses as chips: Assign color based on analysis.
+
         html+= `<span class="badge rounded-pill">${analysis}</span>`;
       });
     } catch(error) {}
