@@ -14,13 +14,14 @@
       
   <!-- Header -->
   <div>
-    <h4 class="text-dark mb-0">Testing Labs</h4>
+    <h4 class="fw-bold text-dark mb-0">Testing Labs</h4>
   </div>
 
   <!-- Filters -->
   <div class="d-flex justify-content-end">
 
     <!-- Search -->
+    <!-- FIXME: Implement search. -->
     <div
       id="lab-table-search"
       class="col-10 d-flex align-items-center pe-0 me-2"
@@ -122,12 +123,11 @@
 <div class="d-flex align-items-center justify-content-center mb-5">
   <div class="d-flex flex-column align-items-start justify-content-center mt-5">
     <p class="text-dark text-center text-small fs-6 font-weight-light">
-      Is your lab missing? 
       <a
         class="background-hover fs-6 fw-bold text-dark serif"
         href="{% url 'lab' lab='new' %}"
       >
-        Have your lab added to the list &rarr;
+        Is your lab missing? Have your lab added to the list &rarr;
       </a>
     </p>
   </div>

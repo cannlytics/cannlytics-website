@@ -69,15 +69,12 @@ export const labMap = {
 
     // Get all of the labs.
     const data = await this.getLabs();
-    console.log('Found labs:', data.length);
 
     // Create info windows for each lab.
     const markers = await this.createInfoWindows(this.map, oms, data);
-    console.log('Created markers:', markers.length);
 
     // Cluster dense markers.
     const markerCluster = this.createMarkerClusterer(cannlytics.testing.map, markers);
-    console.log('Marker cluster:', markerCluster);
 
     // Wire up search.
     this.setupSearch(this.map);

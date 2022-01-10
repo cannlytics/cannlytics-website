@@ -36,7 +36,7 @@ def regulation_data(request, state=None):
 
             # Define query parameters.
             filters = []
-            order_by = request.query_params.get('order_by', 'name')
+            order_by = request.query_params.get('order_by', 'state')
             limit = request.query_params.get('limit')
 
             # Optional: Implement more queries the user can use.

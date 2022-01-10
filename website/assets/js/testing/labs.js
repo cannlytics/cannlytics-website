@@ -41,10 +41,11 @@ export const labs = {
       {
         headerName: '', 
         field: 'slug', 
-        width: 60,
+        width: 25,
         sortable: false, 
         autoHeight: true,
         cellRenderer: renderViewLabButton,
+        cellClass: 'px-0',
       },
       {
         headerName: 'Lab',
@@ -64,20 +65,7 @@ export const labs = {
         sortable: true,
         filter: true,
         cellRenderer: renderAnalyses,
-        width: 240,
-      },
-      {
-        headerName: 'License',
-        field: 'license',
-        sortable: true,
-        filter: true,
-      },
-      {
-        headerName: 'Email',
-        field: 'email',
-        sortable: true,
-        filter: true,
-        cellRenderer: renderAuthRequired,
+        width: 200,
       },
       {
         headerName: 'Phone',
@@ -85,10 +73,26 @@ export const labs = {
         sortable: true,
         filter: true,
         cellRenderer: renderAuthRequired,
+        width: 150,
+      },
+      {
+        headerName: 'Email',
+        field: 'email',
+        sortable: true,
+        filter: true,
+        cellRenderer: renderAuthRequired,
+        width: 240,
       },
       {
         headerName: 'Address',
         field: 'formatted_address',
+        sortable: true,
+        filter: true,
+        width: 300,
+      },
+      {
+        headerName: 'License',
+        field: 'license',
         sortable: true,
         filter: true,
       },
@@ -97,9 +101,10 @@ export const labs = {
     // Specify the table options.
     this.gridOptions = {
       columnDefs: columnDefs,
+      enableCellTextSelection: true,
+      ensureDomOrder: true,
       pagination: true,
       paginationAutoPageSize: true,
-      rowClass: 'app-action',
       onGridReady: event => setTableTheme(),
     };
 
@@ -121,19 +126,12 @@ export const labs = {
 
   },
 
-  async initializeLabDetails(license) {
+  async initializeLabDetails() {
     /**
      * Initialize lab details page.
-     * @param {String} license The license number of the lab.
      */
-    // FIXME: Ensure that this works.
-    const data = await authRequest(`/api/labs/${license}`)
-    deserializeForm(document.forms[`${modelSingular}-form`], data)
     const form = document.querySelector('form');
-    form.addEventListener('submit', this.updateLab);
-    if (auth.currentUser) {
-      document.getElementById('edit-button').classList.remove('visually-hidden');
-    }
+    form.addEventListener('submit', this.suggestLabEdit);
   },
 
   async initializeLogs(id) {
@@ -207,29 +205,6 @@ export const labs = {
   },
 
   /*----------------------------------------------------------------------------
-   * Lab Functionality
-   *--------------------------------------------------------------------------*/
-
-  addLab(event) {
-    /**
-     * Submit a lab to be added to the directory through the API.
-     * @param {Event} event A user-driven event.
-     */
-    // FIXME: Ensure that this works / is needed?
-    event.preventDefault();
-    const form = new FormData(event.target);
-    const data = Object.fromEntries(form.entries());
-    authRequest('/api/labs', data);
-    if (response.success) {
-      const message = 'Successfully added lab.'
-      showNotification('Lab Added', message, /* type = */ 'success');
-    } else {
-      const message = 'An error occurred when trying to add lab data. Ensure that you have permission to edit this lab.';
-      showNotification('Error Adding Lab', message, /* type = */ 'error');
-    }
-  },
-
-  /*----------------------------------------------------------------------------
    * Lab List Functionality
    *--------------------------------------------------------------------------*/
 
@@ -246,8 +221,8 @@ export const labs = {
     const url = `${window.location.origin}/src/data/download-lab-data`;
     const time = new Date().toISOString().slice(0, 19).replace(/T|:/g, '-');
     try {
-      const res = await authRequest(url);
-      const blob = await res.blob();
+      const response = await authRequest(url);
+      const blob = await response.blob();
       downloadBlob(blob, /* filename = */ `labs-${time}.csv`);
     } catch(error) {
       const message = 'Error downloading lab data. Please try again later and/or contact support.';
@@ -286,15 +261,39 @@ export const labs = {
     this.filterLabsByState(currentState);
   },
 
+  viewAllLabs() {
+    /**
+     * View all of the labs by adjusting the table's height.
+     */
+    const rowCount = this.gridOptions.api.getDisplayedRowCount();
+    const table = document.getElementById('labs-table');
+    table.style.height = `${rowCount * 43 + 110}px`;
+    document.getElementById('view-all-labs').classList.add('d-none');
+    document.getElementById('view-less-labs').classList.remove('d-none');
+  },
+
+  viewLessLabs(original = false) {
+    /**
+     * View only a handful of labs at a time.
+     * @param {Boolean} original Whether or not the table should be returned to its original size.
+     */
+    const currentHeight = document.getElementById('labs-table').style.height;
+    if (parseInt(currentHeight, 10) > 540 || original) {
+      document.getElementById('labs-table').style.height = '540px';
+    }
+    document.getElementById('view-all-labs').classList.remove('d-none');
+    document.getElementById('view-less-labs').classList.add('d-none');
+  },
+
+  /*----------------------------------------------------------------------------
+   * Lab Functionality
+   *--------------------------------------------------------------------------*/
+
   toggleEditLab(edit = true) {
     /**
      * Toggle editing for a lab if permitted by the user's account.
      * @param {bool} edit Whether or not the lab can be edited.
      */
-    if (!auth.currentUser) {
-      document.getElementById('login-alert').classList.add('show');
-      return;
-    }
 
     // Keep track of changes.
     const form = document.querySelector('form');
@@ -333,7 +332,7 @@ export const labs = {
     }
   },
 
-  async updateLab(event) {
+  async suggestLabEdit(event) {
     /**
      * Update a lab through the API.
      * @param {Event} event A user-driven event.
@@ -341,38 +340,15 @@ export const labs = {
     event.preventDefault();
     const form = new FormData(event.target);
     const data = Object.fromEntries(form.entries());
-    authRequest('/api/labs', data);
+    authRequest('/src/email/suggestion', data);
     if (response.success) {
-      const message = 'Successfully updated lab.'
-      showNotification('Lab Updated', message, /* type = */ 'success');
+      const message = 'Successfully submitted new lab data. Your suggestion will be reviewed and updated upon approval.';
+      showNotification('Lab Data Submitted', message, /* type = */ 'success');
     } else {
-      const message = 'An error occurred when trying to update lab data. Ensure that you have permission to edit this lab.';
-      showNotification('Error Updating Lab', message, /* type = */ 'error');
+      const message = 'An error occurred when trying to save lab data. Ensure that you are signed in.';
+      showNotification('Error Submitted Lab Data', message, /* type = */ 'error');
     }
-  },
-
-  viewAllLabs() {
-    /**
-     * View all of the labs by adjusting the table's height.
-     */
-    const rowCount = this.gridOptions.api.getDisplayedRowCount();
-    const table = document.getElementById('labs-table');
-    table.style.height = `${rowCount * 43 + 110}px`;
-    document.getElementById('view-all-labs').classList.add('d-none');
-    document.getElementById('view-less-labs').classList.remove('d-none');
-  },
-
-  viewLessLabs(original = false) {
-    /**
-     * View only a handful of labs at a time.
-     * @param {Boolean} original Whether or not the table should be returned to its original size.
-     */
-    const currentHeight = document.getElementById('labs-table').style.height;
-    if (parseInt(currentHeight, 10) > 540 || original) {
-      document.getElementById('labs-table').style.height = '540px';
-    }
-    document.getElementById('view-all-labs').classList.remove('d-none');
-    document.getElementById('view-less-labs').classList.add('d-none');
+    this.toggleEditLab(false);
   },
 
   suggestAnalyses() {
@@ -382,18 +358,19 @@ export const labs = {
     // TODO:
   },
 
-  suggestLab() {
-    /**
-     * Suggest a lab to the staff.
-     */
-    // TODO:
-  },
-
   suggestPrices() {
     /**
      * Suggest analyses prices for a given lab to the staff.
      */
     // TODO:
+  },
+
+  viewLab(slug) {
+    /**
+     * View a selected lab.
+     * @param {String} slug The lab's name as a slug.
+     */
+    window.location.href = `${window.location.origin}/testing/labs/${slug}`
   },
 
 }
@@ -407,20 +384,24 @@ const renderAnalyses = (params) => {
    * Render analyses as chips in an AG grid table.
    * @param {Object} params The parameters passed by AG grid.
    */
-  console.log(params.value);
-  const analyses = params.value || [];
-  console.log('Lab analyses:', analyses);
-  if (analyses.length) {
-    let html = '';
-    try {
-      analyses.forEach((analysis) => {
-        // TODO: Style analyses as chips: Assign color based on analysis.
+  const analyses = params.value;
+  // FIXME: Show analyses for each lab as chips.
+  // if (analyses) {
+  //   let html = '<button class="btn btn-sm nav-link">Suggest analyses</button>';
+  //   for (const analysis of analyses) {
+  //     // TODO: Style analyses as chips: Assign color based on analysis.
 
-        html+= `<span class="badge rounded-pill">${analysis}</span>`;
-      });
-    } catch(error) {}
-    return html;
-  } else return `<button class="btn btn-sm nav-link">Suggest analyses</button>`;
+  //     html+= `<span class="badge rounded-pill text-dark bg-info">${analysis}</span>`;
+  //   }
+  //   return html;
+  // } else
+  return `
+    <a
+      class="btn btn-sm nav-link background-hover text-dark"
+      href="/contact?topic=analyses"
+    >
+      Suggest analyses
+    </a>`;
 };
 
 const renderAuthRequired = (params) => {
@@ -432,27 +413,23 @@ const renderAuthRequired = (params) => {
   if (user) {
     if (params.value) return `<span>${params.value}</span>`;
     else return '';
-  } else return `<button class="btn btn-sm nav-link">Sign In or Sign Up to See</button>`;
+  } else return `
+  <button
+    class="btn btn-sm nav-link text-dark background-hover"
+    onclick="cannlytics.ui.showModal('sign-in-dialog');"
+    type="button"
+  >
+    Sign In or Sign Up to See
+  </button>`;
 };
 
 const renderViewLabButton = (params) => {
   return `
-  <a href="${window.location.origin}/testing/labs/${params.value}">
-    <svg id="emoji" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
-      <g id="color">
-        <ellipse cx="43.9713" cy="25.4757" rx="11.1657" ry="11.1656" transform="matrix(0.5379 -0.843 0.843 0.5379 -1.1578 48.8391)" fill="#FFFFFF" stroke="none"/>
-        <path fill="#92D3F5" stroke="none" d="M53.4402,31.8458c1.461-2.289,2.284-6.5149,1.6981-9.1673c-0.4014-1.8161-2.6553-3.8396-3.8988-5.1585 c0.6487,2.3544,1.0384,7.3509-2.1852,11.9716c-2.7358,3.9212-6.6908,5.6353-8.9477,6.0576 C44.3554,36.8323,50.9377,35.7667,53.4402,31.8458z"/>
-        <path fill="#D0CFCE" stroke="none" d="M51.7774,13.2414c-3.2684-2.0837-7.1512-2.7717-10.9373-1.9372c-3.785,0.8366-7.0182,3.097-9.1041,6.3645 c-4.3036,6.746-2.3176,15.7369,4.4283,20.0415c6.745,4.3047,15.7348,2.3197,20.0415-4.4273 c2.0849-3.2675,2.7728-7.1524,1.9362-10.9374C57.3054,18.5604,55.046,15.3273,51.7774,13.2414z M53.6137,31.629 c-2.1788,3.4147-5.8819,5.2814-9.6611,5.2814c-2.1045,0.0009-4.2319-0.5785-6.1343-1.7924 c-5.3172-3.3926-6.8818-10.4791-3.4892-15.7954c1.6436-2.5754,4.1915-4.3576,7.1747-5.0159 c2.9841-0.6584,6.0444-0.1176,8.6208,1.5269c2.5755,1.6426,4.3567,4.1905,5.016,7.1747 C55.7999,25.9914,55.2572,29.0526,53.6137,31.629z"/>
-        <path fill="#3F3F3F" stroke="none" d="M31.4429,40.2651l-6.918,10.335l-3.7106,5.8155c-0.4778,0.75,0.3797,3.2105,1.1294,3.6888 c0.3613,0.2305,2.5325,0.011,2.5325,0.011L36,42.9231L31.4429,40.2651z"/>
-      </g>
-      <g id="hair"/>
-      <g id="skin"/>
-      <g id="skin-shadow"/>
-      <g id="line">
-        <ellipse cx="43.9712" cy="25.4757" rx="14.6372" ry="14.6372" transform="matrix(0.5379 -0.843 0.843 0.5379 -1.1578 48.8391)" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
-        <ellipse cx="43.9713" cy="25.4757" rx="11.1657" ry="11.1656" transform="matrix(0.5379 -0.843 0.843 0.5379 -1.1578 48.8391)" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
-        <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M31.3102,39.9657l4.4057,2.811L25.22,59.2267c-0.7499,1.1753-2.344,1.4986-3.5606,0.7224l0,0 c-1.2166-0.7763-1.595-2.3582-0.8451-3.5335L31.3102,39.9657z"/>
-      </g>
-    </svg>
+  <a
+    class="btn btn-sm nav-link"
+    href="${window.location.origin}/testing/labs/${params.value}"
+    title="View Lab"
+  >
+  🔎
   </a>`;
 }

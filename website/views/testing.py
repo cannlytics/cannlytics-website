@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 11/15/2021
-Updated: 12/24/2021
+Updated: 1/9/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
@@ -40,7 +40,7 @@ class LabView(BaseMixin, TemplateView):
     """View for lab detail pages."""
 
     def get_template_names(self):
-        return ['website/pages/testing/labs/lab.html']
+        return ['website/pages/testing/lab.html']
 
     def get_lab_data(self, context):
         """Get a lab's data from Firestore."""
@@ -66,11 +66,12 @@ class NewLabView(BaseMixin, TemplateView):
     """View for adding a lab."""
 
     def get_template_names(self):
-        return ['website/pages/testing/labs/new.html']
+        return ['website/pages/testing/lab.html']
 
     def get_context_data(self, **kwargs):
         """Get the context for a page."""
         context = super().get_context_data(**kwargs)
+        context['lab'] = {}
         context['fields'] = lab_state['detail_fields']
         context['tabs'] = lab_state['tabs'][:2]
         return context

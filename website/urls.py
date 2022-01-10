@@ -32,8 +32,11 @@ urlpatterns = [
     path('src/', include([
         path('auth/login', auth.login),
         path('auth/logout', auth.logout),
+        path('data/download-analyses-data', data.download_analyses_data),
         path('data/download-lab-data', data.download_lab_data),
-        path('email/send-message', email.send_message),
+        path('data/download-regulation-data', data.download_regulation_data),
+        path('email/send-message', email.send_message, name="message"),
+        path('email/suggest-edit', email.suggest_edit, name="suggestion"),
         path('market/buy', market.buy_data),
         path('market/promotions', market.promotions, name='promotions'),
         path('market/publish', market.publish_data),
@@ -44,11 +47,11 @@ urlpatterns = [
     ])),
     path('testing', include([
         path('', testing.TestingView.as_view(), name='testing'),
-        path('/analyses', testing.TestingView.as_view(), name='analyses'),
+        # path('/analyses', testing.TestingView.as_view(), name='analyses'),
         path('/labs', testing.TestingView.as_view(), name='labs'),  # Redundant?
         path('/labs/new', testing.NewLabView.as_view(), name='new-lab'),
         path('/labs/<lab>', testing.LabView.as_view(), name='lab'),
-        path('/regulations', testing.TestingView.as_view(), name='regulations'),
+        # path('/regulations', testing.TestingView.as_view(), name='regulations'),
     ])),
     path('robohash/<string>', robohash, name='robohash'),
     path('videos', videos.VideosView.as_view(), name='videos'),

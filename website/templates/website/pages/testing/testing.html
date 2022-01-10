@@ -31,6 +31,7 @@
   %}
 
   <!-- Tabs -->
+  <!-- Optional: Make rendering dynamic? -->
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a
@@ -69,19 +70,23 @@
   <!-- Dynamic Tab Body -->
   {% if section == 'labs' or not section %}
 
+    <!-- Lab List -->
     {% include "website/pages/testing/components/lab_list.html" %}
 
   {% elif section == 'map' %}
     
+    <!-- Lab Map -->
     {% include "website/pages/testing/components/lab_map.html" %}
 
   {% elif section == 'regulations' %}
     
-    {% include "website/pages/testing/components/analyses_list.html" %}
+    <!-- Regulations List -->
+    {% include "website/pages/testing/components/regulations_list.html" %}
   
   {% elif section == 'analyses' %}
     
-    {% include "website/pages/testing/components/regulations_list.html" %}
+    <!-- Analyses List -->
+    {% include "website/pages/testing/components/analyses_list.html" %}
 
   {% endif %}
 

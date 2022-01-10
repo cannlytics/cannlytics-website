@@ -84,7 +84,7 @@ export function showModal(id) {
    * Show a modal given its ID.
    * @param {String} buttonId The element ID of the loading button.
    */
-  const observationModal = Modal(document.getElementById(id));
+  const observationModal = new Modal(document.getElementById(id));
   observationModal.show();
 };
 
@@ -93,7 +93,7 @@ export function hideModal(id) {
    * Hide a modal given its ID.
    * @param {String} id The element ID of the loading button.
    */
-  const observationModal = Modal(document.getElementById(id));
+  const observationModal = new Modal(document.getElementById(id));
   observationModal.hide();
 };
 

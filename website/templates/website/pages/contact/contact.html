@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <keegan@cannlytics.com>
   Created: 1/6/2021
-  Updated: 1/7/2022
+  Updated: 1/9/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
   
   Optional Improvements:
@@ -43,7 +43,7 @@
         <form
           id="contact-form"
           class="mt-4 pe-sm-5"
-          action=""
+          action="{% url 'message' %}"
           method="post"
           onsubmit="return cannlytics.website.submitContactForm();"
         >
@@ -110,6 +110,8 @@
                 <option value="economics">Seeking Economic Analysis</option>
                 <option value="forecasting">Seeking Forecasting</option>
                 <option value="paper">Submitting a Paper</option>
+                <option value="analyses">Suggest Analyses</option>
+                <option value="edit">Suggest Data Edit</option>
                 <option value="regulations">Question about Regulations</option>
               </select>
             </div>
