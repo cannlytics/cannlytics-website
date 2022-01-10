@@ -74,9 +74,22 @@
           class="nav-search-button btn btn-default p-0"
           style="transform:translateX(-32px);width:0;"
         >
-          {% icon 'search' width="16px" height="16px" class="text-secondary" %}
+          {% icon 'search' width="20px" height="20px" class="text-secondary pb-1" %}
         </button>
+        <div>
+          <button
+            id="clear-button"
+            class="nav-search-button btn btn-default p-0 d-none"
+            style="transform:translateX(-56px);width:0;"
+            title="Clear search"
+          >
+            {% icon 'x-circle' width="16px" height="16px" class="text-secondary" %}
+          </button>
+        </div>
       </div><!-- End of search -->
+
+      <!-- Clear Search -->
+      
 
     </div><!-- End of description -->
 

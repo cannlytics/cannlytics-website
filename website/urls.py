@@ -47,11 +47,12 @@ urlpatterns = [
     ])),
     path('testing', include([
         path('', testing.TestingView.as_view(), name='testing'),
-        # path('/analyses', testing.TestingView.as_view(), name='analyses'),
-        path('/labs', testing.TestingView.as_view(), name='labs'),  # Redundant?
+        path('/labs', testing.TestingView.as_view(), name='labs'),
         path('/labs/new', testing.NewLabView.as_view(), name='new-lab'),
         path('/labs/<lab>', testing.LabView.as_view(), name='lab'),
+        # path('/analyses', testing.TestingView.as_view(), name='analyses'),
         # path('/regulations', testing.TestingView.as_view(), name='regulations'),
+        # TODO: Add regulation and analysis specific pages.
     ])),
     path('robohash/<string>', robohash, name='robohash'),
     path('videos', videos.VideosView.as_view(), name='videos'),

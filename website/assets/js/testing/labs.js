@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
- * Updated: 1/9/2022
+ * Updated: 1/10/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { authRequest, showNotification } from '../utils.js';
@@ -124,6 +124,9 @@ export const labs = {
     stateOptions = sortArrayOfObjects(stateOptions, 'value');
     addSelectOptions('lab-state-selection', stateOptions);
 
+    // Initialize table search.
+    this.initializeLabTableSearch();
+
   },
 
   async initializeLabDetails() {
@@ -142,6 +145,26 @@ export const labs = {
     const data = this.getLabLogs(id);
     // TODO: Show the a lab logs!
     console.log('Found logs:', data);
+  },
+
+  initializeLabTableSearch() {
+    /**
+     * Setup search for the table of labs.
+     */
+    const clearButton = document.getElementById('clear-button');
+    const searchButton = document.getElementById('search-button');
+    const searchInput = document.getElementById('search-input');
+    clearButton.addEventListener('click', () => {
+      searchInput.value = '';
+      this.gridOptions.api.setRowData(this.labs);
+      document.getElementById('clear-button').classList.add('d-none');
+    });
+    searchButton.addEventListener('click', () => {
+      this.searchLabTable(searchInput)
+    });
+    searchInput.addEventListener('keydown', (event) => {
+      this.searchLabTable(searchInput)
+    });
   },
 
   /*----------------------------------------------------------------------------
@@ -245,12 +268,37 @@ export const labs = {
     else this.viewAllLabs();
   },
 
-  searchLabTable(event) {
+  searchLabTable(element) {
     /**
      * Search the lab table for a given query.
+     * @param {String} value The query value.
      */
-    // FIXME: Search the lab list.
-    console.log('Query:', event.value);
+    const query = element.value.toLowerCase();
+    console.log('Query:', query);
+    if (!query) {
+      this.gridOptions.api.setRowData(this.labs);
+      document.getElementById('clear-button').classList.add('d-none');
+    }
+    else {
+      const subset = [];
+      this.labs.forEach(lab => {
+        const searchFields = (({ name, trade_name, license }) => ({ name, trade_name, license }))(lab);
+        const comparisonValues = Object.values(searchFields);
+        let comparisonValue = '';
+        comparisonValues.every((obsValue) => {
+          try {
+            comparisonValue = obsValue.toLowerCase();
+          } catch(error) { return true }
+          if (comparisonValue.includes(query) || comparisonValue.startsWith(query)) {
+            subset.push(lab);
+            return false;
+          }
+          return true;
+        });
+      });
+      this.gridOptions.api.setRowData(subset);
+      document.getElementById('clear-button').classList.remove('d-none');
+    }
   },
 
   searchLabTableClear() {

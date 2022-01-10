@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 11/24/2020
-  Updated: 1/9/2022
+  Updated: 1/10/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% load icon %}
@@ -21,14 +21,13 @@
   <div class="d-flex justify-content-end">
 
     <!-- Search -->
-    <!-- FIXME: Implement search. -->
     <div
       id="lab-table-search"
       class="col-10 d-flex align-items-center pe-0 me-2"
     >
       <input
         aria-label="Search"
-        id="searchInput"
+        id="search-input"
         class="nav-search-input form-control form-control-sm w-100"
         placeholder="Search"
         list="searchOptions"
@@ -39,11 +38,11 @@
       >
       <datalist id="searchOptions"></datalist>
       <button
-        id="searchButton"
+        id="search-button"
         class="nav-search-button btn btn-default p-0"
         style="transform:translateX(-32px);width:0;"
       >
-        {% icon 'search' width="16px" height="16px" class="text-secondary" %}
+        {% icon 'search' width="20px" height="20px" class="text-secondary pb-1" %}
       </button>
     </div>
 
@@ -51,8 +50,8 @@
     <div>
       <button
         id="clear-button"
-        class="btn btn-sm-light btn-md-light d-none me-2"
-        onclick="cannlytics.app.searchLabTableClear();"
+        class="nav-search-button btn btn-default p-0 d-none"
+        style="transform:translateX(-64px);width:0;"
         title="Clear search"
       >
         {% icon 'x-circle' width="16px" height="16px" class="text-secondary" %}

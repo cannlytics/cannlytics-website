@@ -258,6 +258,7 @@ export const labMap = {
      * @param {Map} map The Google map.
      * @param {String} value A value to search for on the map.
      */
+    document.getElementById('clear-button').classList.remove('d-none');
     const point = this.points[value];
     map.panTo(new google.maps.LatLng(point.latitude, point.longitude));
     map.setZoom(15);
@@ -269,14 +270,21 @@ export const labMap = {
      * Setup search for the map.
      * @param {Map} map The Google map.
      */
+    const clearButton = document.getElementById('clear-button');
     const searchButton = document.getElementById('searchButton');
     const searchInput = document.getElementById('searchInput');
+    clearButton.addEventListener('click', () => {
+      searchInput.value = '';
+      document.getElementById('clear-button').classList.add('d-none');
+      map.panTo(new google.maps.LatLng(39.8283, -98.5795));
+      map.setZoom(4);
+    });
     searchButton.addEventListener('click', () => {
-      this.panToMarker(map, searchInput.value)
+      this.panToMarker(map, searchInput.value);
     });
     searchInput.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
-        this.panToMarker(map, searchInput.value)
+        this.panToMarker(map, searchInput.value);
       }
     });
   },
