@@ -6,12 +6,18 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/17/2021
-  Updated: 12/28/2021
+  Updated: 1/11/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
 {% load static %}
 {% block title %}Subscriptions | Cannlytics{% endblock %}
+{% block page_css %}
+
+  <!-- PayPal JavaScript -->
+  <script src="https://www.paypal.com/sdk/js?client-id={{ paypal.client_id }}&vault=true&intent=subscription"></script>
+
+{% endblock page_css %}
 {% block material %}
 
   <!-- Hero Banner -->
@@ -78,20 +84,8 @@
                   <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
                 </svg>API access</small>
               </li>
-              {% comment %} <li class="fs-6 mb-1"><small class="serif text-dark">
-                <svg class="" style="width:24px;height:24px;">
-                  <use href="{% static "website/images/emojies/check.svg" %}#check-emoji"></use>
-                </svg> First access to data sets</small>
-              </li> {% endcomment %}
             </ul>
-            <a
-              id="premium-button"
-              type="button"
-              class="btn w-100 bg-gradient-orange serif text-white"
-              href="{% url 'section' page='subscriptions' section='checkout' %}?name=Newsletter"
-            >
-              Go premium
-            </a>
+            <div id="paypal-premium"></div>
           </div>
         </div>
       </div>
@@ -127,5 +121,12 @@
   {% include "website/components/art/vines.html" %}
 
 {% endblock %}
+
+<!-- JavaScript -->
+{% block page_js %}
+<script>
+  cannlytics.payments.initializePremiumSubscription();
+</script>
+{% endblock page_js %}
 
 </html>

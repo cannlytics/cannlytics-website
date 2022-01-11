@@ -13,11 +13,17 @@
 {% load static icon %}
 {% block title %}Subscription | Cannlytics{% endblock %}
 {% block page_css %}
-<style>
-  .tooltip-inner {
-    text-align: left;
-  }
-</style>
+
+  <!-- Minor Style Adjustments -->
+  <style>
+    .tooltip-inner {
+      text-align: left;
+    }
+  </style>
+
+  <!-- PayPal JavaScript -->
+  <script src="https://www.paypal.com/sdk/js?client-id={{ paypal.client_id }}&vault=true&intent=subscription"></script>
+
 {% endblock page_css %}
 {% block material %}
 
@@ -72,68 +78,76 @@
         software support options to help get up and running, make sure that your
         systems run smoothly, and get us to create solutions for you.
       </p>
-      <div class="card col-8 my-3 p-3 border rounded text-dark">
-        <h3 class="mb-3 mt-0">Support Options</h3>
-        <div class="d-flex justify-content-between mb-3">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="support-option"
-              id="support-option-enterprise"
-            >
-            <label
-              class="app-action background-hover form-check-label"
-              for="support-option-enterprise"
-            >
-              Enterprise
-            </label>
-            {% icon 'info' width="16px" height="16px" class="ms-1"
-              data-bs-toggle="tooltip"
-              data-bs-placement="right"
-              title="Custom installation, access to admin tools, feature requests, and talk with devs."
-            %}
+      <div class="row px-3">
+        <div class="col-10 col-md-8 card my-3 p-3 border rounded text-dark">
+          <h3 class="mb-3 mt-0">Support Options</h3>
+          <div class="d-flex justify-content-between mb-3">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="support-option"
+                id="support-option-enterprise"
+              >
+              <label
+                class="app-action background-hover form-check-label"
+                for="support-option-enterprise"
+              >
+                Enterprise
+              </label>
+              {% icon 'info' width="16px" height="16px" class="ms-1"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="Custom installation, access to admin tools, feature requests, and talk with devs."
+              %}
+            </div>
+            <div class="text-secondary text-nowrap">$1,200 / mo.</div>
           </div>
-          <div class="text-secondary text-nowrap">$1,200 / mo.</div>
+          <div class="d-flex justify-content-between mb-3">
+            <div class="form-check">
+              <input
+                class="form-check-input danger"
+                type="radio"
+                name="support-option"
+                id="support-option-pro"
+              >
+              <label
+                class="app-action background-hover form-check-label"
+                for="support-option-pro"
+              >
+                Pro
+              </label>
+              {% icon 'info' width="16px" height="16px" class="ms-1"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                title="Metrc integration, access to dev tools, unlimited data storage, and email support."
+              %}
+            </div>
+            <div class="text-secondary text-nowrap">$420 / mo.</div>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <div class="form-check pe-4">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="support-option"
+                id="support-option-no-support"
+                checked
+              >
+              <label
+                class="app-action background-hover form-check-label"
+                for="support-option-no-support"
+              >
+                No support
+              </label>
+            </div>
+          </div>
         </div>
-        <div class="d-flex justify-content-between mb-3">
-          <div class="form-check">
-            <input
-              class="form-check-input danger"
-              type="radio"
-              name="support-option"
-              id="support-option-pro"
-            >
-            <label
-              class="app-action background-hover form-check-label"
-              for="support-option-pro"
-            >
-              Pro
-            </label>
-            {% icon 'info' width="16px" height="16px" class="ms-1"
-              data-bs-toggle="tooltip"
-              data-bs-placement="right"
-              title="Metrc integration, access to dev tools, unlimited data storage, and email support."
-            %}
-          </div>
-          <div class="text-secondary text-nowrap">$420 / mo.</div>
+        <div id="checkout-enterprise-button" class="col-3 my-3 d-none">
+          <div id="paypal-enterprise"></div>
         </div>
-        <div class="d-flex justify-content-between mb-3">
-          <div class="form-check pe-4">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="support-option"
-              id="support-option-no-support"
-              checked
-            >
-            <label
-              class="app-action background-hover form-check-label"
-              for="support-option-no-support"
-            >
-              No support
-            </label>
-          </div>
+        <div id="checkout-pro-button" class="col-3 my-3 d-none">
+          <div id="paypal-pro"></div>
         </div>
       </div>
       <div class="col-8 d-flex justify-content-end">
@@ -149,13 +163,6 @@
         >
           Save
         </button>
-        <a
-          id="checkout-support-button"
-          class="btn btn-sm bg-gradient-orange text-white serif ms-2 d-none"
-          href="{% url 'section' page="subscriptions" section="checkout" %}?name=Enterprise"
-        >
-          Checkout
-        </a>
       </div>
     </div>
 
@@ -172,25 +179,30 @@
         <a href="{% url 'page' page='whitepapers' %}">whitepapers</a>, and
         <a href="{% url 'page' page='api' %}">API access</a>.
       </p>
-      <div class="card col-8 my-3 p-3 border rounded text-dark">
-        <h3 class="mb-3 mt-0">Premium Material</h3>
-        <div class="d-flex justify-content-between mb-3">
-          <div class="form-check pe-4">
-            <input
-              id="premium-material-checkbox"
-              class="form-check-input"
-              type="checkbox"
-              value=""
-            >
-            <label
-              class="app-action background-hover form-check-label"
-              for="premium-material-checkbox"
-            >
-              Subscribe to all videos, whitepapers, datasets,
-              and API access
-            </label>
+      <div class="row px-3">
+        <div class="col-10 col-md-8 card my-3 p-3 border rounded text-dark">
+          <h3 class="mb-3 mt-0">Premium Material</h3>
+          <div class="d-flex justify-content-between mb-3">
+            <div class="form-check pe-4">
+              <input
+                id="premium-material-checkbox"
+                class="form-check-input"
+                type="checkbox"
+                value=""
+              >
+              <label
+                class="app-action background-hover form-check-label"
+                for="premium-material-checkbox"
+              >
+                Subscribe to all videos, whitepapers, datasets,
+                and API access
+              </label>
+            </div>
+            <div class="text-secondary text-nowrap">$4.20 / mo.</div>
           </div>
-          <div class="text-secondary text-nowrap">$4.20 / mo.</div>
+        </div>
+        <div id="checkout-premium-button" class="col-3 my-3 d-none">
+          <div id="paypal-premium"></div>
         </div>
       </div>
       <div class="col-8 d-flex justify-content-end">
@@ -206,13 +218,6 @@
         >
           Save
         </button>
-        <a
-          id="checkout-premium-button"
-          class="btn btn-sm bg-gradient-orange text-white serif ms-2 d-none"
-          href="{% url 'section' page="subscriptions" section="checkout" %}?name=Premium"
-        >
-          Checkout
-        </a>
       </div>
     </div>
 

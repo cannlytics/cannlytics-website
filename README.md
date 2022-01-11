@@ -33,7 +33,7 @@ Cannlytics is a healthy mix of user friendly interfaces and software that you ca
 | [Cannlytics App](https://cannlytics.com/cannlytics-app) | 🟡  | In progress |
 | [Cannlytics Console](https://github.com/cannlytics/cannlytics) | 🟢 | <https://console.cannlytics.com> |
 | [Cannlytics Documentation](https://github.com/cannlytics/cannlytics-docs) | 🟢 | <https://docs.cannlytics.com> |
-| [Cannlytics Python SDK](https://github.com/cannlytics/cannlytics-engine) | 🟢 | <https://pypi.org/projects/cannlytics/>|
+| [Cannlytics Python SDK](https://github.com/cannlytics/cannlytics-engine) | 🟢 | <https://pypi.org/project/cannlytics/>|
 | [Cannlytics Website](https://github.com/cannlytics/cannlytics-website) | 🟢 | <https://cannlytics.com> |
 
 ## 🌱 Installation <a name="installation"></a>
@@ -166,7 +166,7 @@ The Cannlytics Website generally follows a model-template-view (MTV) architectur
 
 Below is an overview of the project's directory.
 
-```bash
+```shell
 ├── .admin
 │   └── tokens
 │       └── your-firebase-service-account.json
@@ -189,8 +189,8 @@ Below is an overview of the project's directory.
 │   |   ├── css # StyleSheets.
 │   |   └── js # JavaScript to be bundled into a `cannlytics` module.
 │   ├── core # Required Django configuration.
-│   ├── static/console # Static files, including images and Webpack bundles.
-│   ├── templates/console # User interface templates.
+│   ├── static/website # Static files, including images and Webpack bundles.
+│   ├── templates/website # User interface templates.
 │   ├── templatetags # Custom template helpers.
 │   ├── views # Controls templates, context, user requests, and application logic.
 │   ├── settings.py # Django configuration.
@@ -229,7 +229,7 @@ You can leverage [django-livereload-server](https://github.com/tjwalch/django-li
 npm run start
 ```
 
-> If you encounter problems with livereload, then try `pip uninstall django-livereload-server livereload` followed by `pip install django-livereload-server`.
+> If you encounter problems with livereload, then try `pip uninstall django-livereload-server livereload` followed by `pip install django-livereload-server`. Also ensure that `PRODUCTION=False` in your `.env` file.
 
 ### Running the project for development with hot-reload <a name="running"></a>
 
@@ -296,7 +296,7 @@ gcloud beta run deploy your-lims --image gcr.io/your-lims/cannlytics --region us
 
 3. Direct hosting requests to the containerized app.
 
-This step provides access to this containerized app from a [Firebase Hosting] URL, so the app can generate dynamic content for the Firebase-hosted site.
+This step provides access to this containerized app from a [Firebase Hosting](https://firebase.google.com/docs/hosting) URL, so that the app can generate dynamic content for the Firebase-hosted site.
 
 ```bash
 firebase deploy --only hosting:production
@@ -311,7 +311,7 @@ Cannlytics is made available with ❤️ and <a href="https://opencollective.com
 ## 🏛️ License <a name="license"></a>
 
 ```
-Copyright (c) 2020-2021 Cannlytics and Cannlytics Contributors
+Copyright (c) 2020-2021 Cannlytics
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@
 <!--
   Download Data Dialog
   Created: 1/13/20201
-  Updated: 11/26/2021
+  Updated: 1/11/2022
 -->
 {% load static icon %}
 <div
@@ -90,7 +90,7 @@
         <a
           type="button"
           class="btn flex-grow-1 bg-gradient-orange text-white"
-          href="/subscriptions/checkout?name=premium"
+          href="{% url 'page' page='subscriptions' %}"
         >
           Get all data for $4.20 / mo.
         </a>

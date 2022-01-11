@@ -204,6 +204,7 @@ material = {
         "pricing_tiers": [
             {
                 "name": "Enterprise",
+                "plan_name": "enterprise",
                 "price": "$1,200 / mo.",
                 "color": "purple",
                 "action": "Launch Now 🚀",
@@ -217,6 +218,7 @@ material = {
             },
             {
                 "name": "Pro",
+                "plan_name": "pro",
                 "price": "$420 / mo.",
                 "color": "orange",
                 "action": "Get Started 🏃‍♀️",
@@ -283,11 +285,12 @@ page_data = {
             }
         ],
     },
+    "checkout": {"documents":[{"name": "paypal", "ref": "credentials/paypal"}]},
     "contributors": {
         "collections": [{"name": "contributors", "ref": "public/contributors/contributor_data"}],
     },
     "map": {
-        "documents":[{"name": "google", "ref": "admin/google"}],
+        "documents":[{"name": "google", "ref": "credentials/google"}],
     },
     "market": {
         "collections": [
@@ -332,12 +335,16 @@ page_data = {
         }],
     },
     "subscriptions": {
+        "documents":[{"name": "paypal", "ref": "credentials/paypal"}],
         "collections": [{
             "name": "sponsorships",
             "ref": "public/subscriptions/sponsorships",
             "order_by": "cost",
             "desc": True,
         }],
+    },
+    "support": {
+        "documents":[{"name": "paypal", "ref": "credentials/paypal"}],
     },
     "team": {
         "collections": [{"name": "team", "ref": "public/team/team_members"}],

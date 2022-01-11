@@ -26,8 +26,8 @@ The Cannlytics API allows users to seamlessly integrate with all of the function
 
 ## Get Started with the Cannlytics API
 
-Getting started making requests to the Cannlytics API can be done in 3 quick steps.
+Start making requests to the Cannlytics API by following these 3 quick steps.
 
 1. First, [create a Cannlytics account](https://console.cannlytics.com/account/sign-up).
-2. Second, [create an API key](https://console.cannlytics.com/settings/api).
+2. Second, [create an API key](https://console.cannlytics.com/settings/api) in the Cannlytics Console.
 3. Finally, you can begin making requests to the Cannlytics API by sending your API Key in an `Authorization: Bearer <token>` header in your requests.

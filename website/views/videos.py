@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 11/15/2021
-Updated: 11/24/2021
+Updated: 1/11/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
@@ -30,13 +30,13 @@ class VideosView(BaseMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        video_id = self.kwargs.get('video_id', '')
 
-        # Get video data.
+        # Get video statistics.
         video_stats = get_document('public/videos')
         total_videos = video_stats['total']
 
-        # Get specific video data.
+        # Get data for a specific video if a video ID is specified.
+        video_id = self.kwargs.get('video_id', '')
         if video_id:
             context['video_data'] = get_document(f'public/videos/video_data/{video_id}')
 
@@ -71,18 +71,22 @@ class VideosView(BaseMixin, TemplateView):
             except:
                 pass
 
-            # Handle sign-in for premium videos.
-            if context.get('premium') or True:
-                claims, _, _ = authenticate_request(self.request)
-                context['user_id'] = claims.get('user_id')
-                print('User ID:', context['user_id'])
+            # Look-up if user has a subscription for premium videos.
+            if context.get('premium'):
+                claims = authenticate_request(self.request)
+                try:
+                    uid = claims.get('uid')
+                    context['user_id'] = uid
+                    user_data = get_document(f'users/{uid}')
+                    premium_subscription = user_data.get('premium_subscription_id')
+                    context['premium_subscription'] = premium_subscription
+                except KeyError:
+                    pass
 
-                # TODO: Look-up if user has a subscription.
-                context['premium_subscription'] = False
-
+            # Return context for a specific video.
             return context
 
-        # Paginate videos.
+        # If there is no singular video specified, then paginate videos.
         limit = 9
         page = self.request.GET.get('page', 1)
         start_at = 1 + total_videos - (int(page) - 1) * limit
