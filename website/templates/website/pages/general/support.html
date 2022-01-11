@@ -10,12 +10,12 @@
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
-{% load static get_env %}
+{% load static %}
 {% block title %}Support | Cannlytics{% endblock %}
 {% block page_css %}
 
   <!-- PayPal Client-->
-  <script src="https://www.paypal.com/sdk/js?client-id={{ 'PAYPAL_CLIENT_ID'|get_env }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id={{ paypal.client_id }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 
 {% endblock page_css %}
 {% block material %}
@@ -70,13 +70,14 @@
                     </li>
                   {% endfor %}
                 </ul>
-                <a
+                <div id="paypal-{{ item.plan_name }}"></div>
+                {% comment %} <a
                   type="button"
                   class="btn btn-sm btn-block bg-gradient-{{ item.color }} serif text-white"
                   href="{{ item.url }}"
                 >
                   {{ item.action }}
-                </a>
+                </a> {% endcomment %}
               </div>
             </div>
           </div>
@@ -94,7 +95,7 @@
       </p>
 
       <!-- Historic Lab Result Migration -->
-      <div class="container mb-5 mt-3">
+      <div class="container mb-5 mt-5">
         <div class="markdown py-5" style="max-width:560px;">
           <svg class="pt-3 pe-3" style="float:left;width:125px;height:125px;">
             <use href="{% static "website/images/emojies/sparkler.svg" %}#sparkler-emoji"></use>
@@ -121,7 +122,7 @@
 
       <!-- Consulting -->
       <div class="container mb-5 mt-3">
-        <div class="markdown py-5" style="max-width:560px;">
+        <div class="markdown" style="max-width:560px;">
           <svg class="pt-3 pe-3" style="float:left;width:125px;height:125px;">
             <use href="{% static "website/images/emojies/toolbox.svg" %}#toolbox-emoji"></use>
           </svg>
@@ -150,5 +151,12 @@
   {% include "website/components/art/vines.html" %}
 
 {% endblock material %}
+
+<!-- JavaScript -->
+{% block page_js %}
+<script>
+  cannlytics.payments.initializeSupport();
+</script>
+{% endblock page_js %}
 
 </html>

@@ -10,7 +10,6 @@
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
-{% load get_env %}
 {% block title %}Checkout | Cannlytics{% endblock %}
 {% block page_css %}
 <style>
@@ -198,7 +197,7 @@
 <!-- Make plan name available through JavaScript -->
 {{ request.GET.name|json_script:"plan_name" }}
 
-<script src="https://www.paypal.com/sdk/js?client-id={{ 'PAYPAL_CLIENT_ID'|get_env }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypal.client_id }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 <script>
 
   // Initialize subscriptions.

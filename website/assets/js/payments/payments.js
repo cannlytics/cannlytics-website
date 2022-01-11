@@ -4,23 +4,111 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
- * Updated: 1/4/2022
+ * Updated: 1/11/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { getDocument } from '../firebase.js';
 import { authRequest, getUrlParameter, showNotification, validateEmail } from '../utils.js';
 import { hideLoadingButton, showLoadingButton } from '../ui/ui.js';
 
+const submitSubscription = async function(details, subscriptionID, planName) {
+  /**
+   * Submit a subscription through the API.
+   */
+  const name = details.payer.name.given_name;
+  const email = details.payer.email_address;
+  const postData = { name, email, id: subscriptionID, plan_name: planName }
+  const response = await authRequest('/src/payments/subscribe', postData);
+  if (response.success) {
+    window.location.href = `${window.location.origin}/subscriptions/subscribed`;
+  } else {
+    const message = `An error occurred when subscribing to ${planName} subscription. Please try again later or email support.`;
+    showNotification('Error Subscribing', response.message, /* type = */ 'error');
+  }
+}
+
 export const payments = {
 
   /**---------------------------------------------------------------------------
-   * Subscriptions
+   * Setup Subscriptions
+   *--------------------------------------------------------------------------*/
+
+  async initializePremiumSubscription() {
+    /**
+     * Initialize premium PayPal subscription checkout.
+      */
+    const subscription = await this.getSubscription('premium');
+    paypal.Buttons({
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          'plan_id': subscription.plan_id,
+        });
+      },
+      onApprove: function(data, actions) {
+        try {
+          const { subscriptionID } = data;
+          return actions.order.capture().then(async function(details) {
+            submitSubscription(details, subscriptionID, 'premium');
+          });
+        } catch(error) {
+          reportError();
+        }
+      }
+    }).render('#paypal-premium');
+  },
+
+  async initializeSupport() {
+    /**
+     * Initialize PayPal support subscription checkouts.
+     */
+    const enterpriseSubscription = await this.getSubscription('enterprise');
+    const proSubscription = await this.getSubscription('pro');
+    paypal.Buttons({
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          'plan_id': enterpriseSubscription.plan_id,
+        });
+      },
+      onApprove: function(data, actions) {
+        try {
+          const { subscriptionID } = data;
+          return actions.order.capture().then(async function(details) {
+            submitSubscription(details, subscriptionID, 'enterprise');
+          });
+        } catch(error) {
+          reportError();
+        }
+      }
+    }).render('#paypal-enterprise');
+    paypal.Buttons({
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          'plan_id': proSubscription.plan_id,
+        });
+      },
+      onApprove: function(data, actions) {
+        try {
+          const { subscriptionID } = data;
+          return actions.order.capture().then(async function(details) {
+            submitSubscription(details, subscriptionID, 'pro');
+          });
+        } catch(error) {
+          reportError();
+        }
+      }
+    }).render('#paypal-pro');
+  },
+
+  /**---------------------------------------------------------------------------
+   * Manage Subscriptions
    *--------------------------------------------------------------------------*/
 
   initializeSubscriptions() {
     /**
      * Initialize the user's current subscriptions.
      */
+
+    // Setup the user interface.
     const newsletter = JSON.parse(document.getElementById('user_newsletter').textContent);
     const premium = JSON.parse(document.getElementById('user_premium').textContent);
     const support = JSON.parse(document.getElementById('user_support').textContent);
@@ -32,6 +120,8 @@ export const payments = {
       document.getElementById(`support-option-${support}`).checked = true;
       document.getElementById('support-option-no-support').checked = false;
     }
+    
+    // Attach functionality.
     newsletterCheckbox.addEventListener('click', this.subscribeToFreeNewsletter);
     premiumCheckbox.addEventListener('click', this.subscribeToPremium);
     document.getElementById('save-premium-button').addEventListener('click', this.savePremiumSubscription);
@@ -41,11 +131,11 @@ export const payments = {
     document.getElementById('support-option-no-support').addEventListener('click', this.changeSupportSubscription);
     document.getElementById('save-support-button').addEventListener('click', this.saveSupportSubscription);
     document.getElementById('cancel-support-button').addEventListener('click', this.cancelChangeSupportSubscription);
+    
+    // Initialize subscriptions.
+    this.initializePremiumSubscription();
+    this.initializeSupport();
   },
-
-  /**---------------------------------------------------------------------------
-   * Support
-   *--------------------------------------------------------------------------*/
 
   async changeSupportSubscription() {
     /**
@@ -60,15 +150,13 @@ export const payments = {
       if (newSupport === 'no-support' && currentSupport) {
         document.getElementById('save-support-button').classList.remove('d-none');
         document.getElementById('cancel-support-button').classList.remove('d-none');
-        document.getElementById('checkout-support-button').classList.add('d-none');
+        document.getElementById('checkout-enterprise-button').classList.add('d-none');
+        document.getElementById('checkout-pro-button').classList.add('d-none');
       } else {
         document.getElementById('save-support-button').classList.add('d-none');
         document.getElementById('cancel-support-button').classList.remove('d-none');
-        const checkoutButton = document.getElementById('checkout-support-button');
+        const checkoutButton = document.getElementById(`checkout-${newSupport}-button`);
         checkoutButton.classList.remove('d-none');
-        const href = new URL(checkoutButton.href);
-        href.searchParams.set('name', newSupport);
-        checkoutButton.href = href.toString()
       }
     }
   },
@@ -79,7 +167,8 @@ export const payments = {
      */
     document.getElementById('save-support-button').classList.add('d-none');
     document.getElementById('cancel-support-button').classList.add('d-none');
-    document.getElementById('checkout-support-button').classList.add('d-none');
+    document.getElementById('checkout-enterprise-button').classList.add('d-none');
+    document.getElementById('checkout-pro-button').classList.add('d-none');
     const support = JSON.parse(document.getElementById('user_support').textContent);
     if (support) {
       const supportId = support.toLowerCase();
@@ -288,7 +377,9 @@ export const payments = {
               document.getElementById('user_sponsorships').textContent
             ) || [];
             sponsorships.push(subscriptionID);
-            await authRequest('/api/users', { sponsorships });
+            try {
+              await authRequest('/api/users', { sponsorships });
+            } catch(error) { /* User may not be signed in. */ }
             await reportSubscription(email, name, subscriptionID);
           });
         } catch(error) {
@@ -333,8 +424,10 @@ export const payments = {
       )) || userSponsorships;
       newTiers = newTiers.filter(item => item !== tier)
       localStorage.setItem('cannlytics_new_sponsor_tiers', JSON.stringify(newTiers));
-      if (newTiers !== userSponsorships) {
-        document.getElementById('save-button').classList.remove('d-none');
+      if (newTiers.length !== userSponsorships.length) {
+        if (userSponsorships.length) {
+          document.getElementById('save-button').classList.remove('d-none');
+        }
         document.getElementById('cancel-button').classList.remove('d-none');
       } else {
         document.getElementById('donate-button').classList.add('d-none');

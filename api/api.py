@@ -329,7 +329,7 @@ def handle_request(
     """Perform a request after authenticating the user."""
     claims = authenticate_request(request)
     if claims.get('user') is None:
-        message = 'Failure to authenticate with the credentials provided. '
+        message = 'Failure to authenticate with the credentials provided.'
         message += claims['message']
         return {'success': False, 'data': None, 'message': message}, 401
     action = actions.get(request.method)

@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 11/14/2021
-  Updated: 11/14/2021
+  Updated: 1/11/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
   Fields:
@@ -17,6 +17,7 @@
     recent_videos (lsit): A list of video data (dict) for the 3 most recent videos.
     user_id (str): The unique ID of any signed-in user.
     premium_subscription (bool): Whether or not the user is subscribed to premium content.
+
   TODO:
     1. Add resources, such as links to the Github repository and downloadable files.
 -->
@@ -39,7 +40,7 @@
     </nav>
 
     <!-- Premium Subscription Logic -->
-    {% if video_data.premium or True %} 
+    {% if video_data.premium %} 
 
       {% if user_id and premium_subscription %}
 
