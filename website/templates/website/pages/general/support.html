@@ -6,23 +6,18 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/15/2021
-  Updated: 12/24/2021
+  Updated: 1/10/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
 {% load static get_env %}
-
-<!-- Title -->
 {% block title %}Support | Cannlytics{% endblock %}
-
-<!-- CSS -->
-{% block console_css %}
+{% block page_css %}
 
   <!-- PayPal Client-->
   <script src="https://www.paypal.com/sdk/js?client-id={{ 'PAYPAL_CLIENT_ID'|get_env }}&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 
-{% endblock console_css %}
-
+{% endblock page_css %}
 {% block material %}
   <div class="products">
     
@@ -30,8 +25,6 @@
     {% include "website/components/heros/hero_banner.html" with
       title="Software Support"
       description="In addition to crafting you awesome software, we can meet you where you are and assist you with custom solutions."
-      background_image="https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2FIllustration_Cannabis_sativa0.jpg?alt=media&token=7c1f2d17-1df6-46b4-b698-21eb5cc5c174"
-      background_position="80% 80%"
       only
     %}
 

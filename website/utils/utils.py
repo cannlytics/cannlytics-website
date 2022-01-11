@@ -7,18 +7,18 @@ Created: 1/5/2021
 Updated: 1/5/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
-# Standard imports
+# Standard imports.
 from random import randint
-# import re
 import traceback
 from typing import Optional
 
-# External imports
-from django.contrib.staticfiles.storage import staticfiles_storage
+# External imports.
 import requests
 from markdown import markdown
-from markdown.extensions.toc import TocExtension
 from pymdownx import emoji
+
+# Internal imports.
+from website.settings import DEBUG
 
 # Optional: Style blockquotes
 # https://facelessuser.github.io/pymdown-extensions/extensions/emoji/
@@ -32,8 +32,7 @@ EXTENSIONS = [
     'nl2br',
     'smarty',
     'tables',
-    # TocExtension(permalink='#'),
-    'mdx_math', # Optional: Parse LaTeX
+    'mdx_math',
     'pymdownx.arithmatex',
     'pymdownx.emoji',
 ]
@@ -55,7 +54,6 @@ def get_markdown(
         request,
         context,
         app,
-        directory,
         page=None,
         extensions=None,
         name='markdown',
@@ -65,7 +63,6 @@ def get_markdown(
         request (HttpRequest): An HTTP request.
         context (dict): A dictionary of page context.
         app (str): The project name.
-        directory (str): The directory where markdown files are located.
         page (str): The page name for locating page-specific markdown.
         extensions (list): A list of extensions, a pre-selected list
             of useful extensions is used by default.
@@ -78,12 +75,10 @@ def get_markdown(
     if page is None:
         page = context['page']
     try:
-        # Optional: Prefer to open markdown file directly, instead of with a request.
-        # url = directory + file_name
-        # markdown_file = open(url, 'r')
-        # text = markdown_file.read()
-        file_name = staticfiles_storage.url(f'/{app}/docs/{page}.md')
-        url = request.build_absolute_uri(file_name)
+        # Optional: Open markdown file directly instead of with a request.
+        base = request.META.get('HTTP_REFERER').split('/')[2]
+        protocol = 'http' if DEBUG else 'https'
+        url = f'{protocol}://{base}/static/{app}/docs/{page}.md'
         text = requests.get(url).text
         context[name] = markdown(
             text,

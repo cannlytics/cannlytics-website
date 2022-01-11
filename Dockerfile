@@ -3,7 +3,7 @@
 #
 # Auhtors: Keegan Skeate <keegan@cannlytics.com>
 # Created: 1/5/2021
-# Updated: 1/5/2022
+# Updated: 1/10/2022
 # License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 # Use the official lightweight Python image.
@@ -24,6 +24,7 @@ ENV PYTHONUNBUFFERED True
 
 # Install dependencies.
 COPY requirements.txt .
+RUN python -m pip install --upgrade pip
 RUN python -m pip install -r requirements.txt
 
 # Specificy directory.
@@ -33,15 +34,12 @@ WORKDIR $APP_HOME
 # Copy local code to the container image.
 COPY . ./
 
-# Add the project's root to Python's paths list to ensure that modules are found.
-ENV PYTHONPATH "${PYTHONPATH}:${$APP_HOME}"
-
 # Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights
 RUN useradd appuser && chown -R appuser /app
 USER appuser
 
 # Run the web service on container startup. Here we use the gunicorn
-# webserver, with one worker process and 8 threads (default).
+# webserver, with 4 worker process (1 by default) and 16 threads (8 by default).
 # For environments with multiple CPU cores, increase the number of workers
 # to be equal to the cores available.
 # See:

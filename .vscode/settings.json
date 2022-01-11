@@ -118,6 +118,7 @@
     "quickstart",
     "readonly",
     "recaptcha",
+    "REFERER",
     "roadmap",
     "robohash",
     "runserver",

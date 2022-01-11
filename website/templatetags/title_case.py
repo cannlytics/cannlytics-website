@@ -1,5 +1,5 @@
 """
-Title Case Filter | Cannlytics Console
+Title Case Filter | Cannlytics Website
 Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>

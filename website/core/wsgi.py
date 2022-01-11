@@ -19,7 +19,10 @@ from django.core.wsgi import get_wsgi_application
 from whitenoise import WhiteNoise
 
 # Specify the name of the settings file.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'console.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings')
 
 # Main Django app with static file serving by WhiteNoise.
-application = WhiteNoise(get_wsgi_application())
+try:
+    application = WhiteNoise(get_wsgi_application())
+except:
+    application = get_wsgi_application()

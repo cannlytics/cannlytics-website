@@ -108,7 +108,7 @@ material = {
             "primary_action": "Get Started 🌱",
             "primary_action_url": "https://docs.cannlytics.com",
             "secondary_action": "Sign Up 🚀",
-            "secondary_action_url": "https://console.cannlytics.com",
+            "secondary_action_url": "https://console.cannlytics.com/account/sign-up",
         },
         "features": [
             {

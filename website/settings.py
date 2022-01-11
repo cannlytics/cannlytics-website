@@ -180,7 +180,7 @@ USE_TZ = True
 # ------------------------------------------------------------#
 
 # Specify allowed domains depending on production or development status.
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 if PRODUCTION != 'True':
     ALLOWED_HOSTS.extend(['*'])
 try:

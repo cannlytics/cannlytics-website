@@ -8,7 +8,6 @@ Updated: 12/24/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
-import os
 from datetime import datetime
 from typing import Any
 
@@ -26,8 +25,6 @@ from cannlytics.firebase import (
 from website.settings import PROJECT_NAME as BASE
 from website.state import app_context, material, page_data, page_docs
 from website.utils.utils import get_markdown
-
-FILE_PATH = os.path.dirname(os.path.realpath(__file__))
 
 
 def get_page_context(kwargs: Any, context: dict) -> dict:
@@ -104,7 +101,6 @@ def get_page_docs(request: Any, context: dict) -> dict:
                 request,
                 context,
                 BASE,
-                FILE_PATH,
                 page=doc,
                 name=name,
             )
