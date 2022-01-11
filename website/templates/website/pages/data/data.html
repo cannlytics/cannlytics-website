@@ -1,15 +1,35 @@
 <!doctype html>
 <html>
 <!--
-  Data Page | Cannlytics
+  Data Page | Cannlytics Website
+  Copyright (c) 2021-2022 Cannlytics
+
+  Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 5/27/2021
-  Updated: 8/18/2021
+  Updated: 1/7/2022
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
 {% load static %}
 {% block title %}Data | Cannlytics{% endblock %}
 {% block page_css %}
   <link href="{% static 'website/css/map.css'%}?{% now "U" %}" rel="stylesheet" type="text/css">
+  <style>
+    .svg-container {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        padding-bottom: min(600px, 60%);
+        vertical-align: top;
+        overflow: hidden;
+    }
+    .svg-content {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+  </style>
 {% endblock %}
 {% block material %}
 
@@ -17,32 +37,49 @@
   {% include "website/components/heros/hero_banner.html" with
     title='Data Troves'
     description='Explore public cannabis data troves.'
-    background_image='https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2Fvictorian_ransom.jpg?alt=media&token=159b4792-ac98-4c97-8e5d-109d8228d5ac'
     image_url=' '
     only
   %}
 
-  <!-- Title -->
+  <!-- Title Section -->
   <section class="container mb-2 mt-5">
-    <h2 class="mb-3 pt-5 serif">Are you looking for cannabis data?</h2>
+
+    <!-- Title -->
+    <h2 class="my-3 text-dark serif">Are you looking for cannabis data?</h2>
     <p class="fs-6 double-line" style="max-width:540px;">
-      <small>
-        Cannlytics collects and provides public cannabis data in a standardized, coherent, open, and transparent manner.
-        If you wish to view or make a contribution to the data collection process, then please
-        view the
-        <a
-          class="serif text-dark fw-bold background-hover"
-          href="https://github.com/cannlytics/cannlytics/tools/data"
-        >
-          tools in the GitHub repository
-        </a>.
-      </small>
+      Cannlytics collects and provides public cannabis data in a standardized, coherent, open, and transparent manner.
+      If you wish to view or make a contribution to the data collection process, then please
+      view the
+      <a
+        class="serif text-dark fw-bold background-hover"
+        href="https://github.com/cannlytics"
+      >
+        tools in the GitHub repository
+      </a>.
     </p>
-    <!-- TODO: Data index (load from Firestore?) -->
+
+
+    <!-- Data Index -->
     <ul class="serif mt-3">
       <li class="mb-3">
         <a
-          href="#state-data"
+          href="{% url 'page' page='testing' %}"
+          class="serif text-dark fw-bold background-hover"
+        >
+          Laboratories, analyses, and prices
+        </a>
+      </li>
+      <li class="mb-3">
+        <a
+          href="{% url 'section' page='data' section='market' %}"
+          class="serif text-dark fw-bold background-hover"
+        >
+          Market <span class="badge rounded-pill bg-warning text-black">Coming Soon</span>
+        </a>
+      </li>
+      <li class="mb-3">
+        <a
+          href="{% url 'page' page='data' %}#state-data"
           class="serif text-dark fw-bold background-hover"
         >
           State Cannabis Data
@@ -50,16 +87,16 @@
       </li>
       <li class="mb-3">
         <a
-          href="/labs"
+          href="{% url 'page' page='data' %}#regulations"
           class="serif text-dark fw-bold background-hover"
         >
-          Laboratories
+          Regulations
         </a>
       </li>
     </ul>
   </section>
 
-  <!-- State data -->
+  <!-- State Data -->
   <section class="container mb-2">
     <h2
       id="state-data"
@@ -68,94 +105,156 @@
       State Cannabis Data
     </h2>
     <p class="fs-6 double-line" style="max-width:540px;">
-      <small>
-        States collect and provide various data points to the public. Here Cannlytics attempts
-        to collect and provide access to these data points in a simple, standard manner.
-      </small>
+      States collect and provide various data points to the public. Here Cannlytics attempts
+      to collect and provide access to these data points in a simple, standard manner.
     </p>
   </section>
 
-    <div class="row mx-3" style="overflow-x:auto;">
+  <!-- Under Construction -->
+  {% include "website/components/notifications/under_construction.html" %}
 
-      <!-- Map -->
-      <div class="col col-lg-9">
-        <svg width="960" height="600" id="polygon-svg"></svg>
-      </div>
-
-      <!-- Information d-flex flex-direction-column-->
-      <div class="col-lg-3">
-
-        <!-- Legend -->
-        <!-- TODO: Place better -->
-        <div id="map-legend" class="card ms-4 pt-3 px-3" style="border:none !important;height:150px;">
-          <div class="d-flex align-items-center">
-            <input readonly disabled type="color" class="form-control form-control-color" value="#45B649" style="border:none !important;width:50px;">
-            <div class="serif text-dark fs-6">Recreational</div>
-          </div>
-          <div class="d-flex align-items-center">
-            <input readonly disabled type="color" class="form-control form-control-color" value="#96e6a1" style="border:none !important;width:50px;">
-            <div class="serif text-dark fs-6">Medical</div>
-          </div>
-          <div class="d-flex align-items-center">
-            <input readonly disabled type="color" class="form-control form-control-color" value="#DBDB93" style="border:none !important;width:50px;">
-            <div class="serif text-dark fs-6">Not Permitted</div>
-          </div>
-        </div>
-
-        <!-- State detail card -->
-        <div id="state-overview-card" class="card px-0 mt-3 d-none">
-          <img id="state_background" src="" class="card-img-top" alt="" style="max-height:450px;">
-          <div class="card-body px-3 bg-transparent">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <h5 id="state_name" class="card-title serif text-dark fs-5 mb-0"></h5>
-              <!-- FIXME: Then remove d-none -->
-              <a id="state_data_button" class="btn btn-sm btn-sm-light ms-2 d-none" href="">View State Data</a>
-            </div>
-            <div class="d-flex align-items-center mb-3">
-              <span id="recreational_status" class="badge rounded-pill bg-success me-2 d-none">Recreational</span>
-              <span id="medicinal_status" class="badge rounded-pill bg-info d-none">Medicinal</span>
-            </div>
-            <div class="card-text text-dark fs-6"><small id="state_total_licensees" class="serif"></small></div>
-            <div class="card-text text-dark fs-6"><small id="state_population" class="serif"></small></div>
-            <div class="card-text text-dark fs-6"><small id="licensees_per_capita" class="serif"></small></div>
-            <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales" class="serif"></small></div>
-            <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_per_capita" class="serif"></small></div>
-            {% comment %} <p id="state_description" class="card-text"></p> {% endcomment %}
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Tooltip -->
-      <div class="col col-md-5 card m-3" id="tooltip"></div>
+  <!-- Data Card -->
+  <section class="container card px-0">
 
       <!-- TODO: Data Card / List -->
       <!-- Show list of states if no state is selected -->
       <!-- If a state is selected, then show stats for the state + list licensees? -->
-      <div id="states-card" class="card col-lg-3 d-none">
+      {% comment %} <div id="states-card" class="card col-lg-3 d-none">
         <h5>States</h5>
+      </div> {% endcomment %}
 
+      <!-- State detail card -->
+      <div class="row row-wrap">
+      {% for i in '0'|make_list %}
+        <div
+          id="state-overview-card-{{ i }}"
+          class="card col col-md-12 px-0 mx-0 no-border d-none"
+        >
+          <div class="card-body px-3 bg-transparent">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 id="state_name_{{ i }}" class="card-title serif text-dark fs-5 mb-0"></h5>
+              <div class="d-flex align-items-center">
+                <button
+                  class="btn btn-sm btn-sm-light ms-2"
+                  onclick="cannlytics.ui.hideElement('state-overview-card-{{ i }}')"
+                >
+                  Close
+                </button>
+                <a
+                  id="state_data_button_{{ i }}"
+                  class="btn btn-sm btn-sm-light ms-2 d-none"
+                  href=""
+                >
+                  View State Data
+                </a>
+              </div>
+            </div>
+            <!-- TODO: Add hide button -->
+            <div class="d-flex align-items-center mb-3">
+              <span id="recreational_status_{{ i }}" class="badge rounded-pill bg-success me-2 d-none">Recreational</span>
+              <span id="medicinal_status_{{ i }}" class="badge rounded-pill bg-info d-none">Medicinal</span>
+            </div>
+            <div class="card-text text-dark fs-6"><small id="state_total_licensees_{{ i }}" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="state_population_{{ i }}" class="serif"></small></div>
+            <!-- TODO: Report licensees per 100,000 people -->
+            <div class="card-text text-dark fs-6"><small id="licensees_per_capita_{{ i }}" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_{{ i }}" class="serif"></small></div>
+            <div class="card-text text-dark fs-6"><small id="state_average_monthly_sales_per_capita_{{ i }}" class="serif"></small></div>
+            {% comment %} <p id="state_description" class="card-text"></p> {% endcomment %}
+            <!-- TODO: State data sources -->
+          </div>
+        </div>
+      {% endfor %}
       </div>
 
+  </section>
+
+  <!-- States Map -->
+  <section class="container">
+
+    <!-- Map -->
+    <div id="map-container" class="svg-container"></div>
+
+    <!-- Tooltip -->
+    <div class="col col-md-5 card m-3" id="tooltip"></div>
+
+    <!-- Legend -->
+    <div
+      id="map-legend"
+      class="card col-3 bg-transparent no-border mt-3"
+    >
+      <div class="d-flex align-items-center">
+        <input readonly disabled type="color" class="form-control form-control-sm form-control-color no-border bg-none" value="#45B649">
+        <div class="serif text-dark fs-6"><small>Recreational</small></div>
+      </div>
+      <div class="d-flex align-items-center">
+        <input readonly disabled type="color" class="form-control form-control-sm form-control-color no-border bg-none" value="#96e6a1">
+        <div class="serif text-dark fs-6"><small>Medical</small></div>
+      </div>
+      <div class="d-flex align-items-center">
+        <input readonly disabled type="color" class="form-control form-control-sm form-control-color no-border bg-none" value="#DBDB93">
+        <div class="serif text-dark fs-6"><small>Not Permitted</small></div>
+      </div>
     </div>
 
-  {% comment %} <div class="row row-cols-3 justify-content-md-start">
-  More data sets...
-  </div> {% endcomment %}
+    <!-- Data Source Caption -->
+    <figcaption class="figure-caption text-secondary markdown mt-3" style="max-width:540px;">
+      <h6 class="text-dark sans-serif fw-bold">
+        Data Sources
+      </h6>
+      Resident population is published by the
+      U.S. Census Bureau and retrieved from
+      <a href="https://fred.stlouisfed.org/release?rid=118" class="text-blue">FRED, Federal Reserve Bank of St. Louis</a>.
+    </figcaption>
 
-  <!-- Lab Map -->
-  {% comment %} <div class="mt-5">
-    {% include "website/pages/community/labs/map.html" %}
-  </div> {% endcomment %}
+  </section>
 
+  <!-- TODO: National Statistics -->
+  {% comment %} {% include "website/pages/data/data_components/national_realtime_statistics.html" %} {% endcomment %}
 
-{% endblock %}
+  <!-- Public Data -->
+  <div id="public-data" class="container my-3">
+    <div class="markdown py-5" style="max-width:560px;">
+      <svg class="pe-1" style="float:left;width:125px;height:125px;">
+        <use href="{% static "website/images/emojies/technologist.svg" %}#technologist-emoji"></use>
+      </svg>
+      {{ data|safe }}
+      <p class="text-start mt-4">
+        <a
+          class="btn btn-sm bg-gradient-green text-white"
+          href="{% url 'page' page='contact' %}?topic=data"
+        >
+          <small>Get our open data</small> &rarr;
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Regulations -->
+  <div id="regulations" class="container my-3">
+    <div class="markdown py-5" style="max-width:560px;">
+      <svg class="pe-1" style="float:left;width:125px;height:125px;">
+        <use href="{% static "website/images/emojies/classical-building.svg" %}#classical-building-emoji"></use>
+      </svg>
+      {{ regulations|safe }}
+      <p class="text-start mt-4">
+        <a
+          class="btn btn-sm bg-gradient-orange text-white"
+          href="{% url 'page' page='contact' %}?topic=regulations"
+        >
+          <small>Ask us about regulations</small> &rarr;
+        </a>
+      </p>
+    </div>
+  </div>
+
+{% endblock material %}
 
 <!-- JavaScript -->
 {% block page_js %}
   <script>
     (function() {
-      var paths = [
+      var statePaths = [
         {id:"HI",n:"Hawaii",d:"M233.08751,519.30948L235.02744,515.75293L237.2907,515.42961L237.61402,516.23791L235.51242,519.30948L233.08751,519.30948ZM243.27217,515.59127L249.4153,518.17784L251.51689,517.85452L253.1335,513.97465L252.48686,510.57977L248.28366,510.09479L244.24213,511.87306L243.27217,515.59127ZM273.9878,525.61427L277.706,531.11074L280.13092,530.78742L281.26255,530.30244L282.7175,531.59573L286.43571,531.43407L287.40568,529.97912L284.49577,528.20085L282.55584,524.48263L280.45424,520.92609L274.63444,523.83599L273.9878,525.61427ZM294.19545,534.50564L295.48874,532.5657L300.17691,533.53566L300.82356,533.05068L306.96668,533.69732L306.64336,534.99062L304.05678,536.44556L299.69193,536.12224L294.19545,534.50564ZM299.53027,539.67879L301.47021,543.55866L304.54176,542.42703L304.86509,540.81041L303.24848,538.70882L299.53027,538.3855L299.53027,539.67879ZM306.4817,538.54716L308.74496,535.63726L313.43313,538.06218L317.79798,539.19381L322.16284,541.94205L322.16284,543.88198L318.6063,545.66026L313.75645,546.63022L311.33154,545.17527L306.4817,538.54716ZM323.13281,554.06663L324.74942,552.77335L328.14431,554.38997L335.74238,557.94651L339.13727,560.0481L340.75387,562.47302L342.69381,566.83787L346.73534,569.42445L346.41202,570.71775L342.53215,573.95097L338.32896,575.40592L336.87401,574.75928L333.80244,576.53754L331.37753,579.77077L329.11427,582.68067L327.33599,582.51901L323.77945,579.93243L323.45613,575.40592L324.10277,572.981L322.48616,567.32286L320.38456,565.54458L320.2229,562.958L322.48616,561.98804L324.58776,558.91648L325.07274,557.94651L323.45613,556.16823L323.13281,554.06663Z"},
         {id:"AK",n:"Alaska",d:"M158.07671,453.67502L157.75339,539.03215L159.36999,540.00211L162.44156,540.16377L163.8965,539.03215L166.48308,539.03215L166.64475,541.94205L173.59618,548.73182L174.08117,551.3184L177.47605,549.37846L178.1227,549.2168L178.44602,546.14524L179.90096,544.52863L181.0326,544.36697L182.97253,542.91201L186.04409,545.01361L186.69074,547.92352L188.63067,549.05514L189.7623,551.48006L193.64218,553.25833L197.03706,559.2398L199.78529,563.11966L202.04855,565.86791L203.50351,569.58611L208.515,571.36439L213.68817,573.46598L214.65813,577.83084L215.14311,580.9024L214.17315,584.29729L212.39487,586.56054L210.77826,585.75224L209.32331,582.68067L206.57507,581.22573L204.7968,580.09409L203.98849,580.9024L205.44344,583.65065L205.6051,587.36885L204.47347,587.85383L202.53354,585.9139L200.43195,584.62061L200.91693,586.23722L202.21021,588.0155L201.40191,588.8238C201.40191,588.8238,200.59361,588.50048,200.10863,587.85383C199.62363,587.20719,198.00703,584.45895,198.00703,584.45895L197.03706,582.19569C197.03706,582.19569,196.71374,583.48898,196.06709,583.16565C195.42044,582.84233,194.7738,581.71071,194.7738,581.71071L196.55207,579.77077L195.09712,578.31582L195.09712,573.30432L194.28882,573.30432L193.48052,576.6992L192.34888,577.1842L191.37892,573.46598L190.73227,569.74777L189.92396,569.26279L190.24729,574.92094L190.24729,576.05256L188.79233,574.75928L185.23579,568.77781L183.13419,568.29283L182.48755,564.57462L180.87094,561.66472L179.25432,560.53308L179.25432,558.26983L181.35592,556.97654L180.87094,556.65322L178.28436,557.29986L174.88947,554.87495L172.30289,551.96504L167.45306,549.37846L163.41152,546.79188L164.70482,543.55866L164.70482,541.94205L162.92654,543.55866L160.01664,544.69029L156.29843,543.55866L150.64028,541.13375L145.14381,541.13375L144.49717,541.61873L138.03072,537.73885L135.92912,537.41553L133.18088,531.59573L129.62433,531.91905L126.06778,533.374L126.55277,537.90052L127.68439,534.99062L128.65437,535.31394L127.19941,539.67879L130.43263,536.93055L131.07928,538.54716L127.19941,542.91201L125.90612,542.58869L125.42114,540.64875L124.12785,539.84045L122.83456,540.97208L120.08632,539.19381L117.01475,541.29541L115.23649,543.397L111.8416,545.4986L107.15342,545.33693L106.66844,543.23534L110.38664,542.58869L110.38664,541.29541L108.12338,540.64875L109.09336,538.22384L111.35661,534.34397L111.35661,532.5657L111.51827,531.75739L115.88313,529.49413L116.85309,530.78742L119.60134,530.78742L118.30805,528.20085L114.58983,527.87752L109.57834,530.62576L107.15342,534.02064L105.37515,536.60723L104.24352,538.87049L100.04033,540.32543L96.96876,542.91201L96.645439,544.52863L98.908696,545.4986L99.717009,547.60018L96.96876,550.83341L90.502321,555.03661L82.742574,559.2398L80.640977,560.37142L75.306159,561.50306L69.971333,563.76631L71.749608,565.0596L70.294654,566.51455L69.809672,567.64618L67.061434,566.67621L63.828214,566.83787L63.019902,569.10113L62.049939,569.10113L62.37326,566.67621L58.816709,567.96951L55.90681,568.93947L52.511924,567.64618L49.602023,569.58611L46.368799,569.58611L44.267202,570.87941L42.65059,571.68771L40.548995,571.36439L37.962415,570.23276L35.699158,570.87941L34.729191,571.84937L33.112578,570.71775L33.112578,568.77781L36.184142,567.48452L42.488929,568.13117L46.853782,566.51455L48.955378,564.41296L51.86528,563.76631L53.643553,562.958L56.391794,563.11966L58.008406,564.41296L58.978369,564.08964L61.241626,561.3414L64.313196,560.37142L67.708076,559.72478L69.00137,559.40146L69.648012,559.88644L70.456324,559.88644L71.749608,556.16823L75.791141,554.71329L77.731077,550.99508L79.994336,546.46856L81.610951,545.01361L81.934272,542.42703L80.317657,543.72032L76.922764,544.36697L76.276122,541.94205L74.982838,541.61873L74.012865,542.58869L73.851205,545.4986L72.39625,545.33693L70.941306,539.51713L69.648012,540.81041L68.516388,540.32543L68.193068,538.3855L64.151535,538.54716L62.049939,539.67879L59.463361,539.35547L60.918305,537.90052L61.403286,535.31394L60.756645,533.374L62.211599,532.40404L63.504883,532.24238L62.858241,530.4641L62.858241,526.09925L61.888278,525.12928L61.079966,526.58423L54.936843,526.58423L53.481892,525.29094L52.835247,521.41108L50.733651,517.85452L50.733651,516.88456L52.835247,516.07625L52.996908,513.97465L54.128536,512.84303L53.320231,512.35805L52.026941,512.84303L50.895313,510.09479L51.86528,505.08328L56.391794,501.85007L58.978369,500.23345L60.918305,496.51525L63.666554,495.22195L66.253132,496.35359L66.576453,498.77851L69.00137,498.45517L72.23459,496.03026L73.851205,496.67691L74.821167,497.32355L76.437782,497.32355L78.701041,496.03026L79.509354,491.6654C79.509354,491.6654,79.832675,488.75551,80.479317,488.27052C81.125959,487.78554,81.44928,487.30056,81.44928,487.30056L80.317657,485.36062L77.731077,486.16893L74.497847,486.97723L72.557911,486.49225L69.00137,484.71397L63.989875,484.55231L60.433324,480.83411L60.918305,476.95424L61.564957,474.52932L59.463361,472.75105L57.523423,469.03283L58.008406,468.22453L64.798177,467.73955L66.899773,467.73955L67.869736,468.70951L68.516388,468.70951L68.354728,467.0929L72.23459,466.44626L74.821167,466.76958L76.276122,467.90121L74.821167,470.00281L74.336186,471.45775L77.084435,473.07437L82.095932,474.85264L83.874208,473.88268L81.610951,469.51783L80.640977,466.2846L81.610951,465.47629L78.21606,463.53636L77.731077,462.40472L78.21606,460.78812L77.407756,456.90825L74.497847,452.22007L72.072929,448.01688L74.982838,446.07694L78.21606,446.07694L79.994336,446.72359L84.197528,446.56193L87.915733,443.00539L89.047366,439.93382L92.765578,437.5089L94.382182,438.47887L97.130421,437.83222L100.84863,435.73062L101.98027,435.56896L102.95023,436.37728L107.47674,436.21561L110.22498,433.14405L111.35661,433.14405L114.91316,435.56896L116.85309,437.67056L116.36811,438.80219L117.01475,439.93382L118.63137,438.31721L122.51124,438.64053L122.83456,442.35873L124.7745,443.81369L131.88759,444.46033L138.19238,448.66352L139.64732,447.69356L144.82049,450.28014L146.92208,449.6335L148.86202,448.82518L153.71185,450.76512L158.07671,453.67502ZM42.973913,482.61238L45.075509,487.9472L44.913847,488.91717L42.003945,488.59384L40.225672,484.55231L38.447399,483.09737L36.02248,483.09737L35.86082,480.51078L37.639093,478.08586L38.770722,480.51078L40.225672,481.96573L42.973913,482.61238ZM40.387333,516.07625L44.105542,516.88456L47.823749,517.85452L48.632056,518.8245L47.015444,522.5427L43.94388,522.38104L40.548995,518.8245L40.387333,516.07625ZM19.694697,502.01173L20.826327,504.5983L21.957955,506.21492L20.826327,507.02322L18.72473,503.95166L18.72473,502.01173L19.694697,502.01173ZM5.9534943,575.0826L9.3483796,572.81934L12.743265,571.84937L15.329845,572.17269L15.814828,573.7893L17.754763,574.27429L19.694697,572.33436L19.371375,570.71775L22.119616,570.0711L25.029518,572.65768L23.897889,574.43595L19.533037,575.56758L16.784795,575.0826L13.066588,573.95097L8.7017347,575.40592L7.0851227,575.72924L5.9534943,575.0826ZM54.936843,570.55609L56.553455,572.49602L58.655048,570.87941L57.2001,569.58611L54.936843,570.55609ZM57.846745,573.62764L58.978369,571.36439L61.079966,571.68771L60.271663,573.62764L57.846745,573.62764ZM81.44928,571.68771L82.904234,573.46598L83.874208,572.33436L83.065895,570.39442L81.44928,571.68771ZM90.17899,559.2398L91.310623,565.0596L94.220522,565.86791L99.232017,562.958L103.59687,560.37142L101.98027,557.94651L102.46525,555.52159L100.36365,556.81488L97.453752,556.00657L99.070357,554.87495L101.01029,555.68325L104.89016,553.90497L105.37515,552.45003L102.95023,551.64172L103.75853,549.70178L101.01029,551.64172L96.322118,555.19827L91.472284,558.10817L90.17899,559.2398ZM132.53423,539.35547L134.95915,537.90052L133.98918,536.12224L132.21091,537.09221L132.53423,539.35547Z"},
         {id:"FL",n:"Florida",d:"M759.8167,439.1428L762.08236,446.4614L765.81206,456.20366L771.14685,465.57996L774.86504,471.88472L779.71486,477.38118L783.75637,481.09937L785.37297,484.00926L784.24135,485.30254L783.43305,486.59582L786.34293,494.03221L789.25282,496.94209L791.83939,502.27689L795.39592,508.09667L799.92241,516.34135L801.2157,523.93939L801.70068,535.90227L802.34732,537.68053L802.024,541.0754L799.59909,542.36869L799.92241,544.30861L799.27577,546.24854L799.59909,548.67344L800.08407,550.61337L797.33585,553.84658L794.2643,555.30152L790.38445,555.46318L788.9295,557.07979L786.5046,558.04975L785.21131,557.56477L784.07969,556.59481L783.75637,553.68492L782.94806,550.29005L779.55319,545.11691L775.99666,542.85367L772.11681,542.53035L771.30851,543.82363L768.23696,539.4588L767.59032,535.90227L765.00375,531.86076L763.22549,530.72913L761.60888,532.83072L759.83062,532.5074L757.72903,527.49592L754.81914,523.61607L751.90925,518.28128L749.32269,515.20973L745.76616,511.49154L747.86774,509.06663L751.10095,503.57017L750.93929,501.95357L746.4128,500.98361L744.79619,501.63025L745.11952,502.27689L747.70608,503.24685L746.25114,507.77335L745.44284,508.25833L743.66457,504.21682L742.37129,499.367L742.04797,496.61877L743.50291,491.93062L743.50291,482.39265L740.43136,478.67446L739.13808,475.60291L733.96494,474.30963L732.02502,473.66299L730.40841,471.07642L727.01354,469.45981L725.88192,466.06494L723.13369,465.09498L720.70878,461.37679L716.50561,459.92185L713.59572,458.4669L711.00916,458.4669L706.96764,459.27521L706.80598,461.21513L707.61429,462.18509L707.1293,463.31672L704.05776,463.15506L700.33957,466.71159L696.78303,468.65151L692.90318,468.65151L689.66997,469.9448L689.34665,467.19657L687.73005,465.25664L684.82016,464.12502L683.20356,462.67007L675.12053,458.79022L667.52249,457.01196L663.15766,457.6586L657.17622,458.14358L651.19478,460.24517L647.71554,460.85813L647.47762,452.80838L644.89105,450.86846L643.11278,449.09019L643.4361,446.01863L653.62072,444.72535L679.16312,441.81546L685.95287,441.16882L691.38887,441.44909L693.97544,445.32895L695.43038,446.78389L703.52854,447.29911L714.34829,446.65247L735.86068,445.35918L741.3064,444.68481L746.41398,444.88932L746.84081,447.79921L749.07381,448.60751L749.30875,443.97751L747.78053,439.80456L749.08893,438.36473L754.64356,438.81948L759.8167,439.1428ZM772.36211,571.54788L774.78703,570.90124L776.08031,570.65875L777.53527,568.31466L779.87935,566.69805L781.17264,567.18304L782.87008,567.50636L783.27423,568.55715L779.79853,569.76961L775.59533,571.22456L773.25125,572.43702L772.36211,571.54788ZM785.86081,566.53639L787.07327,567.58719L789.82151,565.4856L795.15632,561.28241L798.87452,557.40254L801.38027,550.77444L802.35024,549.077L802.5119,545.68212L801.78442,546.1671L800.81446,548.99617L799.3595,553.6035L796.12628,558.8575L791.76144,563.06068L788.36656,565.00061L785.86081,566.53639Z"},
@@ -209,6 +308,8 @@
         {id:"CA",n:"California",d:"M144.69443,382.19813L148.63451,381.70951L150.12055,379.69807L150.66509,376.75698L147.11357,376.16686L146.5994,375.49864L147.0769,373.46633L146.91762,372.87666L148.84019,372.25707L151.88297,369.42439L152.46453,364.42929L153.84443,361.02718L155.78772,358.86092L159.30659,357.27125L160.96098,355.66642L161.02971,353.55758L160.03638,352.97757L159.01323,351.90484L157.85801,346.05639L155.17281,341.2263L155.73862,337.7213L153.31904,336.69199L84.257718,232.51359L103.15983,164.9121L36.079967,149.21414L34.573071,153.94738L34.41141,161.38376L29.238275,173.18497L26.166727,175.77154L25.843406,176.90316L24.06514,177.71147L22.610196,181.91464L21.801894,185.14785L24.550122,189.35102L26.166727,193.55419L27.29835,197.11072L26.975029,203.57714L25.196764,206.64869L24.550122,212.46847L23.580159,216.18666L25.358424,220.06651L28.106652,224.593L30.369899,229.44282L31.663182,233.48433L31.339862,236.71754L31.016541,237.20252L31.016541,239.3041L36.674657,245.60886L36.189676,248.03377L35.543034,250.29702L34.896392,252.23694L35.058052,260.48163L37.159638,264.19982L39.099564,266.78638L41.847792,267.27137L42.817755,270.01959L41.686132,273.57612L39.584545,275.19273L38.452922,275.19273L37.64462,279.07258L38.129601,281.98247L41.362811,286.3473L42.979415,291.6821L44.434359,296.37025L45.727643,299.4418L49.122513,305.26158L50.577457,307.84814L51.062439,310.75803L52.679043,311.72799L52.679043,314.1529L51.870741,316.09283L50.092476,323.20589L49.607494,325.14581L52.032402,327.89404L56.235574,328.37902L60.762067,330.15729L64.641918,332.25887L67.551807,332.25887L70.461695,335.33042L73.048262,340.18024L74.179886,342.44348L78.059737,344.54507L82.909551,345.35337L84.364495,347.45496L85.011137,350.68817L83.556193,351.33481L83.879514,352.30477L87.112725,353.11307L89.860953,353.27474L93.020842,351.58789L96.900696,355.79106L97.708998,358.05431L100.29557,362.25748L100.61889,365.49069L100.61889,374.867L101.10387,376.64526L111.12682,378.10021L130.84939,380.84843L144.69443,382.19813ZM56.559218,338.48145L57.852506,340.01723L57.690846,341.31052L54.457625,341.22969L53.891811,340.01723L53.245167,338.56228L56.559218,338.48145ZM58.49915,338.48145L59.711608,337.83481L63.268151,339.9364L66.339711,341.14885L65.450575,341.79551L60.924066,341.55301L59.307456,339.9364L58.49915,338.48145ZM79.191764,358.28493L80.970029,360.62901L81.778342,361.59898L83.314121,362.16479L83.879928,360.70984L82.909965,358.93157L80.242562,356.91081L79.191764,357.07247L79.191764,358.28493ZM77.736809,366.93379L79.515085,370.08618L80.727543,372.02612L79.272589,372.2686L77.979305,371.05615C77.979305,371.05615,77.251828,369.6012,77.251828,369.19704C77.251828,368.7929,77.251828,367.01462,77.251828,367.01462L77.736809,366.93379Z"}
       ];
       var polygons = {};
+
+      var statesSelected = [];
         
       polygons.draw = function(id, data, toolTip) {
 		
@@ -227,80 +328,102 @@
 
         function onClick(event) {
           /* Action when a polygon is clicked. */
-          document.getElementById('states-card').classList.add('d-none');
-          document.getElementById('state-overview-card').classList.remove('d-none');
-          document.getElementById('state_name').textContent = `${event.n} (${event.id})`;
-          cannlytics.data.getDataSet(`public/data/state_data/${event.id.toLowerCase()}`).then(function (stateData) {
+          // document.getElementById('states-card').classList.add('d-none');
+          // Optional: Populate 0 if no datasets yet, otherwise populate 1.
+          var cardId = 0;
+          //if (statesSelected.length >= 1) {
+          //  cardId = 1;
+          //} else {
+          //  statesSelected.push(event.id);
+          //}
+          document.getElementById(`state-overview-card-${cardId}`).classList.remove('d-none');
+          document.getElementById(`state_name_${cardId}`).textContent = `${event.n} (${event.id})`;
+          cannlytics.data.getStateData(event.id.toLowerCase()).then(function (response) {
+            var stateData = response.data;
+            document.getElementById(`state_population_${cardId}`).textContent = `Population (2020): ${stateData.population}`;
+            document.getElementById(`state_data_button_${cardId}`).href = `${window.location.href}/state/${event.id.toLowerCase()}`;
             if (stateData.total_licensees) {
-              document.getElementById('state_background').src = stateData.background_image;
-            } else document.getElementById('state_background').src = 'https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2Fnavigation_map.jpg?alt=media&token=ae1c6a4c-3580-4592-bebb-9ae048523d6c';
-            document.getElementById('state_population').textContent = `Population: ${stateData.population}`;
-            document.getElementById('state_data_button').href = `${window.location.href}state/${event.id.toLowerCase()}`;
-            if (stateData.total_licensees) {
-              document.getElementById('state_total_licensees').classList.remove('d-none');
-              document.getElementById('state_total_licensees').textContent = `Total Licensees: ${stateData.total_licensees}`;
-            } else document.getElementById('state_total_licensees').classList.add('d-none');
+              document.getElementById(`state_total_licensees_${cardId}`).classList.remove('d-none');
+              document.getElementById(`state_total_licensees_${cardId}`).textContent = `Total Licensees: ${stateData.total_licensees}`;
+            } else document.getElementById(`state_total_licensees_${cardId}`).classList.add('d-none');
             if (stateData.licensees_per_capita) {
               var value = parseFloat(stateData.licensees_per_capita).toFixed(6);
-              document.getElementById('licensees_per_capita').classList.remove('d-none');
-              document.getElementById('licensees_per_capita').textContent = `Licensees per capita: ${value}`;
-            } else document.getElementById('licensees_per_capita').classList.add('d-none');
+              document.getElementById(`licensees_per_capita_${cardId}`).classList.remove('d-none');
+              document.getElementById(`licensees_per_capita_${cardId}`).textContent = `Licensees per capita: ${value}`;
+            } else document.getElementById(`licensees_per_capita_${cardId}`).classList.add('d-none');
             if (stateData.recreational) {
-              document.getElementById('recreational_status').classList.remove('d-none');
-            } else document.getElementById('recreational_status').classList.add('d-none');
+              document.getElementById(`recreational_status_${cardId}`).classList.remove('d-none');
+            } else document.getElementById(`recreational_status_${cardId}`).classList.add('d-none');
             if (stateData.medicinal) {
-              document.getElementById('medicinal_status').classList.remove('d-none');
-            } else document.getElementById('medicinal_status').classList.add('d-none');
-            // TODO: Population source
+              document.getElementById(`medicinal_status_${cardId}`).classList.remove('d-none');
+            } else document.getElementById(`medicinal_status_${cardId}`).classList.add('d-none');
+            // if (stateData.total_licensees) {
+            //   document.getElementById('state_background').src = stateData.background_image;
+            // } else document.getElementById('state_background').src = 'https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fmisc%2Fnavigation_map.jpg?alt=media&token=ae1c6a4c-3580-4592-bebb-9ae048523d6c';
             // TODO: state_total_licensees_per_capita (Rank: *calculate each state's rank* )
             // TODO: Checkboxes or badges for recreational / medicinal
           });
         }
         
+        // Wire up the state paths.
         d3.select(id).selectAll('.state')
-          .data(paths).enter().append('path').attr('class', 'state').attr('d', function(d){ return d.d;})
-          .style('fill', function(d){
-            console.log(d.id);
-            return data[d.id].color;
-          })
+          .data(statePaths)
+          .enter()
+          .append('path')
+          .attr('class', 'state app-action')
+          .attr('d', function(d) { return d.d; })
+          .style('fill', function(d) { return data[d.id].color; })
           .on('mouseover', mouseOver)
           .on('mouseout', mouseOut)
-          .on("click", onClick);
+          .on('click', onClick);
       }
       this.polygons=polygons;
     })();
   </script>
-  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="{% static 'website/js/d3.v3.min.js' %}"></script>
   <script>
 
-    function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
-      return "<h4>"+n+"</h4><table>" +
-        "<tr><td>Population:</td><td>"+(d.population)+"</td></tr>"+
-        // FIXME: Enhance tooltips
-        //"<tr><td>Licensees:</td><td>"+(d.licensees)+"</td></tr>"+
-        //"<tr><td>Avg. Monthly Sales:</td><td>"+(d.avg_monthly_sales)+"</td></tr>"+
-        //"<tr><td>Forecast of 2021 Sales:</td><td>"+(d.forecast_sales_2021)+"</td></tr>"+
-        "</table>";
+    function tooltipHtml(n, d) {
+      /* Function to create HTML tooltips. */
+      var tooltip = `
+        <h4 class="text-start fs-4 p-1 mb-1">${n}</h4>
+        <table class="fs-6 text-start">
+          <tr>
+            <td class="serif pe-2 p-1">Population (2020):</td>
+            <td class="serif p-1 p-1">${d.population}</td>
+          </tr>`;
+      if (d.total_licensees) tooltip += `<tr><td class="serif p-1">Licensees:</td><td class="serif p-1">${d.total_licensees}</td></tr>`;
+      if (d.licensees_per_capita) tooltip += `<tr><td class="serif p-1 text-nowrap">Licensees per capita:</td><td class="serif p-1">${parseFloat(d.licensees_per_capita).toFixed(6)}</td></tr>`;
+      if (d.avg_monthly_sales) tooltip += `<tr><td class="serif p-1">Avg. Monthly Sales:</td><td class="serif p-1">${d.avg_monthly_sales}</td></tr>`;
+      if (d.forecast_sales_2021) tooltip += `<tr><td class="serif p-1">Forecast of 2021 Sales:</td><td class="serif p-1">${d.forecast_sales_2021}</td></tr>`;
+      tooltip += "</table>";
+      return tooltip;
     }
 
     // Get state data from Firestore.
-    cannlytics.data.getStateData().then(function(stateData) {
-      console.log('State data:', stateData);
+    cannlytics.data.getStateData().then(function(response) {
 
       // Format data, setting color conditionally on recreational / medicinal status.
       var data = {};
-      stateData.forEach(function(obs) {
+      response.data.forEach(function(obs) {
         if (obs === undefined) obs = {}
         if (obs.recreational) obs.color = '#45B649';
         else if (obs.medicinal) obs.color = '#96e6a1';
         else obs.color = '#DBDB93';
-        console.log(obs.state);
+        // Optional: Pass index?
+        if (obs.state_data) document.getElementById('state_data_button_0').classList.remove('d-none');
         data[obs.state] = obs;
       });
 
-      // Draw figure.
+      // Draw the figure.
+      var svg = d3.select('div#map-container')
+        .append('svg')
+        .attr('preserveAspectRatio', 'xMinYMin meet')
+        .attr('viewBox', '0 0 960 600')
+        .attr('id', 'polygon-svg')
+        .classed('svg-content', true);
       polygons.draw('#polygon-svg', data, tooltipHtml);
-      d3.select(self.frameElement).style('height', '600px');
+      d3.select(self.frameElement);
     });
     
   </script>

@@ -34,21 +34,21 @@
         {
           "source": "!/sitemap",
           "run": {
-            "serviceId": "cannlytics",
+            "serviceId": "cannlytics-website",
             "region": "us-central1"
           }
         },
         {
           "source": "!/static",
           "run": {
-            "serviceId": "cannlytics",
+            "serviceId": "cannlytics-website",
             "region": "us-central1"
           }
         },
         {
           "source": "**",
           "run": {
-            "serviceId": "cannlytics",
+            "serviceId": "cannlytics-website",
             "region": "us-central1"
           }
         }

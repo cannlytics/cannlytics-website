@@ -1,17 +1,19 @@
 <!doctype html>
 <html>
 <!--
-  Contact Page
+  Contact Page | Cannlytics Website
+  Copyright (c) 2021-2022 Cannlytics
+
+  Authors: Keegan Skeate <keegan@cannlytics.com>
   Created: 1/6/2021
-  Updated: 8/22/2021
+  Updated: 1/9/2022
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+  
   Optional Improvements:
     - Loading button
-    - Form validation
-    - recaptcha
-      https://cloud.google.com/recaptcha-enterprise/docs/instrument-web-pages
 -->
 {% extends "website/index.html" %}
-{% block title %}Contact | {{ general.title }}{% endblock %}
+{% block title %}Contact | Cannlytics{% endblock %}
 {% load static get_env %}
 {% block page_css %}
   <style>
@@ -23,7 +25,6 @@
       color: #f8f8f8;
     }
   </style>
-  <script src="https://www.google.com/recaptcha/enterprise.js?render={{ 'RECAPTCHA_SITE_KEY'|get_env }}"></script>
 {% endblock %}
 {% block material %}
   <div class="contact container my-4 my-lg-5 px-5">
@@ -42,8 +43,9 @@
         <form
           id="contact-form"
           class="mt-4 pe-sm-5"
-          action="/api/send-message/"
+          action="{% url 'message' %}"
           method="post"
+          onsubmit="return cannlytics.website.submitContactForm();"
         >
 
           <!-- CSRF Token -->
@@ -56,12 +58,13 @@
             </label>
             <div class="col-sm-10">
               <input
-                type="text"
                 id="name_input"
+                type="text"
                 class="form-control form-control-sm"
                 name="name"
                 spellcheck="false"
                 type="text"
+                value="{{ user.name }}"
               >
             </div>
           </div>
@@ -79,24 +82,38 @@
                 name="email"
                 spellcheck="false"
                 type="email"
+                value="{{ user.email }}"
               >
             </div>
           </div>
 
-          <!-- Subject -->
+          <!-- Topic -->
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label col-form-label-sm serif">
-              Subject
+              Topic
             </label>
             <div class="col-sm-10">
-              <input
-                type="text"
-                id="subject_input"
-                class="form-control form-control-sm"
+              <select
+                id="topic_input"
                 name="subject"
-                spellcheck="false"
-                type="text"
+                class="form-select form-select-sm"
+                aria-label="Topic"
+                onchange="cannlytics.website.setContactFormTopic(this.value);"
               >
+                <option selected value="general">General Inquiry</option>
+                <option value="lims">Cannlytics LIMS</option>
+                <option value="custom">Custom Development</option>
+                <option value="join">Joining Cannlytics</option>
+                <option value="metrc">Metrc Integration</option>
+                <option value="partner">Partner with Cannlytics</option>
+                <option value="data">Seeking Cannabis Data</option>
+                <option value="economics">Seeking Economic Analysis</option>
+                <option value="forecasting">Seeking Forecasting</option>
+                <option value="paper">Submitting a Paper</option>
+                <option value="analyses">Suggest Analyses</option>
+                <option value="edit">Suggest Data Edit</option>
+                <option value="regulations">Question about Regulations</option>
+              </select>
             </div>
           </div>
 
@@ -114,15 +131,30 @@
             </label>
           </div>
 
-          <div class="d-flex align-items-center justify-content-end">
-            <button
-              class="btn btn-sm bg-gradient-green text-white g-recaptcha"
-              data-sitekey="{{ 'RECAPTCHA_SITE_KEY'|get_env }}" 
-              data-callback='onSubmit' 
-              data-action='submit'
+          <!-- Submit with simple math check -->
+          <div class="d-flex align-items-center justify-content-between mt-1">
+            <div class="row">
+              <label class="col col-9 col-form-label col-form-label-sm serif">
+                🤖 Check: What is <span id="math-check-min"></span> + <span id="math-check-max"></span>?
+              </label>
+              <div class="col-sm-3">
+                <input
+                  id="math_input"
+                  type="text"
+                  class="form-control form-control-sm"
+                  name="math"
+                  spellcheck="false"
+                  type="number"
+                  min="0"
+                  max="10"
+                >
+              </div>
+            </div>
+            <input
+              class="btn btn-sm bg-gradient-green text-white"
+              type="submit"
+              value="Send message"
             >
-              Send message
-            </button>
           </div>
 
         </form>
@@ -136,21 +168,14 @@
         >
       </div>
 
-    </div><!-- End of hero -->
+    </div>
   </div>
 {% endblock %}
 
 <!-- JavaScript -->
 {% block page_js %}
   <script>
-    function onSubmit(token) {
-      document.getElementById('contact-form').submit();
-    }
-    // grecaptcha.enterprise.ready(function() {
-    // grecaptcha.enterprise.execute('{{ 'RECAPTCHA_SITE_KEY'|get_env }}', {action: 'login'}).then(function(token) {
-    //   ...
-    //   });
-    // });
+    cannlytics.website.initializeContactForm();
   </script>
 {% endblock %}
 

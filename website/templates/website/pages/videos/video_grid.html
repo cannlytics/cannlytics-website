@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
 <!--
-  Video Grid | Cannlytics
+  Video Grid | Cannlytics Website
   Created: 2/23/2021
-  Updated: 7/30/2021
+  Updated: 11/14/2021
   Params:
     video_list
 -->
@@ -15,11 +15,16 @@
             class="card-block stretched-link text-decoration-none"
             href="/videos/{{ video.video_id }}"
           >
+          {% if video.premium %}
+            <div class="d-flex justify-content-end">
+              <span class="badge badge-pill bg-gradient-orange position-absolute m-1">Premium</span>
+            </div>
+          {% endif %}
           <img
             src="{{ video.cover_image_url }}"
             class="w-100"
             stlye="max-height:125px;"
-          />
+          >
           <div class="d-flex justify-content-between px-2 pt-1">
             <div class="d-flex align-items-center">
               <h4 class="fs-5 fw-bold text-dark">

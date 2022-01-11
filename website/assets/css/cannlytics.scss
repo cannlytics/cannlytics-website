@@ -1,15 +1,49 @@
-/*--------------------------------------------------------------------------
-  Cannlytics Website Style
-  Created: 10/4/2020
-  Updated: 8/1/2021
----------------------------------------------------------------------------*/
-
+/**
+ * Cannlytics Style | Cannlytics Website
+ * Copyright (c) 2021-2022 Cannlytics
+ * 
+ * Authors: Keegan Skeate <contact@cannlytics.com>
+ * Created: 10/4/2020
+ * Updated: 1/1/2022
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+ */
+@import 'bootstrap/scss/bootstrap';
 @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=Libre+Franklin:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;600&display=swap');
+
+/*--------------------------------------------------------------------------
+  Color utilities
+---------------------------------------------------------------------------*/
+
+// @import "bootstrap/scss/functions";
+// @import "bootstrap/scss/variables";
+// @import "bootstrap/scss/mixins";
+// @import "bootstrap/scss/utilities";
+
+// $all-colors: map-merge-multiple($grays);
+
+// $utilities: map-merge(
+//   $utilities,
+//   (
+//     "background-color": map-merge(
+//       map-get($utilities, "background-color"),
+//       (
+//         values: map-merge(
+//           map-get(map-get($utilities, "background-color"), "values"),
+//           (
+//             $all-colors
+//           ),
+//         ),
+//       ),
+//     ),
+//   )
+// );
+
+// @import "bootstrap/scss/utilities/api";
 
 /*--------------------------------------------------------------------------
   Main tags
@@ -128,9 +162,10 @@ body.dark .brand-font {
 
 .markdown h1 {
   font-weight: 600;
+  font-size: 2.5rem;
 }
 .markdown h2 {
-  margin-top: 3rem;
+  margin-top: 2rem;
   margin-bottom: 1rem;
   font-weight: 600;
 }
@@ -148,7 +183,7 @@ body.dark .brand-font {
 }
 .markdown p {
   font-size: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   line-height: 2;
 }
 .markdown p a,
@@ -175,24 +210,24 @@ body.dark .brand-font {
 }
 
 /* Paragraph anchors */
-.markdown h1 a,
-.markdown h2 a,
-.markdown h3 a,
-.markdown h4 a {
-  color: #2daf8e;
-  visibility: hidden;
-  text-decoration: none;
-  margin-left: .5rem;
-  padding: 0 .25rem;
-}
-.markdown h1:hover a,
-.markdown h2:hover a,
-.markdown h3:hover a,
-.markdown h4:hover a {
-  visibility: visible;
-}
+// .markdown h1 a,
+// .markdown h2 a,
+// .markdown h3 a,
+// .markdown h4 a {
+//   color: #2daf8e;
+//   visibility: hidden;
+//   text-decoration: none;
+//   margin-left: .5rem;
+//   padding: 0 .25rem;
+// }
+// .markdown h1:hover a,
+// .markdown h2:hover a,
+// .markdown h3:hover a,
+// .markdown h4:hover a {
+//   visibility: visible;
+// }
 
-/* Markdown links */
+// Markdown links
 .markdown a {
   background-color: transparent;
   color: inherit;
@@ -203,7 +238,6 @@ body.dark .brand-font {
   word-break: break-word;
   word-wrap: break-word;
 }
-
 .markdown a:not(.headerlink):hover {
   background-color: #50fa7b33;
 }
@@ -212,6 +246,94 @@ body.dark .markdown a {
 }
 body.dark .markdown a:hover {
   background-color: #ffa60033;
+}
+body.dark .markdown h1,
+body.dark .markdown h2,
+body.dark .markdown h3,
+body.dark .markdown h4 {
+  color: #f8f8f8 !important;
+}
+
+// Markdown tables.
+.markdown table {
+  border-collapse: collapse;
+  caption-side: bottom;
+  display: block;
+  line-height: 1.5 !important;
+  margin-bottom: 2rem;
+  max-width: 100%;
+  overflow: auto;
+  width: 100%; // keep for backwards compatibility
+  width: max-content;
+  word-wrap: break-word !important;
+
+}
+.markdown thead,
+.markdown tbody,
+.markdown tfoot,
+.markdown tr,
+.markdown td,
+.markdown th {
+  border-color: inherit !important;
+  border-style: solid !important;
+  border-width: 0 !important;
+  font-family: 'Libre Baskerville' !important;
+}
+.markdown table th,
+.markdown table td {
+  padding: 6px 13px !important;
+}
+.markdown code,
+.markdown tt {
+  padding: 0.2em 0.4em !important;
+  margin: 0 !important;
+  font-size: 95% !important;
+  border-radius: 6px !important;
+}
+
+.markdown td {
+  font-size: 87.5% !important;
+}
+
+// Light Markdown tables.
+.markdown table {
+  color: #24292e !important;
+  background-color: #ffffff !important;
+}
+.markdown table tr {
+  background-color: #ffffff !important;
+  border-top: 1px solid #c6cbd1 !important;
+}
+.markdown table tr:nth-child(2n) {
+  background-color: #f6f8fa !important;
+}
+.markdown table th,
+.markdown table td {
+  border: 1px solid #dfe2e5 !important;
+}
+.markdown code,
+.markdown tt {
+  background-color: rgba(27, 31, 35, 0.05) !important;
+}
+
+// Dark Markdown tables.
+body.dark .markdown {
+  color: #c9d1d9 !important;
+}
+body.dark .markdown table tr {
+  background-color: #0d1117 !important;
+  border-top: 1px solid #272c32 !important;
+}
+body.dark .markdown table tr:nth-child(2n) {
+  background-color: #161b22 !important;
+}
+body.dark .markdown table th,
+body.dark .markdown table td {
+  border: 1px solid #3b434b !important;
+}
+body.dark .markdown code,
+body.dark .markdown tt {
+  background-color: rgba(240, 246, 252, 0.15) !important;
 }
 
 /*--------------------------------------------------------------------------
@@ -241,11 +363,11 @@ body.dark p.text-secondary small {
   color: #9baec8 !important;
 }
 ::-moz-selection {
-  color: #1a1a1a;
+  color: #1a1a1a !important;
   background: #96e6a1;
 }
 ::selection {
-  color: #1a1a1a;
+  color: #1a1a1a !important;
   background: #96e6a1;
 }
 
@@ -323,7 +445,7 @@ a.cannlytics-light-green-text:hover {
   fill: #281e52;
 }
 .bg-cannlytics-green {
-  background-color: #104607;
+  background-color: #062A00;
 }
 body.dark .bg-cannlytics-green {
   background-color: #263238;
@@ -344,6 +466,18 @@ body.dark .text-gradient {
 }
 body.dark .text-gradient-reverse {
   background: -webkit-linear-gradient(-45deg, #96e6a1, #45B649);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-gradient-orange {
+  background: -webkit-linear-gradient(-45deg,#e53a23ff, #B9220E);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body.dark .text-gradient-orange {
+  background: -webkit-linear-gradient(-45deg,#ffa600, #e53a23ff);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -414,6 +548,16 @@ body.dark .light-green-fade {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.two-columns {
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  columns: 2;
+}
+.three-columns {
+  -webkit-columns: 3;
+  -moz-columns: 3;
+  columns: 3;
 }
 .hidden-item {
   display: none !important;
@@ -523,11 +667,11 @@ body.dark .sliding-action:hover {
   top: 1rem;
 }
 
-a.background-hover:hover {
-  background-color: #50fa7b33;
+.background-hover:hover {
+  background-color: #50fa7b33 !important;
 }
-body.dark a.background-hover:hover {
-  background-color: #ffa60033;
+body.dark .background-hover:hover {
+  background-color: #ffa60033 !important;
 }
 
 /* Small light buttons */
@@ -620,6 +764,15 @@ body.dark .nav-tabs .nav-link.active {
 }
 .feather.small {
   width: 16px;
+}
+.error-icon {
+  color: #E63F5D;
+}
+.success-icon {
+  color: #0BA67F;
+}
+.warning-icon {
+  color: #ffc107;
 }
 
 /*--------------------------------------------------------------------------
@@ -817,14 +970,14 @@ body.dark footer .form-control {
   width: 100%;
 }
 .wave svg path {
-  fill: #f8f8f8;
+  fill: #45B6491a;
   stroke: none;
 }
 body.dark .wave svg path {
   fill: #554b8033;
 }
 .wave.green svg path {
-  fill: #104607 !important;
+  fill: #062A00 !important;
 }
 .wave.transparent svg path {
   fill: transparent !important;
@@ -834,7 +987,7 @@ body.dark .wave.green svg path {
 }
 
 .ground {
-  background-color: #f8f8f8;
+  background-color: #45B6491a;
 }
 body.dark .ground {
   background: #554b8033;
@@ -1112,7 +1265,7 @@ body:not(.dark) .card {
   color: #f5f5f5;
 }
 body:not(.dark) .card-opaque {
-  background-color: #f5f5f590 !important;
+  background-color: #f5f5f5e6 !important;
 }
 body.dark .card {
   background-color: #2e303e;
@@ -1245,6 +1398,25 @@ body.dark .navbar-toggler-icon {
 body.dark .nav-link:hover,
 body.dark .nav-link.active {
   color: #fff !important;
+}
+.dropdown-mega .dropdown-menu {
+  box-shadow: none !important;
+  display: block;
+  left: 0 !important;
+  height: 0;
+  margin-top: 0;
+  opacity: 0;
+  overflow: hidden;
+  top: 64px !important;
+  z-index: -1;
+}
+.dropdown-mega:hover .dropdown-menu,
+.dropdown-mega .dropdown-menu.show {
+  box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
+  height: auto;
+  opacity: 1;
+  transition-delay: 0.2s;
+  z-index: 9999;
 }
 
 /*--------------------------------------------------------------------------
@@ -1381,7 +1553,7 @@ body.dark .jumbotron {
 ---------------------------------------------------------------------------*/
 
 .info-bar {
-  background-color: #f8f8f8;
+  background-color: #45B6491a;
 }
 body.dark .info-bar {
   background-color:rgba(255, 255, 255,.15);
@@ -1413,4 +1585,29 @@ body.dark .modal-content {
 }
 .alert a:hover {
   color: #000000 !important;
+}
+
+/*--------------------------------------------------------------------------
+  Placeholders
+---------------------------------------------------------------------------*/
+
+@keyframes placeHolderShimmer{
+  0% { background-position: -468px 0 }
+  100% { background-position: 468px 0 }
+}
+.linear-background {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+  background-size: 1000px 104px;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+body.dark .linear-background {
+  background: linear-gradient(90deg,#eeeeee30 8%,#dddddd30 18%,#eeeeee30 33%);
 }

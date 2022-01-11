@@ -1,13 +1,17 @@
 <!doctype html>
 <html>
 <!--
-  Oklahoma (OK) Data Page | Cannlytics
+  Oklahoma (OK) Data Page | Cannlytics Website
+  Copyright (c) 2021-2022 Cannlytics
+
+  Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 8/30/2021
-  Updated: 8/30/2021
+  Updated: 11/25/2021
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
 {% load static %}
-{% block title %}Data | Cannlytics{% endblock %}
+{% block title %}Oklahoma Data | Cannlytics{% endblock %}
 {% block page_css %}
   <style>
     .state{
@@ -83,6 +87,13 @@
 <!-- Licensees (Map of licensees) -->
 <section class="container mb-2 mt-5">
 
+    <!-- TODO: List / table of licensees
+      - Search
+      - Sort
+      - Filter (by type)
+    -->
+
+
     <!-- Map -->
     <div class="col">
       <svg
@@ -97,8 +108,6 @@
       class="col col-md-5 card m-3"
       id="tooltip"
     ></div>
-
-
 
 </section>
 

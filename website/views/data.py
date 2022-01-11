@@ -1,180 +1,215 @@
 """
 Data Views | Cannlytics Website
+Copyright (c) 2021-2022 Cannlytics
+
+Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 8/22/2021
+Updated: 1/9/2022
+License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
 from datetime import datetime
-from json import loads
 from tempfile import NamedTemporaryFile
 
 # External imports
-from django.core.exceptions import ValidationError
-from django.core.mail import send_mail
-from django.core.validators import validate_email
-from django.http import JsonResponse, FileResponse
+from django.http import FileResponse
+from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from pandas import DataFrame
+from cannlytics.auth.auth import authenticate_request
 
-# TODO: Use standard Cannlytics firebase module
-from website.utils.firebase import (
-    add_to_array,
-    create_account,
+# Internal imports.
+from cannlytics.firebase import (
+    create_log,
     get_collection,
-    update_document,
     upload_file,
-    increment_value,
 )
-from website.utils.utils import get_promo_code
 
 
 @csrf_exempt
-def promotions(request):
-    """Record a promotion, by getting promo code,
-    finding any matching promotion document,
-    and updating the views."""
-    try:
-        data = loads(request.body)
-        promo_code = data['promo_code']
-        matches = get_collection('promos/events/promo_stats', filters=[
-            {'key': 'hash', 'operation': '>=', 'value': promo_code},
-            {'key': 'hash', 'operation': '<=', 'value': '\uf8ff'},
-        ])
-        match = matches[0]
-        promo_hash = match['hash']
-        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-        increment_value(f'promos/events/promo_stats/{promo_hash}', 'views')
-        add_to_array(f'promos/events/promo_stats/{promo_hash}', 'viewed_at', timestamp)
-        # Optional: If user has an account,
-        # record which user visited in viewed_by collection.
-        return JsonResponse({'message': {'success': True}}, safe=False)
-    except:
-        return JsonResponse({'message': {'success': False}}, safe=False)
+def download_analyses_data(request):
+    """Download analyses data."""
 
+    # Define data points.
+    # Optional: Store allowed data points in Firebase?
+    data_points = [
+        'analysis_id',
+        'analytes',
+        'color',
+        'name',
+        'singular',
+        'units',
+    ]
 
-@csrf_exempt
-def subscribe(request):
-    """
-    Subscribe a user to newsletters,
-    sending them a notification with the ability to unsubscribe,
-    and create a Cannlytics account if requested, sending a welcome email.
-    FIXME: Refactor.
-    """
-    success = False
-    data = loads(request.body)
-    user_email = data['email']
-    try:
-        validate_email(user_email)
-    except ValidationError:
-        pass # Optional: Handle invalid emails client-side?
-    else:
+    # Get the data file to download if the user is signed in,
+    # otherwise return an error.
+    collection = 'public/data/analyses'
+    claims = authenticate_request(request)
+    temp_name, filename = download_dataset(claims, collection, data_points)
+    if filename is None:
+        response = {'success': False, 'message': 'Authentication required for suggestion.'}
+        return JsonResponse(response)
 
-        # Create a promo code that can be used to download data.
-        promo_code = get_promo_code(8)
-        add_to_array('promos/data', 'promo_codes', promo_code)
-
-        # Record subscription in Firestore.
-        now = datetime.now()
-        timestamp = now.strftime('%Y-%m-%d_%H-%M-%S')
-        iso_time = now.isoformat()
-        data['created_at'] = iso_time
-        data['updated_at'] = iso_time
-        data['promo_code'] = promo_code
-        update_document(f'subscribers/{timestamp}', data)
-
-        # Send a welcome email. (Optional: Use HTML template.)
-        # template_url = 'website/emails/newsletter_subscription_thank_you.html'
-        # Create an account if one does not exist.
-        try:
-            name = (data.get('first_name', '') + data.get('last_name', '')).strip()
-            _, password = create_account(name, user_email)
-            send_mail(
-                subject='Welcome to the Cannlytics Platform',
-                message=f'Congratulations,\n\nYou can now login to the Cannlytics console (console.cannlytics.com) with the following credentials.\n\nEmail: {user_email}\nPassword: {password}\n\nAlways here to help,\nThe Cannlytics Team',
-                from_email='contact@cannlytics.com',
-                recipient_list=[user_email],
-                fail_silently=False,
-                # html_message = render_to_string(template_url, {'context': 'values'}) # Optional: Send HTML email
-            )
-        except:
-            send_mail(
-                subject='Welcome to the Cannlytics Newsletter',
-                message=f'Congratulations,\n\nWelcome to the Cannlytics newsletter. You can download data with the promo code:\n\n{promo_code}\n\nPlease stay tuned for more material.\n\nAlways here to help,\nThe Cannlytics Team',
-                from_email='contact@cannlytics.com',
-                recipient_list=[user_email],
-                fail_silently=False,
-                # html_message = render_to_string(template_url, {'context': 'values'}) # Optional: Send HTML email
-            )
-
-        success = True
-    return JsonResponse({'message': {'success': success}}, safe=False)
+    # Return the file to download.
+    return FileResponse(open(temp_name, 'rb'), filename=filename)
 
 
 @csrf_exempt
 def download_lab_data(request):
-    """Download either a free or premium lab data set."""
+    """Download lab data."""
 
+    # Define data points.
     # Optional: Store allowed data points in Firebase?
-    data_points = {
-        'free': [
-            'id',
-            'name',
-            'trade_name',
-            'license',
-            'license_url',
-            'license_issue_date',
-            'license_expiration_date',
-            'status',
-            'street',
-            'city',
-            'county',
-            'state',
-            'zip',
-            'description',
-        ],
-        'premium': [
-            'formatted_address',
-            'timezone',
-            'longitude',
-            'latitude',
-            'capacity',
-            'square_feet',
-            'brand_color',
-            'favicon',
-            'email',
-            'phone',
-            'website',
-            'linkedin',
-            'image_url',
-            'opening_hours',
-            'analyses',
-        ],
-    }
+    data_points = [
+        'id',
+        'name',
+        'trade_name',
+        'license',
+        'license_url',
+        'license_issue_date',
+        'license_expiration_date',
+        'status',
+        'street',
+        'city',
+        'county',
+        'state',
+        'zip',
+        'description',
+        'formatted_address',
+        'timezone',
+        'longitude',
+        'latitude',
+        'capacity',
+        'square_feet',
+        'brand_color',
+        'favicon',
+        'email',
+        'phone',
+        'website',
+        'linkedin',
+        'image_url',
+        'opening_hours',
+        'analyses',
+    ]
 
-    # Get promo code for premium data.
-    subscriber = {}
-    tier = 'free'
+    # Get the data file to download if the user is signed in,
+    # otherwise return an error.
+    collection = 'public/data/labs'
+    claims = authenticate_request(request)
+    temp_name, filename = download_dataset(claims, collection, data_points)
+    if filename is None:
+        response = {'success': False, 'message': 'Authentication required for suggestion.'}
+        return JsonResponse(response)
+
+    # Return the file to download.
+    return FileResponse(open(temp_name, 'rb'), filename=filename)
+
+    # # Get the user's data, returning if not authenticated.
+    # claims = authenticate_request(request)
+    # try:
+    #     uid = claims['uid']
+    #     user_email = claims['email']
+    #     name = claims.get('name', 'Unknown')
+    # except KeyError:
+    #     response = {'success': False, 'message': 'Authentication required for suggestion.'}
+    #     return JsonResponse(response)
+
+    # # Get data points in specified order.
+    # collection = 'public/data/labs'
+    # collection_data = get_collection(collection, order_by='state')
+    # dataframe = DataFrame.from_dict(collection_data, orient='columns')
+    # data = dataframe[data_points]
+
+    # # Convert JSON to CSV.
+    # with NamedTemporaryFile(delete=False) as temp:
+    #     temp_name = temp.name + '.csv'
+    #     data.to_csv(temp_name, index=False)
+    #     temp.close()
+
+    # # Post a copy of the data to Firebase storage.
+    # now = datetime.now()
+    # timestamp = now.strftime('%Y-%m-%d_%H-%M-%S')
+    # destination = 'public/data/downloads/'
+    # filename = f'labs_{timestamp}.csv'
+    # ref = destination + filename
+    # upload_file(ref, temp_name)
+
+    # # Create an activity log.
+    # log_entry = {
+    #     'data_points': len(data),
+    #     'file': ref,
+    #     'email': user_email,
+    #     'name': name,
+    #     'uid': uid,
+    # }
+    # create_log(
+    #     ref='logs/website/downloads',
+    #     claims=claims,
+    #     action=f'User ({user_email}) downloaded the lab data.',
+    #     log_type='download',
+    #     key='download_lab_data',
+    #     changes=log_entry,
+    # )
+
+    # # Return the file to download.
+    # return FileResponse(open(temp_name, 'rb'), filename=filename)
+
+
+@csrf_exempt
+def download_regulation_data(request):
+    """Download regulation data."""
+
+    # Define data points.
+    # Optional: Store allowed data points in Firebase?
+    data_points = [
+        'state',
+        'state_name',
+        'traceability_system',
+        'adult_use',
+        'adult_use_permitted',
+        'adult_use_permitted_source',
+        'medicinal',
+        'medicinal_permitted',
+        'medicinal_permitted_source',
+        'state_sales_tax',
+        'state_excise_tax',
+        'state_local_tax',
+        'tax_rate_url',
+        'sources',
+    ]
+
+    # Get the data file to download if the user is signed in,
+    # otherwise return an error.
+    collection = 'public/data/regulations'
+    claims = authenticate_request(request)
+    temp_name, filename = download_dataset(claims, collection, data_points)
+    if filename is None:
+        response = {'success': False, 'message': 'Authentication required for suggestion.'}
+        return JsonResponse(response)
+
+    # Return the file to download.
+    return FileResponse(open(temp_name, 'rb'), filename=filename)
+
+
+#------------------------------------------------------------------------------
+# Download Utilities
+#------------------------------------------------------------------------------
+
+def download_dataset(claims, collection, data_points):
+    """Download a given dataset."""
+
+    # Get the user's data, returning if not authenticated.
     try:
-        authorization = request.headers['Authorization']
-        token = authorization.split(' ')[1]
-        filters = [{'key': 'promo_code', 'operation': '==', 'value': token}]
-        subscriber = get_collection('subscribers', filters=filters)[0]
-        if subscriber:
-            subscriber['subscriber_created_at'] = subscriber['created_at']
-            subscriber['subscriber_updated_at'] = subscriber['updated_at']
-            tier = 'premium'
-    except:
-        pass
+        uid = claims['uid']
+        user_email = claims['email']
+        name = claims.get('name', 'Unknown')
+    except KeyError:
+        return None, None
 
-    # Get lab data.
-    labs = get_collection('labs', order_by='state')
-    data = DataFrame.from_dict(labs, orient='columns')
-
-    # Restrict data points.
-    if tier == 'premium':
-        data = data[data_points['free'] + data_points['premium']]
-    else:
-        data = data[data_points['free']]
+    # Get data points in specified order.
+    collection_data = get_collection(collection, order_by='state')
+    dataframe = DataFrame.from_dict(collection_data, orient='columns')
+    data = dataframe[data_points]
 
     # Convert JSON to CSV.
     with NamedTemporaryFile(delete=False) as temp:
@@ -185,22 +220,28 @@ def download_lab_data(request):
     # Post a copy of the data to Firebase storage.
     now = datetime.now()
     timestamp = now.strftime('%Y-%m-%d_%H-%M-%S')
-    filename = f'labs_{timestamp}.csv'
     destination = 'public/data/downloads/'
+    data_type = collection.split('/')[-1]
+    filename = f'{data_type}_{timestamp}.csv'
     ref = destination + filename
     upload_file(ref, temp_name)
 
     # Create an activity log.
     log_entry = {
-        'created_at': now.isoformat(),
-        'updated_at': now.isoformat(),
         'data_points': len(data),
-        'tier': tier,
-        'filename': filename,
-        'ref': ref,
+        'file': ref,
+        'email': user_email,
+        'name': name,
+        'uid': uid,
     }
-    log_entry = {**subscriber, **log_entry}
-    update_document(f'logs/website/data_downloads/{timestamp}', log_entry)
+    create_log(
+        ref='logs/website/downloads',
+        claims=claims,
+        action=f'User ({user_email}) downloaded {data_type} data.',
+        log_type='download',
+        key=f'download_{data_type}_data',
+        changes=log_entry,
+    )
 
-    # Return the file to download.
-    return FileResponse(open(temp_name, 'rb'), filename=filename)
+    # Return the file that can be downloaded.
+    return temp_name, filename
