@@ -8,6 +8,7 @@ Updated: 11/15/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
@@ -35,3 +36,7 @@ def handler500(request, *args, **argv): #pylint: disable=unused-argument
     """Handle internal errors."""
     template = 'website/pages/general/errors/500.html'
     return render(request, template, {}, status=500)
+
+def meetup(request): #pylint: disable=unused-argument
+    """Redirect the user to the Cannabis Data Science meetup."""
+    return HttpResponseRedirect('https://meet.google.com/ifq-jtmc-nuh')

@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 8/22/2021
-Updated: 1/9/2022
+Updated: 1/14/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports.
@@ -24,6 +24,10 @@ def send_message(request):
     """Send a message from the website to the Cannlytics admin through email.
     The user must provide an `email`, `subject`, and `message` in their POST.
     """
+    try:
+        request.POST['math_input'] == request.POST['math_total']
+    except KeyError:
+        return JsonResponse({'success': False, 'message': 'Bugger off.'}, status=401)
     claims = authenticate_request(request)
     uid = claims.get('uid', 'User not signed in.')
     user_email = claims.get('email', 'Unknown')
@@ -34,8 +38,7 @@ def send_message(request):
         sender = request.POST['email']
     except:
         message = 'An `email`, `subject`, and `message` are required.'
-        response = {'success': False, 'message': message}
-        return JsonResponse(response)
+        return JsonResponse({'success': False, 'message': message}, status=400)
     recipients = LIST_OF_EMAIL_RECIPIENTS
     template = 'New message from the Cannlytics website:' \
                '\n\n{0}\n\nUser: {0}\nUser Email: {0}\n\nFrom,\n{0}'

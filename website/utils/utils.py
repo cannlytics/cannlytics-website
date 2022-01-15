@@ -76,7 +76,10 @@ def get_markdown(
         page = context['page']
     try:
         # Optional: Open markdown file directly instead of with a request.
-        base = request.META.get('HTTP_REFERER').split('/')[2]
+        try:
+            base = request.META.get('HTTP_REFERER').split('/')[2]
+        except AttributeError:
+            base = 'cannlytics.com'
         protocol = 'http' if DEBUG else 'https'
         url = f'{protocol}://{base}/static/{app}/docs/{page}.md'
         text = requests.get(url).text

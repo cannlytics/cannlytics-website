@@ -515,7 +515,7 @@ const authErrors = {
   'auth/invalid-email':	'The provided email is invalid. It must be a valid email address.',
   'auth/invalid-password': 'The provided password is invalid.',
   'auth/weak-password': 'Your password must be 6 characters long or more.',
-  'wrong-password': 'The password provided is incorrect.',
+  'auth/wrong-password': 'The password provided is incorrect.',
   'network-request-failed': 'A network error (such as timeout, interrupted connection or unreachable host) has occurred.',
   'too-many-requests': 'We have blocked all requests from this device due to unusual activity. Try again later.',
   'user-not-found': 'There is no user record corresponding to this identifier. The user may have been deleted.',

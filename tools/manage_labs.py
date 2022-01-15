@@ -35,7 +35,7 @@ from datasets import get_dataset, upload_dataset
 FILENAME = 'labs.json'
 DOC = 'public/data'
 REF = f'{DOC}/labs'
-ID = 'license_number'
+ID = 'license'
 
 
 def get_lab_data():

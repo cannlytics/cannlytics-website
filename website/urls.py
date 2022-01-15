@@ -25,6 +25,14 @@ from website.views import (
     videos,
 )
 
+# TODO: Forward /community, /labs to /testing
+# TODO: Include /robots.txt
+
+# Wishlist: Block IP address if requesting:
+# - /.vscode/sftp.json
+# - /wp-admin
+# - /.env
+
 # Main URLs.
 urlpatterns = [
     path('', main.GeneralView.as_view(), name='index'),
@@ -57,6 +65,7 @@ urlpatterns = [
     path('robohash/<string>', robohash, name='robohash'),
     path('videos', videos.VideosView.as_view(), name='videos'),
     path('videos/<video_id>', videos.VideosView.as_view(), name='video'),
+    path('meetup', main.meetup, name='meetup'),
     path('<page>', main.GeneralView.as_view(), name='page'),
     path('<page>/<section>', main.GeneralView.as_view(), name='section'),
     path('<page>/<section>/<str:unit>', main.GeneralView.as_view(), name='unit'),

@@ -19,7 +19,6 @@ import re
 # External imports.
 import environ
 import google.auth
-from google.cloud import secretmanager
 from django.template import base
 
 # Internal imports.

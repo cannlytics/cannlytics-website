@@ -73,15 +73,15 @@
               class="form-control form-control-sm my-2"
               type="email"
               aria-describedby="subscribe-button"
-              placeholder="Subscribe to data reports ↬"
+              placeholder="Enter your email to get data reports ↬"
               {% if user.email and not user.newsletter %}value="{{ user.email }}"{% endif %}
             >
             <button
               id="subscribe-button"
-              class="btn btn-sm w-100 bg-gradient-green text-white mt-0"
+              class="btn btn-sm w-100 bg-gradient-green serif text-white mt-0"
               onclick="cannlytics.payments.subscribe()"
             >
-              Subscribe
+              Subscribe to Data Reports
             </button>
             <button
               id="subscribe-button-loading"
@@ -183,7 +183,7 @@
         like yourself!
       </small>
     </p>
-    <p class="fs-6 mt-2 mb-3">
+    <p class="fs-6 mt-2 mb-2">
       <small>
         <a
           class="text-white light-green-hover"
@@ -206,16 +206,62 @@
       </small>
     </p>
 
-    <!-- Github star button -->
-    <iframe
-      class="mb-2"
-      src="https://ghbtns.com/github-btn.html?user=cannlytics&repo=cannlytics-engine&type=star&count=true"
-      frameborder="0"
-      scrolling="0"
-      width="150"
-      height="20"
-      title="GitHub"
-    ></iframe>
+    <!-- Github star buttons -->
+    {% comment %} <div class="mb-2">
+      <iframe
+        src="https://ghbtns.com/github-btn.html?user=cannlytics&repo=cannlytics&type=star&count=true"
+        frameborder="0"
+        scrolling="0"
+        width="125"
+        height="20"
+        title="GitHub"
+      ></iframe>
+      <iframe
+        src="https://ghbtns.com/github-btn.html?user=cannlytics&repo=cannlytics-engine&type=star&count=true"
+        frameborder="0"
+        scrolling="0"
+        width="125"
+        height="20"
+        title="GitHub"
+      ></iframe>
+      <iframe
+        src="https://ghbtns.com/github-btn.html?user=cannlytics&repo=cannlytics-console&type=star&count=true"
+        frameborder="0"
+        scrolling="0"
+        width="125"
+        height="20"
+        title="GitHub"
+      ></iframe>
+    </div> {% endcomment %}
+
+    <div class="fs-6 text-small  mt-0">
+      <!-- Please leave our Copyright in accordance with our License:
+
+        Copyright (c) 2020-2022 Cannlytics
+
+        Permission is hereby granted, free of charge, to any person obtaining
+        a copy of this software and associated documentation files (the
+        "Software"), to deal in the Software without restriction, including
+        without limitation the rights to use, copy, modify, merge, publish,
+        distribute, sublicense, and/or sell copies of the Software, and to
+        permit persons to whom the Software is furnished to do so, subject to
+        the following conditions:
+
+        The above copyright notice and this permission notice shall be
+        included in all copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+        EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+        NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+        LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+        WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+      Thank you!
+      -->
+      <small class="tiny-text text-white">Copyright &copy; Cannlytics 2020-2022</small>
+    </div>
 
   </div><!-- End of Copyright -->
 

@@ -70,12 +70,12 @@ def subscribe(request):
     try:
         claims = authenticate_request(request)
         uid = claims['uid']
-        user_data = {}
+        user_data = {'support': True}
         if plan_name == 'newsletter':
             user_data['newsletter'] = True
         else:
             user_data[f'{plan_name}_subscription_id'] = data['id']
-        update_document(f'user/{uid}', user_data)
+        update_document(f'users/{uid}', user_data)
     except KeyError:
         pass
 
@@ -158,6 +158,9 @@ def unsubscribe(request):
         user_data = get_document(f'users/{uid}')
         subscription_id = user_data[f'{plan_name}_subscription_id']
         cancel_paypal_subscription(paypal_access_token, subscription_id)
+        updated_user_data = {'support': False}
+        updated_user_data[f'{plan_name}_subscription_id'] = ''
+        update_document(f'users/{uid}', updated_user_data)
     except:
         subscription_id = 'Unidentified'
 
