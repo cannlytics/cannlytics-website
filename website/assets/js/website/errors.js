@@ -17,6 +17,9 @@ export const errorSettings = {
      * Reports an error to the back-end.
      * @param {Object} data Error data.
      */
+    const randomInt = Math.floor(Math.random() * 99);
+    data.math_input = randomInt;
+    data.math_total = randomInt;
     try {
       authRequest('/src/email/send-message', data);
       const message = 'Thank you for reporting this error. We will try to address it as soon as possible.';

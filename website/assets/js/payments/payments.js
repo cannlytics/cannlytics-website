@@ -326,10 +326,13 @@ export const payments = {
     try {
       await authRequest('/api/users', { sponsorships });
       // FIXME: Cancel a user's PayPal recurring donation through the API.
+      const randomInt = Math.floor(Math.random() * 99);
       const staffMessage = {
-        'name': 'CannBot',
-        'subject': 'PayPal Recurring Donation Needs to be Canceled',
-        'message': "A user has canceled a recurring PayPal donation. Please manually ensure the user's recurring donation is canceled.",
+        name: 'CannBot',
+        subject: 'PayPal Recurring Donation Needs to be Canceled',
+        message: "A user has canceled a recurring PayPal donation. Please manually ensure the user's recurring donation is canceled.",
+        math_input: randomInt,
+        math_total: randomInt,
       };
       await authRequest('/src/email/send-message', staffMessage);
     } catch(error) {
@@ -561,10 +564,13 @@ const reportError = async () => {
    * Report a payment error so it can be corrected manually.
    */
   try {
+    const randomInt = Math.floor(Math.random() * 99);
     const data = {
-      'name': 'CannBot',
-      'subject': 'A PayPal payment error occurred!',
-      'message': 'An unhandled error occurred during a PayPal payment. Please correct this matter manually.',
+      name: 'CannBot',
+      subject: 'A PayPal payment error occurred!',
+      message: 'An unhandled error occurred during a PayPal payment. Please correct this matter manually.',
+      math_input: randomInt,
+      math_total: randomInt,
     };
     await authRequest('/src/email/send-message', data);
   } catch(error) {
@@ -577,11 +583,13 @@ const reportSubscription = async (email, name, id) => {
    * Report a new subscription to the staff.
    */
   try {
-    const message = `New subscription:\n\nEmail: ${email}\nName: ${name}\nSubscription ID: ${id}`;
+    const randomInt = Math.floor(Math.random() * 99);
     const data = {
-      'name': 'CannBot',
-      'subject': 'New PayPal Payment!',
-      'message': message,
+      name: 'CannBot',
+      subject: 'New PayPal Payment!',
+      message: `New subscription:\n\nEmail: ${email}\nName: ${name}\nSubscription ID: ${id}`,
+      math_input: randomInt,
+      math_total: randomInt,
     };
     await authRequest('/src/email/send-message', data);
   } catch(error) {

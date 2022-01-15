@@ -270,6 +270,22 @@ lab_state = {
 }
 
 #-----------------------------------------------------------------------
+# Page-specific markdown documents.
+#-----------------------------------------------------------------------
+
+page_docs = {
+    "ai": ["ai"],
+    "api": ["api"],
+    "data-science": ["data-science"],
+    "data": ["data", "regulations"],
+    "economics": ["economics", "forecasting"],
+    "integrators": ["integrators"],
+    "producers": ["producers", "processors"],
+    "regulations": ["regulations"],
+    "retailers": ["retailers"],
+}
+
+#-----------------------------------------------------------------------
 # Page-specific data loaded from Firestore.
 #-----------------------------------------------------------------------
 
@@ -363,20 +379,4 @@ page_data = {
     "whitepapers": {
         "collections": [{"name": "whitepapers", "ref": "public/whitepapers/whitepaper_data"}],
     }
-}
-
-#-----------------------------------------------------------------------
-# Page-specific markdown documents.
-#-----------------------------------------------------------------------
-
-page_docs = {
-    "ai": ["ai"],
-    "api": ["api"],
-    "data-science": ["data-science"],
-    "data": ["data", "regulations"],
-    "economics": ["economics", "forecasting"],
-    "integrators": ["integrators"],
-    "producers": ["producers", "processors"],
-    "regulations": ["regulations"],
-    "retailers": ["retailers"],
 }

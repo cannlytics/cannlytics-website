@@ -20,19 +20,17 @@
             <h2 class="h5 fw-bold serif text-dark text-start mb-2">
               {{ feature.title }}
             </h2>
-            <p class="h6 double-line text-start text-dark">
-              <small>{{ feature.message }}</small>
+            <p class="fs-6 double-line text-start text-secondary-on-dark">
+              {{ feature.message }}
             </p>
             {% if feature.action %}
-              <p class="markdown text-start fs-6">
-                <small>
-                  <a
-                    class="fw-bold serif text-dark"
-                    href="{{ feature.action_url }}"
-                  >
-                    {{ feature.action }} &rarr;
-                  </a>
-                </small>
+              <p class="markdown text-start fs-6 mt-2">
+                <a
+                  class="fw-bold serif text-dark"
+                  href="{{ feature.action_url }}"
+                >
+                  {{ feature.action }} &rarr;
+                </a>
               </p>
               {% endif %}
           </div>

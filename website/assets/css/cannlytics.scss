@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 10/4/2020
- * Updated: 1/1/2022
+ * Updated: 1/14/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 @import 'bootstrap/scss/bootstrap';
@@ -922,6 +922,25 @@ ul {
 .custom-checkbox .custom-control-input:active ~ .custom-control-label::before {
   background-color: #96e6a1;
 }
+.form-select:active,
+.form-select:hover {
+  box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem #45B64940;
+}
+.form-select option:hover {
+  background-color: #45B64940 !important;
+}
+button[data-toggle="dropdown"].btn-default,
+button[data-toggle="dropdown"]:hover {
+background-color: white !important;
+color: #2c3e50 !important;
+border: 2px solid #dce4ec;
+}
+
+/* Radio Groups */
+.form-check-input:checked {
+  background-color: #45B649;
+  border-color: #45B649;
+}
 
 /* Dark forms */
 body.dark .form-check-input:checked {
@@ -1401,22 +1420,29 @@ body.dark .nav-link.active {
 }
 .dropdown-mega .dropdown-menu {
   box-shadow: none !important;
-  display: block;
-  left: 0 !important;
-  height: 0;
-  margin-top: 0;
   opacity: 0;
-  overflow: hidden;
-  top: 64px !important;
-  z-index: -1;
+  visibility: hidden;
+  transition-delay: 3s;
+  // display: block;
+  top: unset !important;
+  left: 0 !important;
+  // height: 0;
+  margin-top: 0;
+  // overflow: hidden;
+  // top: 64px !important;
+  // z-index: -1;
+  z-index: 9999;
 }
 .dropdown-mega:hover .dropdown-menu,
 .dropdown-mega .dropdown-menu.show {
+  display: block !important;
+  transition-delay: 3s;
+  opacity: 1 !important;
+  visibility: visible !important;
   box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
-  height: auto;
-  opacity: 1;
-  transition-delay: 0.2s;
-  z-index: 9999;
+  // height: auto;
+  // opacity: 1;
+  // transition-delay: 0.2s;
 }
 
 /*--------------------------------------------------------------------------

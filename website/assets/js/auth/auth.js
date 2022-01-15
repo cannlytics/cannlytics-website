@@ -135,10 +135,10 @@ export const auth = {
     }
     document.getElementById('sign-in-button').classList.remove('d-none');
     document.getElementById('sign-in-loading-button').classList.add('d-none');
-    // try {
-      const modal = Modal.getInstance(document.getElementById('sign-in-dialog'));
+    try {
+      const modal = new Modal.getInstance(document.getElementById('sign-in-dialog'));
       modal.hide();
-    // } catch(error) { /* No login dialog. */ }
+    } catch(error) { /* No login dialog. */ }
   },
 
   signInWithGoogle() {

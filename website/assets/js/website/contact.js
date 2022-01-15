@@ -79,6 +79,7 @@ export const contact = {
     const min = this.randomIntFromInterval(0, 5);
     const max = this.randomIntFromInterval(0, 4);
     this.mathCheckTotal = min + max;
+    document.getElementById('math_total').value = this.mathCheckTotal;
     document.getElementById('math-check-min').textContent = min;
     document.getElementById('math-check-max').textContent = max;
     this.setContactFormTopic();
