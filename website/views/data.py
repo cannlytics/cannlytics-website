@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 1/9/2022
+Updated: 1/17/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
@@ -24,6 +24,7 @@ from cannlytics.firebase import (
     get_collection,
     upload_file,
 )
+from website.settings import STORAGE_BUCKET
 
 
 @csrf_exempt
@@ -104,56 +105,6 @@ def download_lab_data(request):
     # Return the file to download.
     return FileResponse(open(temp_name, 'rb'), filename=filename)
 
-    # # Get the user's data, returning if not authenticated.
-    # claims = authenticate_request(request)
-    # try:
-    #     uid = claims['uid']
-    #     user_email = claims['email']
-    #     name = claims.get('name', 'Unknown')
-    # except KeyError:
-    #     response = {'success': False, 'message': 'Authentication required for suggestion.'}
-    #     return JsonResponse(response)
-
-    # # Get data points in specified order.
-    # collection = 'public/data/labs'
-    # collection_data = get_collection(collection, order_by='state')
-    # dataframe = DataFrame.from_dict(collection_data, orient='columns')
-    # data = dataframe[data_points]
-
-    # # Convert JSON to CSV.
-    # with NamedTemporaryFile(delete=False) as temp:
-    #     temp_name = temp.name + '.csv'
-    #     data.to_csv(temp_name, index=False)
-    #     temp.close()
-
-    # # Post a copy of the data to Firebase storage.
-    # now = datetime.now()
-    # timestamp = now.strftime('%Y-%m-%d_%H-%M-%S')
-    # destination = 'public/data/downloads/'
-    # filename = f'labs_{timestamp}.csv'
-    # ref = destination + filename
-    # upload_file(ref, temp_name)
-
-    # # Create an activity log.
-    # log_entry = {
-    #     'data_points': len(data),
-    #     'file': ref,
-    #     'email': user_email,
-    #     'name': name,
-    #     'uid': uid,
-    # }
-    # create_log(
-    #     ref='logs/website/downloads',
-    #     claims=claims,
-    #     action=f'User ({user_email}) downloaded the lab data.',
-    #     log_type='download',
-    #     key='download_lab_data',
-    #     changes=log_entry,
-    # )
-
-    # # Return the file to download.
-    # return FileResponse(open(temp_name, 'rb'), filename=filename)
-
 
 @csrf_exempt
 def download_regulation_data(request):
@@ -224,7 +175,7 @@ def download_dataset(claims, collection, data_points):
     data_type = collection.split('/')[-1]
     filename = f'{data_type}_{timestamp}.csv'
     ref = destination + filename
-    upload_file(ref, temp_name)
+    upload_file(ref, temp_name, bucket_name=STORAGE_BUCKET)
 
     # Create an activity log.
     log_entry = {

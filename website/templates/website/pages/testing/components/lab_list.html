@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 11/24/2020
-  Updated: 1/10/2022
+  Updated: 1/17/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% load icon %}
@@ -73,7 +73,12 @@
     <button
       type="button"
       class="btn btn-sm bg-gradient-green text-nowrap text-white serif ms-2"
+      {% if not user %}
+      data-bs-target="#sign-in-dialog"
+      data-bs-toggle="modal"
+      {% else %}
       onclick="cannlytics.testing.downloadLabData()"
+      {% endif %}
     >
       Download Data
     </button>

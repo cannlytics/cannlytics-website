@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/20/2021
-  Updated: 1/9/2022
+  Updated: 1/17/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% load icon %}
@@ -96,23 +96,27 @@
     <!-- Options -->
     <div class="col-md-6 d-none d-md-flex align-items-end justify-content-end mb-3">
 
-    <!-- TODO: Add a lab -->
-      {% comment %} <a
-        class="btn btn-outline-primary me-2"
-        href="/labs/new/"
+    <!-- Add a lab -->
+      <a
+        class="btn btn-sm-light btn-md-light serif text-dark"
+        href="{% url 'new-lab' %}"
       >
-        Add your lab
-      </a> {% endcomment %}
+        Add a lab
+      </a>
 
       <!-- Download Data -->
-      <!-- FIXME: Handle this? -->
-      {% comment %} <button
-        class="btn btn-outline-primary"
+      <button
+        type="button"
+        class="btn btn-sm bg-gradient-green text-nowrap text-white serif ms-2"
+        {% if not user %}
+        data-bs-target="#sign-in-dialog"
         data-bs-toggle="modal"
-        data-bs-target="#downloadDialog"
+        {% else %}
+        onclick="cannlytics.testing.downloadLabData()"
+        {% endif %}
       >
-        Download data
-      </button> {% endcomment %}
+        Download Data
+      </button>
 
     </div>
   
@@ -141,10 +145,6 @@
     </figcaption>
 
   </figure>
-
-  <!-- Download data dialog -->
-  <!-- FIXME: -->
-  {% comment %} {% include "website/components/dialogs/download_data_dialog.html" %} {% endcomment %}
 
 </div>
 

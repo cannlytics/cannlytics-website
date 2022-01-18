@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 2/21/2021
- * Updated: 1/9/2022
+ * Updated: 1/17/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Toast } from 'bootstrap';
@@ -63,9 +63,10 @@ export const apiRequest = async (endpoint, data, options, idToken = null) => {
       endpoint = new URL(endpoint)
       endpoint.search = new URLSearchParams(options.params).toString();
     }
-  }
+  } else { options = {} }
   const url = endpoint.startsWith('https') ? endpoint : window.location.origin + endpoint;
   const response = await fetch(url, init);
+  if (options.file) return response;
   try {
     return response.json();
   } catch(error) {

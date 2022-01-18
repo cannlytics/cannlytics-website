@@ -345,3 +345,5 @@ APPEND_SLASH = False
 # Allow Django template tags to span multiple lines.
 # https://stackoverflow.com/questions/49110044/django-template-tag-on-multiple-line
 base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)
+
+STORAGE_BUCKET = env('FIREBASE_STORAGE_BUCKET')
