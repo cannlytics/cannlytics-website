@@ -8,6 +8,7 @@
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 */
 const appName = 'website';
+// const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -25,7 +26,7 @@ module.exports = env => {
       extensions: ['.js'],
     },
     entry: [
-      `./${appName}/assets/css/cannlytics.scss`,
+      // `./${appName}/assets/css/cannlytics.scss`,
       `./${appName}/assets/js/index.js`,
       // You can add additional JS here.
     ],
@@ -33,7 +34,10 @@ module.exports = env => {
       path: path.resolve(__dirname, `${appName}/static/${appName}`),
       filename: './js/bundles/cannlytics.min.js',
       libraryTarget: 'var',
-      library: 'cannlytics', // Turns JavaScript into a module.
+      library: { // Turns JavaScript into a module.
+        name: 'cannlytics',
+        type: 'umd',
+      },
       hotUpdateChunkFilename: './js/bundles/hot/hot-update.js',
       hotUpdateMainFilename: './js/bundles/hot/hot-update.json'
     },
@@ -57,6 +61,7 @@ module.exports = env => {
                 postcssOptions: {
                   plugins: function () {
                     return [
+                      // require('precss'),
                       require('autoprefixer')
                     ];
                   }
@@ -82,10 +87,17 @@ module.exports = env => {
     },
     optimization: {
       minimize: env.production, // Minimize JavaScript in production.
-      minimizer: [new TerserPlugin({ parallel: true })],
+      minimizer: [
+        new TerserPlugin({ parallel: true }),
+        // new CssMinimizerPlugin({}),
+      ],
     },
     plugins: [
-      new Dotenv(), // Make .env variables available in entry file.
+
+      // Make .env variables available in the entry file.
+      // WARNING: Any variables used in JavaScript will be compiled.
+      new Dotenv(),
+
     ],
   }
 };

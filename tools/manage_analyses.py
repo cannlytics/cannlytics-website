@@ -29,7 +29,7 @@ import sys
 from dotenv import dotenv_values
 
 # Internal imports.
-from datasets import get_dataset, upload_dataset
+from data_management import get_data, upload_data
 
 # Define references.
 FILENAME = 'analyses.json'
@@ -41,17 +41,17 @@ ID = 'analysis_id'
 def get_analysis_data():
     """Get analysis data from Firestore."""
     try:
-        return get_dataset(REF, datafile=f'.datasets/{FILENAME}')
+        return get_data(REF, datafile=f'.datasets/{FILENAME}')
     except FileNotFoundError:
-        return get_dataset(REF, datafile=f'../.datasets/{FILENAME}')
+        return get_data(REF, datafile=f'../.datasets/{FILENAME}')
 
 
 def upload_analysis_data():
     """Upload analysis data from local `.datasets`."""
     try:
-        upload_dataset(f'.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
+        upload_data(f'.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
     except FileNotFoundError:
-        upload_dataset(f'../.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
+        upload_data(f'../.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
 
 
 if __name__ == '__main__':

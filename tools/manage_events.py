@@ -29,7 +29,7 @@ import sys
 from dotenv import dotenv_values
 
 # Internal imports
-from datasets import get_dataset, upload_dataset
+from data_management import get_data, upload_data
 
 # Set credentials.
 try:
@@ -45,9 +45,9 @@ def get_event_data():
     """Get event data from Firestore."""
     ref = 'public/events/event_data'
     try:
-        return get_dataset(ref, datafile='.datasets/events.json')
+        return get_data(REF, datafile='.datasets/events.json')
     except FileNotFoundError:
-        return get_dataset(ref, datafile='../.datasets/events.json')
+        return get_data(REF, datafile='../.datasets/events.json')
 
 
 def upload_event_data():
@@ -55,9 +55,9 @@ def upload_event_data():
     ref = 'public/events/event_data'
     stats_doc = 'public/events'
     try:
-        upload_dataset('.datasets/events.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/events.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_dataset('../.datasets/events.json', ref, stats_doc=stats_doc)
+        upload_data('../.datasets/events.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

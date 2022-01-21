@@ -8,6 +8,7 @@
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 @import 'bootstrap/scss/bootstrap';
+// @import '@primer/css/box/index.scss';
 @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=Libre+Franklin:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:100,200,300,400,500,600,700');
@@ -112,6 +113,9 @@ p small {
 }
 .no-line-height {
   line-height: unset !important;
+}
+.lh-md {
+  line-height: 1.5 !important;
 }
 .large-line {
   line-height: 1.25 !important;

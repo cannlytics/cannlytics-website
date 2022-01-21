@@ -77,12 +77,38 @@
 
   {% else %}
 
+    <!-- TODO: 
+    
+      - View PDF button
+      - Share button: Email / LinkedIn / Copy Link
+      - Cite button: Export BibTex citation, ACM reference (open in a modal)
+      - Links to author pages.
+      - Submit a paper button
+      - Keyword chips -> Link to articles/keyword/<keyword> that show
+        a list of all articles with that keyword.
+
+      Sidebar including:
+        - Metrics:
+          # Reads
+          # Downloads
+      
+      Article information:
+        - Published: {{ article.published_at_formatted }}
+
+    -->
+
     <!-- Article Body -->
     <div class="container my-3">
       <div class="col markdown">
-        {{ post|safe }}
+        <!-- TODO: Show the abstract -->
+        {{ article.abstract|safe }}
       </div>
     </div>
+
+    <!-- About the Author(s)
+      TODO: Picture of the author(s) [Ask Paul for his picture],
+      name, decription, and contact info.
+    -->
 
   {% endif %}
 

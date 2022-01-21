@@ -29,7 +29,7 @@ import sys
 from dotenv import dotenv_values
 
 # Internal imports
-from datasets import get_dataset, upload_dataset
+from data_management import get_data, upload_data
 
 # Set credentials.
 try:
@@ -45,9 +45,9 @@ def get_verification_data():
     """Get verification data from Firestore."""
     ref = 'public/verifications/verification_data'
     try:
-        return get_dataset(ref, datafile='.datasets/verifications.json')
+        return get_data(REF, datafile='.datasets/verifications.json')
     except FileNotFoundError:
-        return get_dataset(ref, datafile='../.datasets/verifications.json')
+        return get_data(REF, datafile='../.datasets/verifications.json')
 
 
 def upload_verification_data():
@@ -55,9 +55,9 @@ def upload_verification_data():
     ref = 'public/verifications/verification_data'
     stats_doc = 'public/verifications'
     try:
-        upload_dataset('.datasets/verifications.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/verifications.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_dataset('../.datasets/verifications.json', ref, stats_doc=stats_doc)
+        upload_data('../.datasets/verifications.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

@@ -29,7 +29,7 @@ import sys
 from dotenv import dotenv_values
 
 # Internal imports
-from datasets import get_dataset, upload_dataset
+from data_management import get_data, upload_data
 
 # Set credentials.
 try:
@@ -45,9 +45,9 @@ def get_whitepaper_data():
     """Get whitepaper data from Firestore."""
     ref = 'public/whitepapers/whitepaper_data'
     try:
-        return get_dataset(ref, datafile='.datasets/whitepapers.json')
+        return get_data(REF, datafile='.datasets/whitepapers.json')
     except FileNotFoundError:
-        return get_dataset(ref, datafile='../.datasets/whitepapers.json')
+        return get_data(REF, datafile='../.datasets/whitepapers.json')
 
 
 def upload_whitepaper_data():
@@ -55,9 +55,9 @@ def upload_whitepaper_data():
     ref = 'public/whitepapers/whitepaper_data'
     stats_doc = 'public/whitepapers'
     try:
-        upload_dataset('.datasets/whitepapers.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/whitepapers.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_dataset('../.datasets/whitepapers.json', ref, stats_doc=stats_doc)
+        upload_data('../.datasets/whitepapers.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

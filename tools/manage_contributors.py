@@ -60,9 +60,9 @@ def get_contributor_data():
     """Get contributor data from Firestore."""
     ref = 'public/contributors/contributor_data'
     try:
-        return get_dataset(ref, datafile='.datasets/contributors.json')
+        return get_data(REF, datafile='.datasets/contributors.json')
     except FileNotFoundError:
-        return get_dataset(ref, datafile='../.datasets/contributors.json')
+        return get_data(REF, datafile='../.datasets/contributors.json')
 
 
 def upload_contributors(org_name):

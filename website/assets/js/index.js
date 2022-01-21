@@ -18,6 +18,8 @@ import { website } from './website/website.js';
 import { showNotification } from './utils.js';
 import { ui } from './ui/ui.js';
 
+import '../css/cannlytics.scss';
+
 export {
   auth,
   data,

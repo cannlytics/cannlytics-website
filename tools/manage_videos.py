@@ -29,7 +29,7 @@ import sys
 from dotenv import dotenv_values
 
 # Internal imports
-from datasets import get_dataset, upload_dataset
+from data_management import get_data, upload_data
 
 # Set credentials.
 try:
@@ -45,9 +45,9 @@ def get_video_data():
     """Get video data from Firestore."""
     ref = 'public/videos/video_data'
     try:
-        return get_dataset(ref, datafile='.datasets/videos.json', order_by='number')
+        return get_data(REF, datafile='.datasets/videos.json', order_by='number')
     except FileNotFoundError:
-        return get_dataset(ref, datafile='../.datasets/videos.json', order_by='number')
+        return get_data(REF, datafile='../.datasets/videos.json', order_by='number')
 
 
 def upload_video_data():
@@ -55,9 +55,9 @@ def upload_video_data():
     ref = 'public/videos/video_data'
     stats_doc = 'public/videos'
     try:
-        upload_dataset('.datasets/videos.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/videos.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_dataset('../.datasets/videos.json', ref, stats_doc=stats_doc)
+        upload_data('../.datasets/videos.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

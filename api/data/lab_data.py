@@ -99,6 +99,55 @@ def lab_analyses(request, org_id, format=None):
         return Response({'success': True, 'data': 'Under construction'}, content_type='application/json')
 
 
+@api_view(['GET'])
+def lab_results(request, license_number=None):
+    """Get laboratory results (public API endpoint)."""
+    data = []
+
+    # FIXME: Implement!
+    response = {'success': False, 'message': 'Not yet implemented.', 'data': data}
+    return Response(response, status=200)
+
+    # TODO: Restrict to pro subscribers.
+
+    # if request.method == 'GET':
+
+    #     # Get a specific organization.
+    #     organization_id = request.query_params.get('organization_id')
+    #     if organization_id and organization_id != 'undefined':
+    #         data = get_document(f'public/data/labs/{organization_id}')
+
+    #     else:
+
+    #         # Define query parameters.
+    #         filters = []
+    #         order_by = request.query_params.get('order_by', 'name')
+    #         limit = request.query_params.get('limit')
+    #         state = request.query_params.get('state')
+    #         # Optional: Implement more queries the user can use.
+    #         # - name
+    #         # - analyses?
+
+    #         # Apply user-specified filters.
+    #         if license_number:
+    #             filters.append({'key': 'license', 'operation': '==', 'value': license_number})
+    #         elif state:
+    #             filters.append({'key': 'state', 'operation': '==', 'value': state})
+
+    #         # Query and return the docs.
+    #         data = get_collection(
+    #             'public/data/labs',
+    #             desc=False,
+    #             filters=filters,
+    #             limit=limit,
+    #             order_by=order_by,
+    #         )
+
+    # # Return data in a response.
+    # response = {'success': True, 'data': data}
+    # return Response(response, status=200)
+
+
 #------------------------------------------------------------------------------
 # SCRAP
 #------------------------------------------------------------------------------

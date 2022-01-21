@@ -1,19 +1,17 @@
 <!doctype html>
 <html>
 <!--
-  Market Dataset | Cannlytics Website
-  Created: 10/16/2021
-  Updated: 10/16/2021
+  Market Datasets | Cannlytics Website
   Params:
     items (list)
 -->
 <div class="row mb-4">
   {% for item in items %}
-    <div class="video-card col-10 col-md-6 col-lg-4 mb-4 mb-lg-5 px-4">
-      <div class="card border-secondary rounded-3 h-100">
+    <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-5 px-4">
+      <div class="card bg-transparent border-secondary rounded-3 h-100 shadow-hover">
           <a
             class="card-block stretched-link text-decoration-none"
-            href="/data/market/{{ item.did }}"
+            href="{% url 'unit' page='data' section='market' unit=item.id  %}"
           >
           <img
             src="{{ item.image_url }}"
@@ -33,7 +31,7 @@
           <div class="card-body bg-transparent px-2 pt-0 pb-1">
             <p class="text-secondary fs-6">
               <small>
-                {{ item.description|truncatechars:120 }}
+                {{ item.description|truncatechars:165 }}
               </small>
             </p>
           </div>

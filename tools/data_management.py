@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/26/2021
-Updated: 12/26/2021
+Updated: 1/20/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports.
@@ -42,7 +42,7 @@ def clean_obs(obs: dict) -> dict:
     return item
 
 
-def get_dataset(
+def get_data(
         ref: str,
         datafile: Optional[str] = '',
         order_by: Optional[str] = '',
@@ -62,12 +62,12 @@ def get_dataset(
     print('Found {} observations.'.format(len(data)))
     if datafile:
         print('Saving data...')
-        save_dataset(data, datafile)
+        save_data(data, datafile)
         print('Saved data to', datafile)
     return data
 
 
-def upload_dataset(
+def upload_data(
         file_name: str,
         collection: str,
         id_key: Optional[str] = 'id',
@@ -99,7 +99,7 @@ def upload_dataset(
     return data
 
 
-def save_dataset(data, file_name):
+def save_data(data, file_name):
     """Save a dataset locally."""
     output = [clean_obs(x) for x in data]
     with open(file_name, 'w+') as datafile:

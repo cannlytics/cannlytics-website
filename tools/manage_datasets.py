@@ -1,10 +1,10 @@
 """
-Manage Lab Data | Cannlytics Website
-Copyright (c) 2022 Cannlytics
+Manage Datasets | Cannlytics Website
+Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
-Created: 1/9/2022
-Updated: 1/9/2022
+Created: 12/26/2021
+Updated: 1/8/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 Command-line examples:
@@ -12,42 +12,42 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_labs.py get_lab_data
+    python tools/manage_datasets.py get_dataset_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_labs.py upload_lab_data
+    python tools/manage_datasets.py upload_dataset_data
     ```
 """
-# Standard imports.
+# Standard imports
 import os
 import sys
 
-# External imports.
+# External imports
 from dotenv import dotenv_values
 
-# Internal imports.
+# Internal imports
 from data_management import get_data, upload_data
 
 # Define references.
-FILENAME = 'labs.json'
+FILENAME = 'datasets.json'
 DOC = 'public/data'
-REF = f'{DOC}/labs'
-ID = 'license'
+REF = f'{DOC}/datasets'
+ID = 'dataset_id'
 
 
-def get_lab_data():
-    """Get lab data from Firestore."""
+def get_dataset_data():
+    """Get dataset data from Firestore."""
     try:
         return get_data(REF, datafile=f'.datasets/{FILENAME}')
     except FileNotFoundError:
         return get_data(REF, datafile=f'../.datasets/{FILENAME}')
 
 
-def upload_lab_data():
-    """Upload lab data from local `.datasets`."""
+def upload_dataset_data():
+    """Upload dataset data from local `.datasets`."""
     try:
         upload_data(f'.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
     except FileNotFoundError:

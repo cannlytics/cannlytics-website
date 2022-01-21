@@ -29,7 +29,7 @@ import sys
 from dotenv import dotenv_values
 
 # Internal imports
-from datasets import get_dataset, upload_dataset
+from data_management import get_data, upload_data
 
 # Set credentials.
 try:
@@ -45,9 +45,9 @@ def get_subscription_data():
     """Get subscription data from Firestore."""
     ref = 'public/subscriptions/subscription_plans'
     try:
-        return get_dataset(ref, datafile='.datasets/subscriptions.json')
+        return get_data(REF, datafile='.datasets/subscriptions.json')
     except FileNotFoundError:
-        return get_dataset(ref, datafile='../.datasets/subscriptions.json')
+        return get_data(REF, datafile='../.datasets/subscriptions.json')
 
 
 def upload_subscription_data():
@@ -55,9 +55,9 @@ def upload_subscription_data():
     ref = 'public/subscriptions/subscription_plans'
     stats_doc = 'public/subscriptions'
     try:
-        upload_dataset('.datasets/subscriptions.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/subscriptions.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_dataset('../.datasets/subscriptions.json', ref, stats_doc=stats_doc)
+        upload_data('../.datasets/subscriptions.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

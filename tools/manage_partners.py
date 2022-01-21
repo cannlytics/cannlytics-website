@@ -29,7 +29,7 @@ import sys
 from dotenv import dotenv_values
 
 # Internal imports
-from datasets import get_dataset, upload_dataset
+from data_management import get_data, upload_data
 
 # Set credentials.
 try:
@@ -45,9 +45,9 @@ def get_partner_data():
     """Get partner data from Firestore."""
     ref = 'public/partners/partner_data'
     try:
-        return get_dataset(ref, datafile='.datasets/partners.json')
+        return get_data(REF, datafile='.datasets/partners.json')
     except FileNotFoundError:
-        return get_dataset(ref, datafile='../.datasets/partners.json')
+        return get_data(REF, datafile='../.datasets/partners.json')
 
 
 def upload_partner_data():
@@ -55,9 +55,9 @@ def upload_partner_data():
     ref = 'public/partners/partner_data'
     stats_doc = 'public/partners'
     try:
-        upload_dataset('.datasets/partners.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/partners.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_dataset('../.datasets/partners.json', ref, stats_doc=stats_doc)
+        upload_data('../.datasets/partners.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':
