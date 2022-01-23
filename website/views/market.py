@@ -15,14 +15,37 @@ from json import loads
 # External imports
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
 
 # Internal imports.
 from cannlytics.firebase import (
     add_to_array,
     get_collection,
+    get_document,
     increment_value,
 )
 from cannlytics.data import market
+from website.views.mixins import BaseMixin
+
+
+class DatasetView(BaseMixin, TemplateView):
+    """Dataset page."""
+
+    def get_template_names(self):
+        return ['website/pages/data/dataset.html']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get PayPal credentials.
+        context['paypal'] = get_document('credentials/paypal')
+
+        # Get a dataset.
+        dataset_id = self.kwargs.get('dataset_id', '')
+        if dataset_id:
+            context['dataset'] = get_document(f'public/data/datasets/{dataset_id}')
+
+        return context
 
 
 @csrf_exempt

@@ -45,7 +45,7 @@
       <div class="row mt-5">
         {% for item in team %}
           {% if item.active %}
-            <figure class="figure col-md-4">
+            <figure id="{{ item.id }}" class="figure col-md-4 p-4">
               <a href="{{ item.url }}" title="{{ item.name}}">
                 <img
                   class="figure-img img-fluid rounded-3"
@@ -53,11 +53,10 @@
                   style="height:150px"
                 >
               </a>
-              <figcaption class="figure-caption w-50">
-                <div class="fs-5 text-dark fw-bold">{{ item.name}}</div>
-                <div class="text-secondary">{{ item.company}}</div>
-                <div class="text-secondary">{{ item.location}}</div>
-                <div class="text-secondary">{{ item.description}}</div>
+              <figcaption class="figure-caption text-dark mt-1">
+                <div class="fs-6 text-dark fw-bold serif">{{ item.name}}</div>
+                <div class="mb-2">{{ item.position}}</div>
+                <div class="serif lh-md">{{ item.description}}</div>
                 <!-- Optional: Add phone number and email-->
               </figcaption>
             </figure>

@@ -15,8 +15,7 @@
   <div class="d-flex align-items-center justify-content-center flex-wrap fw-bold">
 
     <!-- Phone-->
-    
-    <a
+    {% comment %} <a
       class="text-dark background-hover"
       href="tel:{{ phone_number }}"
       title="Call us"
@@ -25,10 +24,10 @@
         {{ phone }}
       </small>
     </a>
-    <span class="px-2">|</span>
+    <span class="px-2">|</span> {% endcomment %}
 
     <!-- Email-->
-    <a
+    {% comment %} <a
       class="text-dark background-hover"
       href="mailto:{{ email }}"
       title="Email us"
@@ -37,11 +36,25 @@
         {{ email }}
       </small>
     </a>
+    <span class="px-2">|</span> {% endcomment %}
+    <a
+      class="text-dark background-hover d-flex align-items-center"
+      href="{% url 'page' page='whitepapers' %}"
+      title="Read the latest paper about the cannabis industry."
+    >
+      {% comment %} <svg class="" style="width:20px;height:20px;">
+        <use href="{% static "website/images/emojies/scroll.svg" %}#scroll-emoji"></use>
+      </svg> {% endcomment %}
+      <span class="badge rounded-pill bg-success me-1">New</span>
+      <small>
+        The Journal of the Cannabis Industry #1
+      </small>
+    </a>
     <span class="px-2">|</span>
 
     <!-- Support -->
     <a
-      class="text-dark background-hover"
+      class="text-dark background-hover d-flex align-items-center"
       href="{% url 'page' page='subscriptions' %}"
       title="Get the support that your company needs."
     >

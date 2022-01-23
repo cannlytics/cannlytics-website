@@ -5,39 +5,53 @@
   Params:
     items (list)
 -->
-<div class="row mb-4">
-  {% for item in items %}
-    <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-5 px-4">
-      <div class="card bg-transparent border-secondary rounded-3 h-100 shadow-hover">
-          <a
-            class="card-block stretched-link text-decoration-none"
-            href="{% url 'unit' page='data' section='market' unit=item.id  %}"
-          >
-          <img
-            src="{{ item.image_url }}"
-            class="w-100"
-            stlye="max-height:125px;"
-          >
-          <div class="d-flex justify-content-between px-2 pt-1">
-            <div class="d-flex align-items-center">
-              <h4 class="fs-5 fw-bold text-dark">
-                {{ item.title }}
-              </h4>
+<div class="container px-0 mt-3">
+  <div class="row mb-4">
+    {% for item in items %}
+      <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-5">
+        <div class="card bg-transparent border-secondary rounded-3 h-100 shadow-hover">
+            <a
+              class="card-block stretched-link text-decoration-none"
+              href="{% url 'dataset' dataset_id=item.id  %}"
+            >
+            <div class="card-body bg-transparent pa-3">
+              {% comment %} <img
+                src="{{ item.image_url }}"
+                class="w-100"
+                stlye="max-height:125px;"
+              > {% endcomment %}
+              <div class="d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <h5 class="fs-5 lh-md text-dark serif">
+                    {{ item.name }}
+                  </h5>
+                </div>
+              </div>
+              <div class="text-secondary">
+                <small class="serif">{{ item.published_at|date }}</small>
+              </div>
+              <p class="text-secondary fs-6">
+                <small>
+                  {{ item.description|truncatechars:165 }}
+                </small>
+              </p>
             </div>
-          </div>
-          <div class="text-secondary mb-2 px-2">
-            <small class="serif">{{ item.published_at|date }}</small>
-          </div>
-          <div class="card-body bg-transparent px-2 pt-0 pb-1">
-            <p class="text-secondary fs-6">
-              <small>
-                {{ item.description|truncatechars:165 }}
-              </small>
-            </p>
-          </div>
-        </a>
+
+            <!-- Card footer -->
+            <div class="card-footer pa-3 border-secondary">
+            <!-- TODO: Details button, Add to Cart button -->
+              <a class="btn btn-sm-light btn-md-light">
+                Details
+              </a>
+              <a class="btn btn-sm-light btn-md-light">
+                Add to cart
+              </a>
+            </div>
+
+          </a>
+        </div>
       </div>
-    </div>
-  {% endfor %}
+    {% endfor %}
+  </div>
 </div>
 </html>

@@ -232,6 +232,22 @@ material = {
             },
         ],
     },
+    "whitepapers": {
+        "test_whitepapers": [{
+            "author": "Paul Kitko",
+            "cover_url": "https://storage.googleapis.com/cannlytics.appspot.com/public/images/whitepapers/market-basket-analysis-cover.png?Expires=4796493075&GoogleAccessId=firebase-adminsdk-e6c0x%40cannlytics.iam.gserviceaccount.com&Signature=hLmXbavHb%2BsH07Jd9lYuKPYQsru9iAi5L8TwCO4ksp2MCM6%2BhUhxNs1f%2BpbNCPcLyPkxIenTSvwXi2ORjW3busn6odt%2BnihZ%2FPS%2B9KLuZsilVqfuu4QCsGptiK%2F0%2BRHpsZCsa%2F9%2BgzYOIMEDLXMZ4nOMIABYNT5Jc1xomlSwrDPjDQgnL98byfMUgWffT%2Fjip%2BwEB%2FA27QuxzWDHwE2f38efvWEh7clfFXDk%2Btz3h%2FGDl1Pi4v%2B3NbUzovyz07l35CCgklcgf%2BzHtdgYvpD%2BUShLlMO%2B04kUDn9%2FMdZmTAWW74K9IuHG0CRZxHxoOOZqOga0lfE4U1iEymHUfj8hSw%3D%3D",
+            "description": "",
+            "id": "market-basket-analysis",
+            "plan_id": "",
+            "plan_name": "Newsletter",
+            "price": "",
+            "published_at": "2022-01-25",
+            "slug": "identifying-cannabis-dispensary-purchase-patterns-with-market-basket-analysis",
+            "title": "Identifying Cannabis Dispensary Purchase Patterns with Market Basket Analysis",
+            "url": "https://storage.googleapis.com/cannlytics.appspot.com/public/images/whitepapers/market-basket-analysis-cover.png?Expires=4796493075&GoogleAccessId=firebase-adminsdk-e6c0x%40cannlytics.iam.gserviceaccount.com&Signature=hLmXbavHb%2BsH07Jd9lYuKPYQsru9iAi5L8TwCO4ksp2MCM6%2BhUhxNs1f%2BpbNCPcLyPkxIenTSvwXi2ORjW3busn6odt%2BnihZ%2FPS%2B9KLuZsilVqfuu4QCsGptiK%2F0%2BRHpsZCsa%2F9%2BgzYOIMEDLXMZ4nOMIABYNT5Jc1xomlSwrDPjDQgnL98byfMUgWffT%2Fjip%2BwEB%2FA27QuxzWDHwE2f38efvWEh7clfFXDk%2Btz3h%2FGDl1Pi4v%2B3NbUzovyz07l35CCgklcgf%2BzHtdgYvpD%2BUShLlMO%2B04kUDn9%2FMdZmTAWW74K9IuHG0CRZxHxoOOZqOga0lfE4U1iEymHUfj8hSw%3D%3D",
+            "abstract": "Market Basket Analysis (MBA) sometimes referred to as Association Rule Mining, Affinity Analysis or Frequent Itemset Mining, was developed as a method to evaluate \"if / then\" associations that arise between elements in a dataset. Historically MBA rule sets have been applied to retail grocery stores' Point of Sale data to develop likely product associations that can then be used to anticipate and recommend combinations of future purchases. These recommendations or \"cross-sells\" have been found to be useful in improving retail sales volume. The newly legalized recreational cannabis market offers an opportunity to apply MBA to an unexplored retail industry. This project used MBA on a retail cannabis dataset representing multiple dispensaries across the state of Washington. The project's purpose was to verify if MBA was feasible in uncovering useful product association rules from a cannabis sales dataset to use in cross-selling recommendations. The results of the study show that it is possible to derive meaning MBA rule sets from cannabis retail data but that some limitations were uncovered that offer three future opportunities for research. First that similar product with highly differentiated names may need to be re-categorized into more generalized and meaningful products. Second, that it is possible that product churn may introduce signal noise into the MBA process resulting in a higher number of less useful rule sets. Third, that cannabis customers tend to purchase within product families which is an atypical finding in MBA and should be further explored." # (Agrawal et el., 1994)
+        }]
+    }
 }
 
 # Context for lab pages.
@@ -376,7 +392,7 @@ page_data = {
             }
         ],
     },
-    "whitepapers": {
-        "collections": [{"name": "whitepapers", "ref": "public/whitepapers/whitepaper_data"}],
-    }
+    # "whitepapers": {
+    #     "collections": [{"name": "whitepapers", "ref": "public/whitepapers/whitepaper_data"}],
+    # }
 }

@@ -14,37 +14,7 @@
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;600&display=swap');
-
-/*--------------------------------------------------------------------------
-  Color utilities
----------------------------------------------------------------------------*/
-
-// @import "bootstrap/scss/functions";
-// @import "bootstrap/scss/variables";
-// @import "bootstrap/scss/mixins";
-// @import "bootstrap/scss/utilities";
-
-// $all-colors: map-merge-multiple($grays);
-
-// $utilities: map-merge(
-//   $utilities,
-//   (
-//     "background-color": map-merge(
-//       map-get($utilities, "background-color"),
-//       (
-//         values: map-merge(
-//           map-get(map-get($utilities, "background-color"), "values"),
-//           (
-//             $all-colors
-//           ),
-//         ),
-//       ),
-//     ),
-//   )
-// );
-
-// @import "bootstrap/scss/utilities/api";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;500;600&display=swap');
 
 /*--------------------------------------------------------------------------
   Main tags
@@ -714,9 +684,9 @@ body.dark .btn-sm-light:hover {
   Tabs
 ---------------------------------------------------------------------------*/
 
-.nav-tabs .nav-link {
-  color: #777;
-}
+// .nav-tabs .nav-link {
+//   color: #777;
+// }
 .nav-tabs .nav-link.active {
   color: #1a1a1a;
 }
@@ -1414,7 +1384,7 @@ footer li a {
 .nav-link.active {
   color: #1a1a1a !important;
 }
-body.dark .nav-link,
+// body.dark .nav-link,
 body.dark .navbar-toggler-icon {
   color: #ccc !important;
 }
