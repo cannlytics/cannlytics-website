@@ -232,6 +232,7 @@ material = {
             },
         ],
     },
+    # TODO: Move to Firestore
     "whitepapers": {
         "whitepapers": [{
             "author": "Paul Kitko",
@@ -251,7 +252,46 @@ material = {
             "chicago_citation_style": "Kitko, P. (2022). Identifying cannabis dispensary purchase patterns with market basket analysis. The Journal of the Cannabis Industry 1 (1), 1-24.",
             "harvard_citation_style": "Kitko, P. (2022), `Identifying cannabis dispensary purchase patterns with market basket analysis', The Journal of the Cannabis Industry 1(1), 1-24. URL: https://cannlytics.com/whitepapers/market-basket-analysis",
         }]
-    }
+    },
+    "market": {
+        "datasets": [
+            {
+                "access_type": "token",
+                "algorithm_url": "https://github.com/cannlytics/cannlytics-ai",
+                "data_guide_url": "",
+                "data_sources": [],
+                "description": "Washington State lab results combined with licensee, inventory, and strain data.",
+                "doc": "datasets/WA/augmented-washington-state-lab-results",
+                "published_at": "2022-01-20",
+                "published_at_formatted": "January 20, 2022",
+                "published_by": "Cannlytics",
+                "published_by_url": "https://cannlytics.com",
+                "file_size": "166 MB",
+                "file_size_bytes": "",
+                "file_types": [".csv", ".xlsx", ".json"],
+                "id": "augmented-washington-state-lab-results",
+                "image_url": "",
+                "license": "https://creativecommons.org/licenses/by-nd/4.0/",
+                "name": "Augmented Washington State Lab Results",
+                "new": True,
+                "number_of_downloads": 1,
+                "number_of_fields": "",
+                "number_of_observations": "",
+                "price_usd": "$499",
+                "price_usd_students": "$99",
+                "sample_file_name": "",
+                "sample_file_url": "",
+                "tags": ["leaf-data-systems", "lab-results", "inventory", "strains", "licensees", "labs"],
+                "time_period_start": "",
+                "time_period_end": "",
+                "updated_at": "",
+                "updated_at_formatted": "",
+                "url": "https://cannlyitcs.com/data/market/augmented-washington-state-lab-results",
+                "short_url": "",
+                "value_generated_usd": 499
+            }
+        ],
+    },
 }
 
 # Context for lab pages.
@@ -328,17 +368,17 @@ page_data = {
     "map": {
         "documents":[{"name": "google", "ref": "credentials/google"}],
     },
-    "market": {
-        "collections": [
-            {
-                "name": "datasets",
-                "ref": "public/data/datasets",
-                "limit": 10,
-                "order_by": "published_at",
-                "desc": True
-            }
-        ],
-    },
+    # "market": {
+    #     "collections": [
+    #         {
+    #             "name": "datasets",
+    #             "ref": "public/data/datasets",
+    #             "limit": 10,
+    #             "order_by": "published_at",
+    #             "desc": True
+    #         }
+    #     ],
+    # },
     "events": {
         "collections": [{"name": "events", "ref": "public/events/event_data"}],
     },

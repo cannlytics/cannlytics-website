@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_feather',
     'django_robohash',
+    'django.contrib.humanize',
 ]
 
 # ------------------------------------------------------------#

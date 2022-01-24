@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 10/14/2021
-  Updated: 1/21/2022
+  Updated: 1/24/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
@@ -30,13 +30,14 @@
   <div class="d-flex align-items-center justify-content-between mb-4">
 
     <!-- Title -->
-    <h2 class="text-dark serif mb-0">Data Market</h2>
+    <h2 id="data-market" class="text-dark serif mb-0">Data Market</h2>
 
     <!-- Options -->
     <div class="d-flex align-items-center">
 
+      {% comment %}
       <!-- TODO: Currency selection -->
-      {% comment %} <select
+      <select
         class="app-action form-select form-select-sm btn-sm-light"
         aria-label="Select currency"
         style="width:90px;"
@@ -46,20 +47,36 @@
         <option value="btc">EUR (€)</option>
         <option value="btc">BTC (₿)</option>
         <option value="eth">ETH (Ξ)</option>
-      </select> {% endcomment %}
+      </select>
+      {% endcomment %}
 
+      {% comment %}
       <!-- TODO: Connect wallet -->
-      {% comment %} <button class="btn btn-sm-light text-nowrap ms-2">
+      <button class="btn btn-sm-light text-nowrap ms-2">
         {% icon "credit-card" width="16px" height="16px" class="me-1" %}
         Connect Wallet
-      </button> {% endcomment %}
+      </button>
+      {% endcomment %}
 
       <!-- TODO: Implement publish data -->
-      <a class="btn btn-sm-light ms-2 text-nowrap" href="{% url 'section' 'data' 'publish' %}">
+      <a
+        class="btn btn-sm-light btn-md-light ms-2 serif text-nowrap"
+        href="{% url 'section' 'data' 'publish' %}"
+      >
         {% icon "upload-cloud" width="16px" height="16px" class="me-1" %}
         Publish Data
       </a>
 
+      <!-- Link to GitHub -->
+      <a
+        class="btn btn-sm-light btn-md-light ms-2 serif text-nowrap"
+        href="https://github.com/cannlytics/cannlytics-ai"
+      >
+        {% icon "github" width="16px" height="16px" class="me-1" %}
+        Browse Algorithms
+      </a>
+
+      {% comment %}
       <!-- TODO: Implement checkout -->
       <button class="btn btn-sm-light text-nowrap ms-2 d-flex align-items-center">
         {% icon "shopping-cart" width="16px" height="16px" %}
@@ -69,12 +86,14 @@
         >0</span>
         Checkout
       </button>
+      {% endcomment %}
 
     </div>
   </div>
 
   <!-- Grid of Datasets -->
-  {% include "website/pages/data/datasets.html" with items=datasets %}
+  <!-- TODO: Implement keyword filter -->
+  {% include "website/pages/data/datasets.html" with items=market.datasets %}
   
 
   <!-- Options -->
