@@ -1566,6 +1566,12 @@ body.dark .info-bar {
 body.dark .modal-content {
   background-color: #323443;
 }
+body.dark .modal-content .link-primary {
+  color: #73BFF9;
+}
+body.dark .modal-content .link-primary:hover {
+  color: #47ADFB;
+}
 
 /*--------------------------------------------------------------------------
   Cards
@@ -1610,4 +1616,27 @@ body.dark .modal-content {
 }
 body.dark .linear-background {
   background: linear-gradient(90deg,#eeeeee30 8%,#dddddd30 18%,#eeeeee30 33%);
+}
+
+
+/*--------------------------------------------------------------------------
+ * Popovers
+ *-------------------------------------------------------------------------*/
+
+body.dark .popover {
+  border-color: #9b9ca3 !important;
+}
+body.dark .popover-header {
+  background-color: #323443;
+  border-color: #9b9ca3 !important;
+  color: #ffffff;
+}
+body.dark .popover-body {
+  background-color: #323443 !important;
+}
+body.dark .popover .link-primary {
+  color: #73BFF9;
+}
+body.dark .popover .link-primary:hover {
+  color: #47ADFB;
 }

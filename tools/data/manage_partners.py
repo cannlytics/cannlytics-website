@@ -1,10 +1,10 @@
 """
-Manage Verifications | Cannlytics Website
+Manage Partners | Cannlytics Website
 Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
-Created: 11/15/2021
-Updated: 12/26/2021
+Created: 9/10/2021
+Updated: 12/27/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 Command-line examples:
@@ -12,13 +12,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_verifications.py get_verification_data
+    python tools/data/manage_partners.py get_partner_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_verifications.py upload_verification_data
+    python tools/data/manage_partners.py upload_partner_data
     ```
 """
 # Standard imports
@@ -33,7 +33,7 @@ from data_management import get_data, upload_data
 
 # Set credentials.
 try:
-    config = dotenv_values('../.env')
+    config = dotenv_values('../../.env')
     credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
 except KeyError:
     config = dotenv_values('.env')
@@ -41,23 +41,23 @@ except KeyError:
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
 
 
-def get_verification_data():
-    """Get verification data from Firestore."""
-    ref = 'public/verifications/verification_data'
+def get_partner_data():
+    """Get partner data from Firestore."""
+    ref = 'public/partners/partner_data'
     try:
-        return get_data(REF, datafile='.datasets/verifications.json')
+        return get_data(REF, datafile='.datasets/partners.json')
     except FileNotFoundError:
-        return get_data(REF, datafile='../.datasets/verifications.json')
+        return get_data(REF, datafile='../../.datasets/partners.json')
 
 
-def upload_verification_data():
-    """Upload verification data from local `.datasets`."""
-    ref = 'public/verifications/verification_data'
-    stats_doc = 'public/verifications'
+def upload_partner_data():
+    """Upload partner data from local `.datasets`."""
+    ref = 'public/partners/partner_data'
+    stats_doc = 'public/partners'
     try:
-        upload_data('.datasets/verifications.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/partners.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_data('../.datasets/verifications.json', ref, stats_doc=stats_doc)
+        upload_data('../../.datasets/partners.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

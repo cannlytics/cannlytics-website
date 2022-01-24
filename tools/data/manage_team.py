@@ -1,5 +1,5 @@
 """
-Manage Events | Cannlytics Website
+Manage Team | Cannlytics Website
 Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
@@ -12,13 +12,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_events.py get_event_data
+    python tools/data/manage_team.py get_team_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_events.py upload_event_data
+    python tools/data/manage_team.py upload_team_data
     ```
 """
 # Standard imports
@@ -33,7 +33,7 @@ from data_management import get_data, upload_data
 
 # Set credentials.
 try:
-    config = dotenv_values('../.env')
+    config = dotenv_values('../../.env')
     credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
 except KeyError:
     config = dotenv_values('.env')
@@ -41,23 +41,23 @@ except KeyError:
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
 
 
-def get_event_data():
-    """Get event data from Firestore."""
-    ref = 'public/events/event_data'
+def get_team_data():
+    """Get team member data from Firestore."""
+    ref = 'public/team/team_members'
     try:
-        return get_data(REF, datafile='.datasets/events.json')
+        return get_data(REF, datafile='.datasets/team.json')
     except FileNotFoundError:
-        return get_data(REF, datafile='../.datasets/events.json')
+        return get_data(REF, datafile='../../.datasets/team.json')
 
 
-def upload_event_data():
-    """Upload event data from local `.datasets`."""
-    ref = 'public/events/event_data'
-    stats_doc = 'public/events'
+def upload_team_data():
+    """Upload team member data from local `.datasets`."""
+    ref = 'public/team/team_members'
+    stats_doc = 'public/team'
     try:
-        upload_data('.datasets/events.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/team.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_data('../.datasets/events.json', ref, stats_doc=stats_doc)
+        upload_data('../../.datasets/team.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

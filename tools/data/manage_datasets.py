@@ -12,13 +12,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_datasets.py get_dataset_data
+    python tools/data/manage_datasets.py get_dataset_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_datasets.py upload_dataset_data
+    python tools/data/manage_datasets.py upload_dataset_data
     ```
 """
 # Standard imports
@@ -54,7 +54,7 @@ def get_dataset_data():
     try:
         return get_data(REF, datafile=f'.datasets/{FILENAME}')
     except FileNotFoundError:
-        return get_data(REF, datafile=f'../.datasets/{FILENAME}')
+        return get_data(REF, datafile=f'../../.datasets/{FILENAME}')
 
 
 def upload_dataset_data():
@@ -63,8 +63,8 @@ def upload_dataset_data():
         upload_data(f'.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
         upload_dataset_files('.datasets')
     except FileNotFoundError:
-        upload_data(f'../.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
-        upload_dataset_files('../.datasets')
+        upload_data(f'../../.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
+        upload_dataset_files('../../.datasets')
 
 
 def upload_dataset_files(root: Optional[str] = '.datasets'):
@@ -92,7 +92,7 @@ if __name__ == '__main__':
 
     # Set credentials.
     try:
-        config = dotenv_values('../.env')
+        config = dotenv_values('../../.env')
         credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
     except KeyError:
         config = dotenv_values('.env')

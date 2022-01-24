@@ -18,7 +18,7 @@ from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
 # Internal imports.
 sys.path.append('./')
-sys.path.append('../')
+sys.path.append('../../')
 from cannlytics.firebase import ( # pylint: disable=import-error, wrong-import-position
     get_collection,
     initialize_firebase,

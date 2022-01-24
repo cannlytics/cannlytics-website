@@ -12,13 +12,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_articles.py get_article_data
+    python tools/data/manage_articles.py get_article_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_articles.py upload_article_data
+    python tools/data/manage_articles.py upload_article_data
     ```
 """
 # Standard imports
@@ -33,7 +33,7 @@ from data_management import get_data, upload_data
 
 # Set credentials.
 try:
-    config = dotenv_values('../.env')
+    config = dotenv_values('../../.env')
     credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
 except KeyError:
     config = dotenv_values('.env')
@@ -47,7 +47,7 @@ def get_article_data():
     try:
         return get_data(REF, datafile='.datasets/articles.json')
     except FileNotFoundError:
-        return get_data(REF, datafile='../.datasets/articles.json')
+        return get_data(REF, datafile='../../.datasets/articles.json')
 
 
 def upload_article_data():
@@ -57,7 +57,7 @@ def upload_article_data():
     try:
         upload_data('.datasets/articles.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_data('../.datasets/articles.json', ref, stats_doc=stats_doc)
+        upload_data('../../.datasets/articles.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

@@ -41,3 +41,4 @@ __pycache__/*
 
 # Ignore duplicate static files.
 public/static/*
+public/.well-known

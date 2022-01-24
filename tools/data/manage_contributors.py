@@ -20,13 +20,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_contributors.py get_contributor_data
+    python tools/data/manage_contributors.py get_contributor_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_contributors.py upload_contributor_data
+    python tools/data/manage_contributors.py upload_contributor_data
     ```
 """
 # Standard imports.
@@ -48,7 +48,7 @@ from datasets import get_dataset #pylint: disable=wrong-import-position
 
 # Set credentials.
 try:
-    config = dotenv_values('../.env')
+    config = dotenv_values('../../.env')
     credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
 except KeyError:
     config = dotenv_values('.env')
@@ -62,7 +62,7 @@ def get_contributor_data():
     try:
         return get_data(REF, datafile='.datasets/contributors.json')
     except FileNotFoundError:
-        return get_data(REF, datafile='../.datasets/contributors.json')
+        return get_data(REF, datafile='../../.datasets/contributors.json')
 
 
 def upload_contributors(org_name):

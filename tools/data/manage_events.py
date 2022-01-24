@@ -1,10 +1,10 @@
 """
-Manage Videos | Cannlytics Website
+Manage Events | Cannlytics Website
 Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 12/26/2021
-Updated: 12/27/2021
+Updated: 12/26/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 Command-line examples:
@@ -12,13 +12,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_videos.py get_video_data
+    python tools/data/manage_events.py get_event_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_videos.py upload_video_data
+    python tools/data/manage_events.py upload_event_data
     ```
 """
 # Standard imports
@@ -33,7 +33,7 @@ from data_management import get_data, upload_data
 
 # Set credentials.
 try:
-    config = dotenv_values('../.env')
+    config = dotenv_values('../../.env')
     credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
 except KeyError:
     config = dotenv_values('.env')
@@ -41,23 +41,23 @@ except KeyError:
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
 
 
-def get_video_data():
-    """Get video data from Firestore."""
-    ref = 'public/videos/video_data'
+def get_event_data():
+    """Get event data from Firestore."""
+    ref = 'public/events/event_data'
     try:
-        return get_data(REF, datafile='.datasets/videos.json', order_by='number')
+        return get_data(REF, datafile='.datasets/events.json')
     except FileNotFoundError:
-        return get_data(REF, datafile='../.datasets/videos.json', order_by='number')
+        return get_data(REF, datafile='../../.datasets/events.json')
 
 
-def upload_video_data():
-    """Upload video data from local `.datasets`."""
-    ref = 'public/videos/video_data'
-    stats_doc = 'public/videos'
+def upload_event_data():
+    """Upload event data from local `.datasets`."""
+    ref = 'public/events/event_data'
+    stats_doc = 'public/events'
     try:
-        upload_data('.datasets/videos.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/events.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_data('../.datasets/videos.json', ref, stats_doc=stats_doc)
+        upload_data('../../.datasets/events.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

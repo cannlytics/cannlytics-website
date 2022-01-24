@@ -12,13 +12,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_labs.py get_lab_data
+    python tools/data/manage_labs.py get_lab_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_labs.py upload_lab_data
+    python tools/data/manage_labs.py upload_lab_data
     ```
 """
 # Standard imports.
@@ -43,7 +43,7 @@ def get_lab_data():
     try:
         return get_data(REF, datafile=f'.datasets/{FILENAME}')
     except FileNotFoundError:
-        return get_data(REF, datafile=f'../.datasets/{FILENAME}')
+        return get_data(REF, datafile=f'../../.datasets/{FILENAME}')
 
 
 def upload_lab_data():
@@ -51,14 +51,14 @@ def upload_lab_data():
     try:
         upload_data(f'.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
     except FileNotFoundError:
-        upload_data(f'../.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
+        upload_data(f'../../.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
 
 
 if __name__ == '__main__':
 
     # Set credentials.
     try:
-        config = dotenv_values('../.env')
+        config = dotenv_values('../../.env')
         credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
     except KeyError:
         config = dotenv_values('.env')

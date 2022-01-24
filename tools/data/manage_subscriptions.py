@@ -1,5 +1,5 @@
 """
-Manage Whitepapers | Cannlytics Website
+Manage Subscriptions | Cannlytics Website
 Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
@@ -12,13 +12,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_whitepapers.py get_whitepaper_data
+    python tools/data/manage_subscriptions.py get_subscription_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_whitepapers.py upload_whitepaper_data
+    python tools/data/manage_subscriptions.py upload_subscription_data
     ```
 """
 # Standard imports
@@ -33,7 +33,7 @@ from data_management import get_data, upload_data
 
 # Set credentials.
 try:
-    config = dotenv_values('../.env')
+    config = dotenv_values('../../.env')
     credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
 except KeyError:
     config = dotenv_values('.env')
@@ -41,23 +41,23 @@ except KeyError:
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
 
 
-def get_whitepaper_data():
-    """Get whitepaper data from Firestore."""
-    ref = 'public/whitepapers/whitepaper_data'
+def get_subscription_data():
+    """Get subscription data from Firestore."""
+    ref = 'public/subscriptions/subscription_plans'
     try:
-        return get_data(REF, datafile='.datasets/whitepapers.json')
+        return get_data(REF, datafile='.datasets/subscriptions.json')
     except FileNotFoundError:
-        return get_data(REF, datafile='../.datasets/whitepapers.json')
+        return get_data(REF, datafile='../../.datasets/subscriptions.json')
 
 
-def upload_whitepaper_data():
-    """Upload whitepaper data from local `.datasets`."""
-    ref = 'public/whitepapers/whitepaper_data'
-    stats_doc = 'public/whitepapers'
+def upload_subscription_data():
+    """Upload subscription data from local `.datasets`."""
+    ref = 'public/subscriptions/subscription_plans'
+    stats_doc = 'public/subscriptions'
     try:
-        upload_data('.datasets/whitepapers.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/subscriptions.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_data('../.datasets/whitepapers.json', ref, stats_doc=stats_doc)
+        upload_data('../../.datasets/subscriptions.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

@@ -1,9 +1,9 @@
 """
-Manage Partners | Cannlytics Website
+Manage Videos | Cannlytics Website
 Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
-Created: 9/10/2021
+Created: 12/26/2021
 Updated: 12/27/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
@@ -12,13 +12,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_partners.py get_partner_data
+    python tools/data/manage_videos.py get_video_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_partners.py upload_partner_data
+    python tools/data/manage_videos.py upload_video_data
     ```
 """
 # Standard imports
@@ -33,7 +33,7 @@ from data_management import get_data, upload_data
 
 # Set credentials.
 try:
-    config = dotenv_values('../.env')
+    config = dotenv_values('../../.env')
     credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
 except KeyError:
     config = dotenv_values('.env')
@@ -41,23 +41,23 @@ except KeyError:
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
 
 
-def get_partner_data():
-    """Get partner data from Firestore."""
-    ref = 'public/partners/partner_data'
+def get_video_data():
+    """Get video data from Firestore."""
+    ref = 'public/videos/video_data'
     try:
-        return get_data(REF, datafile='.datasets/partners.json')
+        return get_data(REF, datafile='.datasets/videos.json', order_by='number')
     except FileNotFoundError:
-        return get_data(REF, datafile='../.datasets/partners.json')
+        return get_data(REF, datafile='../../.datasets/videos.json', order_by='number')
 
 
-def upload_partner_data():
-    """Upload partner data from local `.datasets`."""
-    ref = 'public/partners/partner_data'
-    stats_doc = 'public/partners'
+def upload_video_data():
+    """Upload video data from local `.datasets`."""
+    ref = 'public/videos/video_data'
+    stats_doc = 'public/videos'
     try:
-        upload_data('.datasets/partners.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/videos.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_data('../.datasets/partners.json', ref, stats_doc=stats_doc)
+        upload_data('../../.datasets/videos.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 """
-Manage Team | Cannlytics Website
+Manage Whitepapers | Cannlytics Website
 Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
@@ -12,13 +12,13 @@ Command-line examples:
     Get and save data.
 
     ```
-    python tools/manage_team.py get_team_data
+    python tools/data/manage_whitepapers.py get_whitepaper_data
     ```
 
     Upload data.
 
     ```
-    python tools/manage_team.py upload_team_data
+    python tools/data/manage_whitepapers.py upload_whitepaper_data
     ```
 """
 # Standard imports
@@ -33,7 +33,7 @@ from data_management import get_data, upload_data
 
 # Set credentials.
 try:
-    config = dotenv_values('../.env')
+    config = dotenv_values('../../.env')
     credentials = config['GOOGLE_APPLICATION_CREDENTIALS']
 except KeyError:
     config = dotenv_values('.env')
@@ -41,23 +41,23 @@ except KeyError:
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
 
 
-def get_team_data():
-    """Get team member data from Firestore."""
-    ref = 'public/team/team_members'
+def get_whitepaper_data():
+    """Get whitepaper data from Firestore."""
+    ref = 'public/whitepapers/whitepaper_data'
     try:
-        return get_data(REF, datafile='.datasets/team.json')
+        return get_data(REF, datafile='.datasets/whitepapers.json')
     except FileNotFoundError:
-        return get_data(REF, datafile='../.datasets/team.json')
+        return get_data(REF, datafile='../../.datasets/whitepapers.json')
 
 
-def upload_team_data():
-    """Upload team member data from local `.datasets`."""
-    ref = 'public/team/team_members'
-    stats_doc = 'public/team'
+def upload_whitepaper_data():
+    """Upload whitepaper data from local `.datasets`."""
+    ref = 'public/whitepapers/whitepaper_data'
+    stats_doc = 'public/whitepapers'
     try:
-        upload_data('.datasets/team.json', ref, stats_doc=stats_doc)
+        upload_data('.datasets/whitepapers.json', ref, stats_doc=stats_doc)
     except FileNotFoundError:
-        upload_data('../.datasets/team.json', ref, stats_doc=stats_doc)
+        upload_data('../../.datasets/whitepapers.json', ref, stats_doc=stats_doc)
 
 
 if __name__ == '__main__':
