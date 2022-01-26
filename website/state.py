@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 10/15/2020
-Updated: 1/23/2022
+Updated: 1/26/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # pylint:disable=line-too-long
@@ -232,66 +232,6 @@ material = {
             },
         ],
     },
-    # TODO: Move to Firestore
-    "whitepapers": {
-        "whitepapers": [{
-            "author": "Paul Kitko",
-            "cover_url": "https://storage.googleapis.com/cannlytics.appspot.com/public/images/whitepapers/market-basket-analysis-cover.png?Expires=4796493075&GoogleAccessId=firebase-adminsdk-e6c0x%40cannlytics.iam.gserviceaccount.com&Signature=hLmXbavHb%2BsH07Jd9lYuKPYQsru9iAi5L8TwCO4ksp2MCM6%2BhUhxNs1f%2BpbNCPcLyPkxIenTSvwXi2ORjW3busn6odt%2BnihZ%2FPS%2B9KLuZsilVqfuu4QCsGptiK%2F0%2BRHpsZCsa%2F9%2BgzYOIMEDLXMZ4nOMIABYNT5Jc1xomlSwrDPjDQgnL98byfMUgWffT%2Fjip%2BwEB%2FA27QuxzWDHwE2f38efvWEh7clfFXDk%2Btz3h%2FGDl1Pi4v%2B3NbUzovyz07l35CCgklcgf%2BzHtdgYvpD%2BUShLlMO%2B04kUDn9%2FMdZmTAWW74K9IuHG0CRZxHxoOOZqOga0lfE4U1iEymHUfj8hSw%3D%3D",
-            "description": "",
-            "id": "market-basket-analysis",
-            "plan_id": "",
-            "plan_name": "Newsletter",
-            "price": "",
-            "published_at": "2022-01-25",
-            "slug": "identifying-cannabis-dispensary-purchase-patterns-with-market-basket-analysis",
-            "title": "Identifying Cannabis Dispensary Purchase Patterns with Market Basket Analysis",
-            "url": "https://storage.googleapis.com/cannlytics.appspot.com/public/images/whitepapers/market-basket-analysis-cover.png?Expires=4796493075&GoogleAccessId=firebase-adminsdk-e6c0x%40cannlytics.iam.gserviceaccount.com&Signature=hLmXbavHb%2BsH07Jd9lYuKPYQsru9iAi5L8TwCO4ksp2MCM6%2BhUhxNs1f%2BpbNCPcLyPkxIenTSvwXi2ORjW3busn6odt%2BnihZ%2FPS%2B9KLuZsilVqfuu4QCsGptiK%2F0%2BRHpsZCsa%2F9%2BgzYOIMEDLXMZ4nOMIABYNT5Jc1xomlSwrDPjDQgnL98byfMUgWffT%2Fjip%2BwEB%2FA27QuxzWDHwE2f38efvWEh7clfFXDk%2Btz3h%2FGDl1Pi4v%2B3NbUzovyz07l35CCgklcgf%2BzHtdgYvpD%2BUShLlMO%2B04kUDn9%2FMdZmTAWW74K9IuHG0CRZxHxoOOZqOga0lfE4U1iEymHUfj8hSw%3D%3D",
-            "short_url": "https://cannlytics.com/whitepapers/market-basket-analysis",
-            "abstract": "Market Basket Analysis (MBA) sometimes referred to as Association Rule Mining, Affinity Analysis or Frequent Itemset Mining, was developed as a method to evaluate \"if / then\" associations that arise between elements in a dataset. Historically MBA rule sets have been applied to retail grocery stores' Point of Sale data to develop likely product associations that can then be used to anticipate and recommend combinations of future purchases. These recommendations or \"cross-sells\" have been found to be useful in improving retail sales volume. The newly legalized recreational cannabis market offers an opportunity to apply MBA to an unexplored retail industry. This project used MBA on a retail cannabis dataset representing multiple dispensaries across the state of Washington. The project's purpose was to verify if MBA was feasible in uncovering useful product association rules from a cannabis sales dataset to use in cross-selling recommendations. The results of the study show that it is possible to derive meaning MBA rule sets from cannabis retail data but that some limitations were uncovered that offer three future opportunities for research. First that similar product with highly differentiated names may need to be re-categorized into more generalized and meaningful products. Second, that it is possible that product churn may introduce signal noise into the MBA process resulting in a higher number of less useful rule sets. Third, that cannabis customers tend to purchase within product families which is an atypical finding in MBA and should be further explored.",
-            "apa_citation_style": "Kitko, P. (2022). Identifying cannabis dispensary purchase patterns with market basket analysis. The Journal of the Cannabis Industry, 1(1):1-24.",
-            "chicago_citation_style": "Kitko, P. (2022). Identifying cannabis dispensary purchase patterns with market basket analysis. The Journal of the Cannabis Industry 1 (1), 1-24.",
-            "harvard_citation_style": "Kitko, P. (2022), `Identifying cannabis dispensary purchase patterns with market basket analysis', The Journal of the Cannabis Industry 1(1), 1-24. URL: https://cannlytics.com/whitepapers/market-basket-analysis",
-        }]
-    },
-    "market": {
-        "datasets": [
-            {
-                "access_type": "token",
-                "algorithm_url": "https://github.com/cannlytics/cannlytics-ai",
-                "data_guide_url": "",
-                "data_sources": [],
-                "description": "Washington State lab results combined with licensee, inventory, and strain data.",
-                "doc": "datasets/WA/augmented-washington-state-lab-results",
-                "published_at": "2022-01-20",
-                "published_at_formatted": "January 20, 2022",
-                "published_by": "Cannlytics",
-                "published_by_url": "https://cannlytics.com",
-                "file_size": "166 MB",
-                "file_size_bytes": "",
-                "file_types": [".csv", ".xlsx", ".json"],
-                "id": "augmented-washington-state-lab-results",
-                "image_url": "",
-                "license": "https://creativecommons.org/licenses/by-nd/4.0/",
-                "name": "Augmented Washington State Lab Results",
-                "new": True,
-                "number_of_downloads": 1,
-                "number_of_fields": "",
-                "number_of_observations": "",
-                "price_usd": "$499",
-                "price_usd_students": "$99",
-                "sample_file_name": "",
-                "sample_file_url": "",
-                "tags": ["leaf-data-systems", "lab-results", "inventory", "strains", "licensees", "labs"],
-                "time_period_start": "",
-                "time_period_end": "",
-                "updated_at": "",
-                "updated_at_formatted": "",
-                "url": "https://cannlyitcs.com/data/market/augmented-washington-state-lab-results",
-                "short_url": "",
-                "value_generated_usd": 499
-            }
-        ],
-    },
 }
 
 # Context for lab pages.
@@ -368,17 +308,17 @@ page_data = {
     "map": {
         "documents":[{"name": "google", "ref": "credentials/google"}],
     },
-    # "market": {
-    #     "collections": [
-    #         {
-    #             "name": "datasets",
-    #             "ref": "public/data/datasets",
-    #             "limit": 10,
-    #             "order_by": "published_at",
-    #             "desc": True
-    #         }
-    #     ],
-    # },
+    "market": {
+        "collections": [
+            {
+                "name": "datasets",
+                "ref": "public/data/datasets",
+                "limit": 10,
+                "order_by": "price_usd",
+                "desc": True
+            }
+        ],
+    },
     "events": {
         "collections": [{"name": "events", "ref": "public/events/event_data"}],
     },
@@ -436,7 +376,7 @@ page_data = {
             }
         ],
     },
-    # "whitepapers": {
-    #     "collections": [{"name": "whitepapers", "ref": "public/whitepapers/whitepaper_data"}],
-    # }
+    "whitepapers": {
+        "collections": [{"name": "whitepapers", "ref": "public/whitepapers/whitepaper_data"}],
+    }
 }

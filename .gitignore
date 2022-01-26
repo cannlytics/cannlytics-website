@@ -17,6 +17,7 @@ node_modules/
 
 # Ignore environment variables file.
 .env
+**/env.yaml
 
 # Ignore admin tokens.
 .admin/tokens

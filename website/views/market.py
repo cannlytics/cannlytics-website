@@ -4,13 +4,14 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 1/5/2022
+Updated: 1/26/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports
-# import os
+import os
 from datetime import datetime
 from json import loads
+import requests
 
 # External imports
 from django.core.exceptions import ValidationError
@@ -24,19 +25,49 @@ from django.views.generic import TemplateView
 # Internal imports.
 from cannlytics.auth.auth import authenticate_request
 from cannlytics.firebase import (
+    access_secret_version,
     add_to_array,
     create_log,
+    create_short_url,
     get_collection,
     get_document,
+    get_file_url,
     increment_value,
     update_document,
 )
+from website.settings import DEFAULT_FROM_EMAIL, FIREBASE_API_KEY, FIREBASE_PROJECT_ID
 # from cannlytics.data import market
-# from cannlytics.paypal import (
-#     cancel_paypal_subscription,
-#     get_paypal_access_token,
-# )
+from cannlytics.paypal import (
+    get_paypal_access_token,
+    # get_paypal_payment,
+)
 from website.views.mixins import BaseMixin
+
+
+# TODO: Publish cannlytics v0.0.11
+HEADERS = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Accept-Language': 'en_US',
+}
+def get_paypal_payment(
+        access_token: str,
+        capture_id: str,
+        base = 'https://api-m.paypal.com',
+):
+    """Get captured payment details.
+    Args:
+        access_token (str): A required access token.
+        capture_id (str): The captured payment ID.
+        base (str): The base API URL, with the live URL as the default.
+    Returns:
+        (list): A list of PayPal subscriptions.   
+    """
+    url = f'{base}/v2/payments/captures/{capture_id}'
+    authorization = {'Authorization': f'Bearer {access_token}'}
+    headers = {**HEADERS, **authorization}
+    response = requests.get(url, headers=headers)
+    return response.json()
 
 
 class DatasetView(BaseMixin, TemplateView):
@@ -51,47 +82,10 @@ class DatasetView(BaseMixin, TemplateView):
         # Get PayPal credentials.
         context['paypal'] = get_document('credentials/paypal')
 
-        # FIXME: Get a dataset.
-        # dataset_id = self.kwargs.get('dataset_id', '')
-        # if dataset_id:
-        #     context['dataset'] = get_document(f'public/data/datasets/{dataset_id}')
-        context['dataset'] = {
-            "access_type": "token",
-            "algorithm_url": "https://github.com/cannlytics/cannlytics-ai",
-            "data_guide_url": "",
-            "data_sources": [],
-            "description": "Washington State lab results combined with licensee, inventory, and strain data.",
-            "doc": "datasets/WA/augmented-washington-state-lab-results",
-            "file_size": "166 MB",
-            "file_size_bytes": "",
-            "file_types": [".csv", ".xlsx", ".json"],
-            "id": "augmented-washington-state-lab-results",
-            "image_ref": "public/images/datasets/augmented-washington-state-lab-results/washington-state-flag.svg",
-            "image_url": "https://storage.googleapis.com/cannlytics.appspot.com/public/images/datasets/augmented-washington-state-lab-results/washington-state-flag.svg?Expires=4796621027&GoogleAccessId=firebase-adminsdk-e6c0x%40cannlytics.iam.gserviceaccount.com&Signature=PW0eZP%2BYVuQ80kBCO27XQcAeIB1AYd2VhdveALCDOgUwWklp7ay%2BANh4o%2FdF%2BIuNdg0Ip2ISB23BWRvSZ3DoYQqcboINzecKW8417%2FJ5314rJh9aC%2FYpSHSSH7njunPWBe2tLLwQAGAt4TcmNG1T%2FaLHZP2b86OPYIPVoVsiTS9JMS%2BY1zYmK9k7Ht0wbAo0LxoqcnGSBN0hlxecLCTvvsvfaCqdBwdp1AaxOXEUl5n%2F7eeUQFaEPJVXVSsG5qJCwd7tiPrLh7H6WBXBTR2tl44a0dTEcmbeCaY%2BiJc8kjJ8AR7GZlAgvrC0s%2Bd4lbrtcu%2BiGwkBb4sgOJQmcXcd0g%3D%3D",
-            "license": "CC BY-SA 3.0",
-            "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
-            "name": "Augmented Washington State Lab Results",
-            "new": True,
-            "number_of_downloads": 1,
-            "number_of_fields": 56,
-            "number_of_observations": 2000000,
-            "price_usd": "$499",
-            "price_usd_students": "$99",
-            "published_at": "2022-01-20",
-            "published_at_formatted": "January 20, 2022",
-            "published_by": "Cannlytics",
-            "published_by_url": "https://cannlytics.com",
-            "sample_file_name": "",
-            "sample_file_url": "",
-            "tags": ["leaf-data-systems", "lab-results", "inventory", "strains", "licensees", "labs"],
-            "time_period_start": "",
-            "time_period_end": "",
-            "updated_at": "",
-            "updated_at_formatted": "",
-            "url": "https://cannlyitcs.com/data/market/augmented-washington-state-lab-results",
-            "short_url": "",
-            "value_generated_usd": 499
-        }
+        # Get the page's dataset.
+        dataset_id = self.kwargs.get('dataset_id', '')
+        if dataset_id:
+            context['dataset'] = get_document(f'public/data/datasets/{dataset_id}')
 
         return context
 
@@ -109,55 +103,64 @@ def buy_data(request):
         response = {'success': False, 'message': 'Invalid email in request body.'}
         return JsonResponse(response)
     
-    # TODO: Check if the payment ID is valid.
+    # Check if the payment ID is valid.
+    # FIXME: Make this required.
+    try:
+        payment_id = data['payment_id']
+        print('Checking payment ID:', payment_id)
+        project_id = os.environ['GOOGLE_CLOUD_PROJECT']
+        payload = access_secret_version(project_id, 'paypal', 'latest')
+        paypal_secrets = loads(payload)
+        paypal_client_id = paypal_secrets['client_id']
+        paypal_secret = paypal_secrets['secret']
+        paypal_access_token = get_paypal_access_token(paypal_client_id, paypal_secret)
+        payment = get_paypal_payment(paypal_access_token, payment_id)
+        assert payment['id'] == payment_id
+        print('Payment ID matched captured payment ID.')
+    except:
+        pass
 
-    # Create a promo code that can be used to download data.
-    # promo_code = get_promo_code(8)
-    # add_to_array('promos/data', 'promo_codes', promo_code)
+    # Future work: Ensure that the user has a .edu email for student discount?
 
-    # Record the subscription in Firestore.
+    # Get the dataset zipped folder.
+    dataset = data['dataset']
+    file_name = dataset['file_name']
+    file_ref = dataset['file_ref']
+    download_url = get_file_url(file_ref)
+    # Optional: Allow for specifying suffix options.
+    short_url = create_short_url(FIREBASE_API_KEY, download_url, FIREBASE_PROJECT_ID)
+    data['download_url'] = download_url
+    data['short_url'] = short_url
+
+    # Keep track of a user's downloaded data if the user is signed in.
     now = datetime.now()
     iso_time = now.isoformat()
     data['created_at'] = iso_time
     data['updated_at'] = iso_time
-    # data['promo_code'] = promo_code
-    # update_document(f'subscribers/{user_email}', data)
-
-    # Save the user's subscription.
-    plan_name = data['plan_name']
     try:
         claims = authenticate_request(request)
         uid = claims['uid']
-        # TODO: Keep track of a user's downloaded ata.
-        # user_data = {'support': True}
-        # if plan_name == 'newsletter':
-        #     user_data['newsletter'] = True
-        # else:
-        #     user_data[f'{plan_name}_subscription_id'] = data['id']
-        # update_document(f'users/{uid}', user_data)
+        update_document(f'users/{uid}/datasets', {**data, **{'uid': uid}})
     except KeyError:
         pass
 
-    # Optional: Email the data to the user.
+    # Optional: Read the email template from storage?
+    # Optional: Use HTML template.
     # Optional: Load messages from state?
-    # try:
-    #     name = (data.get('first_name', '') + data.get('last_name', '')).strip()
-    #     _, password = create_user(name, user_email)
-    #     message = f'Congratulations,\n\nYou can now login to the Cannlytics console (https://console.cannlytics.com) with the following credentials.\n\nEmail: {user_email}\nPassword: {password}\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
-    #     subject = 'Welcome to the Cannlytics Platform'
-    # except:
-    #     message = f'Congratulations,\n\nYou are now subscribed to Cannlytics.\n\nPlease stay tuned for more material or email {DEFAULT_FROM_EMAIL} to begin.\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
-    #     subject = 'Welcome to the Cannlytics Newsletter'
-    # # (Optional: Use HTML template.)
     # # template_url = 'website/emails/newsletter_subscription_thank_you.html'
-    # send_mail(
-    #     subject=subject,
-    #     message=message,
-    #     from_email=DEFAULT_FROM_EMAIL,
-    #     recipient_list=[user_email],
-    #     fail_silently=False,
-    #     # html_message = render_to_string(template_url, {'context': 'values'})
-    # )
+    # Optional: Actually attach the datafile (too large a file problem?)
+
+    # Email the data to the user.
+    message = f'Congratulations on your new dataset,\n\nYou can access your data with the following link:\n\n{short_url}\n\nYou can monitor the market for new datasets.\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
+    subject = 'Dataset Purchased - Your Dataset is Attached'
+    send_mail(
+        subject=subject,
+        message=message,
+        from_email=DEFAULT_FROM_EMAIL,
+        recipient_list=[user_email, DEFAULT_FROM_EMAIL],
+        fail_silently=False,
+        # html_message = render_to_string(template_url, {'context': 'values'})
+    )
 
     # Create an activity log.
     create_log(
@@ -169,15 +172,11 @@ def buy_data(request):
         changes=data,
     )
 
-    # TODO: Get the dataset.
-    filename = ''
-    datafile = ''
-
     # Return the file to download.
-    return FileResponse(open(datafile, 'rb'), filename=filename)
+    return FileResponse(open(download_url, 'rb'), filename=file_name)
 
 
-# TODO: Implement blockchain market.
+# Future work: Implement blockchain market.
 
 # @csrf_exempt
 # def publish_data(request):

@@ -97,7 +97,7 @@ def subscribe(request):
         subject=subject,
         message=message,
         from_email=DEFAULT_FROM_EMAIL,
-        recipient_list=[user_email],
+        recipient_list=[user_email, DEFAULT_FROM_EMAIL],
         fail_silently=False,
         # html_message = render_to_string(template_url, {'context': 'values'})
     )

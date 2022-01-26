@@ -33,7 +33,7 @@ from dotenv import dotenv_values
 
 # Internal imports
 from data_management import get_data, upload_data
-sys.path.append('../')
+sys.path.append('../../')
 sys.path.append('./')
 from cannlytics.firebase import ( # pylint: disable=import-error, wrong-import-position
     get_file_url,
@@ -61,10 +61,10 @@ def upload_dataset_data():
     """Upload dataset data from local `.datasets`."""
     try:
         upload_data(f'.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
-        upload_dataset_files('.datasets')
+        # upload_dataset_files('.datasets')
     except FileNotFoundError:
         upload_data(f'../../.datasets/{FILENAME}', REF, id_key=ID, stats_doc=DOC)
-        upload_dataset_files('../../.datasets')
+        # upload_dataset_files('../../.datasets')
 
 
 def upload_dataset_files(root: Optional[str] = '.datasets'):

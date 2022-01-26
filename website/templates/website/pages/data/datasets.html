@@ -7,17 +7,14 @@
 -->
 {% load static %}
 <div class="container px-0 mt-3">
-  <div class="row mb-4">
+  <div class="row d-flex mb-4">
     {% for item in items %}
-      <div class="col-10 col-md-6 col-lg-4 mb-4 mb-lg-5">
+      <div class="col-10 col-md-6 col-lg-5 mb-4 mb-lg-5">
         <div
-          class="card bg-transparent border-secondary rounded-3 h-100"
+          class="card bg-transparent border-secondary rounded-3 h-100 shadow-hover"
           style="width:350px;"
         >
-          <!-- TODO: Determine if whole card should be clickable
-            shadow-hover
-          -->
-          {% if item.new %}
+          {% comment %} {% if item.new %}
             <!-- New Ribbon -->
             <img
               src="{% static "website/images/decoration/new-and-exclusive-ribbon.svg" %}"
@@ -25,11 +22,11 @@
               style="transform: rotate(35deg) translateX(175px) translateY(-150px); z-index:999;"
               width="175px"
             >
-          {% endif %}
-            {% comment %} <a
+          {% endif %} {% endcomment %}
+            <a
               class="card-block stretched-link text-decoration-none"
               href="{% url 'dataset' dataset_id=item.id  %}"
-            > {% endcomment %}
+            >
             <div class="card-body bg-transparent pa-3">
               <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
@@ -47,7 +44,9 @@
               <h6 class="text-dark fw-bold serif mt-3 mb-2">
                 Price
               </h6>
-              <div class="d-flex flex-column justify-content-start align-items-start">
+              <small class="serif text-dark">Business: {{ item.price_usd }}</small><br>
+              <small class="serif text-dark">Students: {{ item.price_usd_students }}</small>
+              {% comment %} <div class="d-flex flex-column justify-content-start align-items-start">
                 <span
                   id="price-usd-{{ item.id }}"
                   class="fs-6 d-flex mt-1 ps-2 badge bg-gradient-purple text-white"
@@ -60,7 +59,7 @@
                 >
                   <small class="serif">Student: {{ item.price_usd_students }}</small>
                 </span>
-              </div>
+              </div> {% endcomment %}
             </div>
 
             <!-- Card footer -->
@@ -88,7 +87,7 @@
               
             </div>
 
-          {% comment %} </a> {% endcomment %}
+          </a>
         </div>
       </div>
     {% endfor %}

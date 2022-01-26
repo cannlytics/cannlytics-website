@@ -40,14 +40,14 @@
   <!-- Journal Title -->
   <div class="container mb-5">
     <div class="border-top border-bottom text-center py-3 mx-3 mx-md-5">
-      <h1 class="text-dark">The Journal of the Cannabis Industry</h1>
+      <h1 class="text-dark">Cannabis Data Science</h1>
       <h4 class="text-dark">Volume 1, Issue 1, January 2022, Pages 1-24</h4>
     </div>
   </div>
 
   <!-- Articles -->
   <div class="container pt-2 pt-md-4">
-    {% for item in whitepapers.whitepapers %}
+    {% for item in whitepapers %}
       <div
         class="row markdown px-3 px-md-5"
         style="{% if forloop.counter|divisibleby:2 %}margin-top:10rem;margin-bottom:10rem;{% endif %}"
@@ -142,6 +142,7 @@
         </div>
 
         <!-- Image -->
+        <!-- TODO: Make shadow hover more pronounced on shadow elements. -->
         {% comment %} {% if forloop.counter|divisibleby:2 %}order-md-1 ps-0 pe-5 {% else %}ps-5{% endif %} {% endcomment %}
         <div class="col col-md-6 d-flex justify-content-center">
           <figure class="figure">

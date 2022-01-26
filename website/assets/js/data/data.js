@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <contact@cannlytics.com>
  * Created: 8/21/2021
- * Updated: 1/24/2022
+ * Updated: 1/25/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { reportError } from '../payments/payments.js';
@@ -12,17 +12,17 @@ import { authRequest } from '../utils.js';
 
 export const data = {
 
-  /**
+  /**---------------------------------------------------------------------------
    * Payment
-   */
+   *--------------------------------------------------------------------------*/
 
   initializePayPalPayment() {
     /**
      * Initialize PayPal payment option.
      */
 
-    // TODO: Make description dynamic.
-    const orderDescription = 'Washington State lab results combined with licensee, inventory, and strain data.';
+    // Get the product description.
+    const orderDescription = document.getElementById('dataset_description').value;
 
     paypal.Buttons({
       style: {
@@ -34,9 +34,16 @@ export const data = {
       },
       createOrder: function(data, actions) {
 
-        // TODO: Allow user to choose business or student price.
-        const priceTotal = 499;
+        // Allow the user to choose business or student price.
+        let priceTotal = 499;
+        if (document.getElementById('student-price').checked) {
+          priceTotal = document.getElementById('dataset_student_price').value;
+        } else {
+          priceTotal = document.getElementById('dataset_business_price').value;
+        }
+        priceTotal = parseFloat(priceTotal.replace('$', ''));
 
+        // Optional: Allow for other currencies.
         return actions.order.create({
           purchase_units: [{
             description: orderDescription,
@@ -85,8 +92,14 @@ export const data = {
             order_json: JSON.stringify(details),
           };
 
+          // Get dataset file ordered.
+          postData.dataset = {
+            file_name: document.getElementById('dataset_file_name').value,
+            file_ref: document.getElementById('dataset_file_ref').value,
+          };
+
           // Trigger download, double-checking the payment in the API.
-          const response = await authRequest('/src/payments/buy-data', postData);
+          const response = await authRequest('/src/market/buy-data', postData);
           if (response.success) {
 
             // Report payment.
@@ -112,9 +125,10 @@ export const data = {
     }).render('#paypal-button-container');
   },
 
-  /**
+  /**---------------------------------------------------------------------------
    * Market
-   */
+   * TODO: Finish blockchain market functionality.
+   *--------------------------------------------------------------------------*/
 
   async getDataset(id) {
     /**

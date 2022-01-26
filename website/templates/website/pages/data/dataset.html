@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/14/2022
-  Updated: 1/24/2022
+  Updated: 1/26/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "website/index.html" %}
@@ -55,6 +55,8 @@
       {% icon 'bookmark' width="16px" height="16px" style="transform: translateY(-8px);" %}
     </button>
     <input id="page-url" class="visually-hidden" value="{{ request.build_absolute_uri }}">
+    <input id="dataset_file_name" class="visually-hidden" value="{{ dataset.file_name }}">
+    <input id="dataset_file_ref" class="visually-hidden" value="{{ dataset.file_ref }}">
   </div>
 
   <!-- Dataset Details -->
@@ -71,6 +73,7 @@
       >
 
       <!-- PayPal Checkout -->
+      <!-- FIXME: Ensure that PayPal Checkout works!!! -->
       <div class="px-4 mt-5">
         <h5 class="fw-bold text-dark serif mb-2">
           Price
@@ -89,6 +92,8 @@
             </label>
           </div>
         </div>
+        <input id="dataset_business_price" class="visually-hidden" value="{{ dataset.price_usd }}">
+        <input id="dataset_student_price" class="visually-hidden" value="{{ dataset.price_usd_students }}">
         <div class="d-flex flex-column align-items-center mt-4">
           <div id="paypal-button-container" style="max-width:350px;"></div>
         </div>
@@ -102,15 +107,17 @@
         <h4 class="serif text-gradient-reverse mt-0 mb-2">
           Purchase success, thank you!</h4>
         <h6 class="fs-6 serif text-dark mt-0 mb-2">
-          You have been emailed a copy of your data.
+          You have been emailed a copy of your data.<br>Happy data mining and exploration!
         </h6>
-        {% comment %} <!-- Optional: Implement download data from button after purchase -->
+        {% comment %}
+        <!-- Optional: Implement download data from button after purchase -->
         <button
           type="button"
           class="btn bg-gradient-green serif text-white mt-3"
         >
           {% icon "download" width="18px" height="18px" class="me-1" %} Download Data
-        </button> {% endcomment %}
+        </button>
+        {% endcomment %}
       </div>
 
     </div>
@@ -133,7 +140,7 @@
       </h6>
       <h6 class="text-dark">
         <small class="serif">{{ dataset.published_at_formatted }}</small>
-        {% if dataset.updated_at %}
+        {% if dataset.updated_at_formatted %}
           <small class="serif">-- updated {{ dataset.updated_at_formatted }}</small>
         {% endif %}
       </h6>
@@ -145,6 +152,7 @@
       <p class="mt-2 lh-md" style="max-width:560px;">
         {{ dataset.description }}
       </p>
+      <input id="dataset_description" class="visually-hidden" value="{{ dataset.description }}">
 
       <!-- Details -->
       <h5 class="fw-bold text-dark serif mt-4">
@@ -213,24 +221,37 @@
             </tbody>
           </table>
 
-          <!-- TODO: Implement Data Guide -->
-          <div class="mb-4">
-          <button class="btn btn-sm-light btn-md-light serif">
-            View Data Guide
-          </button>
-        </div>
+          <!-- Data Guide -->
+          {% if dataset.data_guide_url %}
+            <div class="mb-4">
+              <a
+                class="btn btn-sm-light btn-md-light serif"
+                type="button"
+                href="{{ dataset.data_guide_url }}"
+                target="_blank"
+              >
+                View Data Guide
+              </a>
+            </div>
+          {% endif %}
 
         </div>
       </div>
 
       <!-- Sample -->
-      <h5 class="fw-bold text-dark serif mt-4">
-        Sample Data
-      </h5>
-      <!-- TODO: Implement Data Sample -->
-      <button class="btn btn-sm-light btn-md-light serif">
-        Download Sample
-      </button>
+      {% if dataset.sample_file_url %}
+        <h5 class="fw-bold text-dark serif mt-4">
+          Sample Data
+        </h5>
+        <a
+          class="btn btn-sm-light btn-md-light serif"
+          type="button"
+          href="{{ dataset.sample_file_url }}"
+          target="_blank"
+        >
+          Download Sample
+        </a>
+      {% endif %}
 
       <!-- Tags -->
       <h5 class="fw-bold text-dark serif mt-5">
@@ -247,13 +268,16 @@
         {% endfor %}
       </div>
 
+      {% comment %}
       <!-- TODO: List data sources reference style
         {% for source in datasets.data_sources %}
           1. [name](url)
           etc.
         {% endfor %}
       -->
+      {% endcomment %}
 
+      {% comment %}
       <!-- Optional: Add
         - history
         - owner
@@ -266,6 +290,7 @@
       <!-- Optional: About the Author
         Picture of the author, name, decription, and contact info.
       -->
+      {% endcomment %}
 
     </div>
   
@@ -273,7 +298,9 @@
 
 </section>
 
-  {% comment %} <!-- Optional: Grid of similar datasets --> {% endcomment %}
+  {% comment %}
+    <!-- Optional: Grid of similar datasets -->
+  {% endcomment %}
 
 {% endblock material %}
 
