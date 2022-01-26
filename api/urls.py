@@ -23,7 +23,7 @@ from api.certificates import certificates
 from api.contacts import contacts
 from api.data import data
 from api.data.analysis_data import analysis_data
-from api.data.lab_data import lab_data, lab_analyses, lab_logs
+from api.data.lab_data import lab_analyses, lab_data, lab_logs, lab_results
 from api.data.regulation_data import regulation_data
 from api.data.state_data import state_data
 from api.instruments import instruments
@@ -82,6 +82,8 @@ urlpatterns = [
         path('', data.datasets),
         path('/analyses', analysis_data),
         path('/analyses/<analysis_id', analysis_data),
+        path('/labs', lab_data),
+        path('/lab-results', lab_results),
         path('/regulations', regulation_data),
         path('/regulations/<state>', regulation_data),
         path('/state', state_data),

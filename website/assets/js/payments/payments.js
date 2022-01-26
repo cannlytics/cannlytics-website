@@ -394,7 +394,7 @@ export const payments = {
         showNotification('Payment Canceled', message, /* type = */ 'error');
       },
       onError: function (error) {
-        const message = 'An payment error occurred. Please try again later or email support.';
+        const message = 'A payment error occurred. Please try again later or email support.';
         showNotification('Payment Error', message, /* type = */ 'error');
         reportError();
       },
@@ -559,7 +559,7 @@ export const payments = {
 
 };
 
-const reportError = async () => {
+export const reportError = async () => {
   /**
    * Report a payment error so it can be corrected manually.
    */
@@ -578,7 +578,7 @@ const reportError = async () => {
   }
 }
 
-const reportSubscription = async (email, name, id) => {
+export const reportSubscription = async (email, name, id) => {
   /**
    * Report a new subscription to the staff.
    */
@@ -587,7 +587,7 @@ const reportSubscription = async (email, name, id) => {
     const data = {
       name: 'CannBot',
       subject: 'New PayPal Payment!',
-      message: `New subscription:\n\nEmail: ${email}\nName: ${name}\nSubscription ID: ${id}`,
+      message: `Payment by:\n\nEmail: ${email}\nName: ${name}\nPayPal ID: ${id}`,
       math_input: randomInt,
       math_total: randomInt,
     };

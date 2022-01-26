@@ -102,6 +102,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_feather',
     'django_robohash',
+    'django.contrib.humanize',
 ]
 
 # ------------------------------------------------------------#
@@ -345,3 +346,8 @@ APPEND_SLASH = False
 # Allow Django template tags to span multiple lines.
 # https://stackoverflow.com/questions/49110044/django-template-tag-on-multiple-line
 base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)
+
+# Make certain Firebase variables easy to reference.
+FIREBASE_API_KEY = env('FIREBASE_API_KEY')
+FIREBASE_PROJECT_ID = env('FIREBASE_PROJECT_ID')
+STORAGE_BUCKET = env('FIREBASE_STORAGE_BUCKET')

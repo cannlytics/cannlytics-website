@@ -1,8 +1,12 @@
-/*--------------------------------------------------------------------------
-  Map Style | Cannlytics Website
-  Created: 9/3/2021
-  Updated: 9/3/2021
----------------------------------------------------------------------------*/
+/**
+ * Map Style | Cannlytics Website
+ * Copyright (c) 2021-2022 Cannlytics
+ * 
+ * Authors: Keegan Skeate <contact@cannlytics.com>
+ * Created: 9/3/2021
+ * Updated: 1/21/2022
+ * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+ */
 .state {
   fill: none;
   stroke: #a9a9a9;
@@ -48,4 +52,18 @@
 }
 #tooltip tr td:nth-child(2) {
   text-align:center;
+}
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: min(600px, 60%);
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-content {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
 }

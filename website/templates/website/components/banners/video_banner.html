@@ -40,20 +40,20 @@
               stlye="max-height:125px;"
             >
           </a>
-          <h5 class="mt-3 mb-1 pb-0">
+          <h6 class="lh-md mt-3 mb-1 pb-0">
             <a
-              class="background-hover text-dark fw-bold simple-serif"
+              class="background-hover text-dark fw-bold serif"
               href="{% url 'video' video.video_id %}"
             >
               {{ video.title }}
             </a>
-          </h5>
+          </h6>
           <div class="mb-1">
             <small  class="serif text-secondary-on-dark">{{ video.published|date }}</small>
           </div>
           <p class="text-secondary-on-dark fs-6">
             <small>
-              {{ video.description|truncatechars:100 }}
+              {{ video.description|truncatechars:165 }}
             </small>
           </p>
         </div>

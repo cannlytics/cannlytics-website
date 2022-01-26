@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 1/17/2021
- * Updated: 1/10/2022
+ * Updated: 1/17/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { authRequest, showNotification } from '../utils.js';
@@ -235,16 +235,9 @@ export const labs = {
     /**
      * Download lab data, prompting the user to sign in if they are not already.
      */
-    const user = getCurrentUser();
-    if (!user) {
-      const modal = Modal.getInstance(document.getElementById('sign-in-dialog'));
-      modal.show();
-      return;
-    }
-    const url = `${window.location.origin}/src/data/download-lab-data`;
     const time = new Date().toISOString().slice(0, 19).replace(/T|:/g, '-');
     try {
-      const response = await authRequest(url);
+      const response = await authRequest('/src/data/download-lab-data', null, { file: true });
       const blob = await response.blob();
       downloadBlob(blob, /* filename = */ `labs-${time}.csv`);
     } catch(error) {

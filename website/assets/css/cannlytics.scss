@@ -8,42 +8,13 @@
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 @import 'bootstrap/scss/bootstrap';
+// @import '@primer/css/box/index.scss';
 @import url('https://fonts.googleapis.com/css?family=Source+Serif+Pro:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=Libre+Franklin:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:100,200,300,400,500,600,700');
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;600&display=swap');
-
-/*--------------------------------------------------------------------------
-  Color utilities
----------------------------------------------------------------------------*/
-
-// @import "bootstrap/scss/functions";
-// @import "bootstrap/scss/variables";
-// @import "bootstrap/scss/mixins";
-// @import "bootstrap/scss/utilities";
-
-// $all-colors: map-merge-multiple($grays);
-
-// $utilities: map-merge(
-//   $utilities,
-//   (
-//     "background-color": map-merge(
-//       map-get($utilities, "background-color"),
-//       (
-//         values: map-merge(
-//           map-get(map-get($utilities, "background-color"), "values"),
-//           (
-//             $all-colors
-//           ),
-//         ),
-//       ),
-//     ),
-//   )
-// );
-
-// @import "bootstrap/scss/utilities/api";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@200;300;400;500;600&display=swap');
 
 /*--------------------------------------------------------------------------
   Main tags
@@ -112,6 +83,9 @@ p small {
 }
 .no-line-height {
   line-height: unset !important;
+}
+.lh-md {
+  line-height: 1.5 !important;
 }
 .large-line {
   line-height: 1.25 !important;
@@ -710,9 +684,9 @@ body.dark .btn-sm-light:hover {
   Tabs
 ---------------------------------------------------------------------------*/
 
-.nav-tabs .nav-link {
-  color: #777;
-}
+// .nav-tabs .nav-link {
+//   color: #777;
+// }
 .nav-tabs .nav-link.active {
   color: #1a1a1a;
 }
@@ -1410,7 +1384,7 @@ footer li a {
 .nav-link.active {
   color: #1a1a1a !important;
 }
-body.dark .nav-link,
+// body.dark .nav-link,
 body.dark .navbar-toggler-icon {
   color: #ccc !important;
 }
@@ -1592,6 +1566,12 @@ body.dark .info-bar {
 body.dark .modal-content {
   background-color: #323443;
 }
+body.dark .modal-content .link-primary {
+  color: #73BFF9;
+}
+body.dark .modal-content .link-primary:hover {
+  color: #47ADFB;
+}
 
 /*--------------------------------------------------------------------------
   Cards
@@ -1599,6 +1579,10 @@ body.dark .modal-content {
 
 .shadow-hover:hover {
   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+body.dark .border-dark {
+  border-color: #8b949e !important;
 }
 
 /*--------------------------------------------------------------------------
@@ -1636,4 +1620,27 @@ body.dark .modal-content {
 }
 body.dark .linear-background {
   background: linear-gradient(90deg,#eeeeee30 8%,#dddddd30 18%,#eeeeee30 33%);
+}
+
+
+/*--------------------------------------------------------------------------
+ * Popovers
+ *-------------------------------------------------------------------------*/
+
+body.dark .popover {
+  border-color: #9b9ca3 !important;
+}
+body.dark .popover-header {
+  background-color: #323443;
+  border-color: #9b9ca3 !important;
+  color: #ffffff;
+}
+body.dark .popover-body {
+  background-color: #323443 !important;
+}
+body.dark .popover .link-primary {
+  color: #73BFF9;
+}
+body.dark .popover .link-primary:hover {
+  color: #47ADFB;
 }

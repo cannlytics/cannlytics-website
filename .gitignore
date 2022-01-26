@@ -17,6 +17,7 @@ node_modules/
 
 # Ignore environment variables file.
 .env
+**/env.yaml
 
 # Ignore admin tokens.
 .admin/tokens
@@ -41,3 +42,4 @@ __pycache__/*
 
 # Ignore duplicate static files.
 public/static/*
+public/.well-known

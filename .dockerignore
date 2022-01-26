@@ -2,6 +2,7 @@
 **/.classpath
 **/.dockerignore
 **/.env
+**/env.yaml
 **/.git
 **/.gitignore
 **/.project
@@ -27,3 +28,4 @@
 *.pyd
 README.md
 .admin/tokens
+/tools

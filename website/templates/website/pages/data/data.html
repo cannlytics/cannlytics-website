@@ -8,36 +8,23 @@
   Created: 5/27/2021
   Updated: 1/7/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+
+  TODO:
+    - Figure of US Monthly Sales
 -->
 {% extends "website/index.html" %}
 {% load static %}
 {% block title %}Data | Cannlytics{% endblock %}
 {% block page_css %}
-  <link href="{% static 'website/css/map.css'%}?{% now "U" %}" rel="stylesheet" type="text/css">
-  <style>
-    .svg-container {
-        display: inline-block;
-        position: relative;
-        width: 100%;
-        padding-bottom: min(600px, 60%);
-        vertical-align: top;
-        overflow: hidden;
-    }
-    .svg-content {
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-  </style>
+  <link href="{% static 'website/css/map.css'%}?{% if DEBUG %}{% now 'U' %}{% else %}{{ APP_VERSION_NUMBER }}{% endif %}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block material %}
 
   <!-- Banner -->
   {% include "website/components/heros/hero_banner.html" with
     title='Data Troves'
-    description='Explore public cannabis data troves.'
-    image_url=' '
+    description='We build data pipelines to get your data from A to B to Z and back again! You can use our open cannabis data troves too.'
+    image_url='website\images\decoration\data-pipeline.png'
     only
   %}
 
@@ -74,8 +61,9 @@
           href="{% url 'section' page='data' section='market' %}"
           class="serif text-dark fw-bold background-hover"
         >
-          Market <span class="badge rounded-pill bg-warning text-black">Coming Soon</span>
+          Market
         </a>
+        <span class="badge rounded-pill bg-success">New</span>
       </li>
       <li class="mb-3">
         <a

@@ -8,6 +8,9 @@
   Created: 5/18/2021
   Updated: 1/8/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+
+  FIXME:
+    - Redo this page similar to the /videos page.
 -->
 {% extends "website/index.html" %}
 {% load static %}
@@ -39,14 +42,14 @@
           </h3>
         </a>
         <h6 class="blog-post-meta text-secondary">
-          <small class="serif">
+          <small class="serif text-dark">
             {{ item.published_at_formatted }} by
             <a class="serif text-dark" href="{{ item.author_url }}">
               {{ item.author }}
             </a>
           </small>
         </h6>
-        <p class="fst-italic">
+        <p class="fst-italic text-dark">
           {{ item.excerpt|safe }}
         </p>
         <a

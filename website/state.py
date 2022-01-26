@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <keegan@cannlytics.com>
 Created: 10/15/2020
-Updated: 1/1/2022
+Updated: 1/26/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # pylint:disable=line-too-long
@@ -129,8 +129,8 @@ material = {
                 "title": "Community Driven",
                 "message": "Built by scientist for scientists. Cannlytics empowers you with control over the development process, resources, and decision making authority. We believe that the Cannlytics community is the best judge of how Cannlytics can be improved, so, we have entrusted the Cannlytics source code with you.",
                 "image": "website/images/illustrations/cannlytics_collaboration.svg",
-                "action": "Contribute now",
-                "action_url": "/community",
+                "action": "Join today",
+                "action_url": "/testing",
             }
         ],
         "featurettes": [
@@ -312,9 +312,9 @@ page_data = {
         "collections": [
             {
                 "name": "datasets",
-                "ref": "public/market/datasets",
+                "ref": "public/data/datasets",
                 "limit": 10,
-                "order_by": "published_at",
+                "order_by": "price_usd",
                 "desc": True
             }
         ],

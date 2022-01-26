@@ -7,7 +7,7 @@
   -->
   {% load static %}
   <div class="ground">
-    <div class="container features">
+    <div class="container">
       <h2 class="serif text-dark pt-5">Why Cannlytics?</h2>
       <div class="row justify-content-center">
         {% for feature in features %}
@@ -20,13 +20,13 @@
             <h2 class="h5 fw-bold serif text-dark text-start mb-2">
               {{ feature.title }}
             </h2>
-            <p class="fs-6 double-line text-start text-secondary-on-dark">
+            <p class="fs-6 double-line text-start">
               {{ feature.message }}
             </p>
             {% if feature.action %}
               <p class="markdown text-start fs-6 mt-2">
                 <a
-                  class="fw-bold serif text-dark"
+                  class="fw-bold btn btn-sm-light serif text-dark"
                   href="{{ feature.action_url }}"
                 >
                   {{ feature.action }} &rarr;

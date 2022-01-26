@@ -7,7 +7,7 @@
  * Updated: 12/16/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { Modal, Tooltip } from 'bootstrap';
+import { Modal, Popover, Tooltip } from 'bootstrap';
 import { deserializeForm, serializeForm, hasClass } from '../utils.js';
 
 // Unused? Generalize?
@@ -277,6 +277,32 @@ const initHelpers = {
     return tooltipList;
   },
 
+  enablePopover(trigger, content, placement = 'bottom') {
+    /**
+     * Enable a given popover in the user interface.
+     * @param {String} trigger The element query selector for the trigger.
+     * @param {String} content The element query selector to be displayed.
+     * @param {String} placement Where to position the popover, bottom by default,
+     *    can also be top, left, and right.
+     */
+     const popover = new Popover(document.querySelector(trigger), {
+      html: true,
+      placement: placement,
+      sanitize: false,
+      content() {
+          let html = document.querySelector(content).innerHTML;
+          return html.replace('id="share-link"', 'id="share-link-copy"');
+        }
+     });
+    //  var myPopoverTrigger = document.getElementById('share-popover')
+    //   myPopoverTrigger.addEventListener('show.bs.popover', function () {
+    //     const input = document.getElementById('share-link-copy');
+    //     input.focus();
+    //     input.select();
+    //   })
+     return popover;
+  },
+
 };
 
 export const navigationHelpers = {
@@ -368,9 +394,16 @@ const uiManipulation = {
 
   hideElement(id) {
     /**
-     * Hide a specific element in the user interface,
+     * Hide a specific element in the user interface, by applying a `d-none` class.
      */
     document.getElementById(id).classList.add('d-none');
+  },
+
+  showElement(id) {
+    /**
+     * Show a specific element in the user interface, by removing a `d-none` class.
+     */
+    document.getElementById(id).classList.remove('d-none');
   },
 
 };

@@ -14,7 +14,7 @@
         {
           "source": "**",
           "run": {
-            "serviceId": "cannlytics",
+            "serviceId": "cannlytics-website-dev",
             "region": "us-central1"
           }
         }

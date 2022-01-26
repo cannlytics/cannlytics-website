@@ -4,11 +4,11 @@
  * 
  * Authors: Keegan Skeate <keegan@cannlytics.com>
  * Created: 12/22/2020
- * Updated: 12/20/2021
+ * Updated: 1/21/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { initializeApp } from 'firebase/app';
-import { getAnalytics, logEvent } from 'firebase/analytics';
+// import { getAnalytics, logEvent } from 'firebase/analytics';
 import {
   browserSessionPersistence,
   confirmPasswordReset,
@@ -67,18 +67,18 @@ const firebaseApp = initializeApp({
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.FIREBASE_APP_ID,
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+  // measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 });
 
 // Get core modules.
-const analytics = getAnalytics(firebaseApp);
+// const analytics = getAnalytics(firebaseApp);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const storage = getStorage(firebaseApp);
  
-/*----------------------------------------------------------------------------
-  Firestore Interface
-  ----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------
+ * Firestore Interface
+ *----------------------------------------------------------------------------*/
 
 const addToArray = async (path, field, value) => {
   /**
@@ -262,9 +262,9 @@ async function listenToCollection(
   });
 }
 
-/*----------------------------------------------------------------------------
-  Authentication Interface
-----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------
+ * Authentication Interface
+ *----------------------------------------------------------------------------*/
 
 async function changeEmail(email) {
   /**
@@ -450,9 +450,9 @@ async function verifyPasswordReset(code) {
   return await verifyPasswordResetCode(auth, code);
 }
 
-/*----------------------------------------------------------------------------
-  Storage Interface
-  ----------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------
+ * Storage Interface
+ *----------------------------------------------------------------------------*/
 
 async function deleteFile(path) {
   /**
@@ -543,7 +543,7 @@ const storageErrors = {
 export {
   auth,
   authErrors,
-  analytics,
+  // analytics,
   addToArray,
   removeFromArray,
   changeEmail,
@@ -564,7 +564,7 @@ export {
   googleLogIn,
   listenToDocument,
   listenToCollection,
-  logEvent,
+  // logEvent,
   logIn,
   logOut,
   onAuthChange,
