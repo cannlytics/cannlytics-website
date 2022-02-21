@@ -27,6 +27,7 @@ def state_data(request, state=None):
     # if request.method == 'GET':
     # if request.method == 'POST':
     #     uid = claims['uid']
+    # TODO: Provide links to nested documents.
     if state:
         data = get_document(f'public/data/state_data/{state}')
     else:
