@@ -41,26 +41,31 @@ except KeyError:
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials
 
 
-def get_video_data():
-    """Get video data from Firestore."""
-    ref = 'public/videos/video_data'
+def get_video_data(filename, doc, ref):
+    """Get video data from Firestore and save to the `.datasets` folder."""
     try:
-        return get_data(REF, datafile='.datasets/videos.json', order_by='number')
+        return get_data(ref, datafile=f'.datasets/{filename}', order_by='number')
     except FileNotFoundError:
-        return get_data(REF, datafile='../../.datasets/videos.json', order_by='number')
+        return get_data(ref, datafile=f'../../.datasets/{filename}', order_by='number')
 
 
-def upload_video_data():
+def upload_video_data(filename, doc, ref):
     """Upload video data from local `.datasets`."""
-    ref = 'public/videos/video_data'
-    stats_doc = 'public/videos'
     try:
-        upload_data('.datasets/videos.json', ref, stats_doc=stats_doc)
+        upload_data(f'.datasets/{filename}', ref, stats_doc=doc)
     except FileNotFoundError:
-        upload_data('../../.datasets/videos.json', ref, stats_doc=stats_doc)
+        upload_data(f'../../.datasets/{filename}', ref, stats_doc=doc)
 
 
 if __name__ == '__main__':
 
+    # TODO: Allow premium videos to be uploaded.
+
+    # Define references.
+    FILENAME = 'videos.json'
+    DOC = 'public/videos'
+    REF = f'{DOC}/video_data'
+    ID = 'number'
+
     # Make functions available from the command line.
-    globals()[sys.argv[1]]()
+    globals()[sys.argv[1]](FILENAME, DOC, REF)

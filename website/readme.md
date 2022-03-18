@@ -24,12 +24,12 @@ The 🔥 Cannlytics Website provides an aesthetic user interface for users to le
 
 ## 👩‍🏫 Introduction <a name="introduction"></a>
 
-Cannlytics is a healthy mix of user friendly interfaces and software that you can use in your cannabis-testing lab. Users do not have to have any advanced knowledge and can jump in at any point. There are many advanced features that people with background in the web stack, Python, or your favorite programming language can jump right into. The objective of the Cannlytics Website is to provide people with information about Cannlytics and give everyone in the cannabis industry access to simple, easy, and end-to-end cannabis analytics. You can find all Cannlytics components below.
+Cannlytics is a healthy mix of user friendly interfaces and software that you can use in your cannabis-testing lab. Users do not have to have any advanced knowledge and can jump in at any point. There are many advanced features that people with background in the web stack, Python, or your favorite programming language can jump right into. The objective of the Cannlytics Website is to provide people with information about Cannlytics and give everyone in the cannabis industry access to simple, easy, and end-to-end cannabis analytics. You can find all Cannlytics products below.
 
-| Component | Status | Live URL |
+| Product | Status | Live URL |
 |---------|--------|----------|
 | [Cannlytics AI](https://github.com/cannlytics/cannlytics-ai) | 🟡 | In progress |
-| [Cannlytics API](https://github.com/cannlytics/cannlytics-api) | 🟢 | <https://cannlytics.com/api> |
+| [Cannlytics API](https://github.com/cannlytics/cannlytics-api) | 🟡 | In progress |
 | [Cannlytics App](https://cannlytics.com/cannlytics-app) | 🟡  | In progress |
 | [Cannlytics Console](https://github.com/cannlytics/cannlytics) | 🟢 | <https://console.cannlytics.com> |
 | [Cannlytics Documentation](https://github.com/cannlytics/cannlytics-docs) | 🟢 | <https://docs.cannlytics.com> |
