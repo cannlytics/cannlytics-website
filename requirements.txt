@@ -17,7 +17,7 @@ google-cloud-secret-manager==2.8.0
 gunicorn==20.1.0
 Markdown==3.3.4
 python-dotenv==0.19.2
-pymdown-extensions==9.1
+pymdown-extensions==10.0
 python-markdown-math==0.8
 waitress==2.1.2
 whitenoise==5.3.0
@@ -28,3 +28,4 @@ whitenoise==5.3.0
 # ocean-lib==0.8.5 # Used only in cannlytics module.
 # pandas==1.2.1 # Used only in cannlytics module.
 # ulid-py==1.1.0 # Used only in cannlytics module.
+tornado>=6.3.2 # not directly required, pinned by Snyk to avoid a vulnerability
