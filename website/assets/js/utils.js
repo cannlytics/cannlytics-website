@@ -2,9 +2,9 @@
  * Utility JavaScript | Cannlytics Website
  * Copyright (c) 2021-2022 Cannlytics
  * 
- * Authors: Keegan Skeate <keegan@cannlytics.com>
+ * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 2/21/2021
- * Updated: 1/17/2022
+ * Updated: 5/28/2023
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Toast } from 'bootstrap';
@@ -23,7 +23,10 @@ export const authRequest = async (endpoint, data, options) => {
   * @param {Object} options Any request options: `delete` (bool) or `params` (Object).
   */
   try {
-    const idToken = await getUserToken();
+    var idToken = await getUserToken();
+    if (typeof idToken != 'string' & !(idToken instanceof String)) {
+      idToken = '';
+    }
     return await apiRequest(endpoint, data, options, idToken);
   } catch(error) {
     return error;
@@ -41,6 +44,10 @@ export const apiRequest = async (endpoint, data, options, idToken = null) => {
   * @param {String} idToken = null
   */
   const csrftoken = getCookie('csrftoken');
+  if (!csrftoken) {
+  console.log('TOKEN:', csrftoken);
+    return;
+  }
   const headerAuth = new Headers({
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${idToken}`,
@@ -48,8 +55,9 @@ export const apiRequest = async (endpoint, data, options, idToken = null) => {
   });
   const init = {
     headers: headerAuth,
-    // mode: 'no-cors',
     method: 'GET',
+    // mode: 'no-cors',
+    // credentials: 'include',
   };
   if (data) {
     init.method = 'POST';
@@ -60,6 +68,7 @@ export const apiRequest = async (endpoint, data, options, idToken = null) => {
       init.method = 'DELETE';
     }
     if (options.params) {
+      // TEST: Does this handle production URLs correctly?
       endpoint = new URL(endpoint)
       endpoint.search = new URLSearchParams(options.params).toString();
     }
@@ -251,6 +260,29 @@ export function getUrlParameter(name) {
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
+export function setURLParameter(paramName, paramValue) {
+  /**
+   * Add query parameter to the URL.
+   * @param {String} paramName The key of the parameter.
+   * @param {String} paramValue The value for the parameter.
+   */
+  let url = window.location.href;
+  const hash = location.hash;
+  url = url.replace(hash, '');
+  if (url.indexOf(paramName + '=') >= 0) {
+    const prefix = url.substring(0, url.indexOf(paramName + '=')); 
+    let suffix = url.substring(url.indexOf(paramName + '='));
+    suffix = suffix.substring(suffix.indexOf('=') + 1);
+    suffix = (suffix.indexOf('&') >= 0) ? suffix.substring(suffix.indexOf('&')) : '';
+    url = `${prefix}${paramName}=${paramValue}${suffix}`;
+  }
+  else {
+    if (url.indexOf('?') < 0) url = `${url}?${paramName}=${paramValue}`;
+    else url = `${url}&${paramName}=${paramValue}`;
+  }
+  window.location.href = url + hash;
+}
+
 export function capitalize(text) {
   /**
   * Capitalize the first letter of given text.
@@ -272,6 +304,18 @@ export function slugify(text) {
     .replace(/ +/g,'-');
 }
 
+export const snakeCase = string => {
+  /**
+   * Convert a given string to snake_case.
+   * Author: CertainPerformance
+   * License: CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0/>
+   */
+  return string.replace(/\W+/g, ' ')
+    .split(/ |\B(?=[A-Z])/)
+    .map(word => word.toLowerCase())
+    .join('_');
+};
+
 export const validateEmail = (email) => {
   /**
   * Validate that given text is an email.
@@ -288,6 +332,18 @@ export const validateEmail = (email) => {
 /*------------------------------------------------------------------------------
  * Data Helpers
  *----------------------------------------------------------------------------*/
+
+export const createUUID = () => {
+  /** Generate UUID.
+   * Credit: Joe <https://stackoverflow.com/a/6860916>
+   * License: CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/>
+   * @returns {String} A UUID.
+   */
+  var S4 = function() {
+    return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+  };
+  return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+}
 
 export const downloadBlob = (blob, filename) => {
   /**
@@ -314,4 +370,57 @@ export const sortArrayOfObjects = (array, field) => {
    * @returns {Array}
    */
   return array.sort((a, b) => (a[field] > b[field]) ? 1 : ((b[field] > a[field]) ? -1 : 0));
+}
+
+/*------------------------------------------------------------------------------
+ * Table Helpers
+ *----------------------------------------------------------------------------*/
+
+export const formatDate = (params) => {
+  /**
+   * Format a date to a human-readable format.
+   */
+  if (params.value) {
+    const date = new Date(params.value);
+    return date.toLocaleDateString();
+  }
+  return '';
+};
+
+export const formatDecimal = (params) => {
+  /**
+   * Format a decimal number to two decimal places.
+   */
+  if (params.value !== undefined && params.value !== null) {
+    try {
+      return params.value.toFixed(2);
+    } catch (error) {
+      return params.value;
+    }
+  }
+  return '';
+};
+
+/*------------------------------------------------------------------------------
+ * Export
+ *----------------------------------------------------------------------------*/
+
+export const utils = {
+  apiRequest,
+  authRequest,
+  capitalize,
+  deserializeForm,
+  formatDate,
+  formatDecimal,
+  getCookie,
+  getUrlParameter,
+  hasClass,
+  parameterizeForm,
+  setURLParameter,
+  serializeForm,
+  snakeCase,
+  slugify,
+  showNotification,
+  sortArrayOfObjects,
+  validateEmail,
 }

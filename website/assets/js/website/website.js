@@ -2,19 +2,21 @@
  * Website JavaScript | Cannlytics Website
  * Copyright (c) 2021-2022 Cannlytics
  * 
- * Authors: Keegan Skeate <keegan@cannlytics.com>
+ * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 12/3/2020
- * Updated: 1/5/2022
+ * Updated: 8/20/2023
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { checkGoogleLogIn, onAuthChange } from '../firebase.js';
-import { setTableTheme } from '../ui/ui.js';
 import { authRequest, hasClass } from '../utils.js';
 import { contact } from './contact.js';
+import { theme } from '../ui/theme.js';
+import { dashboard } from './dashboard.js';
 
 export const website = {
 
   ...contact,
+  ...dashboard,
 
   initialize() {
     /**
@@ -30,13 +32,17 @@ export const website = {
     // Check if a user is signed in.
     onAuthChange(async user => {
       if (user) {
-        document.getElementById('user-email').textContent = user.email;
-        document.getElementById('user-name').textContent = user.displayName;
-        if (user.photoURL) {
-          document.getElementById('user-photo').src = user.photoURL;
-        } else {
-          const robohash = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
-          document.getElementById('user-photo').src = robohash;
+        try {
+          document.getElementById('user-email').textContent = user.email;
+          document.getElementById('user-name').textContent = user.displayName;
+          if (user.photoURL) {
+            document.getElementById('user-photo').src = user.photoURL;
+          } else {
+            const robohash = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
+            document.getElementById('user-photo').src = robohash;
+          }
+        } catch(error) {
+          // Pass
         }
         this.toggleAuthenticatedMaterial(true);
         await authRequest('/src/auth/login');
@@ -44,6 +50,7 @@ export const website = {
           const { email } = user;
           const defaultPhoto = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
           const data = { email, photo_url: defaultPhoto };
+          console.log('Request to /api/users');
           await apiRequest('/api/users', data);
         }
       } else {
@@ -76,19 +83,79 @@ export const website = {
     }
   },
 
+  ageCheck() {
+    /**
+     * Checks if a user has or has not accepted age verification.
+     * Displays the age verification modal and adds an event listener
+     * to the birthdate input to enable or disable the proceed button based on
+     * age verification.
+     */
+    const acceptAge = localStorage.getItem('cannlytics_age');
+    console.log('acceptAge', acceptAge);
+    if (!acceptAge) {
+      const modal = document.getElementById('age-verification');
+      modal.style.display = 'block';
+      modal.style.opacity = 1;
+      const birthdateInput = document.getElementById('birthdate');
+      birthdateInput.addEventListener('change', (event) => {
+        console.log('event.target.value', event.target.value);
+        if (cannlytics.website.verifyAge(event.target.value)) {
+          document.getElementById('accept-age-verification-button').disabled = false;
+          console.log('age verified');
+        } else {
+          document.getElementById('accept-age-verification-button').disabled = true;
+          console.log('age not verified');
+        }
+      });
+    }
+  },
+
+  verifyAge(date) {
+    /**
+     * Determines if the provided birthdate is for someone 21 years or older.
+     */
+    const birthdate = new Date(date);
+    const year = birthdate.getFullYear();
+    if (year < 1900 || year > 2099) return false;
+    const currentTime = new Date();
+    let age = currentTime.getFullYear() - birthdate.getFullYear();
+    const m = currentTime.getMonth() - birthdate.getMonth();
+    if (m < 0 || (m === 0 && currentTime.getDate() < birthdate.getDate())) {
+      age--;
+    }
+    return age >= 21;
+  },
+
+  acceptAgeCheck() {
+    /**
+     * Save the user's choice to accept age verification.
+     */
+    localStorage.setItem('cannlytics_age', true);
+    const modal = document.getElementById('age-verification');
+    modal.style.display = 'none';
+    modal.style.opacity = 0;
+  },
+
+  rejectAgeCheck() {
+    /**
+     * Redirect the user to another site if they reject age verification.
+     */
+    window.location.href = "https://google.com";
+  },
+
   changeTheme() {
     /**
      * Change the website's theme.
      */
-    let theme = localStorage.getItem('cannlytics_theme');
-    if (!theme) {
+    let currentTheme = localStorage.getItem('cannlytics_theme');
+    if (!currentTheme) {
       const hours = new Date().getHours();
       const dayTime = hours > 6 && hours < 20;
-      theme = dayTime ? 'light' : 'dark';
+      currentTheme = dayTime ? 'light' : 'dark';
     }
-    const newTheme = (theme === 'light') ? 'dark' : 'light';
+    const newTheme = (currentTheme === 'light') ? 'dark' : 'light';
     this.setTheme(newTheme);
-    setTableTheme();
+    theme.setTableTheme();
     localStorage.setItem('cannlytics_theme', newTheme);
   },
 
@@ -97,26 +164,26 @@ export const website = {
      * Set the theme when the website loads.
      */
     if (typeof(Storage) !== 'undefined') {
-      let theme = localStorage.getItem('cannlytics_theme');
-      if (!theme) {
+      let currentTheme = localStorage.getItem('cannlytics_theme');
+      if (!currentTheme) {
         const hours = new Date().getHours();
         const dayTime = hours > 6 && hours < 20;
         if (!dayTime) this.setTheme('dark');
         return;
       }
-      this.setTheme(theme);
-      localStorage.setItem('cannlytics_theme', theme);
+      this.setTheme(currentTheme);
+      localStorage.setItem('cannlytics_theme', currentTheme);
     } else {
       document.getElementById('theme-toggle').style.display = 'none';
     }
   },
 
-  setTheme(theme) {
+  setTheme(currentTheme) {
     /**
      * Set the website's theme.
-     * @param {String} theme The theme to set: `light` or `dark`.
+     * @param {String} currentTheme The theme to set: `light` or `dark`.
      */
-    if (theme === 'light') document.body.className = 'base';
+    if (currentTheme === 'light') document.body.className = 'base';
     else if (!hasClass(document.body, 'dark')) document.body.className += ' dark';
   },
 
@@ -155,7 +222,8 @@ async function checkForCredentials() {
    */
   try {
     await checkGoogleLogIn();
-    await authRequest('/api/internal/login');
+    console.log('Request to /src/auth/login');
+    await authRequest('/src/auth/login');
   } catch(error) {
     // No Google sign-in token.
   }

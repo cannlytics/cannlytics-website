@@ -2,7 +2,7 @@
 API Functions | Cannlytics API
 Copyright (c) 2021-2022 Cannlytics
 
-Authors: Keegan Skeate <keegan@cannlytics.com>
+Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 7/7/2021
 Updated: 12/27/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
@@ -19,7 +19,7 @@ from typing import Any, Callable, Dict, Tuple
 from rest_framework.response import Response
 
 # Internal imports.
-from api.auth.auth import authenticate_request
+from cannlytics.auth.auth import authenticate_request
 from cannlytics.firebase import (
     add_to_array,
     create_log,
@@ -334,4 +334,17 @@ def handle_request(
         return {'success': False, 'data': None, 'message': message}, 401
     action = actions.get(request.method)
     # FIXME: Pass `org_id`?
+    # try:
+    #     org_id = request.query_params.get('organization_id', claims['team'])
+    #     assert org_id in claims['team']
+    # except:
+    #     message = 'Failure to authenticate with the credentials provided.'
+    #     return {'success': False, 'data': None, 'message': message}, 401
+    # # Optional: Restrict actions based on authentication?
+    # # if request.method == 'DELETE':
+    # #     try:
+    # #         assert org_id in claims['owner']
+    # #     except:
+    # #         message = 'Owner credentials required for deleting data.'
+    # #         return {'success': False, 'data': None, 'message': message}, 403
     return action(request, claims, model_type, model_type_singular, model_id, org_id=None)

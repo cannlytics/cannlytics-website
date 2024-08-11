@@ -1,48 +1,50 @@
 # Dockerfile | Cannlytics Website
-# Copyright (c) 2021-2022 Cannlytics
+# Copyright (c) 2021-2023 Cannlytics
 #
 # Auhtors: Keegan Skeate <keegan@cannlytics.com>
 # Created: 1/5/2021
-# Updated: 1/10/2022
-# License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+# Updated: 9/10/2023
+# License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
-# Use the official lightweight Python image.
-# https://hub.docker.com/_/python
-# For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.9-slim-buster
+# Python setup.
+FROM python:3.10-slim
 
-# Service must listen to $PORT environment variable.
-# This default value facilitates local development.
-ENV PORT 8080
+# Environment Variables.
+ENV APP=website \
+    PORT=8080 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=True \
+    LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8 \
+    APP_HOME=/app
 
-# Keeps Python from generating .pyc files in the container.
-ENV PYTHONDONTWRITEBYTECODE 1
-
-# Setting this ensures that print statements and log messages
-# promptly appear in Cloud Logging.
-ENV PYTHONUNBUFFERED True
-
-# Install dependencies.
+# General Installation: Python dependencies and set directory.
 COPY requirements.txt .
-RUN python -m pip install --upgrade pip
-RUN python -m pip install -r requirements.txt
-
-# Specificy directory.
-ENV APP_HOME /app
+RUN python -m pip install --upgrade pip && \
+    python -m pip install -r requirements.txt
 WORKDIR $APP_HOME
+
+# Install necessary packages.
+# https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN apt-get update && \
+    apt-get install -y \
+        tesseract-ocr \
+        libtesseract-dev \
+        gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils imagemagick libzbar0 zbar-tools libzbar-dev \
+        wget && \
+    wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_120.0.6099.71-1_amd64.deb && \
+    dpkg -i google-chrome-stable_120.0.6099.71-1_amd64.deb; apt-get -fy install && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* 
+
+# Verify zbar installation. (unnecessary?)
+# RUN dpkg -L libzbar-dev; ls -l /usr/include/zbar.h
 
 # Copy local code to the container image.
 COPY . ./
 
-# Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights
+# Use non-root user.
 RUN useradd appuser && chown -R appuser /app
 USER appuser
 
-# Run the web service on container startup. Here we use the gunicorn
-# webserver, with 4 worker process (1 by default) and 16 threads (8 by default).
-# For environments with multiple CPU cores, increase the number of workers
-# to be equal to the cores available.
-# See:
-# https://docs.gunicorn.org/en/stable/design.html#how-many-workers
-# https://docs.gunicorn.org/en/stable/design.html#how-many-threads
-CMD exec gunicorn --bind :$PORT --workers 4 --threads 16 --timeout 120 website.core.wsgi:application
+# Run the app.
+CMD exec gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 0 $APP.core.wsgi:application

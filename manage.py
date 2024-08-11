@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 """
 Django's command-line utility for administrative tasks.
+
+Usage:
+
+    set PROJECT=console & python manage.py runserver
+
 """
 import os
 import sys
@@ -8,7 +13,10 @@ import sys
 
 def main():
     """ Run administrative tasks. """
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings')
+    # Allow user to specify project from the command line.
+    project = os.environ.get('PROJECT', 'website').strip()
+    print('DJANGO PROJECT:', project)
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'{project}.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

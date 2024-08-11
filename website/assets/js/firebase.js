@@ -2,7 +2,7 @@
  * Firebase JavaScript | Cannlytics Website
  * Copyright (c) 2021-2022 Cannlytics
  * 
- * Authors: Keegan Skeate <keegan@cannlytics.com>
+ * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 12/22/2020
  * Updated: 1/21/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
@@ -128,21 +128,25 @@ const createCollectionReference = (path) => {
 
 const createCollectionQuery = (path, params) => {
   /**
-  * Create a Firestore collection query from a path and parameters.
-  * @param {String} path The path to the collection.
-  * @param {Map} params Parameters for querying: `desc`, `filters`, `max`, `order`.
-  * @return {Query}
-  */
+   * Create a Firestore collection query from a path and parameters.
+   * @param {String} path The path to the collection.
+   * @param {Map} params Parameters for querying: `desc`, `filters`, `max`, `order`.
+   * @return {Query}
+   */
   const collectionRef = createCollectionReference(path);
-  const args = [collectionRef];
-  const { desc, filters=[], max, order } = params;
+  const { desc, filters = [], max, order } = params;
+  const queryConstraints = [];
   filters.forEach((filter) => {
-    args.push(where(filter.key, filter.operation, filter.value));
+    queryConstraints.push(where(filter.key, filter.operation, filter.value));
   });
-  if (order && desc) args.push(orderBy(order, 'desc'));
-  else if (order) args.push(orderBy(order));
-  if (max) args.push(limit(max));
-  return query(...args);
+  if (order) {
+    queryConstraints.push(orderBy(order, desc ? 'desc' : 'asc'));
+  }
+  if (max) {
+    console.log('max', max);
+    queryConstraints.push(limit(max));
+  }
+  return query(collectionRef, ...queryConstraints);
 };
 
 async function getCollection(path, params) {
@@ -336,7 +340,7 @@ async function getUserToken(refresh = false) {
   * @param {Boolean} refresh Whether or not the credentials of the ID token should be refreshed.
   */
   if (!auth.currentUser) {
-    return await onAuthStateChanged(auth, async (user) => {
+    return onAuthStateChanged(auth, async (user) => {
       if (user) return await user.getIdToken(refresh);
     });
   } else {

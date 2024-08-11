@@ -4,17 +4,17 @@
   Password Reset Page | Cannlytics Website
   Copyright (c) 2021-2022 Cannlytics
 
-  Authors: Keegan Skeate <contact@cannlytics.com>
+  Authors: Keegan Skeate <https://github.com/keeganskeate>
   Created: 2/13/2021
   Updated: 1/8/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
   Optional: Add reCaptcha.
 -->
-{% extends "website/index.html" %}
+{% extends "website/components/layout/dashboard.html" %}
 {% load static icon %}
 {% block title %}Sign Up | Cannlytics{% endblock %}
-{% block material %}
+{% block dashboard %}
 <section class="container pt-5" style="max-width:475px;">
 
   <!-- Message -->
@@ -28,7 +28,7 @@
   <!-- Email -->
   <div class="mb-3 row">
     <label
-      for="sign-up-email"
+      for="login-email"
       class="col-sm-2 col-form-label col-form-label-sm"
     >
       Email
@@ -37,7 +37,7 @@
       <input
         type="email"
         class="form-control form-control-sm"
-        id="sign-up-email"
+        id="login-email"
         required
         autofocus
         spellcheck="false"
@@ -68,7 +68,7 @@
   <div class="form-check markdown mb-3">
     <input id="newsletter-signup" class="app-action form-check-input" type="checkbox" value="" checked>
     <label for="newsletter-signup" class="app-action background-hover form-check-label fs-6">
-      <small>Subscribe to newsletter</small>
+      <small>Subscribe to the newsletter?</small>
     </label>
   </div>
 
@@ -141,7 +141,7 @@
 </section>
 
 <!-- Vines -->
-{% include "website/components/art/vines.html" %}
+{% comment %} {% include "website/components/art/vines.html" %} {% endcomment %}
 
-{% endblock material %}
+{% endblock %}
 </html>

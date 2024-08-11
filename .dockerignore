@@ -9,7 +9,6 @@
 **/.settings
 **/.toolstarget
 **/.vs
-**/.vscode
 **/*.*proj.user
 **/*.dbmdl
 **/*.jfm
@@ -27,5 +26,18 @@
 *.pyo
 *.pyd
 README.md
-.admin/tokens
+**/.admin
+**/.datasets
+**/.firebase
+**/.vscode
+/ai
+/build
+/cannlytics.egg-info
+/dist
+/docs
+/tests
 /tools
+.firebaserc
+firebase.json
+mkdocs.yaml
+setup.py

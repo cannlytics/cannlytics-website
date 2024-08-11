@@ -2,7 +2,7 @@
 Utility Functions | Cannlytics Website
 Copyright (c) 2021-2022 Cannlytics
 
-Authors: Keegan Skeate <keegan@cannlytics.com>
+Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 1/5/2021
 Updated: 1/5/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
@@ -76,9 +76,9 @@ def get_markdown(
         page = context['page']
     try:
         # Optional: Open markdown file directly instead of with a request.
-        try:
+        if DEBUG:
             base = request.META.get('HTTP_REFERER').split('/')[2]
-        except AttributeError:
+        else:
             base = 'cannlytics.com'
         protocol = 'http' if DEBUG else 'https'
         url = f'{protocol}://{base}/static/{app}/docs/{page}.md'

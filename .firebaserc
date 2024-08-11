@@ -5,11 +5,23 @@
   "targets": {
     "cannlytics": {
       "hosting": {
+        "app": [
+          "cannlytics-data"
+        ],
+        "docs": [
+          "cannlytics-docs"
+        ],
         "dev": [
-          "cannlytics-website-dev"
+          "cannlytics-dev"
+        ],
+        "metrc": [
+          "cannlytics-app"
         ],
         "production": [
-          "cannlytics"
+          "cannlytics-console"
+        ],
+        "website": [
+          "cannlytics-website"
         ]
       }
     }

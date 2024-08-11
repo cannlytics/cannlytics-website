@@ -4,15 +4,15 @@
   Sign In Page | Cannlytics Website
   Copyright (c) 2021-2022 Cannlytics
 
-  Authors: Keegan Skeate <contact@cannlytics.com>
+  Authors: Keegan Skeate <https://github.com/keeganskeate>
   Created: 2/18/2021
   Updated: 1/7/2022
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
-{% extends "website/index.html" %}
+{% extends "website/components/layout/dashboard.html" %}
 {% load static icon %}
 {% block title %}Sign In | Cannlytics{% endblock title %}
-{% block page_css %}
+{% block dashboard_css %}
 <style>
   #google-signin {
     background: url({% static 'website/images/logos/signin-assets/btn_google_signin_dark_normal_web@2x.png' %});
@@ -33,8 +33,8 @@
     background-size: contain;
   }
 </style>
-{% endblock page_css %}
-{% block material %}
+{% endblock %}
+{% block dashboard %}
 <section class="container pt-5" style="max-width:475px;">
 
   <!-- Message -->
@@ -120,7 +120,7 @@
     </button>
   </div>
 
-  <!-- Google Sign In -->
+  {% comment %} <!-- Google Sign In -->
   <div class="serif text-dark text-center my-3">
     &mdash;&nbsp;or&nbsp;&mdash;
   </div>
@@ -128,7 +128,7 @@
     <a id="google-signin" class="app-action" onclick="cannlytics.auth.signInWithGoogle()"></a>
   </div>
   <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_focus_web@2x.png' %}">
-  <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_pressed_web@2x.png' %}">
+  <img style="display:none;" src="{% static 'website/images/logos/signin-assets/btn_google_signin_dark_pressed_web@2x.png' %}"> {% endcomment %}
 
   <!-- Sign up -->
   <div class="d-flex align-items-center justify-content-center">
@@ -150,13 +150,10 @@
 
 </section>
 
-<!-- Vines -->
-{% include "website/components/art/vines.html" %}
-
-{% endblock material %}
+{% endblock %}
 
 <!-- JavaScript -->
-{% block page_js %}
+{% block dashboard_js %}
   <script>
 
     // Initialize the sign in form.
@@ -173,6 +170,6 @@
     });
 
   </script>
-{% endblock page_js %}
+{% endblock %}
 
 </html>

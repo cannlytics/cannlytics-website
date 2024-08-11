@@ -1,30 +1,26 @@
 """
 URLs | Cannlytics Website
-Copyright (c) 2021-2022 Cannlytics
+Copyright (c) 2020-2024 Cannlytics
 
-Authors: Keegan Skeate <keegan@cannlytics.com>
+Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 12/29/2020
-Updated: 1/20/2022
+Updated: 1/21/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
-# External imports.
+# External imports:
 from django.conf import settings
-from django.conf.urls import handler404, handler500 #pylint: disable=unused-import
+from django.conf.urls import handler404, handler500
 from django.urls import include, path
 from django.views.generic.base import RedirectView
 from django_robohash.views import robohash
 
-# Internal imports.
+# Internal imports:
 from website.views import (
     auth,
-    data,
-    email,
     main,
-    market,
-    subscriptions,
-    testing,
-    videos,
+    payments,
 )
+
 
 # Main URLs.
 urlpatterns = [
@@ -33,48 +29,26 @@ urlpatterns = [
     path('src/', include([
         path('auth/login', auth.login),
         path('auth/logout', auth.logout),
-        path('data/download-analyses-data', data.download_analyses_data),
-        path('data/download-lab-data', data.download_lab_data),
-        path('data/download-regulation-data', data.download_regulation_data),
-        path('email/send-message', email.send_message, name="message"),
-        path('email/suggest-edit', email.suggest_edit, name="suggestion"),
-        path('market/promotions', market.promotions, name='promotions'),
-        # TODO: Implement blockchain market functionality
-        # path('market/buy', market.buy_data),
-        # path('market/publish', market.publish_data),
-        # path('market/sell', market.sell_data),
-        path('market/buy-data', market.buy_data),
-        path('payments/subscribe', subscriptions.subscribe, name='subscribe'),
-        path('payments/subscriptions', subscriptions.get_user_subscriptions),
-        path('payments/unsubscribe', subscriptions.unsubscribe),
+        path('payments/subscriptions', payments.get_user_subscriptions),
+        path('payments/unsubscribe', payments.unsubscribe),
+        path('payments/orders', payments.create_order, name='create_order'),
+        path('payments/orders/<str:order_id>/capture', payments.capture_order, name='capture_order'),
     ])),
-    # path('data', include([
-    #     path('', main.GeneralView.as_view(), name='data'),
-    #     path('/market', main.GeneralView.as_view(), name='market'),
-    #     path('/<dataset_id>', market.DatasetView.as_view(), name='dataset'),
-    # ])),
-    path('data/market/<dataset_id>', market.DatasetView.as_view(), name='dataset'),
-    path('testing', include([
-        path('', testing.TestingView.as_view(), name='testing'),
-        path('/labs', testing.TestingView.as_view(), name='labs'),
-        path('/labs/new', testing.NewLabView.as_view(), name='new-lab'),
-        path('/labs/<lab>', testing.LabView.as_view(), name='lab'),
-        # TODO: Add regulation and analysis specific pages.
-        # path('/analyses', testing.TestingView.as_view(), name='analyses'),
-        # path('/analyses/<analysis_id>', testing.TestingView.as_view(), name='analysis'),
-        # path('/regulations', testing.TestingView.as_view(), name='regulations'),
-        # path('/regulations/<state>', testing.TestingView.as_view(), name='regulation'),
-    ])),
-    path('robohash/<string>', robohash, name='robohash'),
-    path('videos', videos.VideosView.as_view(), name='videos'),
-    path('videos/<video_id>', videos.VideosView.as_view(), name='video'),
+    path('donate', main.donate, name='donate'),
     path('meetup', main.meetup, name='meetup'),
-    path('community', RedirectView.as_view(url='/testing', permanent=False)),
-    path('labs', RedirectView.as_view(url='/testing/labs', permanent=False)),
+    path('subscriptions', RedirectView.as_view(url='/account/subscriptions', permanent=False)),
+    path('support', RedirectView.as_view(url='/account/subscriptions', permanent=False)),
+    # path('videos', videos.VideosView.as_view(), name='videos'),
+    # path('videos/<video_id>', videos.VideosView.as_view(), name='video'),
+    path('.well-known/ai-plugin.json', RedirectView.as_view(url='/static/ai-plugin.json', permanent=False)),
+    path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico', permanent=False)),
+    path('robots.txt', RedirectView.as_view(url='/static/robots.txt', permanent=False)),
+    path('robohash/<string>', robohash, name='robohash'),
     path('<page>', main.GeneralView.as_view(), name='page'),
     path('<page>/<section>', main.GeneralView.as_view(), name='section'),
     path('<page>/<section>/<str:unit>', main.GeneralView.as_view(), name='unit'),
 ]
+
 
 # Serve static assets in development and production.
 if settings.DEBUG:

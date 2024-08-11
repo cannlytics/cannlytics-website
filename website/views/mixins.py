@@ -2,7 +2,7 @@
 Mixins | Cannlytics Website
 Copyright (c) 2021-2022 Cannlytics
 
-Authors: Keegan Skeate <keegan@cannlytics.com>
+Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 12/30/2020
 Updated: 12/24/2021
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
@@ -93,7 +93,7 @@ def get_page_data(context: dict) -> dict:
 
 def get_page_docs(request: Any, context: dict) -> dict:
     """Get any text documents for a given page."""
-    docs = page_docs.get(context['page'])
+    docs = page_docs.get(context['page'], []) + page_docs.get(context['section'], [])
     if docs:
         for doc in docs:
             name = doc.replace('-', '_').replace('/', '_')

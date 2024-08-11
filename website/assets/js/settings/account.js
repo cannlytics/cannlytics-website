@@ -2,7 +2,7 @@
  * Account JavaScript | Cannlytics Website
  * Copyright (c) 2021-2022 Cannlytics
  * 
- * Authors: Keegan Skeate <contact@cannlytics.com>
+ * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 11/28/2021
  * Updated: 12/31/2021
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
@@ -38,7 +38,7 @@ export const accountSettings = {
       if (user) {
         const fileElem = document.getElementById('user-photo-url');
         fileElem.addEventListener('change', this.uploadUserPhoto, false);
-        document.getElementById('account-photo').src = user.photoURL;
+        if (user.photoURL) document.getElementById('account-photo').src = user.photoURL;
         this.resetAccountForm();
       } else {
         window.location.href = `${window.location.origin}/account/sign-up`;

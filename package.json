@@ -1,73 +1,82 @@
 {
-  "name": "cannlytics-website",
-  "productName": "Cannlytics Website",
-  "version": "1.2.5",
+  "name": "cannlytics",
+  "version": "0.0.18",
   "license": "MIT",
-  "private": true,
-  "description": "The Cannlytics Website provides people with information about Cannlytics, cannabis analytics, and boasts a cannabis data market.",
-  "author": "Keegan Skeate <contact@cannlytics.com>",
-  "build": {
-    "productName": "Cannlytics Website"
-  },
+  "homepage": "https://cannlytics.com",
+  "description": "Cannlytics is a suite of tools that you can use to wrangle, standardize, and analyze cannabis data.",
   "keywords": [
     "cannabis",
     "analytics",
+    "data science",
+    "ai",
+    "artificial intelligence",
+    "machine learning",
+    "automation",
+    "statistics",
+    "firebase",
     "python",
     "LIMS"
   ],
-  "homepage": "https://cannlytics.com",
-  "bugs": {
-    "url": "https://github.com/cannlytics/cannlytics-website/issues",
-    "email": "contact@cannlytics.com"
+  "author": {
+    "name": "Keegan Skeate",
+    "email": "keegan@cannlytics.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cannlytics/cannlytics-website.git"
+    "url": "https://github.com/cannlytics/cannlytics.git"
   },
+  "bugs": {
+    "url": "https://github.com/cannlytics/cannlytics/issues",
+    "email": "contact@cannlytics.com"
+  },
+  "private": true,
   "scripts": {
-    "start": "npm-run-all --parallel webpack livereload runserver",
-    "webpack": "webpack-dev-server --env development",
-    "livereload": "python manage.py livereload --ignore-static-dirs",
-    "runserver": "python manage.py runserver",
-    "publish": "npm run build && npm run container && npm run cloud && npm run deploy",
-    "build": "webpack --env production && npm run collectstatic",
-    "collectstatic": "python manage.py collectstatic --noinput",
-    "lint": "python manage.py check",
-    "container": "npm run collectstatic --noinput && gcloud builds submit --tag gcr.io/cannlytics/cannlytics-website",
-    "cloud": "gcloud run deploy cannlytics-website --image gcr.io/cannlytics/cannlytics-website --set-env-vars SETTINGS_NAME=cannlytics_website_settings --region us-central1 --allow-unauthenticated --platform managed --memory 2Gi --cpu 2 --min-instances 1",
-    "deploy": "firebase deploy --project cannlytics --only hosting:production"
+    "start": "conda activate cds & npm-run-all --parallel serve livereload dev",
+    "serve": "cd website & webpack serve --env development & cd ../",
+    "livereload": "set PROJECT=website & python manage.py livereload --ignore-static-dirs",
+    "dev": "set PROJECT=website & python manage.py runserver",
+    "build": "cd website & webpack --env production & cd ../",
+    "collectstatic": "set PROJECT=website & echo yes|python manage.py collectstatic",
+    "container": "npm run collectstatic --noinput & gcloud builds submit --tag gcr.io/cannlytics/cannlytics-website",
+    "run": "gcloud run deploy cannlytics-website --image=gcr.io/cannlytics/cannlytics-website --set-env-vars=SETTINGS_NAME=cannlytics_platform_settings --region=us-central1 --allow-unauthenticated --platform=managed --memory=8Gi --cpu=2 --min-instances=1 --max-instances=99 --no-use-http2 --timeout=15m",
+    "deploy": "firebase deploy --project cannlytics --only hosting:cannlytics",
+    "docker": "docker build . --tag gcr.io/cannlytics/cannlytics-website:latest & docker push gcr.io/cannlytics/cannlytics-website:latest",
+    "publish": "conda activate cds & npm run build & npm run collectstatic & npm run docker & npm run run & npm run deploy",
+    "clean": "rimraf website/static/website/js/bundles/hot"
   },
   "dependencies": {
-    "@popperjs/core": "^2.10.2",
-    "@primer/css": "^19.2.0",
-    "@primer/octicons": "^11.0.0",
-    "ag-grid-community": "^26.2.1",
-    "babel-preset-es2015": "^6.24.1",
-    "bootstrap": "^5.1.3",
-    "firebase": "^9.6.5",
-    "tether": "^2.0.0",
-    "uuid": "^8.3.2"
+    "@popperjs/core": "^2.11.8",
+    "@primer/octicons": "19.8.0",
+    "axios": "1.6.5",
+    "bootstrap": "^5.3.3",
+    "firebase": "^10.11.0",
+    "html5-qrcode": "2.3.8",
+    "npm": "^10.3.0",
+    "popper.js": "1.16.1",
+    "tether": "2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
     "@babel/plugin-transform-runtime": "^7.16.4",
     "@babel/preset-env": "^7.16.4",
-    "autoprefixer": "^10.2.5",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^5.2.7",
-    "dotenv-webpack": "^6.0.0",
-    "extract-loader": "^5.1.0",
-    "file-loader": "^6.1.0",
+    "@types/autoprefixer": "^10.2.0",
+    "autoprefixer": "^10.4.13",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^6.7.3",
+    "css-minimizer-webpack-plugin": "^4.2.2",
+    "dotenv-webpack": "^8.0.1",
+    "file-loader": "^6.2.0",
     "npm-run-all": "^4.1.5",
-    "postcss": "^8.4.1",
-    "postcss-loader": "^5.3.0",
-    "sass": "^1.43.5",
-    "sass-loader": "^10.2.0",
-    "style-loader": "^1.3.0",
-    "webpack": "^5.64.3",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.7.3"
+    "postcss": "^8.4.21",
+    "postcss-loader": "^7.0.2",
+    "sass": "^1.57.1",
+    "sass-loader": "^13.2.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-node-externals": "^3.0.0"
   },
   "babel": {
     "plugins": [

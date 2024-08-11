@@ -2,26 +2,14 @@
  * User Interface JavaScript | Cannlytics Website
  * Copyright (c) 2021-2022 Cannlytics
  * 
- * Authors: Keegan Skeate <keegan@cannlytics.com>
+ * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 5/2/2021
- * Updated: 12/16/2021
+ * Updated: 7/20/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Modal, Popover, Tooltip } from 'bootstrap';
 import { deserializeForm, serializeForm, hasClass } from '../utils.js';
-
-// Unused? Generalize?
-// showPromo() {
-//   /**
-//    * Show the promo code field.
-//    */
-//   const promoButton = document.getElementById('promo-button');
-//   const promoInputGroup = document.getElementById('promo-input-group');
-//   promoButton.style.display = 'none';
-//   if (promoInputGroup.classList.contains('visually-hidden')) {
-//     promoInputGroup.classList.remove('visually-hidden');
-//   }
-// }
+import { theme } from './theme.js';
 
 export function addSelectOptions(id, options) {
   /**
@@ -38,27 +26,16 @@ export function addSelectOptions(id, options) {
   });
 }
 
-export function getTheme() {
+export function sortSelectOptions(id) {
   /**
-   * Get the current theme.
+   * Sort the options of a selection element given its ID.
+   * @param {String} id The element ID of a select in the UI.
    */
-  return (document.body.classList.contains('dark')) ? 'dark' : 'light';
-}
-
-export function setTableTheme() {
-  /**
-   * Set the appropriate theme for tables based on the current theme,
-   * toggling the Ag-Grid theme too.
-   */
-  let nuisanceTableClass = 'ag-theme-alpine-dark';
-  let finalTableClass = 'ag-theme-alpine';
-  if (hasClass(document.body, 'dark')) {
-    nuisanceTableClass = 'ag-theme-alpine';
-    finalTableClass = 'ag-theme-alpine-dark';
-  }
-  let tables = document.getElementsByClassName(nuisanceTableClass);
-  [...tables].forEach( x => x.classList.add(finalTableClass) );
-  [...tables].forEach( x => x.classList.remove(nuisanceTableClass) );
+  const selectNode = document.getElementById(id);
+  const optionNodes = Array.from(selectNode.children);
+  const comparator = new Intl.Collator(document.documentElement.lang.slice(0, 2)).compare;
+  optionNodes.sort((a, b) => comparator(a.textContent, b.textContent));
+  optionNodes.forEach((option) => selectNode.appendChild(option));
 }
 
 export function showLoadingButton(buttonId) {
@@ -412,9 +389,11 @@ export const ui = {
   ...formHelpers,
   ...initHelpers,
   ...navigationHelpers,
+  ...theme,
   ...uiManipulation,
   hideLoadingButton,
   showLoadingButton,
   hideModal,
   showModal,
+  sortSelectOptions,
 };
