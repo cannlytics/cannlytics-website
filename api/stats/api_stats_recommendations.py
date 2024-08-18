@@ -25,7 +25,7 @@ from rest_framework.response import Response
 import ulid
 
 # Internal imports.
-from cannlytics.firebase import (
+from website.firebase import (
     update_documents,
 )
 from cannlytics.stats.stats import (

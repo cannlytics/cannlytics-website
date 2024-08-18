@@ -26,6 +26,7 @@ WORKDIR $APP_HOME
 
 # Install necessary packages.
 # https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+# FIXME: Update to latest version of Chrome.
 RUN apt-get update && \
     apt-get install -y \
         tesseract-ocr \

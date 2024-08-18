@@ -13,10 +13,10 @@ from typing import Any
 
 # External imports
 from django.views.generic.base import ContextMixin
-from cannlytics.auth.auth import authenticate_request
 
-# Internal imports
-from cannlytics.firebase import (
+# Internal imports:
+from website.auth import authenticate_request
+from website.firebase import (
     get_collection,
     get_document,
     initialize_firebase,

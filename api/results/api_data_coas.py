@@ -25,9 +25,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 # Internal imports
-from cannlytics.auth.auth import authenticate_request
+from website.auth import authenticate_request
 from cannlytics.data.coas.coas import CoADoc
-from cannlytics.firebase import (
+from website.firebase import (
     access_secret_version,
     create_log,
     create_short_url,

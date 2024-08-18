@@ -22,8 +22,8 @@ import requests
 import google.auth
 
 # Internal imports:
-from cannlytics.auth.auth import authenticate_request
-from cannlytics.firebase import (
+from website.auth import authenticate_request
+from website.firebase import (
     access_secret_version,
     create_log,
     get_document,

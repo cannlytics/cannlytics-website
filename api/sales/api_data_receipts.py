@@ -25,10 +25,10 @@ from rest_framework.response import Response
 import pandas as pd
 
 # Internal imports
-from cannlytics.auth.auth import authenticate_request
+from website.auth import authenticate_request
 from cannlytics.data.sales.receipts_ai import ReceiptsParser
 from cannlytics.data.strains.strains_ai import identify_strains
-from cannlytics.firebase import (
+from website.firebase import (
     access_secret_version,
     create_log,
     create_short_url,

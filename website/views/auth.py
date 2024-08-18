@@ -7,12 +7,12 @@ Created: 12/18/2020
 Updated: 1/8/2022
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
-# External imports.
+# External imports:
 from django.http import JsonResponse
 
-# Internal imports.
-from cannlytics.auth.auth import authenticate_request
-from cannlytics.firebase import (
+# Internal imports:
+from website.auth import authenticate_request
+from website.firebase import (
     create_log,
     create_session_cookie,
     initialize_firebase,

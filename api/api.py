@@ -1,10 +1,10 @@
 """
 API Functions | Cannlytics API
-Copyright (c) 2021-2022 Cannlytics
+Copyright (c) 2021-2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 7/7/2021
-Updated: 12/27/2021
+Updated: 8/17/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 Description: API to interface with laboratory data models.
@@ -19,8 +19,8 @@ from typing import Any, Callable, Dict, Tuple
 from rest_framework.response import Response
 
 # Internal imports.
-from cannlytics.auth.auth import authenticate_request
-from cannlytics.firebase import (
+from website.auth import authenticate_request
+from website.firebase import (
     add_to_array,
     create_log,
     delete_document,

@@ -18,8 +18,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 # Internal imports.
-from cannlytics.auth.auth import authenticate_request
-from cannlytics.firebase import (
+from website.auth import authenticate_request
+from website.firebase import (
     get_document,
     update_documents,
 )

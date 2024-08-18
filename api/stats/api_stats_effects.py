@@ -20,7 +20,7 @@ from rest_framework.response import Response
 import ulid
 
 # Internal imports.
-from cannlytics.firebase import (
+from website.firebase import (
     get_document,
     update_documents,
 )

@@ -33,8 +33,8 @@ from api.ai.api_ai import (
     MAX_TOKENS,
     TEMPERATURE,
 )
-from cannlytics.auth.auth import authenticate_request
-from cannlytics.firebase import (
+from website.auth import authenticate_request
+from website.firebase import (
     access_secret_version,
     create_log,
     delete_document,

@@ -37,9 +37,9 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 
 # Internal imports:
-from cannlytics.auth.auth import authenticate_request
+from website.auth import authenticate_request
 from cannlytics.data import create_hash
-from cannlytics.firebase import (
+from website.firebase import (
     access_secret_version,
     add_secret_version,
     create_log,

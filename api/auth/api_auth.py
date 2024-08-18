@@ -22,8 +22,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 # Internal imports.
-from cannlytics.auth.auth import authenticate_request, sha256_hmac
-from cannlytics.firebase import (
+from website.auth import authenticate_request, sha256_hmac
+from website.firebase import (
     create_log,
     delete_document,
     get_collection,

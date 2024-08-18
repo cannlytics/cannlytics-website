@@ -17,7 +17,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 # Internal imports:
-from cannlytics.firebase import get_collection
+from website.firebase import get_collection
 
 
 # TODO: Make obsolete by re-uploading the data.
