@@ -4,7 +4,7 @@ Copyright (c) 2023 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 6/23/2023
-Updated: 9/6/2023
+Updated: 8/18/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Description:
@@ -21,8 +21,8 @@ import ssl
 from email.mime.text import MIMEText
 
 # External imports:
-from cannlytics import firebase
 from firebase_admin import initialize_app
+from firebase_admin import firestore
 
 # Initialize Firebase.
 try:
@@ -48,6 +48,7 @@ def auth_signup(data, context):
         print('User email: %s' % user_email)
 
     # Add 10 trial tokens to the user's account.
+    db = firestore.client()
     if created_at == data['metadata']['lastSignedInAt']:
         print('User signed up for the first time: %s' % created_at)
         entry = {
@@ -57,16 +58,18 @@ def auth_signup(data, context):
             'uid': uid,
             'email': user_email,
         }
-        firebase.update_document(f'subscribers/{uid}', entry)
+        ref = db.collection('subscribers').document(uid)
+        ref.set(entry, merge=True)
         print('Added 50 tokens for user: %s' % uid)
 
     # Create the user's profile in the database.
-    ref = 'users/%s/public_user_data/profile' % uid
     profile_data = {
         'created_at': created_at,
         'uid': uid,
     }
-    firebase.update_document(ref, profile_data)
+    ref = db.collection('users').document(uid) \
+        .collection('public_user_data').document('profile')
+    ref.set(profile_data, merge=True)
 
     # Get email credentials.
     admin_email = os.environ.get('EMAIL_HOST_USER')

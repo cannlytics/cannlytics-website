@@ -4,7 +4,7 @@ Copyright (c) 2023 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 9/3/2023
-Updated: 9/4/2023
+Updated: 8/18/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Description:
@@ -23,7 +23,6 @@ from datetime import datetime
 import os
 
 # External imports:
-from cannlytics import firebase
 from firebase_admin import auth, initialize_app, firestore
 import requests
 
@@ -58,6 +57,7 @@ def parse_receipt_jobs(event, context) -> None:
 
     # Initialization.
     start_time = datetime.now()
+    db = firestore.client()
 
     # Get the user's UID from the path.
     # Note: This is important because Firestore rules only allows
@@ -98,8 +98,11 @@ def parse_receipt_jobs(event, context) -> None:
         credit = True
         id_token = os.getenv('CANNLYTICS_API_KEY')
         print('Proceeding with Cannlytics API key.')
-        ref = f'subscribers/{uid}'
-        user_subscription = firebase.get_document(ref)
+        ref = db.collection('subscribers').document(uid)
+        try:
+            user_subscription = ref.get().to_dict()
+        except:
+            user_subscription = {}
         current_tokens = user_subscription.get('tokens', 0) if user_subscription else 0
         if current_tokens < 1:
             raise Exception('User does not have enough tokens to perform this action.')
@@ -128,7 +131,7 @@ def parse_receipt_jobs(event, context) -> None:
         print('Job finished successfully.')
         if credit:
             current_tokens -= 1
-            firebase.increment_value(ref=ref, field='tokens', amount=-1)
+            ref.update({'tokens': firestore.Increment(-1)})
     else:
         error_message = response.text
         job_data = {
