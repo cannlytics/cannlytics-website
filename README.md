@@ -236,31 +236,16 @@ The table below lists available development commands.
 
 | Command | Purpose |
 |---------|---------|
-| `ai:deploy-cannabis-data-daily` | Deploy the routine that collects daily cannabis data. |
-| `console:start` | Start the complete console development environment. |
-| `console:serve` | Serve the assets with `webpack-dev-server`. |
-| `console:livereload` | Serve Django with `django-livereload-server`. |
-| `console:dev` | Serve Django with `runserver`. |
-| `console:build` | Build the assets for production with `webpack`. |
-| `console:collectstatic` | Gather all of the Django static files into the `public` directory. |
-| `console:container` | Build a container image for the app. |
-| `console:cloud` | Run the container image in the cloud. |
-| `console:deploy` | Direct requests to the running container image. |
-| `console:publish` | Perform all publishing steps: `build`, `container`, `cloud`, and `deploy`.
-| `docs:install` | Install the documentation requirements and dependencies. |
-| `docs:build` | Build the documentation. |
-| `docs:publish` | Publish the documentation as a static site. |
-| `docs:serve` | Serve the documentation locally for development. |
-| `website:start` | Start the complete website development environment. |
-| `website:serve` | Serve the assets with `webpack-dev-server`. |
-| `website:livereload` | Serve Django with `django-livereload-server`. |
-| `website:dev` | Serve Django with `runserver`. |
-| `website:build` | Build the assets for production with `webpack`. |
-| `website:collectstatic` | Gather all of the Django static files into the `public` directory. |
-| `website:container` | Build a container image for the app. |
-| `website:cloud` | Run the container image in the cloud. |
-| `website:deploy` | Direct requests to the running container image. |
-| `website:publish` | Perform all publishing steps: `build`, `container`, `cloud`, and `deploy`.
+| `start` | Start the complete website development environment. |
+| `serve` | Serve the assets with `webpack-dev-server`. |
+| `livereload` | Serve Django with `django-livereload-server`. |
+| `dev` | Serve Django with `runserver`. |
+| `build` | Build the assets for production with `webpack`. |
+| `collectstatic` | Gather all of the Django static files into the `public` directory. |
+| `container` | Build a container image for the app. |
+| `cloud` | Run the container image in the cloud. |
+| `deploy` | Direct requests to the running container image. |
+| `publish` | Perform all publishing steps: `build`, `container`, `cloud`, and `deploy`.
 
 ### Editing the project <a name="editing"></a>
 
@@ -274,9 +259,7 @@ python manage.py collectstatic --noinput
 or
 
 ```shell
-npm run console:collectstatic
-# or
-npm run website:collectstatic
+npm run collectstatic
 ```
 
 ### Running the project <a name="running"></a>
@@ -291,17 +274,13 @@ python manage.py runserver
 or
 
 ```shell
-npm run console:dev
-# or
-npm run website:dev
+npm run dev
 ```
 
 You can also leverage [django-livereload-server](https://github.com/tjwalch/django-livereload-server) for hot-reloading while you develop.
 
 ```shell
-npm run console:start
-# or
-npm run website:start
+npm run start
 ```
 
 Hot-reloading is an important tool of development. You can use `django-livereload-server`, which uses both [python-livereload](https://github.com/lepture/python-livereload) and [django-livereload](https://github.com/Fantomas42/django-livereload), for smooth reloading. You can install [django-live-reload-server](https://github.com/tjwalch/django-livereload-server) with:
@@ -333,17 +312,13 @@ webpack-dev-server --env production=False
 or
 
 ```shell
-npm run console:serve
-# or
-npm run website:serve
+npm run serve
 ```
 
 It is an inconvenience to run multiple consoles, but a major convenience to have smooth hot-reloading. So, [`npm-run-all`](https://www.npmjs.com/package/npm-run-all) is used to run multiple servers in the same console for smooth development. When you are setup, you can run the project for development simply with:
 
 ```shell
-npm run console:start
-# or
-npm run website:start
+npm run start
 ```
 
 ### Serving the project <a name="serving"></a>
@@ -415,9 +390,7 @@ Perusing the `tests` directory is actually a good place to find examples on how 
 See [the publishing guide](https://docs.cannlytics.com/developers/publishing/) for complete instructions on how to publish Cannlytics for production. The guide is based on the [Running Django on Cloud Run guide](https://cloud.google.com/python/django/run#windows). After setup, publishing is done with one command:
 
 ```shell
-npm run console:publish
-# or
-npm run website:publish
+npm run publish
 ```
 
 If you need to change accounts or projects, then you can use:

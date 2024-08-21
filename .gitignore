@@ -129,3 +129,6 @@ public/docs/
 !data/lib/
 !metrc/lib/
 *firebase_options.dart
+
+# Ignore VS code settings.
+.vscode/

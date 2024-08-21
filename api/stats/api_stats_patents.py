@@ -17,7 +17,6 @@ from json import loads
 import pandas as pd
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import ulid
 
 # Internal imports.
 from website.firebase import (

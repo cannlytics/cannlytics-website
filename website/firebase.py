@@ -28,7 +28,6 @@ from dotenv import dotenv_values
 
 # External imports
 import requests
-import ulid
 from firebase_admin import (
     auth,
     credentials,
@@ -407,34 +406,6 @@ def create_doc_id(database=None, collection='tests') -> str:
     if database is None:
         database = firestore.client()
     return database.collection(collection).document().id
-
-
-def create_id() -> str:
-    """Generate a universal ID.
-    Returns:
-        (str): A unique lexicographic ID.
-    """
-    return ulid.new().str.lower()
-
-
-def create_id_from_datetime(timestamp: datetime) -> str:
-    """Create an ID from an existing datetime.
-    Args:
-        timestamp (datetime): The time to timestamp the ID.
-    Returns:
-        (str): A unique lexicographic ID.
-    """
-    return ulid.from_timestamp(timestamp).str.lower()
-
-
-def get_id_timestamp(uid: str) -> datetime:
-    """Get the datetime that an ID was created.
-    Args:
-        uid (str): A unique ID string.
-    Returns:
-        (datetime): The date when a unique lexicographic ID was generated.
-    """
-    return ulid.from_str(uid).timestamp().datetime
 
 
 # === Authentication ===

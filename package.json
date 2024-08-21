@@ -47,11 +47,11 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@primer/octicons": "19.8.0",
-    "axios": "1.6.5",
+    "axios": "1.7.4",
     "bootstrap": "^5.3.3",
-    "firebase": "^10.11.0",
+    "firebase": "^10.13.0",
     "html5-qrcode": "2.3.8",
-    "npm": "^10.3.0",
+    "npm": "^10.8.2",
     "popper.js": "1.16.1",
     "tether": "2.0.0"
   },
