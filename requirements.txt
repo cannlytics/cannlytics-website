@@ -4,7 +4,7 @@
 # Updated: 8/20/2024
 # License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 beautifulsoup4==4.12.3
-chromedriver-binary==127.0.6533.119.0
+chromedriver-binary==128.0.6613.84.0
 # FIXME: Get the correct version of datasets.
 # datasets==2.21.0
 django==5.1
