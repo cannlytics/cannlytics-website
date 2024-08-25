@@ -24,7 +24,7 @@ RUN python -m pip install --upgrade pip && \
     python -m pip install -r requirements.txt
 WORKDIR $APP_HOME
 
-# Install necessary packages.
+# Install necessary packages: Tesseract, Chrome, Java, and Zbar.
 RUN apt-get update && \
     apt-get install -y \
         tesseract-ocr \
@@ -33,10 +33,9 @@ RUN apt-get update && \
         wget && \
     wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_128.0.6613.84-1_amd64.deb && \
     dpkg -i google-chrome-stable_128.0.6613.84-1_amd64.deb; apt-get -fy install && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* 
-
-# Verify zbar installation. (unnecessary?)
-# RUN dpkg -L libzbar-dev; ls -l /usr/include/zbar.h
+    wget https://download.oracle.com/java/22/latest/jdk-22_linux-x64_bin.deb && \
+    apt-get install -y ./jdk-22_linux-x64_bin.deb && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* ./jdk-22_linux-x64_bin.deb
 
 # Copy local code to the container image.
 COPY . ./
