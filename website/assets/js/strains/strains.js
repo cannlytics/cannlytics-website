@@ -7,6 +7,12 @@
  * Updated: 3/26/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
+import {
+  Firestore,
+  FieldValue,
+  VectorQuery,
+  VectorQuerySnapshot,
+} from "@google-cloud/firestore";
 import { getCollection, getDocument } from '../firebase.js';
 import { formatDecimal } from '../utils.js';
 
@@ -84,6 +90,23 @@ export const strainsJS = {
         strainsContainer.appendChild(errorMessage);
       });
 
+  },
+
+  // TODO: Search strains.
+
+  async findSimilarStrains() {
+    /**
+     * Find similar strains based on the selected strain.
+     */
+    // FIXME: Implement earch for similar strains.
+    var chemotype = FieldValue.vector([3.0, 1.0, 2.0]);
+    const db = new Firestore();
+    const coll = db.collection('strains');
+    const vectorQuery = coll.findNearest('chemotype', chemotype, {
+      limit: 5,
+      distanceMeasure: 'EUCLIDEAN'
+    });
+    const vectorQuerySnapshot = await vectorQuery.get();
   },
 
   fetchStrains(searchTerm, startDate, endDate, selectedState) {
