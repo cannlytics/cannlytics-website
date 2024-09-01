@@ -45,11 +45,7 @@ $btn-hover-bg-shade-amount: 20%;
 $btn-hover-bg-tint-amount: 20%;
 
 // Import bootstrap.
-// @import 'bootstrap/scss/bootstrap';
-
-// Use Tailwind.
-
-
+@import 'bootstrap/scss/bootstrap';
 
 .btn-outline-primary:hover {
   color: #fff;
