@@ -81,14 +81,11 @@
 {% block dashboard_js %}
 {% if section and section not in 'logs,files,certificates' %}
   <script>
-
     // Initialize licensee. 
     cannlytics.licensesJS.initializeLicensee();
-
   </script>
 {% else %}
   <script>
-
     // Attach functionality.
     document.getElementById('searchInput').addEventListener('input', function() {
       cannlytics.licensesJS.initializeLicensees();
@@ -107,7 +104,6 @@
 
     // Initialize licensees. 
     cannlytics.licensesJS.initializeLicensees();
-
   </script>
 {% endif %}
 {% endblock %}

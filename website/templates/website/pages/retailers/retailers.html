@@ -25,14 +25,12 @@
   <script src="https://d3js.org/topojson.v3.min.js"></script>
 
   <style>
-
     #map svg, #state-map svg {
-      display: block; /* Eliminates any extra space below the SVG */
-      width: 100%; /* Sets the SVG width to match the container's width */
-      height: auto; /* Scales the height automatically to maintain the aspect ratio */
-      max-height: 100vh; /* Optional: Limits the SVG height to the viewport height */
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 100vh;
     }
-
   </style>
 
 {% endblock %}
@@ -58,10 +56,8 @@
 {% endblock %}
 {% block dashboard_js %}
   <script>
-
     // Initialize retailers national map.
     // cannlytics.licensesJS.initializeRetailers();
-
   </script>
 {% endblock %}
 </html>

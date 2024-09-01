@@ -39,6 +39,10 @@ urlpatterns = [
         path('/get-keys', api_auth.get_api_key_hmacs),
     ])),
 
+    # TODO: AI
+    # - standard strain name
+    # - standard analyte
+
     # TODO: results
 
 

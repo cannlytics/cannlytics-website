@@ -25,11 +25,8 @@
 
 <!-- Labs -->
 <section class="container markdown">
-
   <!-- Search Bar -->
   {% include "website/components/dashboard/search.html" %}
-
-
 </section>
 
 <!-- Lab Sign Up -->
@@ -39,13 +36,13 @@
       <div class="card mx-auto" style="max-width: 800px;">
         <div class="row g-0">
           <div class="col-md-4 d-flex align-items-center justify-content-center">
-            <img src="/images/emojies/microscope.svg" class="img-fluid rounded-start" alt="Sign Up" style="width: 100px; height: 100px;"> <!-- Adjust image path -->
+            <img src="/images/emojies/microscope.svg" class="img-fluid rounded-start" alt="Sign Up" style="width: 100px; height: 100px;">
           </div>
           <div class="col-md-8">
             <div class="card-body">
               <h5 class="card-title fs-4 fw-bold fancy-serif">Exclusive Offer for Labs</h5>
               <p class="card-text fs-6 lh-lg">Sign up today to share your COAs with your customers.</p>
-              <a href="/signup" class="btn btn-primary">Sign Up Now</a> <!-- Adjust link as needed -->
+              <a href="/signup" class="btn btn-primary">Sign Up Now</a>
             </div>
           </div>
         </div>
@@ -57,13 +54,11 @@
 {% endblock %}
 {% block dashboard_js %}
   <script>
-
     // Initialize tooltips.
     // cannlytics.ui.enableTooltips();
 
     // Initialize labs. 
     // cannlytics.labsJS.initializeLabs();
-
   </script>
 {% endblock %}
 </html>
