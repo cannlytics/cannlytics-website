@@ -29,7 +29,7 @@ def update_user_stats():
     # Get user statistics.
     users = []
     monthly_users = 0
-    current_month = datetime.now().month
+    start_of_month = datetime(datetime.now().year, datetime.now().month, 1)
     print('Getting user statistics...')
     page = auth.list_users()
     while page:
@@ -37,7 +37,7 @@ def update_user_stats():
             users.append(user)
             timestamp = user.user_metadata.creation_timestamp
             created_at = datetime.fromtimestamp(timestamp / 1000)
-            if created_at.month == current_month:
+            if created_at >= start_of_month:
                 monthly_users += 1
         page = page.get_next_page()
     number_of_users = len(users)
