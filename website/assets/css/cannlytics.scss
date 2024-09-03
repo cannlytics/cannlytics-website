@@ -1164,33 +1164,6 @@ body.dark .ground {
   background: #554b8033;
 }
 
-/*--------------------------------------------------------------------------
-  Vines
----------------------------------------------------------------------------*/
-
-.first-vine {
-  position: absolute;
-  transform: rotate(20deg) translate(-50px, -100px);
-}
-.side-vine {
-  z-index: -1;
-  position: absolute;
-  transform: rotate(45deg) translate(-75px, -100px);
-}
-.side-vine-right {
-  right: 0;
-  transform: rotate(-45deg) translate(0px, -0px);
-}
-.straight-vine {
-  transform: rotate(0) translate(95%, -75%);
-}
-.straight-vine-right {
-  transform: rotate(0) translate(-95%, -50%);
-}
-.vine-nudge-left {
-  transform: rotate(0) translate(-400%, -50%);
-}
-
 /*-------------------------------------------------
   Code
   https://richleland.github.io/pygments-css/

@@ -16,7 +16,6 @@
     background_image (optional)
     background_position (str): The background position for the image, center by default.
 -->
-{% comment %} {% static background_image %} {% endcomment %}
 {% load static %}
 <section class="jumbotron text-center" style="{% if background_image %}background-image: url('{{ background_image }}');background-position: {% if background_position %}{{ background_position }}{% else %}center{% endif %};background-repeat: no-repeat;background-size: cover;{% endif %}">
   <div class="container {% if background_image %}card card-opaque py-3 {% endif %}">
@@ -74,5 +73,4 @@
 
   </div>
 </section>
-
 </html>

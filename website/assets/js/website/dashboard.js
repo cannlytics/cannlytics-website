@@ -11,6 +11,7 @@ import { Tooltip } from 'bootstrap';
 
 export const dashboard = {
 
+  // FIXME: Opening does not work.
   initializeDashboard() {
     /**
      * Initialize the dashboard page.

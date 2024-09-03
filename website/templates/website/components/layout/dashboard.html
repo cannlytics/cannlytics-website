@@ -82,7 +82,7 @@
       </ul>
     </nav>
     
-    <!-- Collapse button -->
+    <!-- FIXME: Collapse button -->
     <div>
       <button id="toggleSidebar" class="btn btn-outline-secondary text-secondary mb-3">
         <i class="bi bi-chevron-left"></i>
@@ -115,11 +115,7 @@
   // Initialize tooltips.
   cannlytics.ui.enableTooltips();
 
-  document.getElementById('toggleSidebar').addEventListener('click', function() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('collapsed');
-    // Add any additional logic for collapsing/expanding the sidebar
-  });
+
 </script>
 {% endblock %}
 

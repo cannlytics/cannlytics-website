@@ -317,21 +317,21 @@ export const navigationHelpers = {
     window.location.href = `${window.location.href}/${id}`;
   },
 
-  toggleSidebarNestedNav(section) {
-    /**
-     * Toggle nested navigation in the sidebar.
-     * @param {String} section The nested section to reveal or hide.
-     */
-    const items = document.getElementById(`${section}-items`);
-    const toggle = document.getElementById(`${section}-toggle`);
-    if (hasClass(items, 'show')) {
-      items.classList.remove('show');
-      toggle.classList.remove('flipped');
-    } else {
-      items.classList.add('show');
-      toggle.classList.add('flipped');
-    }
-  },
+  // toggleSidebarNestedNav(section) {
+  //   /**
+  //    * Toggle nested navigation in the sidebar.
+  //    * @param {String} section The nested section to reveal or hide.
+  //    */
+  //   const items = document.getElementById(`${section}-items`);
+  //   const toggle = document.getElementById(`${section}-toggle`);
+  //   if (hasClass(items, 'show')) {
+  //     items.classList.remove('show');
+  //     toggle.classList.remove('flipped');
+  //   } else {
+  //     items.classList.add('show');
+  //     toggle.classList.add('flipped');
+  //   }
+  // },
 
   viewObject(modelSingular) {
     /**
