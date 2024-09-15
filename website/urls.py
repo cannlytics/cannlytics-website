@@ -17,14 +17,14 @@ from django_robohash.views import robohash
 # Internal imports:
 from website.views import (
     auth,
-    main,
     payments,
+    views,
 )
 
 
 # Main URLs.
 urlpatterns = [
-    path('', main.GeneralView.as_view(), name='index'),
+    path('', views.GeneralView.as_view(), name='index'),
     path('api/', include('api.urls'), name='api'),
     path('src/', include([
         path('auth/login', auth.login),
@@ -34,8 +34,8 @@ urlpatterns = [
         path('payments/orders', payments.create_order, name='create_order'),
         path('payments/orders/<str:order_id>/capture', payments.capture_order, name='capture_order'),
     ])),
-    path('donate', main.donate, name='donate'),
-    path('meetup', main.meetup, name='meetup'),
+    path('donate', views.donate, name='donate'),
+    path('meetup', views.meetup, name='meetup'),
     path('subscriptions', RedirectView.as_view(url='/account/subscriptions', permanent=False)),
     path('support', RedirectView.as_view(url='/account/subscriptions', permanent=False)),
     # path('videos', videos.VideosView.as_view(), name='videos'),
@@ -43,10 +43,9 @@ urlpatterns = [
     path('.well-known/ai-plugin.json', RedirectView.as_view(url='/static/ai-plugin.json', permanent=False)),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico', permanent=False)),
     path('robots.txt', RedirectView.as_view(url='/static/robots.txt', permanent=False)),
-    path('robohash/<string>', robohash, name='robohash'),
-    path('<page>', main.GeneralView.as_view(), name='page'),
-    path('<page>/<section>', main.GeneralView.as_view(), name='section'),
-    path('<page>/<section>/<str:unit>', main.GeneralView.as_view(), name='unit'),
+    path('<page>', views.GeneralView.as_view(), name='page'),
+    path('<page>/<section>', views.GeneralView.as_view(), name='section'),
+    path('<page>/<section>/<str:unit>', views.GeneralView.as_view(), name='unit'),
 ]
 
 

@@ -24,9 +24,10 @@ from datetime import datetime, timedelta
 from os import listdir
 from os.path import isfile, join
 from typing import Any, List, Optional, Tuple
-from dotenv import dotenv_values
+import uuid
 
 # External imports
+from dotenv import dotenv_values
 import requests
 from firebase_admin import (
     auth,
@@ -410,27 +411,29 @@ def create_doc_id(database=None, collection='tests') -> str:
 
 # === Authentication ===
 
-def create_user(name: str, email: str) -> Tuple[str]:
+def create_user(name: str, email: str, uid: Optional[str] = None) -> Tuple[str]:
     """
     Given user name and email, create an account.
     If the email is already being used, then nothing is returned.
     Args:
         name (str): A name for the user.
         email (str): The user's email.
+        uid (str): A unique user ID
     Returns:
         (tuple): Returns the User instance and a random password.
     """
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$-_'
     password = get_random_string(42, chars)
-    photo_url = f'https://robohash.org/{email}?set=set5'
+    if uid is None:
+        uid = str(uuid.uuid4())
     try:
         user = auth.create_user(
-            uid=create_id(),
+            uid=uid,
             email=email,
             email_verified=False,
             password=password,
             display_name=name,
-            photo_url=photo_url,
+            photo_url=None,
             disabled=False,
         )
         return user, password

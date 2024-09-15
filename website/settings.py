@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Author: Keegan Skeate <keegan@cannlytics.com>
 Created: 1/5/2021
-Updated: 8/24/2023
+Updated: 9/15/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Django settings powered by environment variables and
@@ -40,6 +40,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 with open(os.path.join(BASE_DIR, 'package.json')) as v_file:
     package = json.loads(v_file.read())
     APP_VERSION_NUMBER = package['version']
+
 
 #----------------------------------------------------------------------#
 # Environment variables.
@@ -89,6 +90,7 @@ else:
     DEBUG = True
     print('WARNING: Debug mode is enabled.')
 
+
 #----------------------------------------------------------------------#
 # Apps
 # https://docs.djangoproject.com/en/3.1/ref/applications/
@@ -106,10 +108,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'django_feather',
-    'django_robohash',
     'corsheaders',
 ]
+
 
 #----------------------------------------------------------------------#
 # Middleware
@@ -135,11 +136,6 @@ MIDDLEWARE = [
 ]
 
 # Allow CORS from the following domains.
-# See: https://github.com/adamchainz/django-cors-headers/tree/main
-# CORS_ALLOWED_ORIGIN_REGEXES = [
-#     r"^https://\w+\.cannlytics\.com$",
-#     r"^https://cannlytics-website-[\w-]+\.a\.run\.app$",
-# ]
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_URLS_REGEX = r"^/api/.*$"
 CORS_ALLOW_HEADERS = (
@@ -153,6 +149,7 @@ CORS_ALLOW_HEADERS = (
     "token",
 )
 
+
 #----------------------------------------------------------------------#
 # Livereload
 # https://github.com/tjwalch/django-livereload-server
@@ -163,6 +160,7 @@ if PRODUCTION == 'False':
     INSTALLED_APPS.insert(0, 'livereload')
     MIDDLEWARE.insert(0, 'livereload.middleware.LiveReloadScript')
     MIDDLEWARE_CLASSES = 'livereload.middleware.LiveReloadScript'
+
 
 #----------------------------------------------------------------------#
 # Templates
@@ -190,6 +188,7 @@ TEMPLATES = [
     },
 ]
 
+
 #----------------------------------------------------------------------#
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -202,13 +201,14 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+
 #----------------------------------------------------------------------#
 # Security
 # https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/web_application_security
 #----------------------------------------------------------------------#
 
 # Specify allowed domains depending on production or development status.
-# FIXME:
+# TODO: Make more secure by defining `ALLOWED_HOSTS`.
 ALLOWED_HOSTS = ['*']
 if PRODUCTION != 'True':
     ALLOWED_HOSTS.extend(['*'])
@@ -225,87 +225,9 @@ try:
 except KeyError:
     pass
 
-# TODO: Implement Content Security Policy and Permissions Policy.
-# FIXME: PAYPAL DOES NOT WORK ANYMORE!!!
-# CSP_DEFAULT_SRC = [
-#     # "'none'",
-#     # "'self'",
-#     # 'connect-src',
-#     'https://www.google-analytics.com',
-#     'https://firebase.googleapis.com',
-#     'https://firestore.googleapis.com',
-#     'https://fonts.gstatic.com',
-#     'https://identitytoolkit.googleapis.com',
-#     'http://127.0.0.1:8000',
-#     '*',
-#     # '//127.0.0.1:35729',
-#     # '//127.0.0.1:8080',
-# ]
-# CSP_FRAME_SRC = [
-#     '*',
-#     "https://docs.google.com",
-#     'https://ghbtns.com',
-#     'https://www.paypal.com/',
-# ]
-# CSP_IMG_SRC = [
-#     # "'self'",
-#     '*',
-#     'https://www.google.com',
-#     'https://googleads.g.doubleclick.net',
-#     'https://www.facebook.com',
-#     'https://t.paypal.com',
-#     'https://www.paypalobjects.com/',
-#     'https://px.ads.linkedin.com',
-#     'https://firebasestorage.googleapis.com',
-#     'data:',
-# ]
-# # CSP_INCLUDE_NONCE_IN = ["script-src"]
-# CSP_SCRIPT_SRC = [
-#     "'unsafe-eval'",
-#     "'unsafe-inline'",
-#     # 'script-src-elem',
-#     'https://cdn.jsdelivr.net',
-#     'https://code.jquery.com',
-#     'https://www.googletagmanager.com',
-#     # 'https://identitytoolkit.googleapis.com',
-#     'https://www.paypal.com',
-#     'https://www.paypalobjects.com',
-#     'http://127.0.0.1:8000',
-#     'http://127.0.0.1:35729',
-#     'ws://127.0.0.1:8080/ws',
-# ]
-# CSP_STYLE_SRC = [
-#     "'unsafe-inline'",
-#     'https://fonts.googleapis.com',
-#     # "style-src-elem"
-# ]
-
 # Provides a little extra protection against Cross-Site Scripting.
-# SECURE_BROWSER_XSS_FILTER = True
 SECURE_SSL_REDIRECT = False
 
-# Enable Strict-Transport-Security. Gradually work up to 1 year (31536000).
-# SECURE_HSTS_SECONDS = 30 
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-# SECURE_HSTS_PRELOAD = True
-
-# Define permissions policy.
-# PERMISSIONS_POLICY = {
-#     'accelerometer': [],
-#     'autoplay': [],
-#     'camera': [],
-#     'display-capture': [],
-#     'document-domain': [],
-#     'encrypted-media': [],
-#     'fullscreen': [],
-#     'geolocation': [],
-#     'gyroscope': [],
-#     'magnetometer': [],
-#     'microphone': [],
-#     'midi': [],
-#     'payment': [],
-#     'usb': [],
-# }
 
 #----------------------------------------------------------------------#
 # Database
@@ -319,6 +241,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
 
 #----------------------------------------------------------------------#
 # Email
@@ -342,6 +265,7 @@ except KeyError:
     LIST_OF_EMAIL_RECIPIENTS = [EMAIL_HOST_USER]
     print('WARNING: Email not configured. User or password not specified.')
 
+
 #----------------------------------------------------------------------#
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -360,9 +284,6 @@ STATIC_ROOT = os.path.abspath(
 # The relative path to serve files.
 STATIC_URL = '/static/'
 
-# Add support for forever-cacheable files and compression.
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# WHITENOISE_MANIFEST_STRICT = False
 
 #----------------------------------------------------------------------#
 # Sessions
@@ -375,8 +296,9 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # Whether to expire the session when the user closes their browser.
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
-# The age of session cookies, in seconds. (Currently: 30 days)
-SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
+# The age of session cookies, in seconds.
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30 # 30 days
+
 
 #----------------------------------------------------------------------#
 # Customization

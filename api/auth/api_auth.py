@@ -4,24 +4,25 @@ Copyright (c) 2021-2023 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 1/22/2021
-Updated: 9/12/2023
+Updated: 9/15/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 
 Description: Authentication mechanisms for the Cannlytics API, including API key
 utility functions, request authentication and verification helpers,
 and the authentication endpoints.
 """
-# Standard imports.
+# Standard imports:
 from datetime import datetime, timedelta
 from json import loads
 from os import environ
 from secrets import token_urlsafe
 
-# External imports.
+# External imports:
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-# Internal imports.
+# Internal imports:
 from website.auth import authenticate_request, sha256_hmac
 from website.firebase import (
     create_log,
@@ -41,6 +42,7 @@ except ValueError:
 
 
 @api_view(['GET'])
+@csrf_exempt
 def get_api_key_hmacs(request, *args, **argv):
     """Get a user's API key HMAC information.
     Args:
@@ -57,6 +59,7 @@ def get_api_key_hmacs(request, *args, **argv):
 
 
 @api_view(['POST'])
+@csrf_exempt
 def create_api_key(request, *args, **argv):
     """Mint an API key for a user, granting programmatic use at the same
     level of permission as the user.
@@ -66,8 +69,6 @@ def create_api_key(request, *args, **argv):
         (JsonResponse): A JSON response containing the API key in an
             `api_key` field.
     """
-    # FIXME: This endpoint is throwing a 403 error.
-
     # Authenticate the user.
     try:
         user_claims = authenticate_request(request)
@@ -140,6 +141,7 @@ def create_api_key(request, *args, **argv):
 
 
 @api_view(['POST'])
+@csrf_exempt
 def delete_api_key(request, *args, **argv):
     """Deletes a user's API key passed through an authorization header,
     e.g. `Authorization: API-key xyz`.

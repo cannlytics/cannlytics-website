@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<!--
+  Dashboard | Cannlytics
+  Copyright (c) 2021-2024 Cannlytics
+
+  Authors: Keegan Skeate <https://github.com/keeganskeate>
+  Created: 1/5/2021
+  Updated: 7/29/2024
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
+{% extends "index.html" %}
+{% load static %}
+{% block material %}
+
+<!-- Mobile Navigation -->
+<nav id="mobile-navigation" class="navbar navbar-expand-lg navbar-light d-lg-none">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'index' %}" aria-label="Cannlytics">
+      <img src="{% static 'website/images/logos/cannlytics_logo_with_text_light.svg' %}" class="light-only" height="24px" alt="Cannlytics">
+      <img src="{% static 'website/images/logos/cannlytics_logo_with_text_dark.svg' %}" class="dark-only" height="24px" alt="Cannlytics">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'page' page='licenses' %}">Companies</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'page' page='results' %}">Lab Results</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'page' page='strains' %}">Strains</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Dashboard -->
+<div class="d-flex">
+  {% comment %} <!-- Sidebar -->
+  <div id="sidebar" class="p-1 pt-3 d-none d-lg-flex flex-column">
+    <!-- Logo (collapsed state) -->
+    <div class="sidebar-icon-collapsed d-none text-center mb-2">
+      <a href="{% url 'index' %}" aria-label="Cannlytics">
+        <img src="{% static 'website/images/logos/cannlytics_calyx_detailed.svg' %}" alt="Cannlytics" height="24px">
+      </a>
+    </div>
+    
+    <!-- Brand name -->
+    <h2 class="fs-5 ms-3">
+      <a class="navbar-brand" href="{% url 'index' %}" aria-label="Cannlytics">
+        <img src="{% static 'website/images/logos/cannlytics_logo_with_text_light.svg' %}" class="light-only" height="30px" alt="Cannlytics">
+        <img src="{% static 'website/images/logos/cannlytics_logo_with_text_dark.svg' %}" class="dark-only" height="30px" alt="Cannlytics">
+      </a>
+    </h2>
+    
+    <!-- Navigation -->
+    <nav>
+      <ul class="nav flex-column mb-auto markdown pt-2">
+        <li class="nav-item {% if '/licenses' in request.path %}active{% endif %}">
+          <a class="nav-link fs-6" href="{% url 'page' page='licenses' %}">
+            <i class="bi bi-people" data-bs-toggle="tooltip" data-bs-title="Companies"></i>
+            <span class="link-text serif ms-1">Companies</span>
+          </a>
+        </li>
+        <li class="nav-item {% if '/results' in request.path %}active{% endif %}">
+          <a class="nav-link fs-6" href="{% url 'page' page='results' %}">
+            <i class="bi bi-file-earmark-text" data-bs-toggle="tooltip" data-bs-title="Lab Results"></i>
+            <span class="link-text serif ms-1">Lab Results</span>
+          </a>
+        </li>
+        <li class="nav-item {% if '/strains' in request.path %}active{% endif %}">
+          <a class="nav-link fs-6" href="{% url 'page' page='strains' %}">
+            <i class="bi bi-flower3" data-bs-toggle="tooltip" data-bs-title="Strains"></i>
+            <span class="link-text serif ms-1">Strains</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <!-- FIXME: Collapse button -->
+    <div>
+      <button id="toggleSidebar" class="btn btn-outline-secondary text-secondary mb-3">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+    </div>
+  </div> {% endcomment %}
+
+  <!-- Main Dashboard -->
+  <div class="main-content w-100 pb-5">
+    <!-- Header -->
+    <header class="mb-3">
+      {% include "components/layout/banner.html" %}
+    </header>
+    <!-- Content -->
+    <main id="dashboard">
+      {% block dashboard %}{% endblock %}
+    </main>
+  </div>
+</div>
+
+{% endblock %}
+
+<!-- JavaScript -->
+{% block page_js %}
+{{ block.super }}
+<script>
+  // Initialize the dashboard.
+  cannlytics.website.initializeDashboard();
+
+  // Initialize tooltips.
+  cannlytics.ui.enableTooltips();
+
+
+</script>
+{% endblock %}
+
+</html>

@@ -4,12 +4,20 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 10/15/2020
-Updated: 8/20/2023
+Updated: 9/15/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # pylint:disable=line-too-long
 from website.settings import DEFAULT_FROM_EMAIL
 
+
+# Define the company context.
+company_context = {
+    'donation_url': 'https://opencollective.com/cannlytics-company',
+    'meetup_url': 'https://meet.google.com/ifq-jtmc-nuh',
+}
+
+# Define the application context.
 app_context = {
     "app_name": "Cannlytics",
     "homepage": "https://cannlytics.com",
@@ -210,12 +218,11 @@ lab_state = {
 }
 
 #-----------------------------------------------------------------------
-# Page-specific markdown documents.
+# Page-specific markdown texts.
 #-----------------------------------------------------------------------
 
-# Page documents where the key is the page name and the value is a list
-# of markdown documents to load.
-page_docs = {
+# Texts where the key is the page and the value is a list of markdown.
+page_texts = {
     "ai": ["ai", "ai_conclusion"],
     "api": ["api"],
     "data-science": ["data-science"],

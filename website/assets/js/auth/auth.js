@@ -30,23 +30,11 @@ export const auth = {
   async loginWhenUserDetected() {
     /**
      * Trigger server login and navigation to the dashboard when a user is detected.
-     * If it's the first time that the user has logged in, then their `email` and
-     * `photo_url` are saved to their user data in Firestore.
      */
     onAuthChange(async (user) => {
       if (!user) return;
-      await authRequest('/src/auth/login');
-      if (user.metadata.createdAt === user.metadata.lastLoginAt) {
-        const { email } = user;
-        const defaultPhoto = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
-        const data = { email, photo_url: defaultPhoto };
-        try {
-          await apiRequest('/api/users', data);
-        } catch(error) {
-          showNotification('Login error', 'Authentication failed. Try again later.', /* type = */ 'error' );
-          return;
-        }
-      }
+      // TODO: Find out if this is necessary.
+      // await authRequest('/src/auth/login');
       window.location.href = window.location.origin;
     });
   },

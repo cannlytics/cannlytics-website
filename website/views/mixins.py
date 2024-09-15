@@ -1,17 +1,17 @@
 """
 Mixins | Cannlytics Website
-Copyright (c) 2021-2022 Cannlytics
+Copyright (c) 2021-2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 12/30/2020
-Updated: 12/24/2021
+Updated: 9/15/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
-# Standard imports
+# Standard imports:
 from datetime import datetime
 from typing import Any
 
-# External imports
+# External imports:
 from django.views.generic.base import ContextMixin
 
 # Internal imports:
@@ -22,9 +22,49 @@ from website.firebase import (
     initialize_firebase,
     update_document,
 )
-from website.settings import PROJECT_NAME as BASE
-from website.state import app_context, material, page_data, page_docs
-from website.utils.utils import get_markdown
+from website.state import app_context, material, page_data
+
+
+class BaseMixin(ContextMixin):
+    """Base view used for most pages, where the URL is segmented as:
+    ```
+    https://{base}.com/{page}/{section}/{unit}/{part}/{piece}
+    ```
+    A number of page template paths are tried, trying to match a unit
+    first, then section, then a page-section, finally a page.
+    Page-sections and sections are also search for in a general folder.
+    """
+
+    def get_template_names(self):
+        """Get templates for a view based on the URL."""
+        page = self.kwargs.get('page', 'homepage')
+        section = self.kwargs.get('section', '')
+        unit = self.kwargs.get('unit', '')
+        templates = [
+            f'pages/{page}/{unit}.html',
+            f'pages/{page}/{section}/{unit}.html',
+            f'pages/{page}/{section}.html',
+            f'pages/{page}/{page}-{section}.html',
+            f'pages/{page}/{section}/{section}.html',
+            f'pages/{page}/{page}.html',
+            f'pages/misc/{page}/{page}-{section}.html',
+            f'pages/misc/{page}/{section}.html',
+            f'pages/general/{page}.html',
+        ]
+        return templates
+
+    def get_context_data(self, **kwargs):
+        """Get context that is used on all pages. The context is retrieved
+        dynamically from the app's state. The user's permissions are verified
+        on every request. User-specific context and data is returned depending
+        on the page. Information about data models is provided to all pages."""
+        context = super(BaseMixin, self).get_context_data(**kwargs)
+        context = get_page_context(self.kwargs, context)
+        initialize_firebase()
+        context = get_user_data(self.request, context)
+        context = get_page_data(context)
+        save_analytics(self.request, context)
+        return context
 
 
 def get_page_context(kwargs: Any, context: dict) -> dict:
@@ -91,22 +131,6 @@ def get_page_data(context: dict) -> dict:
     return context
 
 
-def get_page_docs(request: Any, context: dict) -> dict:
-    """Get any text documents for a given page."""
-    docs = page_docs.get(context['page'], []) + page_docs.get(context['section'], [])
-    if docs:
-        for doc in docs:
-            name = doc.replace('-', '_').replace('/', '_')
-            context = get_markdown(
-                request,
-                context,
-                BASE,
-                page=doc,
-                name=name,
-            )
-    return context
-
-
 def get_user_data(request: Any, context: dict) -> dict:
     """Get user-specific context.
     Args:
@@ -146,45 +170,3 @@ def save_analytics(request: Any, context: dict) -> dict:
         values['uid'] = user['uid']
     ref = f'logs/website/page_visits/{now}'
     update_document(ref, values)
-
-
-class BaseMixin(ContextMixin):
-    """Base view used for most pages, where the URL is segmented as:
-    ```
-    https://{base}/{page}/{section}/{unit}/{part}/{piece}
-    ```
-    A number of page template paths are tried, trying to match a unit
-    first, then section, then a page-section, finally a page.
-    Page-sections and sections are also search for in a general folder.
-    """
-
-    def get_template_names(self):
-        """Get templates for a view based on the URL."""
-        page = self.kwargs.get('page', 'homepage')
-        section = self.kwargs.get('section', '')
-        unit = self.kwargs.get('unit', '')
-        templates = [
-            f'{BASE}/pages/{page}/{unit}.html',
-            f'{BASE}/pages/{page}/{section}/{unit}.html',
-            f'{BASE}/pages/{page}/{section}.html',
-            f'{BASE}/pages/{page}/{page}-{section}.html',
-            f'{BASE}/pages/{page}/{section}/{section}.html',
-            f'{BASE}/pages/{page}/{page}.html',
-            f'{BASE}/pages/misc/{page}/{page}-{section}.html',
-            f'{BASE}/pages/misc/{page}/{section}.html',
-            f'{BASE}/pages/general/{page}.html',
-        ]
-        return templates
-
-    def get_context_data(self, **kwargs):
-        """Get context that is used on all pages. The context is retrieved
-        dynamically from the app's state. The user's permissions are verified
-        on every request. User-specific context and data is returned depending
-        on the page. Information about data models is provided to all pages."""
-        context = super(BaseMixin, self).get_context_data(**kwargs)
-        context = get_page_context(self.kwargs, context)
-        initialize_firebase()
-        context = get_user_data(self.request, context)
-        context = get_page_data(context)
-        save_analytics(self.request, context)
-        return context

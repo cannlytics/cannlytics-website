@@ -23,10 +23,6 @@ from whitenoise import WhiteNoise
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'website.settings')
 django.setup()
 
-# FIXME: This causes the following error in production.
-# /usr/local/lib/python3.9/site-packages/whitenoise/base.py:115: UserWarning: No directory at: /app/public/website/static/
-# warnings.warn(u"No directory at: {}".format(root))
-
 # Main Django app with static file serving by WhiteNoise.
 try:
     application = WhiteNoise(get_wsgi_application())

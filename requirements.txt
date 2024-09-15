@@ -1,21 +1,15 @@
 # Python Requirements | Cannlytics
 # Authors: Keegan Skeate <https://github.com/keeganskeate>
 # Created 1/5/2021
-# Updated: 8/20/2024
+# Updated: 9/15/2024
 # License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 beautifulsoup4==4.12.3
 chromedriver-binary==128.0.6613.84.0
-# FIXME: Get the correct version of datasets.
-# datasets==2.21.0
 django==5.1
 django-cors-headers==4.4.0
 django-environ==0.11.2
-# TODO: Don't depend on django-feather
-django-feather==0.3.0
 django-livereload-server==0.5.1
 django-permissions-policy==4.21.0
-# TODO: Don't depend on django-robohash-svg
-django-robohash-svg==0.9.5
 djangorestframework==3.15.2
 firebase_admin==6.5.0
 fredapi==0.5.2
@@ -46,8 +40,6 @@ requests==2.31.0
 scikit-learn==1.5.1
 selenium==4.23.1
 statsmodels==0.14.2
-# TODO: Don't depend on ulid-py
-ulid-py==1.1.0
 urllib3==2.2.2
 waitress==3.0.0
 Wand==0.6.13

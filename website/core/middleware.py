@@ -15,10 +15,13 @@ from django.utils.deprecation import MiddlewareMixin
 
 
 def generate_url(request, path):
+    """Generate a URL based on the request host and path."""
     if request.get_host():
-        new_url = "%s://%s%s" % (request.is_secure() and 'https' or 'http',
-                                request.get_host(),
-                                quote(path))
+        new_url = "%s://%s%s" % (
+            request.is_secure() and 'https' or 'http',
+            request.get_host(),
+            quote(path)
+        )
     else:
         new_url = quote(path)
     if request.GET:
@@ -86,6 +89,7 @@ class AppendOrRemoveSlashMiddleware(MiddlewareMixin):
 
 
 class BlockUserAgentsMiddleware(object):
+    """Block access from bad user agents."""
     # See: https://github.com/mitchellkrogza/nginx-ultimate-bad-bot-blocker/blob/master/_generator_lists/bad-user-agents.list
     # Last updated: 8/20/2023
     BLOCKED_USER_AGENTS = {
@@ -233,5 +237,4 @@ class BlockUserAgentsMiddleware(object):
         if any(x in user_agent for x in self.BLOCKED_USER_AGENTS):
             from django.http import HttpResponseForbidden
             return HttpResponseForbidden('Forbidden user agent')
-
         return self.get_response(request)

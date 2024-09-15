@@ -4,31 +4,7 @@
   "license": "MIT",
   "homepage": "https://cannlytics.com",
   "description": "Cannlytics is a suite of tools that you can use to wrangle, standardize, and analyze cannabis data.",
-  "keywords": [
-    "cannabis",
-    "analytics",
-    "data science",
-    "ai",
-    "artificial intelligence",
-    "machine learning",
-    "automation",
-    "statistics",
-    "firebase",
-    "python",
-    "LIMS"
-  ],
-  "author": {
-    "name": "Keegan Skeate",
-    "email": "keegan@cannlytics.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/cannlytics/cannlytics.git"
-  },
-  "bugs": {
-    "url": "https://github.com/cannlytics/cannlytics/issues",
-    "email": "contact@cannlytics.com"
-  },
+  "author": {"name": "Keegan Skeate", "email": "contact@cannlytics.com"},
   "private": true,
   "scripts": {
     "start": "conda activate cds & npm-run-all --parallel serve livereload dev",

@@ -9,13 +9,16 @@ License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE
 
 Description: API interface for Cannlytics users to manage their personal data.
 """
-# External imports.
+# Standard imports:
 from json import loads
+
+# External imports:
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-# Internal imports.
+# Internal imports:
 from website.auth import authenticate_request
 from website.firebase import (
     create_log,
@@ -25,6 +28,7 @@ from website.firebase import (
 
 
 @api_view(['GET', 'POST'])
+@csrf_exempt
 def users(request):
     """Get, update, or create user's data."""
 

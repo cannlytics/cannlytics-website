@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 12/3/2020
- * Updated: 8/20/2023
+ * Updated: 9/15/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { checkGoogleLogIn, onAuthChange } from '../firebase.js';
@@ -32,29 +32,33 @@ export const website = {
     // Check if a user is signed in.
     onAuthChange(async user => {
       if (user) {
+        // Update the UI with the user's information.
         try {
           document.getElementById('user-email').textContent = user.email;
           document.getElementById('user-name').textContent = user.displayName;
           if (user.photoURL) {
             document.getElementById('user-photo').src = user.photoURL;
-          } else {
-            const robohash = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
-            document.getElementById('user-photo').src = robohash;
           }
+          // TODO: Replace with a default image.
+          // else {
+          //   const robohash = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
+          //   document.getElementById('user-photo').src = robohash;
+          // }
         } catch(error) {
           // Pass
         }
-        this.toggleAuthenticatedMaterial(true);
+
+        // Show elements that depend on authentication.
+        this.toggleAuthenticatedElements(true);
+
+        // Login the user on the server.
         await authRequest('/src/auth/login');
-        if (user.metadata.createdAt == user.metadata.lastLoginAt) {
-          const { email } = user;
-          const defaultPhoto = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
-          const data = { email, photo_url: defaultPhoto };
-          console.log('Request to /api/users');
-          await apiRequest('/api/users', data);
-        }
+
       } else {
-        this.toggleAuthenticatedMaterial(false);
+        // Hide any elements that depend on authentication.
+        this.toggleAuthenticatedElements(false);
+
+        // Retry to get user credentials.
         checkForCredentials();
       }
     });
@@ -196,7 +200,7 @@ export const website = {
     if (element) element.scrollIntoView();
   },
 
-  toggleAuthenticatedMaterial(authenticated = false) {
+  toggleAuthenticatedElements(authenticated = false) {
     /**
      * Show any material that requires authentication.
      * @param {bool} authenticated Whether or not the user is authenticated.
@@ -222,7 +226,6 @@ async function checkForCredentials() {
    */
   try {
     await checkGoogleLogIn();
-    console.log('Request to /src/auth/login');
     await authRequest('/src/auth/login');
   } catch(error) {
     // No Google sign-in token.

@@ -9,16 +9,16 @@ License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE
 
 Description: API endpoints to interface with receipt data.
 """
-# Standard imports.
+# Standard imports:
 from datetime import datetime
 from json import loads
 import os
 import tempfile
 from urllib.parse import urlparse
 
-# External imports
+# External imports:
+from django.views.decorators.csrf import csrf_exempt
 import google.auth
-# from django.http.response import JsonResponse
 import requests
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -97,6 +97,7 @@ def process_file_or_url(source, is_url=False, default_ext='jpg'):
 
 
 @api_view(['GET', 'POST', 'DELETE', 'OPTIONS'])
+@csrf_exempt
 def api_data_receipts(request, receipt_id=None):
     """Manage receipt data (public API endpoint)."""
 
@@ -440,6 +441,7 @@ def api_data_receipts(request, receipt_id=None):
 
 
 @api_view(['POST'])
+@csrf_exempt
 def download_receipts_data(request):
     """Download posted data as a .xlsx file. Pass a `data` field in the
     body with the data, an object or an array of objects, to standardize

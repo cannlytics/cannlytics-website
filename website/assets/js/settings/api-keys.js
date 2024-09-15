@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 7/13/2021
- * Updated: 9/12/2023
+ * Updated: 9/15/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-console/blob/main/LICENSE>
  */
 import { authRequest, deserializeForm, serializeForm, showNotification } from '../utils.js';
@@ -24,15 +24,22 @@ export const apiSettings = {
     /** 
     * Create an API key.
     */
-    // TODO: Gracefully handle errors.
     showLoadingButton('create-api-key-button');
     const data = serializeForm('new-api-key-form');
-    const response = await authRequest('/api/auth/create-key', data);
-    document.getElementById('new-key-card').classList.add('d-none');
-    document.getElementById('key-created-card').classList.remove('d-none');
-    document.getElementById('api-key').value = response.api_key;
-    hideLoadingButton('create-api-key-button');
-    return await cannlytics.settings.getAPIKeys();
+    try {
+      // Attempt to create the API key.
+      const response = await authRequest('/api/auth/create-key', data);
+      document.getElementById('new-key-card').classList.add('d-none');
+      document.getElementById('key-created-card').classList.remove('d-none');
+      document.getElementById('api-key').value = response.api_key;
+      await cannlytics.settings.getAPIKeys();
+    } catch (error) {
+      // Handle errors gracefully.
+      showNotification('Error creating API key', 'Failed to create API key. Please try again shortly or contact support.', 'error');
+    } finally {
+      // Always hide the loading button
+      hideLoadingButton('create-api-key-button');
+    }
   },
 
   async deleteAPIKey() {

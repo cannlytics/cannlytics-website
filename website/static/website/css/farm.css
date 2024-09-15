@@ -59,11 +59,10 @@ body.dark .callout {
   background-color: #343a40;
   border-left: 0.25rem solid #6c757d;
 }
-/* FIXME: Re-write as vanilla CSS */
-/* .callout-info {
-  background-color: rgba(#0dcaf0, .075) !important;
-  border-left: 0.25rem solid rgba(#0dcaf0, .5) !important;
-} */
+.callout-info {
+  background-color: rgba(13, 202, 240, 0.075) !important;
+  border-left: 0.25rem solid rgba(13, 202, 240, 0.5) !important;
+}
 .tooltip-inner {
   text-align: left;
 }

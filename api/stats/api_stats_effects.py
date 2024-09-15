@@ -12,12 +12,12 @@ Description: API to interface with cannabis reported effects statistics.
 # Standard imports.
 from datetime import datetime
 from json import loads
+import uuid
 
 # External imports.
 import pandas as pd
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import ulid
 
 # Internal imports.
 from website.firebase import (
@@ -89,7 +89,7 @@ def effects_stats(request, strain=None):
             aromas = [x for x in outcome if x.startswith('aroma')]
             now = datetime.now()
             timestamp = now.isoformat()[:19]
-            prediction_id = ulid.from_timestamp(now).str.lower()
+            prediction_id = str(uuid.uuid4())
             ids.append(prediction_id)
             samples.append({
                 'lab_results': lab_results[i],
@@ -152,24 +152,16 @@ def record_effects(request):
             message = f'Prediction ID missing on sample {i}.'
             response = {'success': False, 'message': message}
             return Response(response, status=400)
-        try:
-            _id = ulid.from_str(prediction_id)
-        except (TypeError, ValueError):
-            message = f'Invalid prediction ID on sample {i}.'
-            response = {'success': False, 'message': message}
-            return Response(response, status=400)
 
         # Get the actual effects and aromas.
         effects = sample.get('effects', [])
         effects = ['effect_' + x.lower().replace(' ', '_') for x in effects]
         aromas = sample.get('aromas', [])
         aromas = ['aroma_' + x.lower().replace(' ', '_') for x in aromas]
-        predicted_at = _id.timestamp().datetime
         logs.append({
             'aromas': aromas,
             'effects': effects,
             'created_at': datetime.now().isoformat(),
-            'predicted_at': predicted_at.isoformat(),
             'prediction_id': prediction_id,
             'prediction_rating': sample.get('prediction_rating'),
         })

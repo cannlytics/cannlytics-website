@@ -98,7 +98,7 @@ export const strainsJS = {
   //   /**
   //    * Find similar strains based on the selected strain.
   //    */
-  //   // FIXME: Implement earch for similar strains.
+  //   // FIXME: Implement search for similar strains.
   //   var chemotype = FieldValue.vector([3.0, 1.0, 2.0]);
   //   const db = new Firestore();
   //   const coll = db.collection('strains');
