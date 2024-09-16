@@ -13,7 +13,7 @@
 {% load static %}
 {% block title %}Team | Cannlytics{% endblock %}
 {% block material %}
-  <div class="contributors large-bottom-margin">
+  <div class="contributors pb-5 pb-md-6">
 
     <!-- Hero -->
     {% include "components/heros/hero_banner.html" with
@@ -114,7 +114,7 @@
               <figcaption class="figure-caption text-dark mt-1">
                 <div class="fs-6 text-dark fw-bold serif">{{ item.name}}</div>
                 <div class="mb-2">{{ item.position}}</div>
-                <div class="serif lh-md">{{ item.description}}</div>
+                <div class="serif lh-base">{{ item.description}}</div>
                 <!-- Optional: Add phone number and email-->
               </figcaption>
             </figure>

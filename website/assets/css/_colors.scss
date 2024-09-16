@@ -1,0 +1,125 @@
+/*--------------------------------------------------------------------------
+  Theme colors
+---------------------------------------------------------------------------*/
+
+// Company theme.
+$colors: (
+  'light-orange': (
+    'bg-color': #ffa600,
+    'text-color': #ffa600,
+    'hover-text-color': #e53a23ff,
+  ),
+  'dark-orange': (
+    'bg-color': #e53a23ff,
+    'text-color': #e53a23ff,
+    'hover-text-color': #ffa600,
+    'dark-mode-text-color': #ffa600,
+    'dark-mode-hover-text-color': #FF9500,
+  ),
+  'green': (
+    'bg-color': #45B649,
+    'text-color': #0BA67F,
+    'hover-text-color': #3f7f34ff,
+    'svg-fill': #45B649,
+    'hover-svg-fill': #3f7f34ff,
+  ),
+  'dark-green': (
+    'bg-color': #3f7f34ff,
+    'text-color': #3f7f34ff,
+    'hover-text-color': #45B649,
+  ),
+  'darkest-green': (
+    'bg-color': #104607ff,
+    'text-color': #104607ff,
+  ),
+  'light-green': (
+    'bg-color': #96e6a1,
+    'text-color': #96e6a1,
+    'hover-text-decoration': underline,
+    'hover-color': #96e6a1,
+    'hover-fill': #96e6a1,
+    'hover-color-important': true,
+    'hover-fill-important': true,
+  ),
+  'purple': (
+    'text-color': #281e52,
+    'fill': #281e52,
+  ),
+);
+
+@each $name, $properties in $colors {
+  // Background color class
+  @if map-has-key($properties, 'bg-color') {
+    .cannlytics-#{$name} {
+      background-color: map-get($properties, 'bg-color');
+    }
+  }
+
+  // Text color class
+  @if map-has-key($properties, 'text-color') {
+    .cannlytics-#{$name}-text {
+      color: map-get($properties, 'text-color');
+    }
+  }
+
+  // SVG fill
+  @if map-has-key($properties, 'fill') {
+    .cannlytics-#{$name} {
+      fill: map-get($properties, 'fill');
+    }
+  }
+  @if map-has-key($properties, 'svg-fill') {
+    .cannlytics-#{$name}-text svg {
+      fill: map-get($properties, 'svg-fill');
+    }
+  }
+
+  // Hover styles
+  @if map-has-key($properties, 'hover-text-color') {
+    a.cannlytics-#{$name}-text:hover {
+      color: map-get($properties, 'hover-text-color');
+    }
+  }
+  @if map-has-key($properties, 'hover-svg-fill') {
+    .cannlytics-#{$name}-text:hover svg {
+      fill: map-get($properties, 'hover-svg-fill');
+    }
+  }
+
+  // Hover text-decoration
+  @if map-has-key($properties, 'hover-text-decoration') {
+    a.cannlytics-#{$name}-text:hover {
+      text-decoration: map-get($properties, 'hover-text-decoration');
+    }
+  }
+
+  // Hover color with !important
+  @if map-has-key($properties, 'hover-color') {
+    $important: if(map-get($properties, 'hover-color-important'), ' !important', '');
+    .cannlytics-#{$name}-text:hover,
+    .light-green-hover:hover {
+      color: map-get($properties, 'hover-color')#{$important};
+    }
+  }
+  // Hover fill with !important
+  @if map-has-key($properties, 'hover-fill') {
+    $important: if(map-get($properties, 'hover-fill-important'), ' !important', '');
+    .cannlytics-#{$name}-text:hover,
+    .light-green-hover:hover {
+      fill: map-get($properties, 'hover-fill')#{$important};
+    }
+  }
+
+  // Dark mode text color
+  @if map-has-key($properties, 'dark-mode-text-color') {
+    body.dark .cannlytics-#{$name}-text {
+      color: map-get($properties, 'dark-mode-text-color');
+    }
+  }
+  // Dark mode hover text color
+  @if map-has-key($properties, 'dark-mode-hover-text-color') {
+    body.dark a.cannlytics-#{$name}-text:hover {
+      color: map-get($properties, 'dark-mode-hover-text-color');
+    }
+  }
+}

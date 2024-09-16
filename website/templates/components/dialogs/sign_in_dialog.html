@@ -3,47 +3,39 @@
 <!--
   Sign In Dialog | Cannlytics Website
   Created: 1/24/2021
-  Updated: 7/29/2024
+  Updated: 9/15/2024
 -->
 {% load static %}
 
 <!-- Login Dialog -->
-<div id="sign-in-dialog" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-  <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6 relative">
-
-    <!-- TODO: Much better sign in!
-      { number_of_users } members + { new_users } people joined this month
-    -->
+<div id="sign-in-dialog" class="position-fixed top-0 start-0 end-0 bottom-0 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 d-none">
+  <div class="bg-white rounded shadow-lg w-100 p-4 position-relative" style="max-width: 24rem;">
 
     <!-- Close button -->
-    <button id="close-sign-in-dialog" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
-    </button>
+    <button id="close-sign-in-dialog" type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Close"></button>
 
     <!-- Dialog content -->
-    <h2 class="text-xl font-semibold mb-4">Sign In</h2>
+    <h2 class="fs-4 fw-semibold mb-4">Sign In</h2>
     <form>
-      <div class="mb-4">
-        <label for="sign-in-email" class="block text-sm font-medium text-gray-700">Email address</label>
-        <input type="email" id="sign-in-email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+      <div class="mb-3">
+        <label for="sign-in-email" class="form-label">Email address</label>
+        <input type="email" id="sign-in-email" class="form-control" required>
       </div>
-      <div class="mb-4">
-        <label for="sign-in-password" class="block text-sm font-medium text-gray-700">Password</label>
-        <input type="password" id="sign-in-password" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+      <div class="mb-3">
+        <label for="sign-in-password" class="form-label">Password</label>
+        <input type="password" id="sign-in-password" class="form-control" required>
       </div>
-      <div class="flex items-center justify-between">
-        <button type="submit" class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+      <div class="d-flex align-items-center justify-content-between">
+        <button type="submit" class="btn btn-primary">
           Sign In
         </button>
-        <a href="{% url 'section' page='account' section='password-reset' %}" class="text-sm text-indigo-600 hover:text-indigo-500">Forgot your password?</a>
+        <a href="{% url 'section' page='account' section='password-reset' %}" class="text-decoration-none">Forgot your password?</a>
       </div>
     </form>
-    <p class="text-gray-800 text-center font-light mt-5 text-sm">
+    <p class="text-center fw-light mt-4 fs-6">
       New to Cannlytics?
-      <a href="{% url 'section' page='account' section='sign-up' %}" class="hover:text-gray-800">
-        <b class="font-serif text-gray-800">Sign up!</b>
+      <a href="{% url 'section' page='account' section='sign-up' %}" class="text-decoration-none">
+        <strong>Sign up!</strong>
       </a>
     </p>
   </div>
@@ -59,18 +51,18 @@
   // Open the sign-in dialog
   document.getElementById('open-sign-in-dialog').addEventListener('click', function(event) {
     event.preventDefault();
-    document.getElementById('sign-in-dialog').classList.remove('hidden');
+    document.getElementById('sign-in-dialog').classList.remove('d-none');
   });
 
   // Close the sign-in dialog
   document.getElementById('close-sign-in-dialog').addEventListener('click', function() {
-    document.getElementById('sign-in-dialog').classList.add('hidden');
+    document.getElementById('sign-in-dialog').classList.add('d-none');
   });
 
   // Close the dialog when clicking outside of it
   document.addEventListener('click', function(event) {
     if (event.target.id === 'sign-in-dialog') {
-      document.getElementById('sign-in-dialog').classList.add('hidden');
+      document.getElementById('sign-in-dialog').classList.add('d-none');
     }
   });
 </script>

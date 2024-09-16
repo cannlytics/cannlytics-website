@@ -4,7 +4,7 @@ Copyright (c) 2020-2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 12/29/2020
-Updated: 1/21/2024
+Updated: 9/15/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports:
@@ -55,5 +55,5 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Error pages.
-handler404 = 'website.views.main.handler404' #pylint: disable=invalid-name
-handler500 = 'website.views.main.handler500' #pylint: disable=invalid-name
+handler404 = 'website.views.views.handler404' #pylint: disable=invalid-name
+handler500 = 'website.views.views.handler500' #pylint: disable=invalid-name
