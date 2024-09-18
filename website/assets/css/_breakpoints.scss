@@ -1,0 +1,46 @@
+// Define breakpoints.
+$breakpoints: (
+  'xs': 0,
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px,
+  'xxl': 1400px
+);
+
+/* Mixin for responding up to a maximum breakpoint */
+@mixin respond-to($breakpoint) {
+  $max-width: map-get($breakpoints, $breakpoint) - 0.02px;
+  @if $max-width >= 0 {
+    @media (max-width: $max-width) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' not found or invalid in \$breakpoints map.";
+  }
+}
+
+/* Mixin for responding from a minimum breakpoint */
+@mixin respond-from($breakpoint) {
+  $min-width: map-get($breakpoints, $breakpoint);
+  @if $min-width != null {
+    @media (min-width: $min-width) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint '#{$breakpoint}' not found in \$breakpoints map.";
+  }
+}
+
+/* Mixin for responding between two breakpoints */
+@mixin respond-between($breakpoint-min, $breakpoint-max) {
+  $min-width: map-get($breakpoints, $breakpoint-min);
+  $max-width: map-get($breakpoints, $breakpoint-max) - 0.02px;
+  @if $min-width != null and $max-width != null {
+    @media (min-width: $min-width) and (max-width: $max-width) {
+      @content;
+    }
+  } @else {
+    @warn "One of the breakpoints '#{$breakpoint-min}' or '#{$breakpoint-max}' not found in \$breakpoints map.";
+  }
+}

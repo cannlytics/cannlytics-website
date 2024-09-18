@@ -123,3 +123,98 @@ $colors: (
     }
   }
 }
+
+/*--------------------------------------------------------------------------
+  Gradient Definitions
+---------------------------------------------------------------------------*/
+
+$gradients: (
+  'text-gradient': (
+    'light': (
+      'start-color': #45B649,
+      'end-color': #1f622f,
+    ),
+    'dark': (
+      'start-color': #45B649,
+      'end-color': #96e6a1,
+    ),
+  ),
+  'text-gradient-reverse': (
+    'dark': (
+      'start-color': #96e6a1,
+      'end-color': #45B649,
+    ),
+  ),
+  'text-gradient-orange': (
+    'light': (
+      'start-color': #e53a23ff,
+      'end-color': #B9220E,
+    ),
+    'dark': (
+      'start-color': #ffa600,
+      'end-color': #e53a23ff,
+    ),
+  ),
+  'bg-gradient-green': (
+    'light': (
+      'start-color': #3f7f34ff,
+      'end-color': #45B649,
+    ),
+    'hover': (
+      'start-color': #3f7f34ff,
+      'end-color': #5C9D52,
+    ),
+  ),
+  'bg-gradient-orange': (
+    'light': (
+      'start-color': #e53a23ff,
+      'end-color': #ffa600,
+    ),
+    'hover': (
+      'start-color': #B9220E,
+      'end-color': #FF9500,
+    ),
+  ),
+  'bg-gradient-purple': (
+    'light': (
+      'start-color': #007bff,
+      'end-color': #554b80,
+    ),
+    'hover': (
+      'start-color': #007bff,
+      'end-color': #3D3367,
+    ),
+  ),
+);
+
+// Generate text gradients
+@each $class-name, $modes in $gradients {
+  @if str-index($class-name, 'text-gradient') {
+    @each $mode, $colors in $modes {
+      $start-color: map-get($colors, 'start-color');
+      $end-color: map-get($colors, 'end-color');
+      $selector: if($mode == 'light', '.#{$class-name}', 'body.dark .#{$class-name}');
+      #{$selector} {
+        background: linear-gradient(-45deg, #{$start-color}, #{$end-color});
+        background-clip: text;
+        -webkit-background-clip: text; /* For Safari */
+        color: transparent;
+      }
+    }
+  }
+}
+
+// Generate background gradients
+@each $class-name, $modes in $gradients {
+  @if str-index($class-name, 'bg-gradient') {
+    @each $mode, $colors in $modes {
+      $start-color: map-get($colors, 'start-color');
+      $end-color: map-get($colors, 'end-color');
+      $selector: if($mode == 'hover', 'a.#{$class-name}:hover, button.#{$class-name}:hover', '.#{$class-name}');
+      #{$selector} {
+        transition: opacity 0.3s;
+        background: linear-gradient(-45deg, #{$start-color}, #{$end-color});
+      }
+    }
+  }
+}
