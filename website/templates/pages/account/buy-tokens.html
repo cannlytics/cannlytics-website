@@ -23,7 +23,7 @@
 {% block dashboard %}
 
   <!-- Header -->
-  {% include "components/heros/hero_banner.html" with
+  {% include "components/layout/hero.html" with
     title="Purchase Cannlytics AI Tokens"
     description="Tokens, tokens, get your tokens. Put your AI to good use now!"
     background_image="https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/assets%2Fimages%2Fai%2Fcannbot-ai.png?alt=media&token=3f2b4dcd-d661-404e-b417-c38768f1cb44"
@@ -140,7 +140,7 @@
 
   <!-- Thank you message for after purchase -->
   <div id="thank-you-message" class="d-none">
-    {% include "components/heros/hero_banner.html" with
+    {% include "components/layout/hero.html" with
       title='Checkout Successful'
       description="Congratulations on your purchase, you have successfully purchased Cannlytics AI tokens. You can use your tokens to run AI-powered jobs in the app: https://data.cannlytics.com. Put your AI jobs to good use! Always here to help, The Cannlytics Team."
       primary_action='Buy more tokens'
