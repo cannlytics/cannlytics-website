@@ -89,22 +89,22 @@
 
   <h1>Lab Results</h1>
 
-  <!-- Search Bar -->
+  {% comment %} <!-- Search Bar -->
   {% include "components/dashboard/search.html" with
     placeholder_text="Search results..."
-  %}
+  %} {% endcomment %}
 
   <!-- Filters -->
   <div class="selections-container align-items-center">
 
     <!-- Date selection -->
-    {% include "components/dashboard/date_selection.html" %}
+    {% include "components/forms/date_selection.html" %}
 
     <!-- State selection buttons -->
-    {% include "components/dashboard/state_selection.html" %}
+    {% include "components/forms/state_selection.html" %}
 
     <!-- Filter by product type -->
-    {% include "components/dashboard/product_type_selection.html" %}
+    {% include "components/forms/product_type_selection.html" %}
     
   </div>
 

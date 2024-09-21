@@ -315,3 +315,7 @@ base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)
 FIREBASE_API_KEY = config['FIREBASE_API_KEY']
 FIREBASE_PROJECT_ID = config['FIREBASE_PROJECT_ID']
 STORAGE_BUCKET = config['FIREBASE_STORAGE_BUCKET']
+
+# Get phone number.
+CONTACT_PHONE = config.get('CONTACT_PHONE')
+CONTACT_PHONE_NUMBER = config.get('CONTACT_PHONE_NUMBER')

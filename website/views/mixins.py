@@ -68,7 +68,7 @@ class BaseMixin(ContextMixin):
 
 
 def get_page_context(kwargs: Any, context: dict) -> dict:
-    """Get page-specific material.
+    """Get page-specific `material` from `state.py`.
     Args:
         kwargs (dict): A dictionary of keywords and their values.
         context (dict): A dictionary of existing page context.
@@ -78,10 +78,12 @@ def get_page_context(kwargs: Any, context: dict) -> dict:
     context['app'] = app_context
     parts = [('page', 'homepage'), ('section', ''), ('unit', '')]
     for part in parts:
+        # This creates a key-value pair for each part in the URL.
         part_name = part[0]
         default = part[1]
         value = kwargs.get(part_name, default)
         context[part_name] = value
+        # This adds any page-specific material to the context.
         try:
             page_material = material[value]
             key = value.replace('-', '_')

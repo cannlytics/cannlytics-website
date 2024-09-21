@@ -4,11 +4,11 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 10/15/2020
-Updated: 9/20/2024
+Updated: 9/21/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # pylint:disable=line-too-long
-from website.settings import DEFAULT_FROM_EMAIL
+from website.settings import DEFAULT_FROM_EMAIL, CONTACT_PHONE, CONTACT_PHONE_NUMBER
 
 
 # Define the company context.
@@ -19,61 +19,52 @@ company_context = {
 
 # Define the application context.
 app_context = {
-    "app_name": "Cannlytics",
-    "homepage": "https://cannlytics.com",
-    "description": "Cannlytics is a suite of free software for cannabis-testing laboratories, empowering you with a state-of-the-art system.",
+    'company_name': 'Cannlytics',
+    'company_url': 'https://cannlytics.com',
     "contact_email": DEFAULT_FROM_EMAIL,
-    "contact_phone": "(828) 395-3954",
-    "contact_phone_number": "18283953954",
-    # TODO: Re-do footer index.
-    "footer": {
-        "index": [
-            {
-                "name": "Explore",
-                "links": [
-                    {"title": "GitHub", "url": "https://github.com/cannlytics"},
-                    {"title": "Hugging Face", "url": "https://huggingface.co/cannlytics"},
-                    # {"title": "Whitepapers", "page": "whitepapers"},
-                    # {"title": "Slack", "url": "https://join.slack.com/t/cannlytics/shared_invite/zt-1wfbpb61s-JyN2Rt0H4xCmNigop4roWg"},
-                    {"title": "Meetup", "url": "https://meetup.com/cannabis-data-science"},
-                ]
-            },
-            {
-                "name": "Docs",
-                "links": [
-                    # {"title": "AI", "url": "https://github.com/cannlytics/cannlytics/tree/main/ai"},
-                    {"title": "API", "url": "https://github.com/cannlytics/cannlytics/tree/main/api"},
-                    {"title": "COADoc", "url": "https://github.com/cannlytics/cannlytics/tree/main/cannlytics/data/coas"},
-                    {"title": "Metrc SDK", "url": "https://github.com/cannlytics/cannlytics/tree/main/cannlytics/metrc"},
-                    {"title": "Developers", "url": "https://github.com/cannlytics/cannlytics/tree/main/docs/developers"},
-                ]
-            },
-            {
-                "name": "About",
-                "links": [
-                    {"title": "Contributors", "page": "contributors"},
-                    {"title": "Support", "page": "support"},
-                    # {"title": "Story", "url": "https://docs.cannlytics.com/about/about"},
-                    # {"title": "Jobs", "page": "jobs"},
-                    {"title": "Contact", "page": "contact"},
-                ]
-            }
-        ]
-    },
-    "logos": {
-        "light": "website/images/logos/cannlytics_logo_with_phrase.svg",
-        "dark": "website/images/logos/cannlytics_logo_with_phrase_dark.svg",
-        "favicon": "images/logos/favicon.ico",
-    },
-    "policies": {
-        "license": "https://docs.cannlytics.com/about/license",
-        "privacy": "https://docs.cannlytics.com/about/privacy-policy",
-        "security": "https://docs.cannlytics.com/about/security-policy",
-        "terms": "https://docs.cannlytics.com/about/terms-of-service",
-    },
-    "social": [
-        {"title": "GitHub", "url": "https://github.com/cannlytics"},
-        {"title": "LinkedIn", "url": "https://linkedin.com/company/cannlytics"},
+    "contact_phone": CONTACT_PHONE,
+    "contact_phone_number": CONTACT_PHONE_NUMBER,
+    "index": [
+        {
+            "name": "Data",
+            "links": [
+                {"title": "COAs", "page": "coas"},
+                {"title": "Results", "page": "results"},
+                {"title": "Strains", "page": "strains"},
+                {"title": "Organizations", "page": "orgs"},
+                {"title": "Compounds", "page": "compounds"},
+            ]
+        },
+        {
+            "name": "Analytics",
+            "links": [
+                {"title": "Parsers", "page": "parsers"},
+                {"title": "API", "page": "api"},
+                {"title": "Research", "page": "research"},
+                {"title": "Stats", "page": "stats"},
+                {"title": "Papers", "page": "papers"},
+            ]
+        },
+        {
+            "name": "Tech",
+            "links": [
+                {"title": "GitHub", "url": "https://github.com/cannlytics"},
+                {"title": "Hugging Face", "url": "https://huggingface.co/cannlytics"},
+                {"title": "Metrc SDK", "url": "https://github.com/cannlytics/cannlytics/tree/main/cannlytics/metrc"},
+                {"title": "Contributors", "page": "contributors"},
+            ]
+        },
+        {
+            "name": "Company",
+            "links": [
+                {"title": "About", "page": "about"},
+                {"title": "Support", "page": "support"},
+                {"title": "Meetup", "url": "https://meetup.com/cannabis-data-science"},
+                # {"title": "Privacy", "url": "https://docs.cannlytics.com/about/privacy-policy"},
+                # {"title": "Security", "url": "https://docs.cannlytics.com/about/security-policy"},
+                {"title": "Terms of Service", "url": "https://docs.cannlytics.com/about/terms-of-service"},
+            ]
+        }
     ],
 }
 
@@ -116,65 +107,6 @@ material = {
             "secondary_action": "Sign Up 🚀",
             "secondary_action_url": "https://app.cannlytics.com",
         },
-    },
-    # TODO: Read from public/subscriptions/subscription_plans instead.
-    "subscriptions": {
-        "premium": {
-            "name": "Premium",
-            "price": "$4.20 / mo.",
-            "color": "green",
-            "action": "Sign Up ✍️",
-            "url": "/subscriptions/checkout?name=premium",
-            "attributes": [
-                "All datasets",
-                "All videos",
-                "All whitepapers",
-                "Limited API access",
-            ],
-        },
-    },
-    "support": {
-        "pricing_tiers": [
-            {
-                "name": "Enterprise",
-                "plan_name": "enterprise",
-                "price": "$420 / mo.",
-                "color": "purple",
-                "action": "Launch Now 🚀",
-                "url": "/subscriptions/checkout?name=enterprise",
-                "attributes": [
-                    {"title": "2,500 AI jobs", "active": True},
-                    {"title": "20￠ / additional job", "active": True},
-                    {"title": "Private API", "active": True},
-                ],
-            },
-            {
-                "name": "Pro",
-                "plan_name": "pro",
-                "price": "$42 / mo.",
-                "color": "orange",
-                "action": "Get Started 🏃‍♀️",
-                "url": "/subscriptions/checkout?name=pro",
-                "attributes": [
-                    {"title": "750 AI jobs", "active": True},
-                    {"title": "33￠ / additional job", "active": True},
-                    {"title": "Unthrottled API", "active": True},
-                ],
-            },
-            {
-                "name": "Standard",
-                "plan_name": "premium",
-                "price": "$4.20 / mo.",
-                "color": "green",
-                "action": "Sign Up ✍️",
-                "url": "/subscriptions/checkout?name=premium",
-                "attributes": [
-                    {"title": "50 AI jobs", "active": True},
-                    {"title": "42￠ / additional job", "active": True},
-                    {"title": "Throttled API", "active": True},
-                ],
-            },
-        ],
     },
 }
 

@@ -4,13 +4,15 @@ Copyright (c) 2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 9/15/2024
-Updated: 9/15/2024
+Updated: 9/21/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
-# Standard imports
+# Standard imports:
+import os
 from typing import Any
 
-# External imports
+# External imports:
+from django.conf import settings
 from markdown import markdown
 from pymdownx import emoji
 import requests
@@ -65,6 +67,33 @@ MARKDOWN_EXTENSION_CONFIGS = {
 }
 
 
+def get_local_markdown(app, page):
+    """Load local markdown files."""
+    doc = f'{page}.md'
+    file_path = os.path.join(settings.BASE_DIR, app, 'static', app, 'docs', doc)
+    file_path = os.path.normpath(file_path)
+    with open(file_path, 'r', encoding='utf-8') as md_file:
+        text = md_file.read()
+    return text
+
+
+# TODO: Try to make obsolete.
+# def get_remote_markdown(request, app, page):
+#     """Load remote markdown files."""
+#     if DEBUG:
+#         referrer = request.META.get('HTTP_REFERER')
+#         if referrer:
+#             base = referrer.split('/')[2]
+#         else:
+#             base = 'localhost'
+#     else:
+#         base = 'cannlytics.com'
+#     protocol = 'http' if DEBUG else 'https'
+#     url = f'{protocol}://{base}/static/{app}/docs/{page}.md'
+#     text = requests.get(url).text
+#     return text
+
+
 def get_markdown(
         request,
         context,
@@ -90,25 +119,27 @@ def get_markdown(
     if page is None:
         page = context['page']
     try:
-        # Optional: Open markdown file directly instead of with a request.
-        if DEBUG:
-            base = request.META.get('HTTP_REFERER').split('/')[2]
-        else:
-            base = 'cannlytics.com'
-        protocol = 'http' if DEBUG else 'https'
-        url = f'{protocol}://{base}/static/{app}/docs/{page}.md'
-        text = requests.get(url).text
+        # Read the markdown.
+        text = get_local_markdown(app, page)        
+
+        # Render markdown into HTML.
         context[name] = markdown(
             text,
             extensions=extensions,
             extension_config=MARKDOWN_EXTENSION_CONFIGS
         )
-        # Optional: Add copy code button
+
+        # Future work: Add copy code button.
         # text = add_code_copy(text)
+
     except Exception as e:
+
+        # Handle any errors loading the markdown.
         print('Error loading markdown:', str(e))
         context[name] = "<h1>Error loading page material.</h1> \
         <p>Our apologies, our server encountered a yet-to-be-fixed bug. \
         Please notify <a href='mailto:contact@cannlytics.com'>contact@cannlytics.com</a> \
         and we will be quick to provide you with support.</p>"
+    
+    # Return the updated context.
     return context

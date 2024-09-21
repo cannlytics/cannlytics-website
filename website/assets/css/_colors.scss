@@ -185,6 +185,16 @@ $gradients: (
       'end-color': #3D3367,
     ),
   ),
+  'bg-gradient-special': (
+    'light': (
+      'start-color': #4568DC,
+      'end-color': #B06AB3,
+    ),
+    'hover': (
+      'start-color': #1ba4a6,
+      'end-color': #e5a119,
+    ),
+  ),
 );
 
 // Generate text gradients

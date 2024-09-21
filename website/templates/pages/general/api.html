@@ -6,16 +6,16 @@
 
   Authors: Keegan Skeate <https://github.com/keeganskeate>
   Created: 12/27/2020
-  Updated: 1/1/2022
+  Updated: 9/21/2024
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
-{% extends "index.html" %}
+{% extends "components/dashboard/dashboard.html" %}
 {% load static %}
 {% block title %}API | Cannlytics{% endblock %}
-{% block material %}
+{% block dashboard %}
 <div class="pb-5 pb-md-6">
 
-  <!-- Hero -->
+  {% comment %} <!-- Hero -->
   {% include "components/layout/hero.html" with
     primary_action='Learn now'
     primary_action_url='https://docs.cannlytics.com/api/about'
@@ -25,9 +25,9 @@
     image_size='200px'
     alt_title='Cannlytics API'
     only
-  %}
+  %} {% endcomment %}
 
-  <!-- TODO: Make it super easy to get an API key.
+  <!-- FIXME: Make it super easy to get an API key.
   See https://quickstats.nass.usda.gov/api
   -->
 
