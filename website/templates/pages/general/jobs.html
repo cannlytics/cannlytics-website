@@ -35,18 +35,18 @@
         {% for job in jobs %}
         <div class="col-sm-8 col-md-8 col-lg-5 card bg-transparent mb-4 mt-3 mx-lg-3">
           <div class="card-body text-dark text-start bg-transparent">
-            <h5 class="fs-4 fw-bold fancy-serif">
+            <h5 class="fs-4 fw-bold serif-heading">
               {{ job.job_title }}
             </h5>
             <span class="badge rounded-pill text-bg-light">{{ job.salary }}</span>
             <span class="badge rounded-pill text-bg-light">{{ job.job_type }}</span>
             <span class="badge rounded-pill text-bg-light">{{ job.location }}</span>
-            <p class="fs-6 fancy-serif lh-base mt-2">
+            <p class="fs-6 serif-heading lh-base mt-2">
               {{ job.description }}
             </p>
-            <p class="text-dark fs-6 lh-sm fancy-serif">
+            <p class="text-dark fs-6 lh-sm serif-heading">
               Please send your resume and an introductory email to
-                <a href="mailto:dev@cannlytics.com"><small class="fancy-serif text-dark fw-bold fs-6">dev@cannlytics.com</small></a> to apply.
+                <a href="mailto:dev@cannlytics.com"><small class="serif-heading text-dark fw-bold fs-6">dev@cannlytics.com</small></a> to apply.
             </p>
           </div>
         </div>

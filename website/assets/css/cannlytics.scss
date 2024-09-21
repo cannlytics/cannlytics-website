@@ -85,18 +85,18 @@ p small {
   font-family: $font-serif-text !important;
 }
 .serif {
-  font-family: $font-serif-text !important;
-}
-.simple-serif {
   font-family: $font-serif !important;
 }
-.fancy-serif {
-  font-family:  $font-serif-headings !important;
+.serif-text {
+  font-family: $font-serif-text !important;
+}
+.serif-heading {
+  font-family: $font-serif-headings !important;
 }
 .sans-serif {
   font-family: $font-sans-serif !important;
 }
-.simple-sans-serif {
+.sans-serif-text {
   font-family: $font-sans-serif-text;
 }
 .display-4 {

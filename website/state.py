@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 10/15/2020
-Updated: 9/15/2024
+Updated: 9/20/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # pylint:disable=line-too-long
@@ -25,6 +25,7 @@ app_context = {
     "contact_email": DEFAULT_FROM_EMAIL,
     "contact_phone": "(828) 395-3954",
     "contact_phone_number": "18283953954",
+    # TODO: Re-do footer index.
     "footer": {
         "index": [
             {
@@ -32,17 +33,17 @@ app_context = {
                 "links": [
                     {"title": "GitHub", "url": "https://github.com/cannlytics"},
                     {"title": "Hugging Face", "url": "https://huggingface.co/cannlytics"},
-                    {"title": "Whitepapers", "page": "whitepapers"},
-                    {"title": "Slack", "url": "https://join.slack.com/t/cannlytics/shared_invite/zt-1wfbpb61s-JyN2Rt0H4xCmNigop4roWg"},
+                    # {"title": "Whitepapers", "page": "whitepapers"},
+                    # {"title": "Slack", "url": "https://join.slack.com/t/cannlytics/shared_invite/zt-1wfbpb61s-JyN2Rt0H4xCmNigop4roWg"},
                     {"title": "Meetup", "url": "https://meetup.com/cannabis-data-science"},
                 ]
             },
             {
                 "name": "Docs",
                 "links": [
-                    {"title": "AI", "url": "https://github.com/cannlytics/cannlytics/tree/main/ai"},
+                    # {"title": "AI", "url": "https://github.com/cannlytics/cannlytics/tree/main/ai"},
                     {"title": "API", "url": "https://github.com/cannlytics/cannlytics/tree/main/api"},
-                    {"title": "CoADoc", "url": "https://github.com/cannlytics/cannlytics/tree/main/cannlytics/data/coas"},
+                    {"title": "COADoc", "url": "https://github.com/cannlytics/cannlytics/tree/main/cannlytics/data/coas"},
                     {"title": "Metrc SDK", "url": "https://github.com/cannlytics/cannlytics/tree/main/cannlytics/metrc"},
                     {"title": "Developers", "url": "https://github.com/cannlytics/cannlytics/tree/main/docs/developers"},
                 ]
@@ -52,9 +53,8 @@ app_context = {
                 "links": [
                     {"title": "Contributors", "page": "contributors"},
                     {"title": "Support", "page": "support"},
-                    {"title": "Story", "url": "https://docs.cannlytics.com/about/about"},
-                    # {"title": "Issues", "url": "https://github.com/cannlytics/cannlytics/issues"},
-                    {"title": "Jobs", "page": "jobs"},
+                    # {"title": "Story", "url": "https://docs.cannlytics.com/about/about"},
+                    # {"title": "Jobs", "page": "jobs"},
                     {"title": "Contact", "page": "contact"},
                 ]
             }
@@ -81,6 +81,7 @@ app_context = {
 # Page-specific material.
 #-----------------------------------------------------------------------
 
+# Define page-specific material.
 material = {
     "account": {
         "user_fields": [
@@ -105,13 +106,8 @@ material = {
             },
         ],
     },
-    # "contact": {
-    #     "title": "Contact Us",
-    #     "message": "You're welcome to contact us anytime about anything. Please enter your contact information and message and the team will get back to you as soon as possible.",
-    # },
     "homepage": {
         "hero": {
-            # Colors: ffa600 f8e496
             "title": 'Cannabis Data and Analytics',
             "message": "And a suite of tools that you can use to wrangle, standardize, and analyze cannabis data.",
             "image": "https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fwebsite%2FPXL_20230725_183052221.jpg?alt=media&token=639d1ed0-b88c-45be-9c54-1697a57f2e5c",
@@ -182,41 +178,6 @@ material = {
     },
 }
 
-# Context for lab pages.
-lab_state = {
-    "detail_fields": [
-        {"key": "name", "title": "Name", "type": "text"},
-        {"key": "trade_name", "title": "Trade name", "type": "text"},
-        {"key": "phone", "title": "Phone", "type": "text"},
-        {"key": "email", "title": "Email", "type": "email"},
-        {"key": "website", "title": "Website", "type": "text"},
-        {"key": "linkedin", "title": "LinkedIn", "type": "text"},
-        {"key": "street", "title": "Street", "type": "text"},
-        {"key": "city", "title": "City", "type": "text"},
-        {"key": "county", "title": "County", "type": "text"},
-        {"key": "state", "title": "State", "type": "text"},
-        {"key": "zip", "title": "Zip", "type": "text"},
-        {"key": "latitude", "title": "Latitude", "type": "number"},
-        {"key": "longitude", "title": "Longitude", "type": "number"},
-        {"key": "license", "title": "License", "type": "text"},
-        {"key": "license_url", "title": "License URL", "type": "text"},
-        {"key": "status", "title": "License status", "type": "text"},
-        {"key": "capacity", "title": "Capacity", "type": "text"},
-        {"key": "square_feet", "title": "Square Feet", "type": "text"},
-        {"key": "brand_color", "title": "Brand color", "type": "color"},
-        {"key": "secondary_color", "title": "Secondary color", "type": "color"},
-        {"key": "favicon", "title": "Icon URL", "type": "textarea"},
-        {"key": "image_url", "title": "Image URL", "type": "textarea"},
-        {"key": "dea_licensed_hemp_lab", "title": "DEA Licensed Hemp Lab", "type": "checkbox"},
-        {"key": "a2la_certified", "title": "A2LA Certified", "type": "checkbox"},
-    ],
-    "tabs": [
-        {"name": "Details", "section": "details", "active": "true"},
-        {"name": "Analyses", "section": "analyses"},
-        # {"name": "Change log", "section": "logs"},
-    ]
-}
-
 #-----------------------------------------------------------------------
 # Page-specific markdown texts.
 #-----------------------------------------------------------------------
@@ -285,14 +246,6 @@ page_data = {
             }
         ]
     },
-    # "effects": {
-    #     "documents": [
-    #         {
-    #             "name": "variables",
-    #             "ref": "public/data/variables/effects_and_aromas"
-    #         }
-    #     ]
-    # },
     "events": {
         "collections": [
             {
@@ -331,33 +284,6 @@ page_data = {
             }
         ],
     },
-    # "map": {
-    #     "documents": [
-    #         {
-    #             "name": "google",
-    #             "ref": "credentials/google"
-    #         }
-    #     ]
-    # },
-    # "market": {
-    #     "collections": [
-    #         {
-    #             "name": "datasets",
-    #             "ref": "public/data/datasets",
-    #             "limit": 10,
-    #             "order_by": "price_usd",
-    #             "desc": True
-    #         }
-    #     ],
-    # },
-    # "partners": {
-    #     "collections": [
-    #         {
-    #             "name": "partners_list",
-    #             "ref": "public/partners/partner_data"
-    #         }
-    #     ]
-    # },
     "personality": {
         "documents": [
             {
@@ -366,16 +292,6 @@ page_data = {
             }
         ]
     },
-    # "sponsors": {
-    #     "collections": [
-    #         {
-    #             "name": "sponsorships",
-    #             "ref": "public/subscriptions/sponsorships",
-    #             "order_by": "cost",
-    #             "desc": True,
-    #         }
-    #     ]
-    # },
     "subscriptions": {
         "documents": [
             {
@@ -398,22 +314,6 @@ page_data = {
             }
         ]
     },
-    # "support": {
-    #     "collections": [
-    #         {
-    #             "name": "verifications",
-    #             "ref": "public/verifications/verification_data",
-    #             "limit": None,
-    #             "order_by": "state"
-    #         }
-    #     ],
-    #     "documents": [
-    #         {
-    #             "name": "paypal",
-    #             "ref": "credentials/paypal"
-    #         }
-    #     ]
-    # },
     "team": {
         "collections": [
             {

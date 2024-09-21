@@ -24,10 +24,9 @@
 
       <!-- Company Contact -->
       <div class="col col-md-4 me-6 me-md-3 ps-0">
-        <div class="d-flex d-flex flex-column align-items-center align-items-start flex-wrap">
+        <div class="d-flex d-flex flex-column align-items-start flex-wrap">
 
           <!-- Company Detail -->
-          <div class="d-flex align-items-center align-items-center mb-2">
             <a
               class="navbar-brand d-flex align-items-center px-1"
               href="{% url 'index' %}"
@@ -39,28 +38,29 @@
                 alt="Cannlytics"
               >
             </a>
-          </div>
           <a
-            class="fs-5"
+            class="sans-serif fs-6 mt-2"
             href="tel:{{ app.contact_phone_number }}"
             title="Call us."
           >
-            <small class="text-light light-green-hover">
+            <!-- TODO: Phone emoji -->
+            <small class="sans-serif text-light light-green-hover">
               {{ app.contact_phone }}
             </small>
           </a>
           <a
-            class="fs-5"
+            class="sans-serif fs-6"
             href="mailto:{{ app.contact_phone }}"
             title="Email us anytime."
           >
-            <small class="text-light light-green-hover">
+            <!-- TODO: Email emoji -->
+            <small class="sans-serif text-light light-green-hover">
               {{ app.contact_email }}
             </small>
           </a>
 
           <!-- Subscribe -->
-          <form action="" method="POST">
+          {% comment %} <form action="" method="POST">
             {% csrf_token %}
             <div id="sign-up-field" class="subscription w-100">
               <input
@@ -89,7 +89,7 @@
                 <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
               </button>
             </div>
-          </form>
+          </form> {% endcomment %}
 
         </div>
       </div>
@@ -97,14 +97,14 @@
       <!-- Index -->
       {% for group in app.footer.index %}
         <div class="col mx-6 mx-md-3">
-          <h6 class="h5 d-flex align-items-end serif text-light mb-3 mt-2">
+          <h6 class="h5 d-flex align-items-end serif-heading text-light mb-3 mt-2">
             {{ group.name }}
           </h6>
           <ul class="list-unstyled">
             {% for item in group.links %}
               <li class="mb-1">
                 <a
-                  class="fs-6 serif text-white cannlytics-light-green-text"
+                  class="fs-6 sans-serif text-white cannlytics-light-green-text"
                   {% if item.app %}
                     href="{% url item.app item.path %}"
                   {% elif item.hashtag %}
@@ -132,6 +132,7 @@
       class="fs-6 text-light font-weight-light mt-5"
       style="max-width:420px;"
     >
+      <!-- TODO: Re-write with something fresh! -->
       <small class="sans-serif">
         New to Cannlytics?
         Cannlytics is open source, so, please
@@ -183,19 +184,19 @@
     <p class="fs-6 mt-2 mb-2">
       <small>
         <a
-          class="text-white light-green-hover"
+          class="sans-serif text-white light-green-hover"
           href="https://docs.cannlytics.com/about/privacy-policy"
         >
           Privacy
         </a> |
         <a
-          class="text-white light-green-hover"
+          class="sans-serif text-white light-green-hover"
           href="https://docs.cannlytics.com/about/security-policy"
         >
           Security
         </a> | 
         <a
-          class="text-white light-green-hover"
+          class="sans-serif text-white light-green-hover"
           href="https://docs.cannlytics.com/about/terms-of-service"
         >
           Terms of Service

@@ -43,29 +43,29 @@
 
             // Add the contributor's name.
             const nameElement = document.createElement('h5');
-            nameElement.className = 'card-title fs-4 fw-bold fancy-serif text-nowrap';
+            nameElement.className = 'card-title fs-4 fw-bold serif-heading text-nowrap';
             nameElement.textContent = member.name;
 
             // Add contributor's details.
             var tierBadge;
             if (member.tier == 'Buddha') {
               tierBadge = document.createElement('span');
-              tierBadge.className = 'badge rounded-pill text-bg-warning fs-6 fancy-serif mt-1';
+              tierBadge.className = 'badge rounded-pill text-bg-warning fs-6 serif-heading mt-1';
               tierBadge.textContent = 'Buddha';
             } else if (member.tier == 'Cannabis Data Scientist') {
               tierBadge = document.createElement('span');
-              tierBadge.className = 'badge rounded-pill text-bg-primary fs-6 fancy-serif  mt-1';
+              tierBadge.className = 'badge rounded-pill text-bg-primary fs-6 serif-heading  mt-1';
               tierBadge.textContent = 'Cannabis Data Scientist';
             } else {
               tierBadge = document.createElement('span');
-              tierBadge.className = 'badge rounded-pill text-bg-success fs-6 fancy-serif mt-1';
+              tierBadge.className = 'badge rounded-pill text-bg-success fs-6 serif-heading mt-1';
               tierBadge.textContent = 'Seedling';
             }
 
             // Add the amount donated.
             const amountRow = document.createElement('div');
             const amountElement = document.createElement('h2');
-            amountElement.className = 'card-text fw-bold simple-serif fs-1 mt-0 mb-0';
+            amountElement.className = 'card-text fw-bold serif-heading fs-1 mt-0 mb-0';
             amountElement.textContent = `$${member.totalAmountDonated}`;
 
             // Add small text "total contributions!"
@@ -125,7 +125,7 @@
     // Title
     // FIXME: Make this a link.
     const titleElement = document.createElement('h5');
-    titleElement.className = 'card-title fs-4 fw-bold fancy-serif';
+    titleElement.className = 'card-title fs-4 fw-bold serif-heading';
     titleElement.textContent = "Contribute Yourself!";
 
     // Description
