@@ -3,9 +3,9 @@
 <!--
   User Menu | Cannlytics Website
   Created: 11/15/2021
-  Updated: 6/22/2023
+  Updated: 9/22/2024
 -->
-<ul class="navbar-nav align-items-start align-items-lg-center me-3 ms-auto requires-auth visually-hidden">
+<ul class="navbar-nav align-items-start align-items-lg-center mx-3 requires-auth visually-hidden">
 
   <!-- User icon menu button -->
   <li class="nav-item">
@@ -30,6 +30,7 @@
     </a>
 
     <!-- User menu -->
+     <!-- FIXME: Re-style user menu -->
     <ul
       id="user-menu"
       class="dropdown-menu dropdown-menu-end bg-light shadow mx-2"
@@ -50,19 +51,7 @@
           class="dropdown-item background-hover"
           href="{% url 'page' page='account' %}"
         >
-          <small class="serif">Your account</small>
-        </a>
-      </li>
-
-      <!-- Toggle theme button -->
-      <li class="pt-1">
-        <a
-          class="dropdown-item background-hover"
-          href="javascript:void(0);"
-          onclick="cannlytics.website.changeTheme()"
-          style="display: flex; align-items: center;"
-        >
-          <small class="serif">Toggle Theme</small>
+          <small class="serif">👤 Your account</small>
         </a>
       </li>
       
@@ -73,7 +62,7 @@
           class="serif dropdown-item background-hover"
           onClick="cannlytics.auth.signOut(false);"
         >
-          <small class="serif">Sign Out</small>
+          <small class="serif">👋 Sign Out</small>
         </button>
       </li>
 

@@ -3,7 +3,7 @@
 <!--
   Banner | Cannlytics Website
   Created: 6/27/2021
-  Updated: 9/21/2024
+  Updated: 9/22/2024
 -->
 {% load static %}
 <div id="main-banner" class="d-flex align-items-center py-0 px-4">
@@ -45,10 +45,8 @@
   <a
     id="open-sign-in-dialog"
     type="button"
-    class="btn btn-sm bg-gradient-orange text-white text-nowrap serif-text mx-3"
-    href="#"
-    data-bs-target="#sign-in-dialog"
-    data-bs-toggle="modal"
+    class="no-user-only btn btn-sm bg-gradient-orange text-white text-nowrap mx-3"
+    href="{% url 'section' page='account' section='sign-in' %}"
   >
     Sign in
   </a>

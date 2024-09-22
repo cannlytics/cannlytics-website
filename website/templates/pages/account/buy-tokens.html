@@ -5,7 +5,7 @@
   Created: 6/21/2023
   Updated: 6/21/2023
 -->
-{% extends "components/dashboard/dashboard.html" %}
+{% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}Buy Tokens | Cannlytics{% endblock %}
 {% block dashboard_css %}
@@ -32,7 +32,10 @@
   %}
 
   <!-- Sign In Prompt -->
-  {% include "components/placeholders/sign_in_placeholder.html" %}
+  {% include "components/placeholders/sign_in_placeholder.html" with
+      title="Sign in required"
+      description="Sign in or create an account to purchase tokens."
+  %}
 
   <!-- Checkout -->
   <div id="checkout" class="requires-auth container mb-2">

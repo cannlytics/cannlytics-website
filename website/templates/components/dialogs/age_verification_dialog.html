@@ -32,10 +32,10 @@
 
           <!-- Message -->
           <p class="text-start mt-0">
-            By accessing Cannlytics, you accept our
-            <a href="https://docs.cannlytics.com/terms">terms of use</a>
-            and acknowledge that you have read our
-            <a href="https://docs.cannlytics.com/privacy">privacy policy</a>.
+            By accessing Cannlytics, you agree that you have read and agree to our
+            <a href="{% url "page" page="terms-of-service" %}" target="_blank">
+              terms of service
+            </a>.
           </p>
 
           <!-- Actions -->
@@ -63,33 +63,29 @@
   </div>
 </div>
 
+<!-- Age verification JavaScript -->
 <script>
-  // Function to check if user has accepted age verification
+  
   function ageCheck() {
+    /* Check if the user has already accepted the age verification */
+    const currentPath = window.location.pathname;
+    if (currentPath === '/terms-of-service') {
+      return; // Do nothing on the terms-of-service page.
+    }
     const acceptAge = localStorage.getItem('cannlytics_age');
-    console.log('acceptAge', acceptAge);
     if (!acceptAge) {
       const modal = document.getElementById('age-verification');
       modal.style.display = 'block';
       const birthdateInput = document.getElementById('birthdate');
       birthdateInput.addEventListener('change', (event) => {
-        console.log('event.target.value', event.target.value);
         if (cannlytics.website.verifyAge(event.target.value)) {
           document.getElementById('accept-age-verification-button').disabled = false;
-          console.log('age verified');
         } else {
           document.getElementById('accept-age-verification-button').disabled = true;
-          console.log('age not verified');
         }
       });
     }
   }
-
-  // Add sign-in on enter on login password field.
-  document.getElementById('sign-in-password').addEventListener('keyup', function(event) {
-    event.preventDefault();
-    if (event.keyCode === 13) cannlytics.auth.signIn(event);
-  });
 
   // Initialize age check
   document.addEventListener('DOMContentLoaded', ageCheck);

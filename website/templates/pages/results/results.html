@@ -9,7 +9,7 @@
   Updated: 3/24/2024
   License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 -->
-{% extends "components/dashboard/dashboard.html" %}
+{% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}
   {% if section and section not in 'logs,files,certificates' %}
@@ -90,7 +90,7 @@
   <h1>Lab Results</h1>
 
   {% comment %} <!-- Search Bar -->
-  {% include "components/dashboard/search.html" with
+  {% include "components/layout/search.html" with
     placeholder_text="Search results..."
   %} {% endcomment %}
 

@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
 <!--
-  Token Management | Cannlytics Website
+  No-user Placeholder | Cannlytics Website
   Created: 6/20/2023
-  Updated: 6/21/2023
+  Updated: 9/22/2024
 -->
 {% load static %}
 
@@ -13,16 +13,14 @@
     <svg class="pe-3 pt-3" style="float:left;width:125px;height:125px;">
       <use href="{% static "website/images/emojies/newspaper.svg" %}#newspaper-emoji"></use>
     </svg>
-    <h1 class="pt-4 text-dark">Cannlytics Subscriptions</h1>
+    <h1 class="pt-4 text-dark">{{ title }}</h1>
     <p class="mt-2">
-      You will need to create an account or to sign in
-      to take advantage of Cannlytics subscriptions.
+      {{ description }}
     </p>
     <div class="d-flex justify-content-center mt-3">
       <a
         class="btn bg-gradient-green text-white serif mx-2"
-        data-bs-target="#sign-in-dialog"
-        data-bs-toggle="modal"
+        href="{% url 'section' page='account' section='sign-in' %}"
       >
         Sign in
       </a>

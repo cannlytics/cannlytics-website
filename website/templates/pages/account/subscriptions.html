@@ -9,7 +9,7 @@
   Updated: 7/5/2023
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
-{% extends "components/dashboard/dashboard.html" %}
+{% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}Subscription | Cannlytics{% endblock %}
 {% block dashboard_css %}
@@ -61,7 +61,10 @@
   %} {% endcomment %}
 
   <!-- Sign In Prompt -->
-  {% include "components/placeholders/sign_in_placeholder.html" %}
+  {% include "components/placeholders/sign_in_placeholder.html" with
+      title="Sign in required"
+      description="Sign in or create an account to manage your subscription."
+  %}
 
   <!-- Subscription Management -->
   <section class="requires-auth container mb-2">

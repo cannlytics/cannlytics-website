@@ -7,8 +7,8 @@
  * Updated: 3/29/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
+import { createGrid } from 'ag-grid-community';
 import { getCollection, getDocument } from '../firebase.js';
-import { formatDecimal } from '../utils.js';
 
 export const licensesJS = {
 
@@ -192,7 +192,7 @@ export const licensesJS = {
         window.location.href = `/licenses/${licenseeId}`;
       },
     };
-    agGrid.createGrid(licenseesContainer, gridOptions);
+    createGrid(licenseesContainer, gridOptions);
     cannlytics.ui.setTableTheme();
   },
 

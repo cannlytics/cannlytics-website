@@ -28,41 +28,41 @@ app_context = {
         {
             "name": "Data",
             "links": [
-                {"title": "COAs", "page": "coas"},
-                {"title": "Results", "page": "results"},
-                {"title": "Strains", "page": "strains"},
-                {"title": "Organizations", "page": "orgs"},
-                {"title": "Compounds", "page": "compounds"},
+                {"title": "📜 COAs", "page": "coas"},
+                {"title": "🧪 Results", "page": "results"},
+                {"title": "🪴Strains", "page": "strains"},
+                {"title": "🧑‍🌾 Organizations", "page": "orgs"},
+                {"title": "🔬 Compounds", "page": "compounds"},
             ]
         },
         {
             "name": "Analytics",
             "links": [
-                {"title": "Parsers", "page": "parsers"},
-                {"title": "API", "page": "api"},
-                {"title": "Research", "page": "research"},
-                {"title": "Stats", "page": "stats"},
-                {"title": "Papers", "page": "papers"},
+                {"title": "🤖 Parsers", "page": "parsers"},
+                {"title": "📡 API", "page": "api"},
+                {"title": "🧑‍🔬 Research", "page": "research"},
+                {"title": "📊 Stats", "page": "stats"},
+                {"title": "📝 Papers", "page": "papers"},
             ]
         },
         {
             "name": "Tech",
             "links": [
-                {"title": "GitHub", "url": "https://github.com/cannlytics"},
-                {"title": "Hugging Face", "url": "https://huggingface.co/cannlytics"},
-                {"title": "Metrc SDK", "url": "https://github.com/cannlytics/cannlytics/tree/main/cannlytics/metrc"},
-                {"title": "Contributors", "page": "contributors"},
+                {"title": "🪟 App", "url": "https://app.cannlytics.com/"},
+                {"title": "🙀 Open Source", "url": "https://github.com/cannlytics"},
+                {"title": "🤗 Datasets", "url": "https://huggingface.co/cannlytics"},
+                {"title": "🔰 Metrc SDK", "url": "https://github.com/cannlytics/cannlytics/tree/main/cannlytics/metrc"},
+                {"title": "🧑‍💻 Developers", "page": "developers"},
             ]
         },
         {
             "name": "Company",
             "links": [
-                {"title": "About", "page": "about"},
-                {"title": "Support", "page": "support"},
-                {"title": "Meetup", "url": "https://meetup.com/cannabis-data-science"},
-                # {"title": "Privacy", "url": "https://docs.cannlytics.com/about/privacy-policy"},
-                # {"title": "Security", "url": "https://docs.cannlytics.com/about/security-policy"},
-                {"title": "Terms of Service", "url": "https://docs.cannlytics.com/about/terms-of-service"},
+                {"title": "📒 About", "page": "about"},
+                {"title": "🤝 Support", "page": "support"},
+                {"title": "💸 Pricing", "page": "pricing"},
+                {"title": "🎙️ Meetup", "url": "https://meetup.com/cannabis-data-science"},
+                {"title": "⚖️ TOS", "page": "terms-of-service"},
             ]
         }
     ],
@@ -116,16 +116,10 @@ material = {
 
 # Texts where the key is the page and the value is a list of markdown.
 page_texts = {
-    "ai": ["ai", "ai_conclusion"],
     "api": ["api"],
-    "data-science": ["data-science"],
-    "data": ["data", "regulations"],
-    "economics": ["economics", "forecasting"],
-    "integrators": ["integrators"],
-    "producers": ["producers", "processors"],
-    "regulations": ["regulations"],
-    "retailers": ["retailers"],
-    "farm": ["algorithm_market"],
+    "about": ["about"],
+    "support": ["support"],
+    "terms-of-service": ["terms-of-service"],
 }
 
 #-----------------------------------------------------------------------
@@ -170,7 +164,7 @@ page_data = {
             }
         ]
     },
-    "contributors": {
+    "developers": {
         "collections": [
             {
                 "name": "contributors",

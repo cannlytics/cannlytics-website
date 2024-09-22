@@ -13,6 +13,7 @@
 //   VectorQuery,
 //   VectorQuerySnapshot,
 // } from "@google-cloud/firestore";
+import { createGrid } from 'ag-grid-community';
 import { getCollection, getDocument } from '../firebase.js';
 import { formatDecimal } from '../utils.js';
 
@@ -216,7 +217,7 @@ export const strainsJS = {
         window.location.href = `/strains/${strainId}`;
       },
     };
-    agGrid.createGrid(strainsContainer, gridOptions);
+    createGrid(strainsContainer, gridOptions);
     cannlytics.ui.setTableTheme();
   },
 

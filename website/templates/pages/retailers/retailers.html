@@ -9,7 +9,7 @@
   Updated: 2/25/2024
   License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 -->
-{% extends "components/dashboard/dashboard.html" %}
+{% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}Retailers | Cannlytics{% endblock %}
 {% block dashboard_css %}
@@ -40,7 +40,7 @@
 <section class="container markdown">
 
   <!-- Search Bar -->
-  {% include "components/dashboard/search.html" %}
+  {% include "components/layout/search.html" %}
 
   <!-- Close button -->
   <button id="closeBtn" class="btn btn-primary mb-2" style="display: none;">Close</button>

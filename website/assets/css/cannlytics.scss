@@ -19,11 +19,14 @@
   Fonts
 ---------------------------------------------------------------------------*/
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@200;300;400;500;600&family=Libre+Baskerville:wght@100;200;300;400;500;600;700&family=Libre+Franklin:wght@100;200;300;400;500;600;700&family=Source+Serif+Pro:wght@100;200;300;400;500;600;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@200;300;400;500;600&family=Libre+Baskerville:wght@100;200;300;400;500;600;700&family=Libre+Franklin:wght@100;200;300;400;500;600;700&family=Source+Serif+Pro:wght@100;200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@100;200;300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Source+Serif+Pro:wght@100;200;300;400;500;600;700&display=swap');
 
 // Set base fonts
-$font-sans-serif: 'IBM Plex Sans', sans-serif; // Interface text, small headings
-$font-sans-serif-text: 'Libre Franklin', sans-serif; // Captions.
+// $font-sans-serif: 'IBM Plex Sans', sans-serif; // Interface text, small headings
+// $font-sans-serif-text: 'Libre Franklin', sans-serif; // Captions.
+$font-sans-serif: 'Inter', sans-serif; // Interface text, small headings
+$font-sans-serif-text: 'Poppins', sans-serif; // Captions
 $font-serif: 'Cormorant Garamond', serif; // Headings, subheadings, block quotes
 $font-serif-text: 'Libre Baskerville', serif; // Body text, paragraphs, long-form content.
 $font-serif-headings: 'Playfair Display', serif; // Hero sections, large headings, banners.
@@ -74,6 +77,7 @@ a {
   Text
 ---------------------------------------------------------------------------*/
 
+// Set base font styles.
 body {
   font-family: $font-sans-serif;
 }
@@ -84,8 +88,13 @@ p,
 p small {
   font-family: $font-serif-text !important;
 }
+.display-4 {
+  font-family: $font-serif-text !important;
+}
+
+// Define font classes.
 .serif {
-  font-family: $font-serif !important;
+  font-family: $font-serif-text !important;
 }
 .serif-text {
   font-family: $font-serif-text !important;
@@ -93,23 +102,24 @@ p small {
 .serif-heading {
   font-family: $font-serif-headings !important;
 }
+.serif-display {
+  font-family: $font-serif !important;
+}
 .sans-serif {
   font-family: $font-sans-serif !important;
 }
 .sans-serif-text {
   font-family: $font-sans-serif-text;
 }
-.display-4 {
-  font-family: $font-serif-text !important;
-}
-.lead {
-  font-family: $font-serif-text!important;
-  line-height: 2 !important;
-}
-.lead a {
-  font-family: $font-serif-text!important;
-  line-height: 2 !important;
-}
+
+// .lead {
+//   font-family: $font-serif-text!important;
+//   line-height: 2 !important;
+// }
+// .lead a {
+//   font-family: $font-serif-text!important;
+//   line-height: 2 !important;
+// }
 
 /*--------------------------------------------------------------------------
   Text colors
@@ -186,9 +196,11 @@ body.dark .background-hover:hover {
 /* Small light buttons */
 .btn-sm-light {
   padding: 3px 12px;
-  font-size: 12px;
+  // font-size: 0.875rem;
+  font-size: var(--bs-btn-font-size);
   border: 1px solid rgb(27 31 35 / 15%);
   line-height: 20px;
+  color: #1a1a1a;
   background-color: #fafbfc;
   transition: .2s cubic-bezier(.3, 0, .5, 1);
   transition-property: color,background-color,border-color;
@@ -487,17 +499,12 @@ body.dark .dropdown-divider {
 }
 
 /*--------------------------------------------------------------------------
-  Footer
+  Navigation
 ---------------------------------------------------------------------------*/
 
 // footer li a {
 //   color: #e8e8e8 !important;
 // }
-
-/*--------------------------------------------------------------------------
-  Navigation
----------------------------------------------------------------------------*/
-
 // .nav-link:hover,
 // .nav-link.active {
 //   color: #1a1a1a !important;
@@ -555,6 +562,11 @@ body.dark .dropdown-divider {
 /* Ensure the menu headers also have a smooth hover effect */
 .dropdown-header:hover {
   background-color: #e0e0e0; /* Optional: Subtle hover effect for headers */
+}
+
+// Underline text on hover.
+.text-underline-hover:hover {
+  text-decoration: underline;
 }
 
 /*--------------------------------------------------------------------------

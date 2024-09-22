@@ -4,7 +4,10 @@
   "license": "MIT",
   "homepage": "https://cannlytics.com",
   "description": "Cannlytics is a suite of tools that you can use to wrangle, standardize, and analyze cannabis data.",
-  "author": {"name": "Keegan Skeate", "email": "contact@cannlytics.com"},
+  "author": {
+    "name": "Keegan Skeate",
+    "email": "contact@cannlytics.com"
+  },
   "private": true,
   "scripts": {
     "start": "conda activate cds & npm-run-all --parallel serve livereload dev",
@@ -23,6 +26,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@primer/octicons": "19.8.0",
+    "ag-grid-community": "^32.2.0",
     "axios": "1.7.4",
     "bootstrap": "^5.3.3",
     "firebase": "^10.13.0",

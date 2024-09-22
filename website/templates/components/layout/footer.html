@@ -110,7 +110,7 @@
             {% for item in item.links %}
               <li class="mb-1">
                 <a
-                  class="fs-6 sans-serif"
+                  class="fs-6 sans-serif text-underline-hover"
                   {% if item.app %}
                     href="{% url item.app item.path %}"
                   {% elif item.hashtag %}

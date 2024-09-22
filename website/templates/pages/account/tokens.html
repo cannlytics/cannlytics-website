@@ -63,17 +63,11 @@
   <!-- PayPal checkout button -->
   <div class="mt-3 mx-3">
 
-      <!-- Sign in button -->
-      <button
-        id="order-tokens-button-no-user"
-        class="indicates-auth btn bg-gradient-orange text-white serif"
-        type="button"
-        data-bs-target="#sign-in-dialog"
-        data-bs-toggle="modal"
-      >
-        <i class="bi bi-coin me-1" style="font-size:16px;"></i>
-        Sign in to buy tokens
-      </button>
+    <!-- Sign In Prompt -->
+    {% include "components/placeholders/sign_in_placeholder.html" with
+        title="Sign in required"
+        description="Sign in or create an account to purchase tokens."
+    %}
 
     <!-- Buy tokens button -->
     <a

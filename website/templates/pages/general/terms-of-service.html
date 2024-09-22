@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<!--
+  Terms of Service | Cannlytics Website
+  Copyright (c) 2024 Cannlytics
+
+  Authors: Keegan Skeate <https://github.com/keeganskeate>
+  Created: 9/22/2024
+  Updated: 9/22/2024
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
+{% extends "index.html" %}
+{% load static %}
+{% block title %}Terms of Service | Cannlytics{% endblock %}
+{% block material %}
+<div class="pb-5 pb-md-6">
+
+  <!-- Markdown -->
+  <div class="container my-3">
+    <div class="col markdown">
+      {{ terms_of_service|safe }}
+    </div>
+  </div>
+  
+</div>
+
+{% endblock %}
+
+</html>

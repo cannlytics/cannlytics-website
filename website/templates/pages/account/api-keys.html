@@ -5,7 +5,7 @@
   Created: 5/9/2021
   Updated: 6/22/2023
 -->
-{% extends "components/dashboard/dashboard.html" %}
+{% extends "components/layout/dashboard.html" %}
 {% block title %}API Keys | Cannlytics {% endblock title %}
 {% block dashboard_css %}
 
@@ -29,7 +29,10 @@
 %} {% endcomment %}
 
 <!-- Sign In Prompt -->
-{% include "components/placeholders/sign_in_placeholder.html" %}
+{% include "components/placeholders/sign_in_placeholder.html" with
+    title="Sign in required"
+    description="Sign in or create an account to access your API keys."
+%}
 
 <!-- API Keys Management -->
 <section class="requires-auth container mb-2">

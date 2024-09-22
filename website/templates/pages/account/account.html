@@ -6,16 +6,24 @@
 
   Authors: Keegan Skeate <https://github.com/keeganskeate>
   Created: 1/17/2021
-  Updated: 6/22/2023
+  Updated: 9/22/2024
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
-{% extends "components/dashboard/dashboard.html" %}
+{% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}Account | Cannlytics{% endblock %}
 {% block dashboard %}
-<section class="container">
 
-  <h5 class="fs-5 lh-base serif text-dark mt-5 mb-3">
+<!-- No-user Placeholder -->
+{% include "components/placeholders/sign_in_placeholder.html" with
+    title="Sign in required"
+    description="Sign in or create an account to access your profile, settings, and other account options."
+%}
+
+<!-- User Account -->
+<section class="requires-auth  container">
+
+  <h5 class="fs-5 lh-base serif-text text-dark mt-5 mb-3">
     Your account
   </h5>
 
@@ -33,7 +41,7 @@
         </label>
         <div class="col d-flex justify-content-end">
           <button
-            class="btn btn-sm btn-sm-light"
+            class="btn btn-sm btn-sm-light text-dark"
             onclick="cannlytics.settings.chooseUserPhoto()"
           >
             Upload Photo
@@ -104,7 +112,7 @@
 
   <!-- Other Account options -->
   <div class="col-md-6">
-    <h5 class="fs-5 lh-base serif text-dark mb-0 mt-5">
+    <h5 class="fs-5 lh-base serif-text text-dark mb-0 mt-5">
       Other account options
     </h5>
     <div class="list-group py-3">
@@ -114,8 +122,8 @@
           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center text-dark background-hover"
           aria-current="true"
         >
-          <small class="serif">{{ item.title }}</small>
-          <i class="bi bi-chevron-right" style="font-size:18px;"></i>
+          <small class="sans-serif">{{ item.title }}</small>
+          <i class="bi bi-chevron-right" style="font-size:12px;"></i>
         </a>
       {% endfor %}
     </div>

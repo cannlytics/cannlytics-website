@@ -11,7 +11,7 @@
 
   Optional: Add reCaptcha.
 -->
-{% extends "components/dashboard/dashboard.html" %}
+{% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}Sign Up | Cannlytics{% endblock %}
 {% block dashboard %}
@@ -76,18 +76,10 @@
   <div class="form-check markdown">
     <input id="sign-up-terms-accepted" class="app-action form-check-input" type="checkbox" value="">
     <label for="sign-up-terms-accepted" class="form-check-label fs-6"><small>
-      Do you agree to our 
-      <a href="https://docs.cannlytics.com/about/terms-of-service" target="_blank">
+      By creating an account you agree that you have read and agree to our
+      <a href="{% url "page" page="terms-of-service" %}" target="_blank">
         terms of service
-      </a>
-      and that you have read our
-      <a href="https://docs.cannlytics.com/about/privacy-policy" target="_blank">
-        privacy policy
-      </a>
-      and
-      <a href="https://docs.cannlytics.com/about/security-policy" target="_blank">
-        security policy
-      </a>?
+      </a>.
     </small></label>
   </div>
 
@@ -116,13 +108,16 @@
 
   <!-- Back button -->
   <div class="d-flex align-items-center justify-content-center">
-    <div class="d-flex flex-column align-items-start justify-content-center mt-5">
+    <div
+      class="d-flex flex-column align-items-start justify-content-center"
+      style="margin-top:6rem;margin-bottom:3rem;"
+    >
       <p class="text-center text-small fs-6 font-weight-light">
         <a
           class="background-hover text-dark fs-6"
           href="{% url 'section' page='account' section='sign-in' %}"
         >
-          <small>Click here to sign into an existing account</small>
+          Sign into an existing account &rarr;
         </a>
       </p>
     </div>

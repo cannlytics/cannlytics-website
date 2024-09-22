@@ -205,7 +205,7 @@ export const website = {
      * Show any material that requires authentication.
      * @param {bool} authenticated Whether or not the user is authenticated.
      */
-    const indicatesAuth = document.getElementsByClassName('indicates-auth');
+    const indicatesAuth = document.getElementsByClassName('no-user-only');
     const requiresAuth = document.getElementsByClassName('requires-auth');
     for (let i = 0; i < indicatesAuth.length; i++) {
       if (authenticated) indicatesAuth.item(i).classList.add('visually-hidden');

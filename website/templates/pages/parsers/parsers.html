@@ -9,7 +9,7 @@
   Updated: 3/29/2024
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
-{% extends "components/dashboard/dashboard.html" %}
+{% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}
   {% if section and section not in 'logs,files,certificates' %}
@@ -52,13 +52,13 @@
   <h1>Companies</h1>
 
   <!-- Search Bar -->
-  {% include "components/dashboard/search.html" %}
+  {% include "components/layout/search.html" %}
 
   <!-- Filters -->
   <div class="selections-container align-items-center">
 
     <!-- State selection buttons -->
-    {% include "components/dashboard/state_selection.html" %}
+    {% include "components/layout/state_selection.html" %}
 
   </div>
 

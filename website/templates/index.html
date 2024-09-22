@@ -6,7 +6,7 @@
 
   Authors: Keegan Skeate <https://github.com/keeganskeate>
   Created: 1/7/2021
-  Updated: 7/29/2024
+  Updated: 9/22/2024
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% load static %}
@@ -66,17 +66,14 @@
     cannlytics.website.initialize();
   </script>
 
-  <!-- Login Dialog -->
-  {% include "components/dialogs/sign_in_dialog.html" %}
-
   <!-- 21+ age verification. -->
   {% include "components/dialogs/age_verification_dialog.html" %}
 
   <!-- General Notifications -->
   {% comment %} {% include "components/notifications/notification_toast.html" %} {% endcomment %}
 
-  <!-- HTMX -->
-  <script src="https://unpkg.com/htmx.org@2.0.1" integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/" crossorigin="anonymous"></script>
+  {% comment %} <!-- HTMX -->
+  <script src="https://unpkg.com/htmx.org@2.0.1" integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/" crossorigin="anonymous"></script> {% endcomment %}
 
   <!-- Page-specific JavaScript -->
   {% block page_js %}{% endblock %}
