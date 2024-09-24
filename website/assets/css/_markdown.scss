@@ -10,7 +10,7 @@
   margin-top: 2rem;
   margin-bottom: 1rem;
   font-weight: 600;
-  font-family: "Libre Baskerville" !important;
+  // font-family: "Libre Baskerville" !important;
 }
 .markdown h3 {
   margin-top: 2rem;
@@ -47,13 +47,13 @@
 .markdown blockquote {
   padding-left: 1.5rem;
 }
-.markdown p a,
-.markdown li,
-.markdown li a,
-.markdown em,
-.markdown strong {
-  font-family: 'Libre Baskerville' !important;
-}
+// .markdown p a,
+// .markdown li,
+// .markdown li a,
+// .markdown em,
+// .markdown strong {
+//   font-family: 'Libre Baskerville' !important;
+// }
 
 // Markdown links
 .markdown a {
@@ -105,7 +105,7 @@ body.dark .markdown h4 {
   border-color: inherit !important;
   border-style: solid !important;
   border-width: 0 !important;
-  font-family: 'Libre Baskerville' !important;
+  // font-family: 'Libre Baskerville' !important;
 }
 .markdown table th,
 .markdown table td {

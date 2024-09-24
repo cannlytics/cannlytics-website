@@ -6,8 +6,8 @@ The Cannlytics API allows users to interface with cannabis data and statistics. 
 - [COAs API](./data/coas.md)
 - [Receipts API](./data/receipts.md)
 - [Strains API](./data/strains.md)
-- [Effects and Aromas API](./stats/skunkfx.md)
 - [Metrc API](./metrc/readme.md)
+<!-- - [Effects and Aromas API](./stats/skunkfx.md) -->
 
 ## Getting Started with the Cannlytics API <a name="getting-started"></a>
 

@@ -1,5 +1,3 @@
-<!doctype html>
-<html>
 <!--
   Unsubscribe Page | Cannlytics Website
   Copyright (c) 2021-2022 Cannlytics
@@ -10,7 +8,6 @@
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "components/layout/dashboard.html" %}
-{% load static %}
 {% block title %}Unsubscribe | Cannlytics{% endblock %}
 {% block dashboard %}
 
@@ -46,10 +43,8 @@
 {% endblock %}
 
 <!-- Unsubscribe JavaScript -->
-{% block dashboard_js %}
+{% block page_js %}
   <script>
     // TODO: Update email as unsubscribed, manually or with id in URL.
   </script>
 {% endblock %}
-
-</html>

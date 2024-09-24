@@ -109,7 +109,7 @@ p small {
   font-family: $font-sans-serif !important;
 }
 .sans-serif-text {
-  font-family: $font-sans-serif-text;
+  font-family: $font-sans-serif-text !important;
 }
 
 // .lead {
@@ -120,6 +120,9 @@ p small {
 //   font-family: $font-serif-text!important;
 //   line-height: 2 !important;
 // }
+.text-dark {
+  color: #1a1a1a !important;
+}
 
 /*--------------------------------------------------------------------------
   Text colors
@@ -154,6 +157,9 @@ body.dark p.text-secondary small {
   Actions / Buttons
 ---------------------------------------------------------------------------*/
 
+.btn {
+  font-weight: 700;
+}
 .btn-outline-primary:hover {
   color: #fff;
 }
@@ -179,13 +185,11 @@ body.dark p.text-secondary small {
 .codehilite:hover .copy-btn {
   display: block;
 }
-
 .btn-close {
   position: absolute;
   right: 1rem;
   top: 1rem;
 }
-
 .background-hover:hover {
   background-color: #50fa7b33 !important;
 }
@@ -651,4 +655,33 @@ body.dark .popover .link-primary:hover {
 
 .breadcrumb-item + .breadcrumb-item::before {
   content: ">";
+}
+body.dark .breadcrumb-item + .breadcrumb-item::before {
+  color: map-get($dark-theme, secondary);
+}
+body.dark .breadcrumb-item.active {
+  color: map-get($dark-theme, text);
+}
+
+/*--------------------------------------------------------------------------
+  List groups
+---------------------------------------------------------------------------*/
+
+/* Prevent non-active items from changing color on hover in dark theme */
+.list-group-item.active:hover {
+  background-color: var(--bs-list-group-active-bg) !important;
+  color: var(--bs-list-group-active-color);
+  border-color: var(--bs-list-group-active-border-color);
+}
+
+/* Keep active item text color consistent in dark theme */
+body.dark .list-group-item.active {
+  color: var(--bs-list-group-active-color);
+  background-color: var(--bs-list-group-active-bg);
+  border-color: var(--bs-list-group-active-border-color);
+}
+
+/* Keep item text color consistent on hover in dark theme */
+body.dark .list-group-item:hover {
+  color: inherit;
 }

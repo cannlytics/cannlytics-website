@@ -4,7 +4,7 @@ Copyright (c) 2021-2023 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 1/5/2021
-Updated: 6/22/2023
+Updated: 9/23/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports:
@@ -35,7 +35,7 @@ from website.settings import DEFAULT_FROM_EMAIL, PRODUCTION
 
 
 # Constants.
-DEFAULT_PRICE_PER_TOKEN = 0.05
+DEFAULT_PRICE_PER_TOKEN = 0.50
 PAYPAL_SECRET = 'paypal-test'
 BASE = 'https://api-m.sandbox.paypal.com'
 if PRODUCTION == 'True' or PRODUCTION == True:

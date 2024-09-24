@@ -1,7 +1,7 @@
 # Python Requirements | Cannlytics
 # Authors: Keegan Skeate <https://github.com/keeganskeate>
 # Created 1/5/2021
-# Updated: 9/15/2024
+# Updated: 9/22/2024
 # License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 beautifulsoup4==4.12.3
 chromedriver-binary==128.0.6613.84.0
@@ -40,7 +40,7 @@ requests==2.31.0
 scikit-learn==1.5.1
 selenium==4.23.1
 statsmodels==0.14.2
-urllib3==2.2.2
+urllib3==1.26.20 # Note: verify_id_token requires urllib3<2.0.0
 waitress==3.0.0
 Wand==0.6.13
 whitenoise==6.7.0

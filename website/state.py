@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 10/15/2020
-Updated: 9/21/2024
+Updated: 9/23/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # pylint:disable=line-too-long
@@ -60,7 +60,7 @@ app_context = {
             "links": [
                 {"title": "📒 About", "page": "about"},
                 {"title": "🤝 Support", "page": "support"},
-                {"title": "💸 Pricing", "page": "pricing"},
+                {"title": "💸 Subscriptions", "page": "account", "section": "subscriptions"},
                 {"title": "🎙️ Meetup", "url": "https://meetup.com/cannabis-data-science"},
                 {"title": "⚖️ TOS", "page": "terms-of-service"},
             ]
@@ -96,17 +96,6 @@ material = {
                 "section": "api-keys",
             },
         ],
-    },
-    "homepage": {
-        "hero": {
-            "title": 'Cannabis Data and Analytics',
-            "message": "And a suite of tools that you can use to wrangle, standardize, and analyze cannabis data.",
-            "image": "https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Fbackgrounds%2Fwebsite%2FPXL_20230725_183052221.jpg?alt=media&token=639d1ed0-b88c-45be-9c54-1697a57f2e5c",
-            "primary_action": "Get Started 🌱",
-            "primary_action_url": "https://data.cannlytics.com",
-            "secondary_action": "Sign Up 🚀",
-            "secondary_action_url": "https://app.cannlytics.com",
-        },
     },
 }
 
@@ -145,17 +134,6 @@ page_data = {
             }
         ]
     },
-    "articles": {
-        "collections": [
-            {
-                "name": "articles",
-                "ref": "public/articles/article_data",
-                "limit": 10,
-                "order_by": "published_at",
-                "desc": True
-            }
-        ]
-    },
     "checkout": {
         "documents": [
             {
@@ -171,44 +149,6 @@ page_data = {
                 "ref": "public/contributors/contributor_data"
             }
         ]
-    },
-    "events": {
-        "collections": [
-            {
-                "name": "events",
-                "ref": "public/events/event_data"
-            }
-        ]
-    },
-    "homepage": {
-        "collections": [
-            {
-                "name": "video_archive",
-                "ref": "public/videos/video_data",
-                "limit": 9,
-                "order_by": "published_at",
-                "desc": True
-            },
-            {
-                "name": "verifications",
-                "ref": "public/verifications/verification_data",
-                "limit": None,
-                "order_by": "state"
-            }
-        ]
-    },
-    "jobs": {
-        "collections": [
-            {
-                "name": "jobs",
-                "ref": "public/data/jobs",
-                "limit": 10,
-            },
-            {
-                "name": "team",
-                "ref": "public/team/team_members"
-            }
-        ],
     },
     "personality": {
         "documents": [
@@ -240,26 +180,7 @@ page_data = {
             }
         ]
     },
-    "team": {
-        "collections": [
-            {
-                "name": "team",
-                "ref": "public/team/team_members"
-            }
-        ]
-    },
-    "videos": {
-        "collections": [
-            {
-                "name": "video_archive",
-                "ref": "public/videos/video_data",
-                "limit": 10,
-                "order_by": "published_at",
-                "desc": True
-            }
-        ],
-    },
-    "whitepapers": {
+    "papers": {
         "collections": [
             {
                 "name": "whitepapers",

@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 1/17/2021
- * Updated: 6/23/2023
+ * Updated: 9/23/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { getDocument, onAuthChange } from '../firebase.js';
@@ -134,6 +134,7 @@ export const payments = {
     });
   },
 
+  // FIXME: MAke this obsolete?
   async subscribe(subscription, subscriptionType = 'subscribe') {
     /**
      * Subscribe email, then navigate to the confirmation page.
@@ -183,7 +184,9 @@ export const payments = {
     // If no subscription, then show Upgrade on all and stop.
     const subscribeButtons = document.getElementsByClassName('subscribe-button');
     for (let button of subscribeButtons) {
-      button.textContent = 'Subscribe';
+      var tier = button.id.split('-')[2];
+      tier = tier.charAt(0).toUpperCase() + tier.slice(1);
+      button.textContent = `Get ${tier}`;
     }
     if (!userSubscription.support || userSubscription.support == 'free') return;
   
@@ -248,39 +251,6 @@ export const payments = {
       // Otherwise, show an error notification.
       const message = 'An error occurred when cancelling your subscription. Please email dev@cannlytics.com for help unsubscribing.';
       showNotification('Error cancelling subscription', message, /* type = */ 'error');
-    }
-  },
-
-  /**---------------------------------------------------------------------------
-   * Subscription Plans
-   *--------------------------------------------------------------------------*/
-
-  async initializeFreeNewsletter() {
-    /** 
-     * Initialize the user's free newsletter subscription.
-     */
-    onAuthChange(async (user) => {
-      if (!user) return;
-        const userData = await authRequest('/api/users');
-        console.log('USER DATA:');
-        console.log(userData);
-        document.getElementById('free-newsletter-checkbox').checked = userData.data.newsletter;
-    });
-  },
-
-  async subscribeToFreeNewsletter() {
-    /**
-     * Subscribe the user to the free newsletter.
-     */
-    const newsletterCheckbox = document.getElementById('free-newsletter-checkbox');
-    if (newsletterCheckbox.checked) {
-      await authRequest('/api/users', { newsletter: true });
-      const message = 'You are now subscribed to the free newsletter.'
-      showNotification('Subscribed', message, /* type = */ 'success');
-    } else {
-      await authRequest('/api/users', { newsletter: false });
-      const message = 'You have been unsubscribed from the free newsletter.'
-      showNotification('Unsubscribed', message, /* type = */ 'success');
     }
   },
 

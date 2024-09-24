@@ -1,19 +1,14 @@
-<!doctype html>
-<html>
 <!--
   Dashboard | Cannlytics
   Copyright (c) 2021-2024 Cannlytics
 
   Authors: Keegan Skeate <https://github.com/keeganskeate>
   Created: 1/5/2021
-  Updated: 9/18/2024
+  Updated: 9/22/2024
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "index.html" %}
-{% load static %}
 {% block material %}
-
-<!-- Dashboard -->
 <div class="d-flex">
   <div class="main-content w-100">
 
@@ -23,7 +18,7 @@
     </header>
 
     <!-- Content -->
-    <main id="dashboard">
+    <main id="dashboard" style="min-height:400px;">
       {% block dashboard %}{% endblock %}
     </main>
 
@@ -32,23 +27,10 @@
       {% include "components/layout/footer.html" %}
     </footer>
 
+    <!-- Dashboard JavaScript -->
+    {% block page_js %}{% endblock %}
+    {% block dashboard_js %}{% endblock %}
+
   </div>
 </div>
-
 {% endblock %}
-
-<!-- JavaScript -->
-{% block page_js %}
-{{ block.super }}
-<script>
-
-  // Initialize the dashboard.
-  cannlytics.website.initializeDashboard();
-
-  // Initialize tooltips.
-  cannlytics.ui.enableTooltips();
-
-</script>
-{% endblock %}
-
-</html>

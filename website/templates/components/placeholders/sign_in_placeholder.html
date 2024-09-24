@@ -8,7 +8,7 @@
 {% load static %}
 
 <!-- Sign In Prompt -->
-<section class="indicates-auth container mb-2 mt-5 d-flex justify-content-center">
+<section class="no-user-only visually-hidden container mb-2 mt-5 d-flex justify-content-center">
   <div class="markdown py-5" style="max-width:560px;">
     <svg class="pe-3 pt-3" style="float:left;width:125px;height:125px;">
       <use href="{% static "website/images/emojies/newspaper.svg" %}#newspaper-emoji"></use>
@@ -19,13 +19,13 @@
     </p>
     <div class="d-flex justify-content-center mt-3">
       <a
-        class="btn bg-gradient-green text-white serif mx-2"
+        class="btn bg-gradient-green text-white mx-2"
         href="{% url 'section' page='account' section='sign-in' %}"
       >
         Sign in
       </a>
       <a
-        class="btn bg-gradient-orange text-white serif mx-2"
+        class="btn bg-gradient-orange text-white mx-2"
         href="{% url 'section' page='account' section='sign-up' %}"
       >
         Sign Up

@@ -1,5 +1,3 @@
-<!doctype html>
-<html>
 <!--
   Password Reset Page | Cannlytics Website
   Copyright (c) 2021-2022 Cannlytics
@@ -12,7 +10,6 @@
   Optional: Add reCaptcha.
 -->
 {% extends "components/layout/dashboard.html" %}
-{% load static %}
 {% block title %}Sign Up | Cannlytics{% endblock %}
 {% block dashboard %}
 <section class="container pt-5" style="max-width:475px;">
@@ -123,17 +120,21 @@
     </div>
   </div>
 
-  <!-- JavaScript to add actions to inputs -->
-  <script>
-    var node = document.getElementById('login-password');
-    node.addEventListener('keyup', function(event) {
-      if (event.key === 'Enter') {
-        cannlytics.auth.signUp(event);
-      }
-    });
-  </script>
-
 </section>
 
+{% endblock dashboard %}
+
+{% block page_js %}
+<!-- Sign Up JavaScript -->
+<script type="text/javascript" charset="utf-8">
+
+  // Add event listener to sign up button.
+  var node = document.getElementById('sign-up-password');
+  node.addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+      cannlytics.auth.signUp(event);
+    }
+  });
+
+</script>
 {% endblock %}
-</html>

@@ -40,9 +40,10 @@ export const accountSettings = {
         fileElem.addEventListener('change', this.uploadUserPhoto, false);
         if (user.photoURL) document.getElementById('account-photo').src = user.photoURL;
         this.resetAccountForm();
-      } else {
-        window.location.href = `${window.location.origin}/account/sign-up`;
       }
+      // else {
+      //   window.location.href = `${window.location.origin}/account/sign-up`;
+      // }
     });
   },
 

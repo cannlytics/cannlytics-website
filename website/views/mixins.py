@@ -16,7 +16,7 @@ from django.views.generic.base import ContextMixin
 
 # Internal imports:
 from website.auth import authenticate_request
-from website.firebase import (
+from cannlytics.firebase import (
     get_collection,
     get_document,
     initialize_firebase,

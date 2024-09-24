@@ -1,9 +1,7 @@
-<!doctype html>
-<html>
 <!--
   Metrc State List | Cannlytics Website
   Created: 11/15/2021
-  Updated: 11/22/2021
+  Updated: 9/23/2024
   Args:
     verifications (list): A list of state verification data (dict).
 -->
@@ -14,30 +12,31 @@
 
   <!-- Title -->
   <div class="w-100">
-    <h2 id="metrc" class="serif text-dark mb-3">
-      {% comment %} <svg class="pe-1" style="float:left;width:125px;height:125px;">
+    <h2 id="metrc" class="serif-text text-dark mb-3">
+      <svg class="pe-1" style="float:left;width:125px;height:125px;">
         <use href="{% static "website/images/emojies/green-shield.svg" %}#green-shield-emoji"></use>
-      </svg> {% endcomment %}
-      <img src="https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/assets%2Fimages%2Ficons%2Fai-icons%2Fhemp-leaf-shield.svg?alt=media&token=304fc920-885f-43fa-8327-eadab4318950"
-        class="pe-1"
-        style="float:left;width:200px;height:200px;"
-      >
+      </svg>
       Cannlytics Integrates with Metrc!
     </h2>
-    <p class="fs-6 lh-lg mb-3" style="max-width:720px;">
+    <p class="mb-3" style="max-width:720px;">
+      <small class="sans-serif-text">
       Cannlytics is a
       <a
         href="https://www.metrc.com/validated-integrators/#cannlytics"
-        class="serif text-dark fw-bold background-hover"
+        class="text-dark fw-bold background-hover"
       >
         validated Metrc integrator
       </a>
       in the following states.
       If you need assistance, a fully-managed solution, or help automating your
       interactions with Metrc, then you can
-      <a href="/support" class="serif text-dark background-hover fw-bold">
+      <a
+        href="{% url 'page' page='support' %}?topic=metrc"
+        class="text-dark background-hover fw-bold"
+      >
         sign up for support &rarr;
       </a>
+      </small>
     </p>
   </div>
 
@@ -68,10 +67,11 @@
   </ul>
 
   <!-- Python package mention -->
-  <p class="fs-6 lh-lg mb-3" style="max-width:720px;">
+  <p class="mb-3" style="max-width:720px;">
+    <small class="sans-serif-text">
     You can also utilize the Metrc interface in the
     <a
-      class="serif text-dark background-hover fw-bold"
+      class="text-dark background-hover fw-bold"
       href="https://pypi.org/project/cannlytics/"
     >
       Cannlytics Python package
@@ -79,20 +79,20 @@
         <use href="{% static "website/images/emojies/snake.svg" %}#snake-emoji"></use>
       </svg>
     </a>
+    </small>
   </p>
 
   <!-- Call to action -->
   <div class="markdown">
     <p class="text-start mt-0">
       <a
-        class="btn btn-sm bg-gradient-green text-white"
+        class="btn bg-gradient-green text-white sans-serif"
         href="{% url 'page' page='contact' %}?topic=metrc"
       >
-        <small>Integrate now</small> &rarr;
+        Integrate now
+        <i class="bi bi-arrow-right"></i>
       </a>
     </p>
   </div>
 
 </section>
-
-</html>

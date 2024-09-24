@@ -1,16 +1,13 @@
-<!doctype html>
-<html>
 <!--
   Account Page | Cannlytics Website
   Copyright (c) 2021-2022 Cannlytics
 
   Authors: Keegan Skeate <https://github.com/keeganskeate>
   Created: 1/17/2021
-  Updated: 9/22/2024
+  Updated: 9/23/2024
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "components/layout/dashboard.html" %}
-{% load static %}
 {% block title %}Account | Cannlytics{% endblock %}
 {% block dashboard %}
 
@@ -21,7 +18,7 @@
 %}
 
 <!-- User Account -->
-<section class="requires-auth  container">
+<section class="requires-auth visually-hidden container">
 
   <h5 class="fs-5 lh-base serif-text text-dark mt-5 mb-3">
     Your account
@@ -81,6 +78,7 @@
                 id="input-{{ item.key }}"
                 spellcheck="false"
                 name="{{ item.key }}"
+                value
               >
             </div>
 
@@ -130,16 +128,17 @@
   </div>
 
 </section>
+
 {% endblock %}
 
-<!-- JavaScript -->
-{% block dashboard_js %}
-  <script>
+{% block page_js %}
+<!-- Account JavaScript -->
+<script>
 
-    // Initialize user form.
+  // Initialize the user form.
+  document.addEventListener('DOMContentLoaded', function() {
     cannlytics.settings.initializeAccountForm();
+  });
 
-  </script>
+</script>
 {% endblock %}
-
-</html>

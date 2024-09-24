@@ -300,6 +300,7 @@ def get_collection( #pylint: disable=too-many-arguments
     collection = create_reference(database, ref)
     if filters is not None:
         for query_filter in filters:
+            # FIXME: Use FilterField
             collection = collection.where(
                 query_filter['key'], query_filter['operation'], query_filter['value']
             )

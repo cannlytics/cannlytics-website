@@ -12,11 +12,11 @@
 {% load static %}
 <head>
   <!-- Metadata -->
-  <meta charset="utf-8">
+  <meta charset="utf-8"/>
   <meta name="theme-color" content="#281e52"/>
-  <meta name="description" content="Superpower your lab with open-source cannabis analytics made with love.">
-  <meta name="author" content="Keegan Skeate">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Superpower your lab with open-source cannabis analytics made with love."/>
+  <meta name="author" content="Keegan Skeate"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
   <!-- Icons and Manifest -->
   <link rel="icon" href="{% static 'website/images/logos/favicon.ico' %}">
@@ -56,31 +56,26 @@
 </head>
 
 <!-- Body -->
-<body class="base dashboard" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<body class="base dashboard">
 
   <!-- Material -->
-  <div id="material">{% block material %}{% endblock %}</div>
-
-  <!-- Website JavaScript -->
-  <script>
-    cannlytics.website.initialize();
-  </script>
+  <div id="material">{% block material %}{% endblock material %}</div>
 
   <!-- 21+ age verification. -->
   {% include "components/dialogs/age_verification_dialog.html" %}
 
   <!-- General Notifications -->
-  {% comment %} {% include "components/notifications/notification_toast.html" %} {% endcomment %}
+  {% include "components/notifications/notification_toast.html" %}
 
-  {% comment %} <!-- HTMX -->
-  <script src="https://unpkg.com/htmx.org@2.0.1" integrity="sha384-QWGpdj554B4ETpJJC9z+ZHJcA/i59TyjxEPXiiUgN2WmTyV5OEZWCD6gQhgkdpB/" crossorigin="anonymous"></script> {% endcomment %}
+  <!-- Website JavaScript -->
+  <script type="text/javascript" charset="utf-8">
+    document.addEventListener('DOMContentLoaded', function() {
+      cannlytics.website.initialize();
+    });
+  </script>
 
   <!-- Page-specific JavaScript -->
-  {% block page_js %}{% endblock %}
-
-  <!-- Dashboard JavaScript -->
-  {% block dashboard_js %}{% endblock %}
+  {% block page_js %}{% endblock page_js %}
 
 </body>
-
 </html>

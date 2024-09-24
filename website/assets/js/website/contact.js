@@ -4,10 +4,10 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 1/7/2022
- * Updated: 7/29/2022
+ * Updated: 9/23/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { getUrlParameter } from '../utils.js';
+import { getCookie, getUrlParameter } from '../utils.js';
 
 export const contact = {
 
@@ -77,29 +77,12 @@ export const contact = {
       subject: 'Asking about Regulations',
     },
   },
-  mathCheckTotal: 0,
 
   initializeContactForm() {
     /**
-     * Initialize the contact form by creating a simple math check
-     * and loading any canned contact message.
+     * Initialize the contact form and loading any canned contact message.
      */
-    const min = this.randomIntFromInterval(0, 5);
-    const max = this.randomIntFromInterval(0, 4);
-    this.mathCheckTotal = min + max;
-    document.getElementById('math_total').value = this.mathCheckTotal;
-    document.getElementById('math-check-min').textContent = min;
-    document.getElementById('math-check-max').textContent = max;
     this.setContactFormTopic();
-  },
-
-  randomIntFromInterval(min, max) {
-    /**
-     * Generate a random number in a given interval.
-     * @param {Number} min The minimum of the range.
-     * @param {Number} max The maximum of the range.
-     */
-    return Math.floor(Math.random() * (max - min + 1) + min);
   },
 
   setContactFormTopic(selectedTopic) {
@@ -120,22 +103,51 @@ export const contact = {
     /**
       * Submit the contact form after validation.
       */
-    const mathCheck = parseInt(document.getElementById('math_input').value);
-    if (mathCheck !== this.mathCheckTotal) {
-      cannlytics.showNotification('Match Check Mismatch', "Please try the math check again. We've implemented this to thwart abuse.", 'error');
-      return false;
-    }
+    
+    // Gather form data.
+    const name = document.getElementById('name_input').value;
     const email = document.getElementById('email_input').value;
-    if (email === null || email === '') {
-      cannlytics.showNotification('Email Required', 'Please enter a valid email so we can reply to your message.', 'error');
-      return false;
-    }
+    const topic = document.getElementById('topic_input').value;
     const message = document.getElementById('message_input').value;
-    if (message === null || message === '') {
-      cannlytics.showNotification('Message Required', 'Please enter a message so we can reply to you.', 'error');
+
+    // Validate form data (basic validation example).
+    if (!email || !message) {
+      cannlytics.showNotification('Error', 'Email and message are required.', 'error');
       return false;
     }
-    return true;
+
+    // Prepare form data for submission.
+    const formData = new FormData();
+    const csrftoken = getCookie('csrftoken');
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('subject', topic);
+    formData.append('message', message);
+    formData.append('csrfmiddlewaretoken', csrftoken);
+
+    // Submit form data via fetch.
+    fetch(window.location.origin + '/save-message', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        // // Show a success notification
+        // cannlytics.showNotification('Success', 'Message sent successfully!', 'success');
+        // // Optionally, reset the form
+        // document.getElementById('contact-form').reset();
+        window.location.href = window.location.origin + "/thank-you";
+      } else {
+        // Show an error notification
+        cannlytics.showNotification('Error', 'There was a problem submitting your message.', 'error');
+      }
+    })
+    .catch(error => {
+      // Handle any errors
+      cannlytics.showNotification('Error', 'An unexpected error occurred.', 'error');
+    });
+    return false; // Prevent default form submission behavior
   },
 
 }

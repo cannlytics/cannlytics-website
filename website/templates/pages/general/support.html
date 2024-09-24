@@ -1,0 +1,159 @@
+<!--
+  Contact Page | Cannlytics Website
+  Copyright (c) 2021-2024 Cannlytics
+
+  Authors: Keegan Skeate <keegan@cannlytics.com>
+  Created: 1/6/2021
+  Updated: 9/23/2024
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
+{% extends "components/layout/dashboard.html" %}
+{% block title %}Support | Cannlytics{% endblock %}
+{% load static %}
+{% block dashboard_css %}
+
+  <!-- CSS -->
+  <style>
+    body.dark .captcha-question {
+      color: #f8f8f8;
+    }
+    body.dark .textinput {
+      background: transparent;
+      color: #f8f8f8;
+    }
+  </style>
+
+  <!-- reCAPTCHA -->
+  <script src="https://www.google.com/recaptcha/enterprise.js?render=6LdLVBkcAAAAAOzTCvfU3yKYhYQ16EHFkzVBdLze"></script>
+
+{% endblock %}
+{% block dashboard %}
+  <div class="contact container my-4 my-lg-5 px-5">
+
+    <!-- Contact -->
+    <div class="mt-5">
+      <div class="col-md-7 order-2 order-lg-1 mx-auto">
+        <h1 class="sans-serif pb-3 mt-3 mb-0">
+          Contact Us
+        </h1>
+        <p class="sans-serif-text fs-6 double-line text-dark text-start text-muted mb-4">
+          You're welcome to contact us anytime about anything.
+          Please enter your contact information and message and
+          the team will get back to you as soon as possible.
+        </p>
+
+        <!-- Form -->
+        <form
+          id="contact-form"
+          class="mt-4 pe-sm-5"
+          method="post"
+          onsubmit="return cannlytics.website.submitContactForm();"
+        >
+
+          <!-- CSRF Token -->
+          {% csrf_token %}
+          
+          <!-- Name -->
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm sans-serif">
+              Name
+            </label>
+            <div class="col-sm-10">
+              <input
+                id="name_input"
+                type="text"
+                class="form-control form-control-sm"
+                name="name"
+                spellcheck="false"
+                type="text"
+                value="{{ user.name }}"
+              >
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm sans-serif">
+              Email
+            </label>
+            <div class="col-sm-10">
+              <input
+                type="text"
+                id="email_input"
+                class="form-control form-control-sm"
+                name="email"
+                spellcheck="false"
+                type="email"
+                value="{{ user.email }}"
+              >
+            </div>
+          </div>
+
+          <!-- Topic -->
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label col-form-label-sm sans-serif">
+              Topic
+            </label>
+            <div class="col-sm-10">
+              <input
+                id="topic_input"
+                type="text"
+                class="form-control form-control-sm"
+                name="subject"
+                spellcheck="false"
+                value=""
+                placeholder="Enter the topic of your inquiry"
+              >
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="form-floating mb-3">
+            <textarea
+              id="message_input"
+              name="message"
+              class="form-control form-control-sm sans-serif-text"
+              placeholder=""
+              style="height:250px"
+            ></textarea>
+            <label for="message_input" class="mb-3 sans-serif">
+              Message
+            </label>
+          </div>
+
+          <!-- Submit button -->
+          <div class="d-flex align-items-center justify-content-end mt-1">
+            <button
+              class="g-recaptcha btn bg-gradient-green text-white ms-2" 
+              data-sitekey="6LdLVBkcAAAAAOzTCvfU3yKYhYQ16EHFkzVBdLze" 
+              data-callback='onSubmit' 
+              data-action='submit'
+            >
+              Send message
+              <i class="bi bi-send"></i>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
+
+<!-- JavaScript -->
+{% block page_js %}
+  <script>
+
+    function onSubmit(token) {
+      /* Submit the contact form. */
+      cannlytics.website.submitContactForm();
+    }
+
+    // Initialize the contact form.
+    document.addEventListener('DOMContentLoaded', function() {
+      cannlytics.website.initializeContactForm();
+    });
+
+  </script>
+{% endblock %}

@@ -4,7 +4,7 @@ Copyright (c) 2020-2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 12/29/2020
-Updated: 9/15/2024
+Updated: 9/23/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports:
@@ -19,6 +19,7 @@ from website.views import (
     auth,
     payments,
     views,
+    contact,
 )
 
 
@@ -37,9 +38,7 @@ urlpatterns = [
     path('donate', views.donate, name='donate'),
     path('meetup', views.meetup, name='meetup'),
     path('subscriptions', RedirectView.as_view(url='/account/subscriptions', permanent=False)),
-    path('support', RedirectView.as_view(url='/account/subscriptions', permanent=False)),
-    # path('videos', videos.VideosView.as_view(), name='videos'),
-    # path('videos/<video_id>', videos.VideosView.as_view(), name='video'),
+    path('save-message', contact.save_message_to_firestore, name='save_message_to_firestore'),
     path('.well-known/ai-plugin.json', RedirectView.as_view(url='/static/ai-plugin.json', permanent=False)),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico', permanent=False)),
     path('robots.txt', RedirectView.as_view(url='/static/robots.txt', permanent=False)),

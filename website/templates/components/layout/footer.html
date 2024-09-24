@@ -1,5 +1,3 @@
-<!doctype html>
-<html>
 <!--
   Footer Template | Cannlytics Website
   Created: 12/30/2020
@@ -103,7 +101,7 @@
       <!-- Index -->
       {% for item in app.index %}
         <div class="col mx-6 mx-md-3 mb-3" style="mid-width:140px;">
-          <h6 class="h5 d-flex align-items-end serif-heading text-dark mb-3 mt-2">
+          <h6 class="h5 d-flex align-items-end serif text-dark mb-3 mt-2">
             {{ item.name }}
           </h6>
           <ul class="list-unstyled">
@@ -115,6 +113,8 @@
                     href="{% url item.app item.path %}"
                   {% elif item.hashtag %}
                     href="/{{ item.url }}#{{ item.hashtag }}"
+                  {% elif item.section %}
+                    href="{% url 'section' page=item.page section=item.section %}"
                   {% elif item.page %}
                     href="{% url 'page' page=item.page %}"
                   {% else %}
@@ -127,10 +127,9 @@
             {% endfor %}
           </ul>
         </div>
-      {% endfor %}<!-- End of Index -->
+      {% endfor %}
 
     </div>
   </div>
 
 </footer>
-</html>

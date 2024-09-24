@@ -6,11 +6,11 @@
   Updated: 6/22/2023
 -->
 {% extends "components/layout/dashboard.html" %}
-{% block title %}API Keys | Cannlytics {% endblock title %}
+{% block title %}API Keys | Cannlytics {% endblock %}
 {% block dashboard_css %}
 
   <!-- AG-Grid CSS and JavaScript -->
-  {% include "components/tables/ag_grid_scripts.html" %}
+  {% comment %} {% include "components/tables/ag_grid_scripts.html" %} {% endcomment %}
 
   <!-- Bootstrap Datepicker -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
@@ -257,8 +257,10 @@
 
 </section>
 
-{% endblock %}
-{% block dashboard_js %}
+{% endblock dashboard %}
+
+{% block page_js %}
+  <!-- API Keys JavaScript -->
   <script type="text/javascript" charset="utf-8">
 
     // Render the date picker.
@@ -375,5 +377,4 @@
     expirationInput.value = formattedDate;
 
   </script>
-{% endblock %}
-</html>
+{% endblock page_js %}

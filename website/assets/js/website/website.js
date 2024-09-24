@@ -7,7 +7,7 @@
  * Updated: 9/15/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { checkGoogleLogIn, onAuthChange } from '../firebase.js';
+import { checkGoogleLogIn, onAuthChange, getCurrentUser } from '../firebase.js';
 import { authRequest, hasClass } from '../utils.js';
 import { contact } from './contact.js';
 import { theme } from '../ui/theme.js';
@@ -54,6 +54,9 @@ export const website = {
         // Login the user on the server.
         await authRequest('/src/auth/login');
 
+        // Redirect the user to the dashboard if they are on the sign-in page.
+        // this.redirectIfUser();
+
       } else {
         // Hide any elements that depend on authentication.
         this.toggleAuthenticatedElements(false);
@@ -95,20 +98,16 @@ export const website = {
      * age verification.
      */
     const acceptAge = localStorage.getItem('cannlytics_age');
-    console.log('acceptAge', acceptAge);
     if (!acceptAge) {
       const modal = document.getElementById('age-verification');
       modal.style.display = 'block';
       modal.style.opacity = 1;
       const birthdateInput = document.getElementById('birthdate');
       birthdateInput.addEventListener('change', (event) => {
-        console.log('event.target.value', event.target.value);
         if (cannlytics.website.verifyAge(event.target.value)) {
           document.getElementById('accept-age-verification-button').disabled = false;
-          console.log('age verified');
         } else {
           document.getElementById('accept-age-verification-button').disabled = true;
-          console.log('age not verified');
         }
       });
     }
@@ -145,6 +144,20 @@ export const website = {
      * Redirect the user to another site if they reject age verification.
      */
     window.location.href = "https://google.com";
+  },
+
+  redirectIfUser() {
+    /**
+     * Redirect the user to the dashboard if they are signed in.
+     */
+    onAuthChange(async user => {
+      if (user) {
+        const currentPath = window.location.pathname;
+        if (currentPath === '/account/sign-in' || currentPath === '/account/sign-up') {
+          window.location.href = `${window.location.origin}/account`;
+        }
+      }
+    });
   },
 
   changeTheme() {
