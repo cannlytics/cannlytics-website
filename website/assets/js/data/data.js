@@ -9,12 +9,10 @@
  */
 import { reportError } from '../payments/payments.js';
 import { authRequest } from '../utils.js';
-import { CoADoc } from './coas.js';
 import { dataTables } from './dataTables.js';
 
 export const data = {
 
-  coas: CoADoc,
   ...dataTables,
 
   /**---------------------------------------------------------------------------

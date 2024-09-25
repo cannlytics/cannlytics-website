@@ -5,28 +5,25 @@ Copyright (c) 2021-2024 Cannlytics
 Authors:
     Keegan Skeate <https://github.com/keeganskeate>
 Created: 4/21/2021
-Updated: 8/17/2024
+Updated: 9/24/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Description: API URLs to interface with cannabis data and analytics.
 """
-# External imports.
+# External imports:
 from django.urls import include, path
 from rest_framework import urlpatterns #pylint: disable=unused-import
 
-# Core API imports.
+# Internal imports:
 from api.auth import api_auth
 from api.base import api_base
-
-# Functional API imports.
-import api.metrc
-
-# Administrative API imports.
 from api.users import api_users
+import api.metrc
+from api.parsers import api_standardizer
 
 
+# Define API URLs.
 app_name = 'api' # pylint: disable=invalid-name
-
 urlpatterns = [
 
     # Base API endpoint for users to discover an index of endpoints.
@@ -40,6 +37,9 @@ urlpatterns = [
     ])),
 
     # TODO: AI
+    path('parse', include([
+        path('/standardize', api_standardizer.standardize_names),
+    ])),
     # - standard strain name
     # - standard analyte
 

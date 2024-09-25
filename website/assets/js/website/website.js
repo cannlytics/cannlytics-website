@@ -22,6 +22,7 @@ export const website = {
     /**
      * Initialize the website's features and functionality.
      */
+    console.log('Initializing website...');
 
     // Set the theme.
     this.setInitialTheme();
@@ -32,6 +33,7 @@ export const website = {
     // Check if a user is signed in.
     onAuthChange(async user => {
       if (user) {
+
         // Update the UI with the user's information.
         try {
           document.getElementById('user-email').textContent = user.email;
@@ -62,7 +64,7 @@ export const website = {
         this.toggleAuthenticatedElements(false);
 
         // Retry to get user credentials.
-        checkForCredentials();
+        // checkForCredentials();
       }
     });
 

@@ -23,6 +23,11 @@ from website.firebase import (
 )
 
 
+# Define an authentication error message.
+AUTH_ERROR = 'Authentication failed. Please login to the console or \
+provide a valid API key in an `Authentication: Bearer <token>` \
+header.'
+
 def authenticate_request(request):
     """Verifies that the user has authenticated with a Firebase ID token
     or passed a valid API key in an `Authentication: Bearer <token>` header.

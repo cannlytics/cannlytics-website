@@ -225,6 +225,12 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // Allow users to read their own downloads.
+    match /users/{userId}/standardized_downloads/{document=**} {
+      allow read, delete: if request.auth != null && request.auth.uid == userId;
+      allow create, update: if false;
+    }
+
     // === User public data ===
 
     // Allow user's to write and edit their own reviews about licensees.

@@ -4,7 +4,7 @@
 
   Authors: Keegan Skeate <contact@cannlytics.com>
   Created: 1/9/2021
-  Updated: 9/23/2024
+  Updated: 9/24/2024
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "components/layout/dashboard.html" %}
@@ -18,27 +18,14 @@
 {% endblock dashboard_css %}
 {% block dashboard %}
 
-<!-- Hero Banner -->
-<!-- TODO: Insert link to first issue -->
-{% comment %} {% include "website/components/heros/hero_banner.html" with
-  title='Whitepapers'
-  description='Cannlytics strives to deliver industry-leading research to help advance cannabis science.'
-  primary_action='Subscribe now'
-  primary_action_url='/account/subscriptions'
-  secondary_action='Read the first Issue'
-  secondary_action_url=''
-  image_url='website/images/illustrations/multi-tone/certificate-flask.svg'
-  only
-%} {% endcomment %}
-
 <!-- Whitepapers -->
 <div class="album mt-3 mb-5">
 
   <!-- Journal Title -->
   <div class="container mb-5">
     <div class="border-top border-bottom text-center py-3 mx-3 mx-md-5">
-      <h1 class="text-dark">Cannabis Data Science</h1>
-      <h4 class="text-dark">Volume 1, Issue 1, January 2022, Pages 1-24</h4>
+      <h1 class="serif-text text-dark fw-bold">Cannabis Data Science</h1>
+      <h4 class="serif-text fs-5 text-dark">Issue 1, January 2022, Pages 1-24</h4>
     </div>
   </div>
 
@@ -54,7 +41,7 @@
         {% comment %} {% if forloop.counter|divisibleby:2 %}order-md-2{% endif %} {% endcomment %}
         <div class="col-12 col-md-6">
           <a href="{{ item.url }}">
-            <h3 class="background-hover serif lh-md fw-normal text-dark mt-0">
+            <h3 class="serif-text lh-base text-dark background-hover mt-0">
               {{ item.title }}
             </h3>
           </a>
@@ -71,7 +58,7 @@
           {% endif %}
 
           <!-- Abstract -->
-          <p class="serif fs-6 double-line my-3">
+          <p class="serif my-3">
             <small class="text-dark">{{ item.abstract|truncatewords:70 }}</small>
           </p>
 
@@ -95,6 +82,15 @@
                 <i class="bi bi-journal-text"></i>
                 Cite
               </button> {% endcomment %}
+
+              <!-- View PDF Button -->
+              <a
+                class="btn btn-sm bg-gradient-green text-white me-1 mt-2"
+                href="{{ item.url }}"
+              >
+                <i class="bi bi-file-pdf"></i>
+                View PDF
+              </a>
 
               <!-- Share Button -->
               <button
@@ -123,15 +119,6 @@
                   Copy Link
                 </button>
               </div>
-
-              <!-- View PDF Button -->
-              <a
-                class="btn btn-sm bg-gradient-green text-white mt-2"
-                href="{{ item.url }}"
-              >
-                <i class="bi bi-file-pdf"></i>
-                View PDF
-              </a>
 
             </div>
           {% endif %}

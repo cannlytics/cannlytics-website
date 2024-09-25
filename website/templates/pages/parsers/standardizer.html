@@ -1,0 +1,242 @@
+<!--
+  Standardizer | Cannlytics
+  Copyright (c) 2024 Cannlytics
+
+  Authors: Keegan Skeate <https://github.com/keeganskeate>
+  Created: 9/24/2024
+  Updated: 9/24/2024
+  License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
+-->
+{% extends "components/layout/dashboard.html" %}
+{% block title %}Standardizer | Cannlytics{% endblock %}
+{% block dashboard %}
+<section class="container markdown">
+
+  <!-- Title -->
+  <h2 class="sans-serif text-dark fw-bold mb-0">Standardizer</h2>
+  <p class="markdown sans-serif-text fs-6 lh-sm text-dark mt-2 mb-0"
+    style="max-width:540px;"
+  >
+    Standardize products, strains, and types.
+  </p>
+
+  <!-- Standardizer -->
+  <div class="row pt-4">
+
+    <!-- Input -->
+    <form>
+      <div class="mb-3">
+        <label for="inputText" class="form-label d-flex align-items-center">
+          Enter strain, product, or product type
+          <a href="#" class="ms-1" data-bs-toggle="tooltip" data-bs-placement="right" 
+             title="Input a free-form name or type for individual standardization, or select 'Bulk Upload' to process multiple items.">
+            <i class="bi bi-info-circle ms-1 mb-2 text-secondary"></i>
+          </a>
+        </label>
+        <div class="input-group" id="textInputGroup">
+          <input type="text" class="form-control" id="inputText" placeholder="" aria-label="Input text">
+          <button type="submit" class="btn btn-primary" id="submitBtn">Standardize</button>
+          <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end py-0">
+            <li class="mb-0"><a class="dropdown-item fw-normal py-1" href="#" id="individualOption">
+              <i class="bi bi-pencil-square"></i>
+              Text
+            </a></li>
+            <li class="mb-0"><a class="dropdown-item fw-normal py-1" href="#" id="bulkOption">
+              <i class="bi bi-file-earmark-arrow-up"></i>
+              File
+            </a></li>
+          </ul>
+        </div>
+        <div class="input-group d-none" id="fileInputGroup">
+          <input type="file" class="form-control" id="fileInput" aria-describedby="fileInputAddon" aria-label="Upload">
+          <button class="btn btn-primary" type="button" id="fileInputAddon">Upload &amp; Standardize</button>
+          <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="visually-hidden">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end py-0">
+            <li class="mb-0"><a class="dropdown-item fw-normal py-1" href="#" id="bulkIndividualOption">
+              <i class="bi bi-pencil-square"></i>
+              Text
+            </a></li>
+            <li class="mb-0"><a class="dropdown-item fw-normal py-1" href="#" id="bulkBulkOption">
+              <i class="bi bi-file-earmark-arrow-up"></i>
+              File
+            </a></li>
+          </ul>
+        </div>
+      </div>
+    </form>
+
+    <!-- More information button -->
+    <div class="d-flex flex-wrap justify-content-between mb-3">
+      <a class="custom-link fw-normal text-secondary" type="button" id="moreInfoBtn">
+        More Information
+      </a>
+      <a
+        id="resetStandardizer"
+        class="custom-link fw-normal text-secondary"
+        type="button"
+        onclick="cannlytics.standardizer.resetStandardizer()"
+      >
+        Reset
+      </a>
+    </div>
+    <div class="card mb-3 d-none" id="moreInfoCard" style="max-width:540px;">
+      <div class="card-body bg-transparent markdown">
+        <h3 class="text-dark sans-serif fw-normal fs-5 mt-0 mb-0">Text Input</h3>
+        <p class="sans-serif lh-base text-dark mt-2">
+          You can either enter strain names, product names, or product types separated by commas.
+          An algorithm is applied to each entry to attempt to standardize a product name, strain name, and/or product type.
+        </p>
+        <h3 class="text-dark sans-serif fw-normal fs-5 mt-3 mb-0">File Uploads</h3>
+        <p class="sans-serif lh-base text-dark mt-2">
+          For processing multiple items, you can upload a worksheet. Please have the text in the first column or use
+          column names: <code>product_name</code>, <code>strain_name</code>, and/or <code>product_type</code>. The system will process and standardize all entries. There is a limit of 100 entries per upload. See the API
+          if you need larger batches.
+        </p>
+      </div>
+    </div>
+
+    <!-- Output -->
+    <div class="mt-4">
+      <div class="mb-3">
+        <label for="productName" class="form-label fw-bold">Product Name</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="productName">
+          <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('productName')">
+            <i class="bi bi-clipboard"></i>
+          </button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="strainName" class="form-label fw-bold">Strain Name</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="strainName">
+          <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('strainName')">
+            <i class="bi bi-clipboard"></i>
+          </button>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="productType" class="form-label fw-bold">Product Type</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="productType">
+          <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard('productType')">
+            <i class="bi bi-clipboard"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Downloads Section -->
+    <div id="standardizer-downloads" class="visually-hidden mt-3 mb-5">
+      <h3 class="sans-serif">Your Downloads</h3>
+      <div id="downloadsContainer" class="mt-3"></div>
+    </div>
+
+  </div>
+
+</section>
+{% endblock %}
+
+{% block page_js %}
+<script>
+
+  function copyToClipboard(elementId) {
+    /* Copy the text inside a text field */
+    const element = document.getElementById(elementId);
+    element.select();
+    document.execCommand('copy');
+    
+    // Optional: Provide visual feedback
+    const button = element.nextElementSibling;
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<i class="bi bi-check"></i>';
+    setTimeout(function() {
+      button.innerHTML = originalHTML;
+    }, 2000);
+  }
+
+  // Initialize.
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // Initialize tooltips.
+    cannlytics.ui.enableTooltips();
+
+    // Initialize Standardizer.
+    cannlytics.standardizer.initializeStandardizer();
+
+    // Show more information.
+    const moreInfoBtn = document.getElementById('moreInfoBtn');
+    const moreInfoCard = document.getElementById('moreInfoCard');
+    moreInfoBtn.addEventListener('click', function() {
+      moreInfoCard.classList.toggle('d-none');
+      moreInfoBtn.textContent = moreInfoCard.classList.contains('d-none') ? 'More Information' : 'Hide Information';
+    });
+
+    // Initialize standardizer.
+    const textInputGroup = document.getElementById('textInputGroup');
+    const fileInputGroup = document.getElementById('fileInputGroup');
+    const submitBtn = document.getElementById('submitBtn');
+    const individualOption = document.getElementById('individualOption');
+    const bulkOption = document.getElementById('bulkOption');
+    const bulkIndividualOption = document.getElementById('bulkIndividualOption');
+    const bulkBulkOption = document.getElementById('bulkBulkOption');
+    const fileInputAddon = document.getElementById('fileInputAddon');
+
+    function showIndividual() {
+      textInputGroup.classList.remove('d-none');
+      fileInputGroup.classList.add('d-none');
+    }
+
+    function showBulk() {
+      textInputGroup.classList.add('d-none');
+      fileInputGroup.classList.remove('d-none');
+    }
+
+    individualOption.addEventListener('click', function(e) {
+      e.preventDefault();
+      showIndividual();
+    });
+
+    bulkOption.addEventListener('click', function(e) {
+      e.preventDefault();
+      showBulk();
+    });
+
+    bulkIndividualOption.addEventListener('click', function(e) {
+      e.preventDefault();
+      showIndividual();
+    });
+
+    bulkBulkOption.addEventListener('click', function(e) {
+      e.preventDefault();
+      showBulk();
+    });
+
+    submitBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const text = document.getElementById('inputText').value;
+      console.log('Standardize text:', text);
+      cannlytics.standardizer.standardizeText(text);
+    });
+
+    fileInputAddon.addEventListener('click', function(e) {
+      e.preventDefault();
+      const file = document.getElementById('fileInput').files[0];
+      if (file) {
+        console.log('Standardize file:', file);
+        cannlytics.standardizer.standardizeFile(file);
+      } else {
+        console.log('No file selected');
+        cannlytics.standardizer.noFileSelected();
+      }
+    });
+
+  });
+
+</script>
+{% endblock %}

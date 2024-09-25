@@ -9,6 +9,7 @@
  */
 import { Modal } from 'bootstrap';
 import { Html5QrcodeScanner } from 'html5-qrcode';
+import { createGrid } from 'ag-grid-community';
 import { authRequest, downloadBlob, hasClass, showNotification, snakeCase } from '../utils.js';
 import { theme } from '../ui/theme.js';
 
@@ -17,6 +18,7 @@ export const CoADoc = {
   // CoADoc parameters.
   minWidth: 100,
   gridOptions: {},
+  gridAPI: null,
   rowHeight: 40,
 
   // Local functions.
@@ -36,7 +38,7 @@ export const CoADoc = {
         showNotification('Invalid CoA URL / Metrc ID', message, /* type = */ 'error');
         return;
       }
-      cannlytics.data.coas.postCoAData({ urls: [searchInput.value] });
+      cannlytics.coas.postCoAData({ urls: [searchInput.value] });
     }
     searchInput.addEventListener('keydown', function (e) {
       if (e.code === 'Enter') {
@@ -45,7 +47,7 @@ export const CoADoc = {
           showNotification('Invalid CoA URL / Metrc ID', message, /* type = */ 'error');
           return;
         }
-        cannlytics.data.coas.postCoAData({ urls: [searchInput.value] });
+        cannlytics.coas.postCoAData({ urls: [searchInput.value] });
       }
     });
 
@@ -53,10 +55,10 @@ export const CoADoc = {
 
     // Wire-up CoA file import functions.
     document.getElementById('coa-url-input').onchange = function() {
-      cannlytics.data.coas.uploadCoAFile(null, 'coa-url-import-form');
+      cannlytics.coas.uploadCoAFile(null, 'coa-url-import-form');
     }
     document.getElementById('coas-input').onchange = function() {
-      cannlytics.data.coas.uploadCoAFile();
+      cannlytics.coas.uploadCoAFile();
     }
     document.getElementById('coa-doc-import-button').onclick = function() {
       document.getElementById('coas-input').click();
@@ -65,7 +67,7 @@ export const CoADoc = {
     // Wire-up download buttons.
     document.getElementById('coa-doc-export-button').onclick = downloadAllResults;
     document.getElementById('download-sample-results-button').onclick = function() {
-      cannlytics.data.coas.downloadSampleResults(document.getElementById('download-sample-results-button'));
+      cannlytics.coas.downloadSampleResults(document.getElementById('download-sample-results-button'));
     }
 
     // Wire-up save button.
@@ -135,7 +137,7 @@ export const CoADoc = {
           const key = snakeCase(name);
           formData.append(key, file);
         });
-        cannlytics.data.coas.uploadCoAFile(formData);
+        cannlytics.coas.uploadCoAFile(formData);
     });
   },
   
@@ -151,11 +153,12 @@ export const CoADoc = {
       'btn-sm-light',
       'btn-md-light',
       'mb-1',
-      'serif',
+      'sans-serif',
+      'fw-normal',
     );
     document.getElementById('html5-qrcode-anchor-scan-type-change').classList.add(
       'app-action',
-      'serif',
+      'sans-serif',
     );
   },
 
@@ -163,8 +166,8 @@ export const CoADoc = {
     /**
      * Clear the CoA Doc form.
      */
-    cannlytics.data.coas.gridOptions.api.setRowData([]);
-    cannlytics.data.coas.initializeQRCodeScanner();
+    cannlytics.coas.gridOptions.api.setRowData([]);
+    cannlytics.coas.initializeQRCodeScanner();
     const template = `Drop a CoA <code>.pdf</code> or a <code>.zip</code>
     of CoAs to parse.`;
     document.getElementById('coa-search-input').value = '';
@@ -184,7 +187,7 @@ export const CoADoc = {
      * a card in a list of samples as well as a row on a table.
      * @param {Object} data The CoA results to render.
      */
-    const { gridOptions } = cannlytics.data.coas;
+    const { gridOptions } = cannlytics.coas;
     const rows = [];
     await gridOptions.api.forEachNode((rowNode, index) => {
       rows.push(rowNode.data);
@@ -312,8 +315,9 @@ export const CoADoc = {
     });
 
     // Enable checkbox selection,
-    columnDefs[0]['checkboxSelection'] = true;
-    columnDefs[0]['headerCheckboxSelection'] = true;
+    // FIXME:
+    // columnDefs[0]['selection']['checkboxes'] = true;
+    // columnDefs[0]['selection']['headerCheckbox'] = true;
 
     // Render templates.
     const overlayLoadingTemplate = `
@@ -334,9 +338,10 @@ export const CoADoc = {
       paginationAutoPageSize: true,
       rowClass: 'app-action',
       rowHeight: this.rowHeight,
-      rowSelection: 'multiple',
+      selection: {'mode': 'multiRow', 'enableClickSelection': true},
+      // rowSelection: 'multiple',
       singleClickEdit: true,
-      suppressRowClickSelection: true,
+      // suppressRowClickSelection: true,
       onGridReady: event => theme.toggleTheme(theme.getTheme()),
       onRowClicked: onRowClicked,
     };
@@ -344,9 +349,11 @@ export const CoADoc = {
     // Render the table
     const table = document.getElementById('coa-data-table');
     table.innerHTML = '';
-    new agGrid.Grid(table, this.gridOptions);
-    this.gridOptions.api.setRowData([]);
-
+    // FIXME:
+    this.gridAPI = createGrid(table, this.gridOptions);
+    console.log(this.gridAPI);
+    // this.gridAPI.setRowData([]);
+    this.gridAPI.setGridOption('rowData', [])
   },
 
   async removeCoADataTableRow(sampleId) {
@@ -354,7 +361,7 @@ export const CoADoc = {
      * Remove a row for the CoA data table.
      * @param {String} sampleId A sample ID for the row to be removed.
      */
-    const { gridOptions } = cannlytics.data.coas;
+    const { gridOptions } = cannlytics.coas;
     const rows = [];
     await gridOptions.api.forEachNode((rowNode, index) => {
       if (rowNode.data !== sampleId) rows.push(rowNode.data);
@@ -375,7 +382,7 @@ function downloadAllResults() {
    * only the selected rows are downloaded.
    */
   const data = [];
-  const selectedRows = cannlytics.data.coas.gridOptions.api.getSelectedNodes();
+  const selectedRows = cannlytics.coas.gridOptions.api.getSelectedNodes();
   const tableActive = hasClass(document.getElementById('coa-list'), 'active')
   if (selectedRows.length & tableActive) {
     selectedRows.forEach((row) => {
@@ -588,18 +595,19 @@ function renderSampleResultsTable(results) {
   const resultsGridOptions = {
     columnDefs: columnDefs,
     defaultColDef: { flex: 1,  minWidth: 100, editable: false },
-    enterMovesDownAfterEdit: true,
+    // enterMovesDownAfterEdit: true, // Deprecated
     overlayLoadingTemplate: overlayLoadingTemplate,
     overlayNoRowsTemplate: overlayNoRowsTemplate,
     rowClass: 'app-action',
     rowHeight: 25,
     singleClickEdit: true,
-    suppressRowClickSelection: true,
+    // suppressRowClickSelection: true,
+    selection: {'mode': 'multiRow', 'enableClickSelection': true},
     onGridReady: event => theme.toggleTheme(theme.getTheme()),
   };
   const table = document.getElementById('results-data-table');
   table.innerHTML = '';
-  new agGrid.Grid(table, resultsGridOptions);
+  createGrid(table, resultsGridOptions);
   resultsGridOptions.api.setRowData(results);
 }
 
@@ -672,7 +680,7 @@ function renderCoAResult(obs) {
 
   // Wire-up the remove button.
   el.querySelector('.btn').onclick = function() {
-    cannlytics.data.coas.removeCoADataTableRow(sampleId);
+    cannlytics.coas.removeCoADataTableRow(sampleId);
     el.parentNode.removeChild(el);
     const placeholder = document.querySelector('.sample-card');
     if (!placeholder) {

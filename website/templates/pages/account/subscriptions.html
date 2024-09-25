@@ -95,8 +95,8 @@
       
             <!-- Receipt Parser -->
             <div class="tab-pane fade" id="list-receipt" role="tabpanel" aria-labelledby="list-receipt-list">
-              <h3 class="mt-0 sans-serif">Receipt &amp; Label Parser</h3>
-              <p class="sans-serif-text">Your cannabis receipts and packages hold a lot of data. Put that data to work with <b>BudSpender</b>. This OpenAI-powered tool parses cannabis receipts and labels into well-structured data that can be used for trending, analytics, and however you please.</p>
+              <h3 class="mt-0 sans-serif">Label &amp; Receipt Parser</h3>
+              <p class="sans-serif-text">Your cannabis package labels and receipts hold a lot of data. Put that data to work with <b>BudSpender</b>. This OpenAI-powered tool parses cannabis labels and receipts into well-structured data that can be used for trending, analytics, and however you please.</p>
             </div>
       
             <!-- Data Archives -->
@@ -283,8 +283,8 @@
 
 <!-- JavaScript -->
 {% block page_js %}
-
 <script>
+document.addEventListener('DOMContentLoaded', function() {
 
   // Initialize the interface with the user's current subscriptions.
   cannlytics.payments.initializeSubscriptions();
@@ -292,6 +292,6 @@
   // Enable tooltips.
   cannlytics.ui.enableTooltips();
 
+});
 </script>
-
 {% endblock %}

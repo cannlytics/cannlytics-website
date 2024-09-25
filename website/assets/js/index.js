@@ -7,7 +7,9 @@
  * Updated: 2/11/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { analytics } from './analytics/analytics.js';
+// import { analytics } from './analytics/analytics.js';
+import { standardizer } from './parsers/standardizer.js';
+import { CoADoc as coas } from './results/coas.js';
 import { auth } from './auth/auth.js';
 import { data } from './data/data.js';
 import * as firebase from './firebase.js';
@@ -26,7 +28,7 @@ import { retailersJS } from './licenses/retailers.js';
 import '../css/cannlytics.scss';
 
 export {
-  analytics,
+  // analytics,
   auth,
   data,
   firebase,
@@ -40,5 +42,7 @@ export {
   strainsJS,
   licensesJS,
   retailersJS,
+  standardizer,
+  coas,
   showNotification,
 };

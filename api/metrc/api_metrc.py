@@ -37,7 +37,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 
 # Internal imports:
-from website.auth import authenticate_request
+from website.auth import authenticate_request, AUTH_ERROR
 from cannlytics.data import create_hash
 from website.firebase import (
     access_secret_version,
@@ -61,9 +61,6 @@ from cannlytics.utils import (
 )
 
 # Metrc API defaults.
-AUTH_ERROR = 'Authentication failed. Please login to the console or \
-provide a valid API key in an `Authentication: Bearer <token>` \
-header.'
 METRC_ERROR = 'Metrc API error. POST request will be retried.'
 DEFAULT_STATE = 'ok'
 LOG_TYPE = 'metrc'

@@ -31,38 +31,39 @@ app_context = {
                 {"title": "📜 COAs", "page": "coas"},
                 {"title": "🧪 Results", "page": "results"},
                 {"title": "🪴Strains", "page": "strains"},
-                {"title": "🧑‍🌾 Organizations", "page": "orgs"},
+                {"title": "🧑‍🌾 Organizations", "page": "licenses"},
                 {"title": "🔬 Compounds", "page": "compounds"},
             ]
         },
         {
             "name": "Analytics",
             "links": [
-                {"title": "🤖 Parsers", "page": "parsers"},
-                {"title": "📡 API", "page": "api"},
-                {"title": "🧑‍🔬 Research", "page": "research"},
-                {"title": "📊 Stats", "page": "stats"},
+                {"title": "🥸 COA Parser", "page": "parsers", "section": "coa-parser"},
+                {"title": "🛍️ Label Parser", "page": "parsers", "section": "label-parser"},
+                {"title": "🧾 Receipt Parser", "page": "parsers", "section": "receipt-parser"},
+                {"title": "🪄 Standardizer", "page": "parsers", "section": "standardizer"},
                 {"title": "📝 Papers", "page": "papers"},
             ]
         },
         {
             "name": "Tech",
             "links": [
-                {"title": "🪟 App", "url": "https://app.cannlytics.com/"},
+                {"title": "🪟 App", "url": "https://data.cannlytics.com/"},
+                {"title": "📡 API", "page": "api"},
                 {"title": "🙀 Open Source", "url": "https://github.com/cannlytics"},
                 {"title": "🤗 Datasets", "url": "https://huggingface.co/cannlytics"},
                 {"title": "🔰 Metrc SDK", "url": "https://github.com/cannlytics/cannlytics/tree/main/cannlytics/metrc"},
-                {"title": "🧑‍💻 Developers", "page": "developers"},
             ]
         },
         {
             "name": "Company",
             "links": [
                 {"title": "📒 About", "page": "about"},
+                {"title": "🧑‍💻 Developers", "page": "developers"},
                 {"title": "🤝 Support", "page": "support"},
                 {"title": "💸 Subscriptions", "page": "account", "section": "subscriptions"},
                 {"title": "🎙️ Meetup", "url": "https://meetup.com/cannabis-data-science"},
-                {"title": "⚖️ TOS", "page": "terms-of-service"},
+                # {"title": "⚖️ TOS", "page": "terms-of-service"},
             ]
         }
     ],

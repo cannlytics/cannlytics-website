@@ -52,6 +52,10 @@ export const contact = {
       message: 'I am interested in joining Cannlytics.',
       subject: 'Joining Cannlytics',
     },
+    contribute: {
+      message: 'I am interested in contributing to Cannlytics.',
+      subject: 'Contributing to Cannlytics',
+    },
     invest: {
       message: 'I am interested in investing in Cannlytics.',
       subject: 'Invest in Cannlytics',
