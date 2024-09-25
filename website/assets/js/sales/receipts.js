@@ -1,19 +1,18 @@
 /**
- * CoADoc JavaScript | Cannlytics Website
+ * Receipts JavaScript | Cannlytics Website
  * Copyright (c) 2022 Cannlytics
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
- * Created: 7/19/2022
- * Updated: 8/21/2022
+ * Created: 9/25/2024
+ * Updated: 9/25/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
  */
 import { Modal } from 'bootstrap';
-import { Html5QrcodeScanner } from 'html5-qrcode';
 import { createGrid } from 'ag-grid-community';
 import { authRequest, downloadBlob, hasClass, showNotification, snakeCase } from '../utils.js';
 import { theme } from '../ui/theme.js';
 
-export const CoADoc = {
+export const receiptsJS = {
 
   // CoADoc parameters.
   minWidth: 100,
@@ -22,79 +21,46 @@ export const CoADoc = {
   rowHeight: 40,
 
   // Local functions.
-  downloadSampleResults: downloadSampleResults,
-  renderSamplePlaceholder: renderSamplePlaceholder,
+  // downloadSampleResults: downloadSampleResults,
+  // renderReceiptPlaceholder: renderReceiptPlaceholder,
 
-  initializeCoADoc() {
-    /**
-     * Initialize the CoADoc user interface.
-     */
+  initializeReceiptParser() {
+    /* Initialize the receipt parser UI. */
 
-    // Wire-up search button and input.
-    const searchInput = document.getElementById('coa-search-input');
-    document.getElementById('coa-doc-search-button').onclick = function() {
-      if (!searchInput.value) {
-        const message = 'CoA URL or Metrc ID required.';
-        showNotification('Invalid CoA URL / Metrc ID', message, /* type = */ 'error');
-        return;
-      }
-      cannlytics.coas.postCoAData({ urls: [searchInput.value] });
+    // Wire-up file import functions.
+    document.getElementById('receipt-input').onchange = function() {
+      cannlytics.receipts.uploadReceipt();
     }
-    searchInput.addEventListener('keydown', function (e) {
-      if (e.code === 'Enter') {
-        if (!searchInput.value) {
-          const message = 'CoA URL or Metrc ID required.';
-          showNotification('Invalid CoA URL / Metrc ID', message, /* type = */ 'error');
-          return;
-        }
-        cannlytics.coas.postCoAData({ urls: [searchInput.value] });
-      }
-    });
-
-    // Future work: Search / autocomplete for metrc ID as the user types?
-
-    // Wire-up CoA file import functions.
-    document.getElementById('coa-url-input').onchange = function() {
-      cannlytics.coas.uploadCoAFile(null, 'coa-url-import-form');
-    }
-    document.getElementById('coas-input').onchange = function() {
-      cannlytics.coas.uploadCoAFile();
-    }
-    document.getElementById('coa-doc-import-button').onclick = function() {
-      document.getElementById('coas-input').click();
+    document.getElementById('receipt-import-button').onclick = function() {
+      document.getElementById('receipt-input').click();
     }
 
-    // Wire-up download buttons.
-    document.getElementById('coa-doc-export-button').onclick = downloadAllResults;
-    document.getElementById('download-sample-results-button').onclick = function() {
-      cannlytics.coas.downloadSampleResults(document.getElementById('download-sample-results-button'));
-    }
+    // // Wire-up download buttons.
+    // document.getElementById('coa-doc-export-button').onclick = downloadAllResults;
+    // document.getElementById('download-sample-results-button').onclick = function() {
+    //   cannlytics.coas.downloadSampleResults(document.getElementById('download-sample-results-button'));
+    // }
 
-    // Wire-up save button.
-    // document.getElementById('save-sample-results-button').onclick = saveSampleResults;
+    // // Wire up clear button.
+    // document.getElementById('coa-doc-clear-button').onclick = this.resetCoADocForm;
 
-    // Wire up clear button.
-    document.getElementById('coa-doc-clear-button').onclick = this.resetCoADocForm;
-
-    // Wire-up the results modal.
-    const modal = document.getElementById('results-modal')
-    modal.addEventListener('show.bs.modal', openResults);
-
-    // Initialize the QR code scanner.
-    this.initializeQRCodeScanner();
+    // // Wire-up the results modal.
+    // const modal = document.getElementById('results-modal')
+    // modal.addEventListener('show.bs.modal', openResults);
 
     // Initialize the drag and drop.
-    this.initializeDragAndDrop();
+    this.initializeDragAndDrop(cannlytics.coas.uploadReceipt);
 
-    // Initialize the data table.
-    this.renderCoADataTable();
+    // // Initialize the data table.
+    // this.renderCoADataTable();
 
   },
 
-  initializeDragAndDrop() {
+  initializeDragAndDrop(uploadCallback) {
     /**
      * Initialize the drag-and-drop file upload.
      */
+    // TODO: Generalize this function.
     $(document).on('dragover', 'html', function(e) {
       e.preventDefault();
       e.stopPropagation();
@@ -106,82 +72,84 @@ export const CoADoc = {
     $(document).on('dragenter', '.box__dragbox', function (e) {
         e.stopPropagation();
         e.preventDefault();
-        document.getElementById('dropbox-text').innerHTML = `Drop your CoA <code>.pdf</code> or a <code>.zip</code> here!`;
+        document.getElementById('dropbox-text').innerHTML = `Drop your receipts here.`;
         document.getElementById('dropbox_background').style.opacity = 1;
     });
     $(document).on('dragover', '.box__dragbox', function (e) {
         e.stopPropagation();
         e.preventDefault();
-        document.getElementById('dropbox-text').innerHTML = `Drop your CoA <code>.pdf</code> or a <code>.zip</code> here!`;
+        document.getElementById('dropbox-text').innerHTML = `Drop your receipts here.`;
         document.getElementById('dropbox_background').style.opacity = 1;
     });
     $(document).on('dragleave', '.box__dragbox', function (e) {
         e.stopPropagation();
         e.preventDefault();
-        document.getElementById('dropbox-text').innerHTML = `Drop a CoA <code>.pdf</code> or a <code>.zip</code> of CoAs to parse.`;
+        document.getElementById('dropbox-text').innerHTML = `Drop a receipt to parse.`;
         document.getElementById('dropbox_background').style.opacity = 0;
     });
     $(document).on('drop', '.box__dragbox', function (event) {
         event.stopPropagation();
         event.preventDefault();
-        document.getElementById('dropbox-text').innerText = 'Uploaded Coa File!';
+        document.getElementById('dropbox-text').innerText = 'Uploaded success.';
         const formData = new FormData();
         const droppedFiles = event.originalEvent.dataTransfer.files;
         $.each( droppedFiles, function(i, file) {
           const { type, name } = file;
-          if (!(type.includes('pdf') || type.includes('zip'))) {
-            const message = 'Invalid file type. Expecting a .pdf or .zip file.';
-            showNotification('Invalid CoA File', message, /* type = */ 'error');
-            return;
-          }
+          // Optional: Check file types.
+          // if (!(type.includes('pdf') || type.includes('zip'))) {
+          //   const message = 'Invalid file type. Expecting a .pdf or .zip file.';
+          //   showNotification('Invalid CoA File', message, /* type = */ 'error');
+          //   return;
+          // }
           const key = snakeCase(name);
           formData.append(key, file);
         });
-        cannlytics.coas.uploadCoAFile(formData);
+        uploadCallback(formData);
     });
   },
+
+  uploadReceipt(formData, formId = 'receipt-import-form') {
+    /* Upload a receipt. */
+    // Show a loading placeholder, record the ID for updating later.
+    renderReceiptPlaceholder();
   
-  initializeQRCodeScanner() {
-    /**
-     * Initialize the QR Code scanner.
-     */
-    const qrCodeOptions = { fps: 10, qrbox: {width: 250, height: 250} };
-    let html5QrcodeScanner = new Html5QrcodeScanner('reader', qrCodeOptions, false);
-    html5QrcodeScanner.render(this.onScanSuccess, this.onScanFailure);
-    document.getElementById('html5-qrcode-button-camera-permission').classList.add(
-      'btn',
-      'btn-sm-light',
-      'btn-md-light',
-      'mb-1',
-      'sans-serif',
-      'fw-normal',
-    );
-    document.getElementById('html5-qrcode-anchor-scan-type-change').classList.add(
-      'app-action',
-      'sans-serif',
-    );
-  },
+    // Get the form if no data is passed.
+    if (!formData) formData = new FormData(document.forms[formId]);
+  
+    // Optional: It would be good to do further / better file checking before posting the form.
+    // https://stackoverflow.com/questions/7977084/check-file-type-when-form-submit
 
-  resetCoADocForm() {
-    /**
-     * Clear the CoA Doc form.
-     */
-    cannlytics.coas.gridOptions.api.setRowData([]);
-    cannlytics.coas.initializeQRCodeScanner();
-    const template = `Drop a CoA <code>.pdf</code> or a <code>.zip</code>
-    of CoAs to parse.`;
-    document.getElementById('coa-search-input').value = '';
-    document.getElementById('dropbox_background').style.opacity = 0;
-    document.getElementById('dropbox-text').innerHTML = template;
-    document.getElementById('coa-results-tabs').classList.add('d-none');
-    document.getElementById('coa-results-content').classList.add('d-none');
-    document.getElementById('coa-sample-results-placeholder').classList.remove('d-none');
-    document.querySelectorAll('.sample-card').forEach((card) => {
-      card.parentNode.removeChild(card);
+    // Define the success callback.
+    const successCallback = this.renderReceiptData;
+  
+    // Make a request to the CoADoc API.
+    $.ajax({
+      headers: { 'X-CSRFToken': cannlytics.utils.getCookie('csrftoken') },
+      url: '/api/receipts',
+      type: 'POST',
+      data: formData,
+      dataType: 'json',
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function(response) {
+        successCallback(response.data);
+      },
+      error: function() {
+        // Show and error and remove the placeholder.
+        const message = 'An error occurred while uploading your file. Please try again later or email support.';
+        showNotification('Error Uploading', message, /* type = */ 'error');
+        try {
+          const placeholder = document.querySelector('.sample-placeholder-template');
+          placeholder.parentNode.removeChild(placeholder);
+        } catch (error) {
+          // No placeholder to hide.
+        }
+      }
     });
   },
 
-  async renderCoAResults(data) {
+  async renderReceiptData(data) {
     /**
      * Render the CoA results for the user as both
      * a card in a list of samples as well as a row on a table.
@@ -193,12 +161,32 @@ export const CoADoc = {
       rows.push(rowNode.data);
     })
     data.forEach((item) => {
-      renderCoAResult(item);
+      renderReceipt(item);
       rows.push(item);
     });
     gridOptions.api.setRowData(rows);
     document.getElementById('coa-data-placeholder').classList.add('d-none');
     document.getElementById('coa-sample-results-placeholder').classList.add('d-none');
+  },
+
+  resetReceiptsForm() {
+    /**
+     * Clear the receipts form.
+     */
+    // FIXME: Re-implement.
+    // cannlytics.coas.gridOptions.api.setRowData([]);
+    // cannlytics.coas.initializeQRCodeScanner();
+    // const template = `Drop a CoA <code>.pdf</code> or a <code>.zip</code>
+    // of CoAs to parse.`;
+    // document.getElementById('coa-search-input').value = '';
+    // document.getElementById('dropbox_background').style.opacity = 0;
+    // document.getElementById('dropbox-text').innerHTML = template;
+    // document.getElementById('coa-results-tabs').classList.add('d-none');
+    // document.getElementById('coa-results-content').classList.add('d-none');
+    // document.getElementById('coa-sample-results-placeholder').classList.remove('d-none');
+    // document.querySelectorAll('.sample-card').forEach((card) => {
+    //   card.parentNode.removeChild(card);
+    // });
   },
 
   async postCoAData(data) {
@@ -208,10 +196,10 @@ export const CoADoc = {
      */
     const response = await authRequest('/api/coas', data);
     if (response.success) {
-      this.renderCoAResults(response.data);
+      this.renderReceiptData(response.data);
     } else {
       const message = 'An error occurred during parsing. Please try again later or email support.';
-      showNotification('Error Parsing', message, /* type = */ 'error');
+      showNotification('Error Parsing CoA', message, /* type = */ 'error');
     }
   },
 
@@ -259,35 +247,6 @@ export const CoADoc = {
         }
       }
     });
-  },
-
-  /**
-   * QR Code Logic
-   */
-
-  async onScanSuccess(decodedText, decodedResult) {
-    /**
-     * Hand QR code scan success.
-     * @param {String} decodedText: The decoded QR code text.
-     * @param {Object} decodedResult: The decoded QR code object..
-     */
-    const postData = { urls: [decodedText] };
-    const response = await authRequest('/api/coas', postData);
-    if (response.success) {
-      this.renderCoAResults(response.data);
-    } else {
-      const message = 'An error occurred during parsing. Please try again later or email support.';
-      showNotification('Error Parsing', message, /* type = */ 'error');
-    }
-  },
-
-  onScanFailure(error) {
-    /**
-     * Hand QR code scan failure.
-     * @param {Object} error: An error object.
-     */
-    const message = 'An error occurred during parsing. Please try again later or email support.';
-    showNotification('Error Parsing', message, /* type = */ 'error');
   },
 
   /**
@@ -370,6 +329,7 @@ export const CoADoc = {
   },
 
 };
+
 
 /**
  * CoA Results functions.
@@ -611,40 +571,7 @@ function renderSampleResultsTable(results) {
   resultsGridOptions.api.setRowData(results);
 }
 
-function renderSamplePlaceholder() {
-  /**
-   * Render a placeholder for a loading sample.
-   */
-  
-  // Hide the general placeholder.
-  document.getElementById('coa-sample-results-placeholder').classList.add('d-none');
-  document.getElementById('coa-results-tabs').classList.remove('d-none');
-  document.getElementById('coa-results-content').classList.remove('d-none');
-
-  // Clone the sample template.
-  const timestamp = new Date().toISOString().slice(0, 19).replaceAll(':', '-');
-  const docFrag = document.createDocumentFragment();
-  const el = document.getElementById('sample-placeholder-template').cloneNode(true);
-  el.classList.add('sample-card', 'sample-placeholder-rendered');
-  el.classList.remove('d-none');
-  el.id = `${el.id}-${timestamp}`;
-
-  // Wire-up the remove button.
-  el.querySelector('.btn').onclick = function() {
-    el.parentNode.removeChild(el);
-    const placeholder = document.querySelector('.sample-card');
-    if (!placeholder) {
-      document.getElementById('coa-sample-results-placeholder').classList.remove('d-none');
-    }
-  };
-
-  // Add the card to the UI.
-  docFrag.appendChild(el);
-  const grid = document.getElementById('coa-grid-container');
-  grid.insertBefore(docFrag, grid.firstChild);
-}
-
-function renderCoAResult(obs) {
+function renderReceipt(obs) {
   /**
    * Render the CoA results for the user as both
    * a card in a list of samples as well as a row on a table.
@@ -695,17 +622,35 @@ function renderCoAResult(obs) {
   grid.insertBefore(docFrag, grid.firstChild);
 }
 
-// TODO: Add the ability for user's to save their lab results to their account.
-// function saveSampleResults() {
-//   /**
-//    * Save edited sample results for downloading.
-//    */
+function renderReceiptPlaceholder() {
+  /**
+   * Render a placeholder for a loading sample.
+   */
+  
+  // Hide the general placeholder.
+  document.getElementById('coa-sample-results-placeholder').classList.add('d-none');
+  document.getElementById('coa-results-tabs').classList.remove('d-none');
+  document.getElementById('coa-results-content').classList.remove('d-none');
 
-//   // Future work: Get the edited data.
-//   console.log('Save the sample results!')
+  // Clone the sample template.
+  const timestamp = new Date().toISOString().slice(0, 19).replaceAll(':', '-');
+  const docFrag = document.createDocumentFragment();
+  const el = document.getElementById('sample-placeholder-template').cloneNode(true);
+  el.classList.add('sample-card', 'sample-placeholder-rendered');
+  el.classList.remove('d-none');
+  el.id = `${el.id}-${timestamp}`;
 
-//   // Future work: Update the sample `el` by sampleId!
-//   // const sampleId = event.getAttribute('data-bs-sample');
-//   // const sampleCard = document.getElementById(`sample-${sampleId}`);
-//   // el.querySelector('.sample-data').textContent = JSON.stringify(obs);
-// }
+  // Wire-up the remove button.
+  el.querySelector('.btn').onclick = function() {
+    el.parentNode.removeChild(el);
+    const placeholder = document.querySelector('.sample-card');
+    if (!placeholder) {
+      document.getElementById('coa-sample-results-placeholder').classList.remove('d-none');
+    }
+  };
+
+  // Add the card to the UI.
+  docFrag.appendChild(el);
+  const grid = document.getElementById('coa-grid-container');
+  grid.insertBefore(docFrag, grid.firstChild);
+}

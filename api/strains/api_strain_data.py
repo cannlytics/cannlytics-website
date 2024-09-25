@@ -4,66 +4,28 @@ Copyright (c) 2022 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 5/17/2022
-Updated: 6/7/2022
+Updated: 9/25/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Description: API endpoints to interface with cannabis strain data.
 """
-# External imports.
+# Standard imports:
 import json
 import re
+
+# External imports:
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-# Internal imports.
+# Internal imports:
+from cannlytics.compounds import cannabinoids, terpenes
 from cannlytics.firebase import (
     get_collection,
     get_document,
 )
-from cannlytics.utils.utils import kebab_case
 
 
-ANALYTES = [
-    'cbc',
-    'cbd',
-    'cbda',
-    'cbg',
-    'cbga',
-    'cbn',
-    'delta_8_thc',
-    'delta_9_thc',
-    'thca',
-    'thcv',
-    'alpha_bisabolol',
-    'alpha_pinene',
-    'alpha_terpinene',
-    'beta_caryophyllene',
-    'beta_myrcene',
-    'beta_pinene',
-    'camphene',
-    'carene',
-    'caryophyllene_oxide',
-    'd_limonene',
-    'eucalyptol',
-    'gamma_terpinene',
-    'geraniol',
-    'guaiol',
-    'humulene',
-    'isopulegol',
-    'linalool',
-    'nerolidol',
-    'ocimene',
-    'p_cymene',
-    'terpinene',
-    'terpinolene',
-    'total_cannabinoids',
-    'total_cbd',
-    'total_cbg',
-    'total_terpenes',
-    'total_thc'
-    'terpinenes',
-]
-
+# Define operations.
 OPERATIONS = {
     'ge': '>=',
     'le': '<=',
@@ -73,7 +35,7 @@ OPERATIONS = {
 
 
 @api_view(['GET'])
-def strain_data(request, strain_name=None):
+def api_strain_data(request, strain_name=None):
     """Get data about cannabis strains (public API endpoint)."""
     data = []
     collection = 'public/data/strains'
@@ -129,8 +91,10 @@ def strain_data(request, strain_name=None):
             # Allow user to query by cannabinoid / terpene concentrations.
             # Handles open and closed ranges for a single analyte.
             # FIXME: This doesn't appear to work with 2 operations.
+            totals = ['total_cannabinoids', 'total_thc', 'total_cbd', 'total_cbg',
+                      'total_terpenes']
             for param in request.query_params:
-                if param in ANALYTES:
+                if param in totals + list(cannabinoids.keys()) + list(terpenes.keys()):
                     order_by = param
                     desc = request.query_params.get('desc', True)
                     value = request.query_params[param]

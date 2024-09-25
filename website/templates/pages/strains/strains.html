@@ -70,10 +70,10 @@
 
   <!-- List/Grid View -->
   <div class="btn-group btn-group-sm" role="group" aria-label="View selection">
-    <button type="button" class="btn btn-primary" id="gridViewButton" onclick="cannlytics.strainsJS.renderGridView()">
+    <button type="button" class="btn btn-primary" id="gridViewButton" onclick="cannlytics.strains.renderGridView()">
       <i class="bi bi-grid"></i> Grid
     </button>
-    <button type="button" class="btn btn-outline-primary" id="listViewButton" onclick="cannlytics.strainsJS.renderListView()">
+    <button type="button" class="btn btn-outline-primary" id="listViewButton" onclick="cannlytics.strains.renderListView()">
       <i class="bi bi-list"></i> List
     </button>
   </div>
@@ -89,7 +89,7 @@
   <script>
 
     // Initialize result. 
-    cannlytics.strainsJS.initializeStrain();
+    cannlytics.strains.initializeStrain();
 
   </script>
 {% else %}
@@ -111,7 +111,7 @@
     // Attach functionality.
     console.log('Attaching functionality...');
     document.getElementById('searchInput').addEventListener('input', function() {
-      cannlytics.strainsJS.initializeStrains();
+      cannlytics.strains.initializeStrains();
     });
 
     // JavaScript function to handle state selection
@@ -122,11 +122,13 @@
       });
       document.getElementById('btn' + selectedState).classList.remove('btn-outline-primary');
       document.getElementById('btn' + selectedState).classList.add('btn-primary');
-      cannlytics.strainsJS.initializeStrains();
+      cannlytics.strains.initializeStrains();
     }
 
     // Initialize strains. 
-    cannlytics.strainsJS.initializeStrains();
+    cannlytics.strains.initializeStrains();
+
+    // Future work: Allow user's to download all of the lab results for a given strain.
 
   </script>
 {% endif %}

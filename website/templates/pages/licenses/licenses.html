@@ -64,10 +64,10 @@
 
   <!-- List/Grid View -->
   <div class="btn-group btn-group-sm" role="group" aria-label="View selection">
-    <button type="button" class="btn btn-primary" id="gridViewButton" onclick="cannlytics.licensesJS.renderGridView()">
+    <button type="button" class="btn btn-primary" id="gridViewButton" onclick="cannlytics.licenses.renderGridView()">
       <i class="bi bi-grid"></i> Grid
     </button>
-    <button type="button" class="btn btn-outline-primary" id="listViewButton" onclick="cannlytics.licensesJS.renderListView()">
+    <button type="button" class="btn btn-outline-primary" id="listViewButton" onclick="cannlytics.licenses.renderListView()">
       <i class="bi bi-list"></i> List
     </button>
   </div>
@@ -82,13 +82,13 @@
 {% if section and section not in 'logs,files,certificates' %}
   <script>
     // Initialize licensee. 
-    cannlytics.licensesJS.initializeLicensee();
+    cannlytics.licenses.initializeLicensee();
   </script>
 {% else %}
   <script>
     // Attach functionality.
     document.getElementById('searchInput').addEventListener('input', function() {
-      cannlytics.licensesJS.initializeLicensees();
+      cannlytics.licenses.initializeLicensees();
     });
 
     // JavaScript function to handle state selection
@@ -99,11 +99,11 @@
       });
       document.getElementById('btn' + selectedState).classList.remove('btn-outline-primary');
       document.getElementById('btn' + selectedState).classList.add('btn-primary');
-      cannlytics.licensesJS.initializeLicensees();
+      cannlytics.licenses.initializeLicensees();
     }
 
     // Initialize licensees. 
-    cannlytics.licensesJS.initializeLicensees();
+    cannlytics.licenses.initializeLicensees();
   </script>
 {% endif %}
 {% endblock %}

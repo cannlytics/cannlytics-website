@@ -12,7 +12,7 @@ from django.http import JsonResponse
 
 # Internal imports:
 from website.auth import authenticate_request
-from website.firebase import (
+from cannlytics.firebase import (
     create_log,
     create_session_cookie,
     initialize_firebase,

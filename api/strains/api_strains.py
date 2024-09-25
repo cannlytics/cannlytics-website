@@ -18,8 +18,6 @@ import tempfile
 # External imports:
 from django.views.decorators.csrf import csrf_exempt
 import google.auth
-from google.auth import compute_engine
-import google.auth.transport.requests as g_requests
 import requests
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -56,10 +54,13 @@ DEFAULT_TEMPERATURE = 0.42
 # Default word count for generating strain descriptions.
 DEFAULT_WORD_COUNT = 100
 
+# API constants.
+COLLECTION = 'strains'
+
 
 @api_view(['GET', 'POST', 'OPTIONS'])
 @csrf_exempt
-def api_data_strains(request, strain_id=None):
+def api_strains(request, strain_id=None):
     """Manage strain data (public API endpoint)."""
 
     # Authenticate the user.
@@ -91,7 +92,7 @@ def api_data_strains(request, strain_id=None):
 
         # Get a specific strain.
         if strain_id:
-            ref = f'users/{uid}/strains/{strain_id}'
+            ref = f'users/{uid}/{COLLECTION}/{strain_id}'
             data = get_document(ref)
             response = Response({'success': True, 'data': data}, status=200)
             response['Access-Control-Allow-Origin'] = '*'
@@ -137,9 +138,8 @@ def api_data_strains(request, strain_id=None):
         desc = params.get('desc', False)
 
         # Query documents.
-        ref = 'public/data/strains'
         data = get_collection(
-            ref,
+            f'public/data/{COLLECTION}',
             desc=desc,
             filters=filters,
             limit=limit,
@@ -209,7 +209,7 @@ def api_data_strains(request, strain_id=None):
 
             # If the strain already has a description, then
             # require the user to have a subscription to generate a new one.
-            doc = get_document(f'public/data/strains/{doc_id}')
+            doc = get_document(f'public/data/{COLLECTION}/{doc_id}')
             if doc.get('description'):
                 support_level = claims.get('support_level', 'free')
                 print('USER:', uid)
@@ -242,7 +242,7 @@ def api_data_strains(request, strain_id=None):
 
             # If the strain already has an image, then
             # require the user to have a subscription to generate a new one.
-            doc = get_document(f'public/data/strains/{doc_id}')
+            doc = get_document(f'public/data/{COLLECTION}/{doc_id}')
             if doc.get('image_url'):
                 support_level = claims.get('support_level', 'free')
                 print('USER:', uid)
@@ -273,7 +273,7 @@ def api_data_strains(request, strain_id=None):
             temp_file.close()
 
             # Upload the file to Firebase Storage.
-            destination_blob_name = f'public/data/strains/{doc_id}/images/{content_id}.jpg'
+            destination_blob_name = f'public/data/{COLLECTION}/{doc_id}/images/{content_id}.jpg'
             upload_file(
                 destination_blob_name=destination_blob_name,
                 source_file_name=temp_file.name,
@@ -317,7 +317,7 @@ def api_data_strains(request, strain_id=None):
             print('USER:', uid)
             print('SUPPORT LEVEL:', support_level)
             if support_level in ['enterprise', 'pro', 'premium']:
-                message = 'A Cannlytics subscription is required to edit strains. You can get a subscription at https://cannlytics.com/account/subscriptions.'
+                message = f'A Cannlytics subscription is required to edit {COLLECTION}. You can get a subscription at https://cannlytics.com/account/subscriptions.'
                 response = Response({'error': True, 'message': message}, status=402)
                 response['Access-Control-Allow-Origin'] = '*'
                 return response
@@ -355,7 +355,7 @@ def api_data_strains(request, strain_id=None):
 
             # Save the data to Firestore.
             strain_id = body.get('id', strain_id)
-            ref = f'public/data/strains/{strain_id}'
+            ref = f'public/data/{COLLECTION}/{strain_id}'
             update_document(ref, content)
 
         # Return an error if the strain ID is invalid.
@@ -368,7 +368,7 @@ def api_data_strains(request, strain_id=None):
         # Record the image and description for known strains.
         # Also save the images and descriptions to galleries.
         if doc_id != content_id:
-            ref = f'public/data/strains/{doc_id}'
+            ref = f'public/data/{COLLECTION}/{doc_id}'
             if strain_id == 'art':
                 image_ref = f'{ref}/images/{content_id}'
                 update_document(ref, {'image_url': download_url})
@@ -391,7 +391,7 @@ def api_data_strains(request, strain_id=None):
 
         # Create a strain log.
         create_log(
-            f'public/logs/strain_logs',
+            f'public/logs/{COLLECTION}',
             claims=claims,
             action=action,
             log_type='data',
@@ -399,14 +399,13 @@ def api_data_strains(request, strain_id=None):
             changes=[content]
         )
 
-        # Create a redundant user log.
-        # TODO: Figure out how to make this not necessary?
+        # Create a redundant user log for public history.
         create_log(
             f'users/{uid}/public_logs',
             claims=claims,
             action=action,
             log_type='data',
-            key='api_data_strains',
+            key=f'api_data_{COLLECTION}',
             changes=[content]
         )
 
@@ -414,7 +413,3 @@ def api_data_strains(request, strain_id=None):
         response = Response({'success': True, 'data': content}, status=200)
         response["Access-Control-Allow-Origin"] = '*'
         return response
-
-
-# Future work: Allow user's to download all of the lab results
-# for a given strain.

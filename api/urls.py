@@ -5,7 +5,7 @@ Copyright (c) 2021-2024 Cannlytics
 Authors:
     Keegan Skeate <https://github.com/keeganskeate>
 Created: 4/21/2021
-Updated: 9/24/2024
+Updated: 9/25/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Description: API URLs to interface with cannabis data and analytics.
@@ -15,11 +15,17 @@ from django.urls import include, path
 from rest_framework import urlpatterns #pylint: disable=unused-import
 
 # Internal imports:
+import api.api_utils
 from api.auth import api_auth
 from api.base import api_base
 from api.users import api_users
 import api.metrc
 from api.parsers import api_standardizer
+from api.licenses import api_licenses
+from api.products import api_labels
+from api.results import api_results, api_coas
+from api.sales import api_receipts
+from api.strains import api_strains
 
 
 # Define API URLs.
@@ -36,21 +42,41 @@ urlpatterns = [
         path('/get-keys', api_auth.get_api_key_hmacs),
     ])),
 
-    # TODO: AI
-    path('parse', include([
-        path('/standardize', api_standardizer.standardize_names),
+    # COAs.
+    path('coas', include([
+        path('', api_coas.api_coas),
+        path('/coas/<coa_id>', api_coas.api_coas),
     ])),
-    # - standard strain name
-    # - standard analyte
 
-    # TODO: results
+    # Labels.
+    path('labels', include([
+        path('', api_labels.api_labels),
+        path('/<label_id>', api_labels.api_labels),
+    ])),
 
+    # Receipts.
+    path('receipts', include([
+        path('', api_receipts.api_receipts),
+        path('/<receipt_id>', api_receipts.api_receipts),
+    ])),
 
-    # TODO: strains
+    # Results.
+    path('results', include([
+        path('', api_results.api_results),
+        path('/<result_id>', api_results.api_results),
+    ])),
 
+    # Strains.
+    path('strains', include([
+        path('', api_strains.api_strains),
+        path('/<strain_id>', api_strains.api_strains),
+    ])),
 
-    # TODO: licenses
-
+    # Licenses.
+    path('licenses', include([
+        path('', api_licenses.api_licenses),
+        path('/<license_number>', api_licenses.api_licenses),
+    ])),
 
     # Metrc API endpoints.
     path('metrc', include([
@@ -115,11 +141,15 @@ urlpatterns = [
 
     # User API Endpoints.
     path('users', include([
-        path('', api_users.users),
-        path('/<user_id>', api_users.users),
-        path('/<user_id>/about', api_users.users),
-        path('/<user_id>/consumption', api_users.users),
-        path('/<user_id>/spending', api_users.users),
-        path('/<user_id>/settings', api_users.users),
+        path('', api_users.api_users),
+        path('/<user_id>', api_users.api_users),
+        path('/<user_id>/about', api_users.api_users),
+        path('/<user_id>/consumption', api_users.api_users),
+        path('/<user_id>/spending', api_users.api_users),
+        path('/<user_id>/settings', api_users.api_users),
     ])),
+
+    # Functions.
+    path('standardize', api_standardizer.standardize_names),
+    path('download/<str:data_type>', api.api_utils.download_user_data),
 ]

@@ -24,7 +24,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 # Internal imports.
-from website.firebase import (
+from cannlytics.firebase import (
     update_documents,
 )
 from cannlytics.stats.stats import (

@@ -15,7 +15,7 @@ import hmac
 from hashlib import sha256
 
 # Internal imports.
-from website.firebase import (
+from cannlytics.firebase import (
     get_custom_claims,
     get_document,
     verify_session_cookie,

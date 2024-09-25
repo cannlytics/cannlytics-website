@@ -664,6 +664,46 @@ body.dark .breadcrumb-item.active {
 }
 
 /*--------------------------------------------------------------------------
+  Tabs
+---------------------------------------------------------------------------*/
+
+.page-tabs.nav {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.page-tabs .nav-item {
+  flex: 1;
+}
+.page-tabs .nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: none;
+  background: none;
+  width: 100%;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.page-tabs .nav-link:hover,
+.page-tabs .nav-link.active {
+  color: #1a1a1a !important;
+}
+body.dark .page-tabs .nav-link:hover,
+body.dark .page-tabs .nav-link.active {
+  color: #f8f8f8 !important;
+}
+.page-tabs .nav-link.active {
+  border-bottom: 2px solid #f78166 !important;
+}
+.page-tabs .nav-link i {
+  margin-right: 5px;
+}
+
+/*--------------------------------------------------------------------------
   List groups
 ---------------------------------------------------------------------------*/
 

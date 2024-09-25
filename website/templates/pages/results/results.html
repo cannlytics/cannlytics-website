@@ -114,10 +114,10 @@
 
   <!-- List/Grid View -->
   <div class="btn-group btn-group-sm" role="group" aria-label="View selection">
-    <button type="button" class="btn btn-primary" id="gridViewButton" onclick="cannlytics.resultsJS.renderGridView()">
+    <button type="button" class="btn btn-primary" id="gridViewButton" onclick="cannlytics.results.renderGridView()">
       <i class="bi bi-grid"></i> Grid
     </button>
-    <button type="button" class="btn btn-outline-primary" id="listViewButton" onclick="cannlytics.resultsJS.renderListView()">
+    <button type="button" class="btn btn-outline-primary" id="listViewButton" onclick="cannlytics.results.renderListView()">
       <i class="bi bi-list"></i> List
     </button>
   </div>
@@ -137,7 +137,7 @@
   <script>
 
     // Initialize result. 
-    cannlytics.resultsJS.initializeResult();
+    cannlytics.results.initializeResult();
 
   </script>
 {% else %}
@@ -164,11 +164,11 @@
       });
       document.getElementById('btn' + selectedState).classList.remove('btn-outline-primary');
       document.getElementById('btn' + selectedState).classList.add('btn-primary');
-      cannlytics.resultsJS.initializeResults();
+      cannlytics.results.initializeResults();
     }
 
     // Initialize results. 
-    cannlytics.resultsJS.initializeResults();
+    cannlytics.results.initializeResults();
 
   </script>
 {% endif %}

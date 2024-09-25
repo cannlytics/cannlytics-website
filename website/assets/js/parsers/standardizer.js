@@ -47,7 +47,7 @@ export const standardizer = {
   async standardizeText(text) {
     /* Standardize the text. */
     // FIXME: Implement API.
-    const response = await authRequest('/api/parse/standardize', { text });
+    const response = await authRequest('/api/standardize', { text });
     const details = response.data;
     console.log('Standardized text:', details);
     document.getElementById('productName').value = details.standard_product_name;
@@ -60,7 +60,7 @@ export const standardizer = {
     // FIXME: Implement API.
     const data = new FormData();
     data.append('file', file);
-    authRequest('/api/parse/standardize', { data }, {file: true});
+    authRequest('/api/standardize', { data }, {file: true});
     showNotification('File processing', 'Your download will be available below.', 'wait', 3500);
   },
 

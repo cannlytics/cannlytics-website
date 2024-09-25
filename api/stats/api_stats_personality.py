@@ -19,7 +19,7 @@ from rest_framework.response import Response
 
 # Internal imports.
 from website.auth import authenticate_request
-from website.firebase import (
+from cannlytics.firebase import (
     get_document,
     update_documents,
 )

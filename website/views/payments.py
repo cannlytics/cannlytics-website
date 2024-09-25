@@ -23,7 +23,7 @@ import google.auth
 
 # Internal imports:
 from website.auth import authenticate_request
-from website.firebase import (
+from cannlytics.firebase import (
     access_secret_version,
     create_log,
     get_document,

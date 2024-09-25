@@ -4,7 +4,7 @@ Copyright (c) 2021-2023 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 1/22/2021
-Updated: 6/22/2023
+Updated: 9/25/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Description: API interface for Cannlytics users to manage their personal data.
@@ -20,7 +20,7 @@ from rest_framework.response import Response
 
 # Internal imports:
 from website.auth import authenticate_request
-from website.firebase import (
+from cannlytics.firebase import (
     create_log,
     get_document,
     update_document,
@@ -29,7 +29,7 @@ from website.firebase import (
 
 @api_view(['GET', 'POST'])
 @csrf_exempt
-def users(request):
+def api_users(request):
     """Get, update, or create user's data."""
 
     # Authenticate the user.

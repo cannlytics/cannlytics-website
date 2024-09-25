@@ -4,11 +4,33 @@
 
   Authors: Keegan Skeate <https://github.com/keeganskeate>
   Created: 9/24/2024
-  Updated: 9/24/2024
+  Updated: 9/25/2024
   License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 -->
 {% extends "components/layout/dashboard.html" %}
 {% block title %}Receipt Parser | Cannlytics{% endblock %}
+{% block dashboard_tabs %}
+
+<!-- Tabs -->
+<ul class="page-tabs nav" id="receiptsTabs" role="tablist">
+  <li class="nav-item border-bottom" role="presentation">
+    <button class="nav-link text-secondary active" id="parse-tab" data-bs-toggle="pill" data-bs-target="#parse" type="button" role="tab" aria-controls="parse" aria-selected="false">
+        <i class="bi bi-magic"></i> Parse
+    </button>
+  </li>
+  <li class="nav-item border-bottom" role="presentation">
+      <button class="nav-link text-secondary" id="your-receipts-tab" data-bs-toggle="pill" data-bs-target="#your-receipts" type="button" role="tab" aria-controls="your-receipts" aria-selected="true">
+          <i class="bi bi-receipt"></i> Your Receipts
+      </button>
+  </li>
+  <li class="nav-item border-bottom" role="presentation">
+      <button class="nav-link text-secondary" id="analytics-tab" data-bs-toggle="pill" data-bs-target="#analytics" type="button" role="tab" aria-controls="analytics" aria-selected="false">
+          <i class="bi bi-graph-up"></i> Analytics
+      </button>
+  </li>
+</ul>
+
+{% endblock %}
 {% block dashboard %}
 <section class="container markdown">
 
@@ -19,71 +41,369 @@
     current_page="Receipt Parser"
   %} {% endcomment %}
 
-  <!-- Tabs -->
-  <ul class="nav nav-pills mb-3" id="receiptsTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active pill-tab" id="your-receipts-tab" data-bs-toggle="pill" data-bs-target="#your-receipts" type="button" role="tab" aria-controls="your-receipts" aria-selected="true">
-            <i class="fas fa-receipt"></i> Your Receipts
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link pill-tab" id="parse-tab" data-bs-toggle="pill" data-bs-target="#parse" type="button" role="tab" aria-controls="parse" aria-selected="false">
-            <i class="fas fa-magic"></i> Parse
-        </button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link pill-tab" id="analytics-tab" data-bs-toggle="pill" data-bs-target="#analytics" type="button" role="tab" aria-controls="analytics" aria-selected="false">
-            <i class="fas fa-chart-bar"></i> Analytics
-        </button>
-    </li>
-</ul>
-
-  <!-- TODO: Tab content -->
+  <!-- Tab content -->
   <div class="tab-content" id="receiptsTabsContent">
+
+    <!-- Parser -->
+    <div class="tab-pane fade show active" id="parse" role="tabpanel" aria-labelledby="parse-tab">
+
+      <!-- Instructions -->
+      <h2 class="sans-serif text-dark fw-bold mt-0 mb-0">
+        Receipt Parser
+      </h2>
+      <p class="markdown sans-serif-text fs-6 lh-sm text-dark mt-2 mb-0"
+        style="max-width:540px;"
+      >
+        Your extracted data will render below.
+        <i class="bi bi-info-circle ms-1 mb-2 text-secondary" style="font-size:16px;"
+          data-bs-toggle="tooltip"
+          data-bs-placement="right"
+          data-bs-html="true"
+          title="We use OpenAI's latest version of ChatGPT to extract data.">
+        </i>
+      </p>
+
+      <!-- Receipt input -->
+      <div
+        id="receipt-input-container"
+        class="col pe-0 mt-3"
+      >
+        <div class="d-flex mb-3">
+
+          <!-- File Drag and Drop -->
+          <form
+            id="receipt-import-form"
+            name="receipt_import"
+            class="box col mb-3"
+            style="min-width:350px;"
+            method="post"
+            action=""
+            enctype="multipart/form-data"
+          >
+            {% csrf_token %}           
+              <div id="dropbox" class="box__dragbox d-flex flex-column">
+                <div
+                  id="dropbox_background"
+                  class="box__dragbox_background"
+                ></div>
+                <p
+                  id="dropbox-text"
+                  class="box__dragtext jlrFontMediumBold sans-serif-text text-dark px-3 lh-base"
+                >
+                  Drop a receipt image to parse.
+                </p>
+                <div class="box__action d-flex mt-3">
+                  <button
+                    id='receipt-import-button'
+                    class="app-action btn btn-sm-light btn-md-light sans-serif-text fw-normal text-dark"
+                    type="button"
+                  >
+                    Alternatively, import your image
+                  </button>
+                </div>
+                <div
+                  class="btn-group btn-group-sm order-1 order-md-2 me-2 mb-3"
+                  role="group"
+                  aria-label="Receipt Import"
+                >
+                <input
+                  id="receipt-input"
+                  type="file"
+                  class="visually-hidden"
+                  name="urls"
+                  required="required"
+                >
+              </div>
+            </div>
+            <div class="box__uploading">Uploading…</div>
+            <div class="box__success">Done!</div>
+            <div class="box__error">Error! <span></span>.</div>
+          </form><!-- End of File Drag and Drop -->
+
+        </div>
+      </div>
+
+    </div><!-- End of Parser -->
+
+    <!-- Receipts -->
     <div class="tab-pane fade show active" id="your-receipts" role="tabpanel" aria-labelledby="your-receipts-tab">
-        <!-- Content for Your Receipts tab -->
-        <h2>Your Receipts</h2>
-        <p>This is where the user's receipts would be displayed.</p>
+        
+      <!-- Sample Results -->
+  <div class="card rounded text-start mt-3">
+    <div class="card-header border-0 bg-transparent d-flex justify-content-between align-items-center pb-0 pt-3">
+      <h3 class="sans-serif fw-normal text-dark mb-0 mt-0">
+        Your Results
+      </h3>
+      <ul
+        id="coa-results-tabs"
+        class="nav nav-pills mb-3 d-none"
+        role="tablist"
+      >
+        <li class="nav-item" role="presentation">
+          <button
+            class="active btn btn-md-light me-1 text-dark"
+            id="coa-grid-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#coa-grid"
+            type="button"
+            role="tab"
+            aria-controls="coa-grid"
+            aria-selected="true"
+            title="Grid View"
+          >
+            <i class="bi bi-grid" style="font-size:21px;"></i>
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="btn btn-md-light text-dark"
+            id="coa-list-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#coa-list"
+            type="button"
+            role="tab"
+            aria-controls="coa-list"
+            aria-selected="false"
+            title="List View"
+          >
+            <i class="bi bi-list" style="font-size:21px;"></i>
+          </button>
+        </li>
+      </ul>
     </div>
-    <div class="tab-pane fade" id="parse" role="tabpanel" aria-labelledby="parse-tab">
-        <!-- Content for Parse tab -->
-        <h2>Parse Receipts</h2>
-        <p>This is where the receipt parsing interface would be.</p>
-    </div>
-    <div class="tab-pane fade" id="analytics" role="tabpanel" aria-labelledby="analytics-tab">
-        <!-- Content for Analytics tab -->
-        <h2>Receipts Analytics</h2>
-        <p>This is where the receipts analytics would be displayed.</p>
-    </div>
-</div>
+    <div class="card-body bg-transparent pt-0">
 
-  <!-- Instructions -->
-  <h2 class="sans-serif text-dark fw-bold mt-0 mb-0">
-    Receipt Parser
-  </h2>
-  <p class="markdown sans-serif-text fs-6 lh-sm text-dark mt-2 mb-0"
-    style="max-width:540px;"
-  >
-    Your extracted data will render below.
-    <i class="bi bi-info-circle ms-1 mb-2 text-secondary" style="font-size:16px;"
-      data-bs-toggle="tooltip"
-      data-bs-placement="right"
-      data-bs-html="true"
-      title="We use OpenAI's latest version of ChatGPT to extract data.">
-    </i>
-  </p>
+      <!-- Sample Results Placeholder -->
+      <p
+        id="coa-sample-results-placeholder"
+        class="sans-serif-text text-dark text-center fs-5 mb-5 lh-base mt-4"
+      >
+        🥸 Waiting on your COAs Boss!<br>
+        <span class="fs-6"><small class="sans-serif">Upload your COAs above to being parsing.</small></span>
+      </p>
 
-  <!-- Receipt input -->
+      <!-- Sample Results -->
+      <div id="coa-results-content" class="tab-content d-none">
+
+        <!-- Sample Results Options -->
+        <div class="d-flex justify-content-start mb-3">
+
+          <!-- Download All Results -->
+          <button
+            id="coa-doc-export-button"
+            class="btn btn-sm-light btn-md-light text-nowrap text-dark sans-serif fw-normal"
+            type="button"
+          >
+            <i class="bi bi-cloud-download me-1" style="font-size:21px;"></i>
+            Download
+          </button>
+
+          <!-- Clear -->
+          <button
+            id="coa-doc-clear-button"
+            class="btn btn-sm-light btn-md-light text-nowrap text-dark sans-serif fw-normal ms-2"
+            type="button"
+          >
+            <i class="bi bi-slash me-1" style="font-size:21px;"></i>
+            Clear
+          </button>
+
+        </div>
+
+        <!-- Grid of COA Results -->
+        <div
+          id="coa-grid"
+          class="tab-pane fade row show active"
+          role="tabpanel"
+          aria-labelledby="coa-grid-tab"
+          tabindex="0"
+        >
+          <div id="coa-grid-container" class="row">
+              
+              <!-- Sample card template -->
+              <div
+                id="sample-placeholder-template"
+                class="sample-placeholder-template col-12 col-md-4 px-3 pe-lg-5 pb-3 text-start d-none"
+              >
+                <div class="card rounded">
+                  <button
+                    class="btn btn-sm-light position-absolute text-dark text-center"
+                    style="z-index:99;right:0;"
+                    title="Remove sample"
+                    type="button"
+                  >
+                    <i class="bi bi-x" style="font-size:16px;"></i>
+                  </button>
+                  {% include "components/placeholders/loading_placeholder.html" with
+                    height='200px'
+                    width='100%'
+                    class="my-0"
+                    only
+                  %}
+                </div>
+              </div><!-- End of sample card -->
+
+              <!-- Sample card -->
+              <div
+                id="sample-card-template"
+                class="sample-card-template col-12 col-md-4 px-3 pb-3 text-start d-none"
+              >
+                <div class="card rounded">
+                  <button
+                    class="btn btn-sm-light position-absolute text-dark text-center"
+                    style="z-index:99;right:0;"
+                    title="Remove sample"
+                    type="button"
+                  >
+                    <i class="bi bi-x" style="font-size:16px;"></i>
+                  </button>
+                  <!-- Add more details:
+                    - [ ] Chips for `analyses`.
+                    - [ ] Number of `results`.
+                    - [ ] Style product type?
+                    - [ ] Format date as a human-readable date.
+                  -->
+                  <div class="card-body bg-transparent sample-details text-dark">
+                    <img class="sample-image d-none text-center" src="" height="75px;">
+                    <div class="product-name fw-bold fs-5"></div>
+                    <div class="product-type"></div>
+                    <div class="producer"></div>
+                    <div class="date-tested"></div>
+                    <div class="sample-data visually-hidden"></div>
+                  </div>
+                  <a
+                    href=""
+                    class="stretched-link"
+                    data-bs-toggle="modal"
+                    data-bs-target="#results-modal"
+                    data-bs-sample=""
+                  ></a>
+                </div>
+              </div>
+
+          </div>
+        </div><!-- End of Grid of COA Results -->
+
+        <!-- Data Table of COA Results -->
+        <div
+          id="coa-list"
+          class="tab-pane fade"
+          role="tabpanel"
+          aria-labelledby="coa-list-tab"
+          tabindex="0"
+        >
+          <div class="row">
+            <div id="coa-data-placeholder" class="d-none-">
+              {% include "components/placeholders/loading_placeholder.html" with
+                height='350px'
+                width='100%'
+                only
+              %}
+            </div>
+            <div
+              id="coa-data-table"
+              class="ag-theme-alpine"
+              style="height:350px; width:100%;"
+            ></div>
+          </div>
+        </div>
+      
+      </div><!-- End of COA Results Grid and Table -->
+
+    </div>
+  </div><!-- End of Sample Results -->
+
+  <!-- Sample Results Modal -->
   <div
-    id="receipt-input-container"
-    class="col pe-0 mt-3"
+    id="results-modal"
+    class="modal fade"
+    tabindex="-1"
+    aria-labelledby="results-modal-label"
+    aria-hidden="true"
   >
-    <div class="d-flex mb-3">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5
+            class="modal-title"
+            id="results-modal-label"
+          >
+            Sample Results
+          </h5>
+          <button
+            class="btn btn-sm-light position-absolute text-dark text-center"
+            style="z-index:99;right:0;top:0;"
+            data-bs-dismiss="modal"
+            title="Close results"
+            type="button"
+          >
+            <i class="bi bi-x" style="font-size:16px;"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+          <!-- Render all sample details here.
+            - [ ] Render all results in inputs with labels.!
+            - [ ] Make results editable!
+          -->
+          <div class="modal-sample-details">
+            <img class="sample-image d-none text-center" src="" height="75px;">
+            <div class="product-name fw-bold fs-5"></div>
+            <div class="product-type"></div>
+            <div class="producer"></div>
+            <div class="date-tested"></div>
+            <div class="sample-data visually-hidden"></div>
+          </div>
 
+          <!-- Render results in a datatable! -->
+          <div
+            id="results-data-table"
+            class="ag-theme-alpine-dark"
+            style="height:350px; width:100%;"
+          ></div>
 
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-sm-light btn-md-light sans-serif fw-normal"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          {% comment %}
+          <!-- TODO: Allow user to save lab results to their account.
+          <button
+            id="save-sample-results-button"
+            class="btn btn-sm bg-gradient-green text-white serif"
+            type="button"
+          >
+            Save
+          </button>
+          {% endcomment %}
+          <button
+            id="download-sample-results-button"
+            class="btn btn-sm bg-gradient-purple text-white sans-serif fw-normal"
+            type="button"
+            data-bs-sample=""
+          >
+            Download
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
+  </div><!-- End of Sample Results Modal -->
 
+    </div><!-- End of receipts -->
+
+    <!-- Analytics -->
+    <div class="tab-pane fade" id="analytics" role="tabpanel" aria-labelledby="analytics-tab">
+        
+      <h1>Coming soon!</h1>
+  
+    </div><!-- End of analytics -->
+
+  </div>
 
 </section>
 {% endblock %}

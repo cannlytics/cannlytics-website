@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 5/13/2023
-Updated: 9/20/2023
+Updated: 9/25/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Description: API endpoints to interface with receipt data.
@@ -13,22 +13,19 @@ Description: API endpoints to interface with receipt data.
 from datetime import datetime
 from json import loads
 import os
-import tempfile
-from urllib.parse import urlparse
 
 # External imports:
 from django.views.decorators.csrf import csrf_exempt
 import google.auth
-import requests
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-import pandas as pd
 
 # Internal imports
+from api.api_utils import process_file_or_url
 from website.auth import authenticate_request
-from cannlytics.data.sales.receipts_ai import ReceiptsParser
+from cannlytics.data.sales.receipt_parser import ReceiptsParser
 from cannlytics.data.strains.strains_ai import identify_strains
-from website.firebase import (
+from cannlytics.firebase import (
     access_secret_version,
     create_log,
     create_short_url,
@@ -56,49 +53,14 @@ FILE_TYPES = ['png', 'jpg', 'jpeg']
 # Maximum number of observations that can be downloaded at once.
 MAX_OBSERVATIONS_PER_FILE = 200_000
 
-
-def process_file_or_url(source, is_url=False, default_ext='jpg'):
-    """
-    If is_url is False, process a file and return the filepath.
-    If is_url is True, download a file from a URL and return the filepath.
-    """
-    # Read the file.
-    if is_url:
-        parsed_url = urlparse(source)
-        base_name = os.path.basename(parsed_url.path)
-        ext = os.path.splitext(base_name)[1].lstrip('.')
-        if not ext: ext = default_ext
-        response = requests.get(source)
-        if response.status_code != 200:
-            print(f"Failed to download {source}")
-            return None
-        file_content = response.content
-    else:
-        ext: str = source.name.split('.').pop()
-        file_content = source.read()
-
-    # TODO: Reject files that are too large.
-    # if len(file_content) >= MAX_FILE_SIZE:
-    #     message = 'File too large. The maximum number of bytes is %i.' % MAX_FILE_SIZE
-    #     response = {'error': True, 'message': message}
-    #     return JsonResponse(response, status=406)
-
-    # TODO Reject files that are not of valid types.
-    # if ext.lower() not in FILE_TYPES:
-    #     message = 'Invalid file type. Valid file types are: %s' % ', '.join(FILE_TYPES)
-    #     response = {'error': True, 'message': message}
-    #     return JsonResponse(response, status=406)
-
-    # Save the file as a temp file for parsing.
-    temp = tempfile.mkstemp(f'.{ext}')
-    with os.fdopen(temp[0], 'wb') as temp_file:
-        temp_file.write(file_content)
-    return temp[1]
+# API constants.
+AI_MODEL = 'bud_spender'
+COLLECTION = 'receipts'
 
 
 @api_view(['GET', 'POST', 'DELETE', 'OPTIONS'])
 @csrf_exempt
-def api_data_receipts(request, receipt_id=None):
+def api_receipts(request, receipt_id=None):
     """Manage receipt data (public API endpoint)."""
 
     # Authenticate the user.
@@ -125,7 +87,7 @@ def api_data_receipts(request, receipt_id=None):
 
         # Get a specific receipt.
         if receipt_id:
-            ref = f'users/{uid}/receipts/{receipt_id}'
+            ref = f'users/{uid}/{COLLECTION}/{receipt_id}'
             data = get_document(ref)
             response = {'success': True, 'data': data}
             return Response(response, status=200)
@@ -189,7 +151,7 @@ def api_data_receipts(request, receipt_id=None):
         desc = params.get('desc', True)
 
         # Query documents.
-        ref = f'users/{uid}/receipts'
+        ref = f'users/{uid}/{COLLECTION}'
         data = get_collection(
             ref,
             desc=desc,
@@ -220,7 +182,11 @@ def api_data_receipts(request, receipt_id=None):
         if request_files:
             print('POSTED FILES:', request_files)
             for image_file in request_files:
-                filepath = process_file_or_url(image_file)
+                filepath = process_file_or_url(
+                    image_file,
+                    max_file_size=MAX_FILE_SIZE,
+                    file_types=FILE_TYPES,
+                )
                 if filepath:
                     images.append(filepath)
 
@@ -283,7 +249,7 @@ def api_data_receipts(request, receipt_id=None):
             response = {'success': False, 'message': message}
             return Response(response, status=400)
 
-        # Parse the receipts.
+        # Parse the data.
         parser = ReceiptsParser()
         data = []
         for image in images:
@@ -292,7 +258,7 @@ def api_data_receipts(request, receipt_id=None):
             print('Parsing receipt:', image)
             # FIXME:
             try:
-                receipt_data = parser.parse(
+                extracted_data = parser.parse(
                     image,
                     openai_api_key=openai_api_key,
                     max_tokens=3333,
@@ -304,7 +270,7 @@ def api_data_receipts(request, receipt_id=None):
 
             # Extract strain names from product names.
             strain_names = []
-            for name in receipt_data.get('product_names', []):
+            for name in extracted_data.get('product_names', []):
                 try:
                     print('Identifying strain:', name)
                     names = identify_strains(name, user=uid)
@@ -314,12 +280,12 @@ def api_data_receipts(request, receipt_id=None):
                     print('Error identifying strain:', e)
             
             # Add the strain names to the receipt data.
-            receipt_data['strain_names'] = strain_names
+            extracted_data['strain_names'] = strain_names
 
             # Upload the temporary image file to Firebase Storage.
             ext = image.split('.').pop()
-            doc_id = receipt_data['hash']
-            ref = 'users/%s/receipts/%s.%s' % (uid, doc_id, ext)
+            doc_id = extracted_data['hash']
+            ref = 'users/%s/%s/%s.%s' % (uid, COLLECTION, doc_id, ext)
             print('Uploading receipt:', doc_id)
             upload_file(
                 destination_blob_name=ref,
@@ -336,12 +302,12 @@ def api_data_receipts(request, receipt_id=None):
                 long_url=download_url,
                 project_name=project_id,
             )
-            receipt_data['file_ref'] = ref
-            receipt_data['download_url'] = download_url
-            receipt_data['short_url'] = short_url
+            extracted_data['file_ref'] = ref
+            extracted_data['download_url'] = download_url
+            extracted_data['short_url'] = short_url
 
             # Record the extracted data
-            data.append(receipt_data)
+            data.append(extracted_data)
 
             # Debit the tokens from the user's account.
             print('Debiting tokens from user account.')
@@ -367,7 +333,7 @@ def api_data_receipts(request, receipt_id=None):
 
             # Create entries for the user.
             if uid:
-                refs.append(f'users/{uid}/receipts/{doc_id}')
+                refs.append(f'users/{uid}/{COLLECTION}/{doc_id}')
                 docs.append(obs)
 
             # Create a log entry.
@@ -375,11 +341,11 @@ def api_data_receipts(request, receipt_id=None):
         
         # Create a usage log.
         create_log(
-            'logs/data/receipts',
+            f'logs/data/{COLLECTION}',
             claims=claims,
-            action='Parsed receipts.',
+            action=f'Parsed {COLLECTION}.',
             log_type='data',
-            key='api_data_receipts',
+            key=f'api_data_{COLLECTION}',
             changes=changes
         )
 
@@ -425,7 +391,7 @@ def api_data_receipts(request, receipt_id=None):
                 return Response(response, status=200)
         
         # Delete the receipt data.
-        ref = f'users/{uid}/receipts/{receipt_id}'
+        ref = f'users/{uid}/{COLLECTION}/{receipt_id}'
         doc = get_document(ref)
         file_ref = doc.get('file_ref')
         delete_document(ref)
@@ -438,81 +404,3 @@ def api_data_receipts(request, receipt_id=None):
         message = f'Receipt {receipt_id} deleted.'
         response = {'success': True, 'data': [], 'message': message}
         return Response(response, status=200)
-
-
-@api_view(['POST'])
-@csrf_exempt
-def download_receipts_data(request):
-    """Download posted data as a .xlsx file. Pass a `data` field in the
-    body with the data, an object or an array of objects, to standardize
-    and save in a workbook."""
-
-    # Authenticate the user, throttle requests if unauthenticated.
-    throttle = False
-    claims = authenticate_request(request)
-    if not claims:
-        uid = 'cannlytics'
-        public, throttle = True, True
-    else:
-        uid = claims['uid']
-
-    # Read the posted data.
-    try:
-        body = loads(request.body.decode('utf-8'))
-        data = body['data']
-    except:
-        try:
-            data = request.data.get('data', [])
-        except:
-            data = []
-
-    # Handle no observations.
-    if not data:
-        message = f'No data, please post your data in a `data` field in the request body.'
-        print(message)
-        response = Response({'error': True, 'message': message}, status=401)
-        response['Access-Control-Allow-Origin'] = '*'
-        return response
-
-    # Read the posted data.
-    if len(data) > MAX_OBSERVATIONS_PER_FILE:
-        message = f'Too many observations, please limit your request to {MAX_OBSERVATIONS_PER_FILE} observations at a time.'
-        print(message)
-        response = {'success': False, 'message': message}
-        return Response(response, status=401)
-    
-    # Specify the filename.
-    timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-    filename = f'receipt-data-{timestamp}.xlsx'
-
-    # Save a temporary workbook.
-    with tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False) as temp:
-        pd.DataFrame(data).to_excel(temp.name, index=False, sheet_name='Data')
-
-    # Upload the file to Firebase Storage.
-    ref = 'users/%s/receipts/%s' % (uid, filename)
-    _, project_id = google.auth.default()
-    upload_file(
-        destination_blob_name=ref,
-        source_file_name=temp.name,
-        bucket_name=STORAGE_BUCKET
-    )
-
-    # Get download and short URLs.
-    download_url = get_file_url(ref, bucket_name=STORAGE_BUCKET)
-    short_url = create_short_url(
-        api_key=FIREBASE_API_KEY,
-        long_url=download_url,
-        project_name=project_id
-    )
-    data = {
-        'filename': filename,
-        'file_ref': ref,
-        'download_url': download_url,
-        'short_url': short_url,
-    }
-
-    # Delete the temporary file and return the data.
-    os.unlink(temp.name)
-    response = {'success': True, 'data': data}
-    return Response(response, status=200)

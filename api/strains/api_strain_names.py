@@ -35,7 +35,7 @@ from api.ai.api_ai import (
     TEMPERATURE,
 )
 from website.auth import authenticate_request
-from website.firebase import (
+from cannlytics.firebase import (
     access_secret_version,
     create_log,
     delete_document,

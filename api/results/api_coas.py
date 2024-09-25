@@ -4,7 +4,7 @@ Copyright (c) 2021-2023 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 7/17/2022
-Updated: 9/20/2023
+Updated: 9/25/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Description: API endpoints to interface with COA data.
@@ -27,7 +27,7 @@ from rest_framework.response import Response
 # Internal imports
 from website.auth import authenticate_request
 from cannlytics.data.coas.coas import CoADoc
-from website.firebase import (
+from cannlytics.firebase import (
     access_secret_version,
     create_log,
     create_short_url,
@@ -131,7 +131,7 @@ def save_file(
 
 @api_view(['GET', 'POST', 'DELETE', 'OPTIONS'])
 @csrf_exempt
-def api_data_coas(request, coa_id=None):
+def api_coas(request, coa_id=None):
     """Get COA data (public API endpoint)."""
 
     # Authenticate the user.
@@ -618,109 +618,3 @@ def api_data_coas(request, coa_id=None):
         response = Response(response, status=200)
         response['Access-Control-Allow-Origin'] = '*'
         return response
-
-
-@api_view(['POST', 'OPTIONS'])
-@csrf_exempt
-def download_coa_data(request):
-    """Download posted data as a .xlsx file. Pass a `data` field in the
-    body with the data, an object or an array of objects, to standardize
-    and save in a workbook."""
-
-    # Authenticate the user, throttle requests if unauthenticated.
-    claims = authenticate_request(request)
-    uid = claims['uid'] if claims else 'cannlytics'
-    print(f'USER {uid} POSTED DATA')
-
-    # Read the posted data.
-    try:
-        body = loads(request.body.decode('utf-8'))
-        data = body['data']
-    except:
-        try:
-            data = request.data.get('data', [])
-        except:
-            data = []
-
-    # Handle no observations.
-    if not data:
-        message = f'No data, please post your data in a `data` field in the request body.'
-        print(message)
-        response = Response({'error': True, 'message': message}, status=401)
-        response['Access-Control-Allow-Origin'] = '*'
-        return response
-
-    # Handle too many observations.
-    count = len(data)
-    if count > MAX_OBSERVATIONS_PER_FILE:
-        message = f'Too many observations, please limit your request to {MAX_OBSERVATIONS_PER_FILE} observations at a time.'
-        print(message)
-        response = Response({'error': True, 'message': message}, status=401)
-        response['Access-Control-Allow-Origin'] = '*'
-        return response
-
-    # Specify the filename.
-    timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-    filename = f'coa-data-{timestamp}.xlsx'
-
-    # Save a temporary workbook.
-    try:
-        parser = CoADoc(init_all=False)
-        with tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False) as temp:
-            parser.save(data, temp.name)
-            parser.quit()
-    except:
-        import pandas as pd
-        with tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False) as temp:
-            pd.DataFrame(data).to_excel(temp.name, index=False, sheet_name='Data')
-
-    # Upload the file to Firebase Storage.
-    ref = 'users/%s/lab_results/%s' % (uid, filename)
-    print('UPLOADING FILE:', ref)
-    _, project_id = google.auth.default()
-    upload_file(
-        destination_blob_name=ref,
-        source_file_name=temp.name,
-        bucket_name=STORAGE_BUCKET
-    )
-    print('UPLOADED FILE:', ref)
-
-    # Delete the temporary file.
-    os.unlink(temp.name)
-
-    # Get download URL and create a short URL.
-    download_url, short_url = None, None
-    try:
-        download_url = get_file_url(ref, bucket_name=STORAGE_BUCKET)
-        print('DOWNLOAD URL:', download_url)
-        short_url = create_short_url(
-            api_key=FIREBASE_API_KEY,
-            long_url=download_url,
-            project_name=project_id
-        )
-        print('SHORT URL:', short_url)
-    except Exception as e:
-        print('Failed to get download URL:', e)
-
-    # Format file data.
-    data = {
-        'filename': filename,
-        'file_ref': ref,
-        'download_url': download_url,
-        'short_url': short_url,
-    }
-
-    # Save the file data as a log.
-    create_log(
-        f'users/{uid}/downloads',
-        claims=claims,
-        action=f'Downloaded {count} COAs.',
-        log_type='data',
-        key='download_coa_data',
-        changes=[data]
-    )
-
-    # Return the data.
-    response = Response({'success': True, 'data': data}, status=200)
-    response['Access-Control-Allow-Origin'] = '*'
-    return response

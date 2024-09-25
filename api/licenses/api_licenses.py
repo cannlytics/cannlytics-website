@@ -4,7 +4,7 @@ Copyright (c) 2021-2023 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 9/26/2022
-Updated: 6/9/2023
+Updated: 9/25/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Description:
@@ -17,7 +17,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 # Internal imports:
-from website.firebase import get_collection
+from cannlytics.firebase import get_collection
 
 
 # TODO: Make obsolete by re-uploading the data.
@@ -31,7 +31,7 @@ def replace_nan_with_none(data):
 
 
 @api_view(['GET'])
-def api_data_licenses(request, license_number=None):
+def api_licenses(request, license_number=None):
     """Get data about cannabis licenses. You can query by `license_number`,
     `type`, or `name`, which searches both the business legal name
     and the business dba name. You can also filter by `zipcode` or
