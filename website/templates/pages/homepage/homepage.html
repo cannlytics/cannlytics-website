@@ -1,5 +1,3 @@
-<!doctype html>
-<html>
 <!--
   Home Page | Cannlytics
   Copyright (c) 2021-2024 Cannlytics
@@ -36,4 +34,11 @@
 
 {% endblock %}
 
-</html>
+{% block page_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Load the latest data
+  cannlytics.website.initialize();
+});
+</script>
+{% endblock %}

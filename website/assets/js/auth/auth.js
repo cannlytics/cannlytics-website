@@ -1,5 +1,5 @@
 /**
- * Authentication JavaScript | Cannlytics Console
+ * Authentication JavaScript | Cannlytics Website
  * Copyright (c) 2021-2022 Cannlytics
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>

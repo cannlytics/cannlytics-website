@@ -68,7 +68,9 @@
       
           <!-- Copyright -->
           <div class="fs-6 text-small mt-0">
-            <small class="tiny-text text-dark">Copyright &copy; Cannlytics 2020-2024</small>
+            <small class="tiny-text text-dark">
+              Copyright &copy; Cannlytics 2024
+            </small>
           </div>
 
           <!-- Data License -->
@@ -120,7 +122,7 @@
             {% for item in item.links %}
               <li class="mb-1">
                 <a
-                  class="fs-6 sans-serif text-underline-hover"
+                  class="fs-6 sans-serif text-underline-hover text-nowrap"
                   {% if item.app %}
                     href="{% url item.app item.path %}"
                   {% elif item.hashtag %}

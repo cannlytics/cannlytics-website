@@ -24,6 +24,7 @@ from rest_framework.response import Response
 from api.api_utils import process_file_or_url
 from website.auth import authenticate_request
 from cannlytics.data.products.label_parser import LabelParser
+# FIXME:
 from cannlytics.data.strains.strains_ai import identify_strains
 from cannlytics.firebase import (
     access_secret_version,

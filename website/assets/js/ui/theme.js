@@ -1,5 +1,5 @@
 /**
- * Theme JavaScript | Cannlytics Console
+ * Theme JavaScript | Cannlytics Website
  * Copyright (c) 2021-2022 Cannlytics
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
