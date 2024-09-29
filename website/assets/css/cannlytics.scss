@@ -725,3 +725,34 @@ body.dark .list-group-item.active {
 body.dark .list-group-item:hover {
   color: inherit;
 }
+
+/*--------------------------------------------------------------------------
+  Search CSS
+---------------------------------------------------------------------------*/
+
+.filter-menu {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.25rem;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  max-height: 300px; 
+  overflow-y: auto;
+  display: none;
+}
+body.dark .filter-menu {
+  background-color: #2a2a2a;
+  color: #eaeaea;
+  border-color: #444444;
+  box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+}
+.filter-menu.show {
+  display: block;
+}
+.menu-section {
+  padding: 1rem;
+}

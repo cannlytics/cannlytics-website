@@ -1,0 +1,88 @@
+<!--
+  Data Type Selection
+  Created: 9/28/2024
+  Updated: 9/28/2024
+-->
+<div 
+  class="btn-group btn-group-sm my-2" 
+  role="group" 
+  aria-label="Data type selection"
+  data-group="data-type"
+>
+
+  <!-- All -->
+  <button 
+    type="button" 
+    class="btn btn-primary" 
+    id="btnALL" 
+    onclick="selectDataType('ALL')"
+  >
+    All
+  </button>
+
+  <!-- COAs -->
+  <button 
+    type="button" 
+    class="btn btn-outline-primary" 
+    id="btnCOAs" 
+    onclick="selectDataType('COAs')"
+  >
+    COAs
+  </button>
+
+  <!-- Products -->
+  <button 
+    type="button" 
+    class="btn btn-outline-primary" 
+    id="btnProducts" 
+    onclick="selectDataType('Products')"
+  >
+    Products
+  </button>
+
+  <!-- Strains -->
+  <button 
+    type="button" 
+    class="btn btn-outline-primary" 
+    id="btnStrains" 
+    onclick="selectDataType('Strains')"
+  >
+    Strains
+  </button>
+
+  <!-- Orgs -->
+  <button 
+    type="button" 
+    class="btn btn-outline-primary" 
+    id="btnOrgs" 
+    onclick="selectDataType('Orgs')"
+  >
+    Orgs
+  </button>
+
+  <!-- Compounds -->
+  <button 
+    type="button" 
+    class="btn btn-outline-primary" 
+    id="btnCompounds" 
+    onclick="selectDataType('Compounds')"
+  >
+    Compounds
+  </button>
+
+</div>
+
+{% comment %} <script>
+  // JavaScript function to handle data type selection
+  function selectDataType(selectedType) {
+    // Reset all buttons to 'btn-outline-primary'
+    document.querySelectorAll('.btn-group .btn').forEach(function(btn) {
+      btn.classList.remove('btn-primary');
+      btn.classList.add('btn-outline-primary');
+    });
+
+    // Set the selected button to 'btn-primary'
+    document.getElementById('btn' + selectedType).classList.remove('btn-outline-primary');
+    document.getElementById('btn' + selectedType).classList.add('btn-primary');
+  }
+</script> {% endcomment %}

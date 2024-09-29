@@ -1,0 +1,98 @@
+<!-- TODO: Search by category
+   
+  Wishlist:
+
+    - Search for a given chemical
+
+    - Search for a given product
+
+    - Search for a given strain
+
+    - Search for a result URL (search by URL hash then parse if needed)
+
+    - Search results by uploading a PDF (search by file hash then parse if needed)
+
+    - Search by uploading an image:
+      * COA
+      * Label
+      * Receipt
+
+    - Use OpenAI to create query (collection + filters)
+
+
+    - Search 
+  
+  -->
+<!--
+  Search Bar
+  Created: 2/26/2024
+  Updated: 9/21/2024
+-->
+<div class="search-bar w-100 my-3">
+
+  <!-- Search Input -->
+  <div
+    id="search-container"
+    class="input-group input-group-sm"
+  >
+    <button
+      id="search-button"
+      class="btn btn-sm btn-outline-primary"
+      type="button"
+    >
+      <i class="bi bi-search"></i>
+    </button>
+    <input
+      id="searchInput"
+      type="text"
+      class="form-control"
+      placeholder="{{ placeholder_text | default:'Prompt...'}}"
+      aria-label="Prompt"
+    >
+    <button
+      id="search-filter-button"
+      class="btn btn-sm btn-outline-primary filter-icon"
+      type="button"
+    >
+      <i class="bi bi-sliders"></i>
+    </button>
+  </div>
+
+  <!-- Search menu -->
+  <div id="filter-menu" class="filter-menu bg-body hidden">
+
+    <!-- Filters -->
+    <div class="menu-section">
+
+      <!-- Data selection -->
+      <h6 class="sans-serif mb-0">Data</h6>
+      {% include "components/forms/data_type_selection.html" %}
+
+      <!-- State selection buttons -->
+      <h6 class="sans-serif mt-2">State</h6>
+      {% include "components/forms/state_selection.html" %}
+      <a href="" class="link-text">Fund more states</a>
+
+      <!-- Date selection -->
+      <h6 class="sans-serif mt-3">Date</h6>
+      {% include "components/forms/date_selection.html" %}
+
+      {% comment %} <!-- Filter by product type -->
+      <h6 class="sans-serif mt-4">Product Type</h6>
+      {% include "components/forms/product_type_selection.html" %} {% endcomment %}
+      
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Search JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Initialize search bar.
+  cannlytics.search.initializeSearchBar();
+
+});
+</script>

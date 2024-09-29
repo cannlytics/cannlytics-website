@@ -1,0 +1,40 @@
+<!--
+  Search Results Page | Cannlytics
+  Created: 9/28/2024
+  Updated: 9/28/2024
+-->
+{% extends "components/layout/dashboard.html" %}
+{% load static %}
+{% block title %}Search | Cannlytics{% endblock %}
+{% block dashboard_css %}
+
+
+
+{% endblock %}
+{% block dashboard %}
+<section class="container markdown">
+
+  <!-- Title -->
+  <h2 class="sans-serif text-dark fw-bold mb-0">Search results</h2>
+
+  <!-- Include Search Bar -->
+  {% include "search_bar.html" %}
+
+  <!-- Search results -->
+  <div class="markdown row pt-4">
+    <!-- Search results will be populated here -->
+  </div>
+
+</section>
+{% endblock %}
+
+{% block page_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Initialize search page.
+  cannlytics.search.initializeSearchResults();
+
+});
+</script>
+{% endblock %}

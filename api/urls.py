@@ -26,6 +26,7 @@ from api.products import api_labels
 from api.results import api_results, api_coas
 from api.sales import api_receipts
 from api.strains import api_strains
+from api.search import api_search
 
 
 # Define API URLs.
@@ -150,6 +151,7 @@ urlpatterns = [
     ])),
 
     # Functions.
+    path('search', api_search.api_search),
     path('standardize', api_standardizer.standardize_names),
     path('download/<str:data_type>', api.api_utils.download_user_data),
 ]

@@ -1,7 +1,7 @@
 <!--
   Product Type Selection
   Created: 3/24/2024
-  Updated: 3/24/2024
+  Updated: 9/28/2024
 -->
 <style>
   .product-types {
@@ -30,20 +30,48 @@
 
 <!-- Product type selection -->
 <div class="product-types">
-  <button class="product-type active btn btn-outline-primary" data-type="all"><span class="icon">🌐</span> All</button>
-  <button class="product-type btn btn-outline-primary" data-type="flower"><span class="icon">🌸</span> Flower</button>
-  <button class="product-type btn btn-outline-primary" data-type="concentrate"><span class="icon">💧</span> Concentrate</button>
-  <button class="product-type btn btn-outline-primary" data-type="edible"><span class="icon">🍪</span> Edible</button>
+  <button
+    class="product-type active btn btn-outline-primary"
+    data-type="all"
+  >
+    <span class="icon">🌐</span> 
+    All
+  </button>
+  <button
+    class="product-type btn btn-outline-primary"
+    data-type="flower"
+  >
+    <span class="icon">🌸</span> 
+    Flower
+  </button>
+  <button
+    class="product-type btn btn-outline-primary"
+    data-type="concentrate"
+  >
+    <span class="icon">💧</span> 
+    Concentrate
+  </button>
+  <button
+    class="product-type btn btn-outline-primary"
+    data-type="edible"
+  >
+    <span class="icon">🍪</span> 
+    Edible
+  </button>
 </div>
 
+
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    selectProductType('all'); // Automatically select "All" on page load
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // Automatically select "All" on page load
+    selectProductType('all');
+
   });
 
   // Adjusted function to handle product type selection
   function selectProductType(type) {
-    document.querySelectorAll('.product-type').forEach(btn => {
+    document.querySelectorAll('.product-type').forEach(function(btn) {
       if (btn.getAttribute('data-type') === type) {
         btn.classList.add('active');
       } else {
@@ -56,7 +84,9 @@
   }
 
   // Adding event listeners to each button for click events
-  document.querySelectorAll('.product-type').forEach(btn => {
-    btn.addEventListener('click', () => selectProductType(btn.getAttribute('data-type')));
+  document.querySelectorAll('.product-type').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      selectProductType(btn.getAttribute('data-type'))
+    });
   });
 </script>

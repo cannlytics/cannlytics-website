@@ -1,13 +1,58 @@
 <!--
   State Selection
   Created: 3/24/2024
-  Updated: 9/21/2024
+  Updated: 9/28/2024
 -->
-<div class="btn-group btn-group-sm" role="group" aria-label="State selection">
-  <button type="button" class="btn btn-primary" id="btnALL" onclick="updateStateSelection('ALL')">All</button> <!-- Note the change of class here for "All" -->
-  <button type="button" class="btn btn-outline-primary" id="btnCA" onclick="updateStateSelection('CA')">CA</button>
-  <button type="button" class="btn btn-outline-primary" id="btnFL" onclick="updateStateSelection('FL')">FL</button>
-  {% comment %} <!-- TODO: Begin adding more states --> {% endcomment %}
-  {% comment %} <button type="button" class="btn btn-outline-primary" id="btnMA" onclick="updateStateSelection('MA')">MA</button> {% endcomment %}
-  {% comment %} <button type="button" class="btn btn-outline-primary" id="btnWA" onclick="updateStateSelection('WA')">WA</button> {% endcomment %}
+<div 
+  class="btn-group btn-group-sm" 
+  role="group" 
+  aria-label="State selection"
+  data-group="state"
+>
+
+  <!-- All -->
+  <button 
+    type="button" 
+    class="btn btn-primary" 
+    id="btnALL" 
+    onclick="selectState('ALL')"
+  >
+    All
+  </button>
+
+  <!-- CA -->
+  <button 
+    type="button" 
+    class="btn btn-outline-primary" 
+    id="btnCA" 
+    onclick="selectState('CA')"
+  >
+    CA
+  </button>
+
+  <!-- FL -->
+  <button 
+    type="button" 
+    class="btn btn-outline-primary" 
+    id="btnFL" 
+    onclick="selectState('FL')"
+  >
+    FL
+  </button>
+
 </div>
+
+
+{% comment %} <script>
+
+  // JavaScript function to handle state selection
+  function selectState(selectedState) {
+    document.querySelectorAll('.btn-group .btn').forEach(function(btn) {
+      btn.classList.remove('btn-primary');
+      btn.classList.add('btn-outline-primary');
+    });
+    document.getElementById('btn' + selectedState).classList.remove('btn-outline-primary');
+    document.getElementById('btn' + selectedState).classList.add('btn-primary');
+  }
+
+</script> {% endcomment %}

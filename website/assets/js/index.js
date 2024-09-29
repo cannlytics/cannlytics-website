@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 1/6/2021
- * Updated: 9/25/2024
+ * Updated: 9/28/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 // import { analytics } from './analytics/analytics.js';
@@ -12,6 +12,7 @@ import { standardizer } from './parsers/standardizer.js';
 import { CoADoc as coas } from './results/coas.js';
 import { receiptsJS as receipts } from './sales/receipts.js';
 import { labelsJS as labels } from './products/labels.js';
+import { searchJS as search } from './website/search.js';
 import { auth } from './auth/auth.js';
 import { data } from './data/data.js';
 import * as firebase from './firebase.js';
@@ -46,5 +47,6 @@ export {
   retailers,
   results,
   strains,
+  search,
   showNotification,
 };

@@ -24,8 +24,44 @@
   }
 </style>
 
-<div class="filter-date-tested">
-  <input type="text" class="form-control form-control-sm datepicker" id="dateTestedStart" placeholder="Select start date">
+<div class="filter-date-tested" style="max-width:540px;">
+
+  <!-- Start date -->
+  <input 
+    type="text" 
+    class="form-control form-control-sm datepicker" 
+    id="dateTestedStart" 
+    placeholder="Select start date"
+  >
+
   <span>to</span>
-  <input type="text" class="form-control form-control-sm datepicker" id="dateTestedEnd" placeholder="Select end date">
+
+  <!-- End date -->
+  <input 
+    type="text" 
+    class="form-control form-control-sm datepicker" 
+    id="dateTestedEnd" 
+    placeholder="Select end date"
+  >
+
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Render the date picker for both start and end date inputs.
+  const currentDate = new Date();
+  $('.datepicker').datepicker({
+    format: 'mm/dd/yyyy',
+    autoclose: true,
+    todayHighlight: true,
+    endDate: currentDate,
+  });
+  const startDateInput = $('#dateTestedStart');
+  const endDateInput = $('#dateTestedEnd');
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  $('#dateTestedStart').datepicker('setDate', firstDayOfMonth);
+  $('#dateTestedEnd').datepicker('setDate', currentDate);
+
+});
+</script>
