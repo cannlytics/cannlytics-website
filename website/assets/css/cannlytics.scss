@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 10/4/2020
- * Updated: 9/16/2024
+ * Updated: 9/29/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
  */
 
@@ -23,8 +23,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@100;200;300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Source+Serif+Pro:wght@100;200;300;400;500;600;700&display=swap');
 
 // Set base fonts
-// $font-sans-serif: 'IBM Plex Sans', sans-serif; // Interface text, small headings
-// $font-sans-serif-text: 'Libre Franklin', sans-serif; // Captions.
 $font-sans-serif: 'Inter', sans-serif; // Interface text, small headings
 $font-sans-serif-text: 'Poppins', sans-serif; // Captions
 $font-serif: 'Cormorant Garamond', serif; // Headings, subheadings, block quotes
@@ -32,7 +30,6 @@ $font-serif-text: 'Libre Baskerville', serif; // Body text, paragraphs, long-for
 $font-serif-headings: 'Playfair Display', serif; // Hero sections, large headings, banners.
 
 // Color variables
-// FIXME: Finish replacing colors.
 $color-gray: #ccc;
 $color-selection-bg: #96e6a1;
 $color-dark-bg: #323443;
@@ -323,6 +320,10 @@ body.dark footer .form-control {
 body.dark {
   background: rgb(50, 52, 67);
 }
+body.dark .bg-body {
+  background-color: #1c1e22 !important;
+  color: #f5f5f5;
+}
 body:not(.dark) .dark-only {
   display: none;
 }
@@ -370,6 +371,7 @@ body.dark .btn-primary:hover {
   border-color: #3b6b5a;
   color: #f4f4f4;
 }
+// FIXME: This is ugly.
 body.dark .btn-outline-primary {
   border-color: #4e8c7a;
   color: #4e8c7a;
@@ -431,6 +433,7 @@ body.dark p.lead a:hover {
 }
 
 /* Dark menus */
+// FIXME: This menu style is ugly.
 body.dark .dropdown-menu {
   background-color: #323443;
 }
@@ -730,6 +733,7 @@ body.dark .list-group-item:hover {
   Search CSS
 ---------------------------------------------------------------------------*/
 
+/* Search input */
 .filter-menu {
   position: fixed;
   top: 60px;
@@ -748,11 +752,67 @@ body.dark .filter-menu {
   background-color: #2a2a2a;
   color: #eaeaea;
   border-color: #444444;
-  box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+  // box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
 }
 .filter-menu.show {
   display: block;
 }
 .menu-section {
   padding: 1rem;
+}
+
+/* Search sidebar */
+// #search-content {
+//   flex-grow: 1;
+//   height: calc(100vh - 60px);
+// }
+// #search-results {
+//   min-height: 100%;
+// }
+.sidebar {
+  position: sticky;
+  top: 0;
+  width: 250px;
+  // height: 100vh;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-right: 1px solid #dee2e6;
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+}
+body.dark .sidebar {
+  background-color: #2a2a2a;
+  border-right: 1px solid #444444;
+  border-top: 1px solid #444444;
+  border-bottom: 1px solid #444444;
+}
+.sidebar-title {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.filter-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 175px;
+}
+.filter-item:hover {
+  background-color: #e9ecef;
+}
+body.dark .filter-item:hover {
+  background-color: #2a2a2a;
+}
+.active-filter {
+  background-color: #e9ecef;
+  border-left: 3px solid #0d6efd;
+}
+body.dark .active-filter {
+  background-color: #2a2a2a;
+  border-left: 3px solid #0d6efd;
+}
+.no-caret::after {
+  display: none;
 }

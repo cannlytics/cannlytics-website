@@ -20,9 +20,11 @@
     </main>
 
     <!-- Footer -->
+    {% block dashboard_footer %}
     <footer>
       {% include "components/layout/footer.html" %}
     </footer>
+    {% endblock %}
 
     <!-- Dashboard JavaScript -->
     {% block page_js %}{% endblock %}

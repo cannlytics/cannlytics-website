@@ -5,55 +5,60 @@ Copyright (c) 2024 Cannlytics
 Authors:
     Keegan Skeate <https://github.com/keeganskeate>
 Created: 9/28/2024
-Updated: 9/28/2024
+Updated: 9/29/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 """
 # Standard imports:
 from datetime import datetime
-import os
-import secrets
-import tempfile
-from typing import List
+from typing import Union
 
 # External imports:
 from cannlytics.firebase import (
-    access_secret_version,
     create_log,
-    delete_document,
-    delete_file,
-    download_file,
     get_document,
     get_collection,
-    get_file_url,
-    update_document,
-    update_documents,
-    upload_file,
+    initialize_firebase,
 )
-import google.auth
-from google.cloud.firestore import Increment
 from openai import OpenAI
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.request import Request
-from rest_framework.parsers import MultiPartParser, FormParser
 from pydantic import BaseModel
 
 # Internal imports:
 from website.auth import authenticate_request, AUTH_ERROR
 
 
-class Filters(BaseModel):
+class Filter(BaseModel):
     """A terpene found in a cannabis product."""
-    name: str
-    percentage: float
+    key: str
+    operation: str
+    value: Union[str, float, int]
 
 class Query(BaseModel):
     """A label for a cannabis product."""
-    batch_number: str
-    cannabinoids_units: str
-    date_packaged: str
-    dominant_terpenes: list[Terpene]
+    collection: str
+    filters: list[Filter]
+
+
+QUERY_SYSTEM_PROMPT = """Given a query, please return the most relevant Firestore collection path from the following table and any filters that should be applied to the query.
+
+| Collection | Description |
+|-------------|-------------|
+| results | Lab results for cannabis products |
+| strains | Cannabis strains |
+| licenses | Data for licensed cannabis companies |
+
+A Filter should have the following structure:
+
+```py
+Filter(key='total_thc', operation='>', value=0.3)
+```
+
+The Filter operation can be one of the following: `==`, `!=`, `>`, `<`, `>=`, `<=`, `array_contains`, `in`, `not_in`, `array_contains_any`, `array_contains_all`, `array_contains_none`.
+"""
+USER_PROMPT = "Given the following user prompt, strictly return the most relevant Firestore collection path (of only 'strains', 'results', 'licenses') and any filters that should be applied to the query."
 
 
 @csrf_exempt
@@ -78,38 +83,265 @@ def api_search(request: Request):
     start_date = data.get('start_date', None)
     end_date = data.get('end_date', None)
     state = data.get('state', 'all')
+    limit = data.get('limit', 10)
+    try:
+        limit = int(limit)
+    except:
+        limit = 10
+    if limit > 420 or limit < 1:
+        limit = 420
+
+    # TODO: Get fields by data type. Get all data types if `all`.
+
+    # TODO: Hash and look-up the prompt to save on costs.
     
 
     # FIXME: AI-powered search!
-    client = OpenAI()
+    # client = OpenAI()
 
     # 1) Get ChatGPT to determine:
     # - The collection to query
     # - The appropriate filters
+    query_data = {}
 
     # 2) Safety: Ensure that the query is allowable.
-
+    ref = query_data.get('collection', None)
+    filters = query_data.get('filters', None)
+    order_by = 'updated_at'
+    desc = True
+    start_at = None
 
     # 3) Perform the query.
-    # - gets 1- 3 at a time.
+    print('REF:', ref)
+    print('FILTERS:', filters)
+    # db = initialize_firebase()
+    # docs = get_collection(
+    #     ref,
+    #     limit=limit,
+    #     order_by=order_by,
+    #     desc=desc,
+    #     filters=filters,
+    #     database=db,
+    #     start_at=start_at,
+    # )
 
-
-    # 4) Format the data.
-    output = []
+    # 4) Format the search results.
+    docs = [
+        {
+            'title': 'Sample COA Result',
+            'user_name': 'keeganskeate',
+            'updated_on': 'Sep 29, 2024',
+            'link': '/coa/sample',
+            'data_type': 'coas',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
+            'rating': 10
+        },
+        {
+            'title': 'Cannabis Strain: OG Kush',
+            'user_name': 'john_doe',
+            'updated_on': 'Sep 25, 2024',
+            'link': '/strain/og-kush',
+            'data_type': 'strains',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
+            'rating': 25
+        },
+        {
+            'title': 'Sample COA Result',
+            'user_name': 'keeganskeate',
+            'updated_on': 'Sep 29, 2024',
+            'link': '/coa/sample',
+            'data_type': 'coas',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
+            'rating': 10
+        },
+        {
+            'title': 'Cannabis Strain: OG Kush',
+            'user_name': 'john_doe',
+            'updated_on': 'Sep 25, 2024',
+            'link': '/strain/og-kush',
+            'data_type': 'strains',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
+            'rating': 25
+        },
+        {
+            'title': 'Sample COA Result',
+            'user_name': 'keeganskeate',
+            'updated_on': 'Sep 29, 2024',
+            'link': '/coa/sample',
+            'data_type': 'coas',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
+            'rating': 10
+        },
+        {
+            'title': 'Cannabis Strain: OG Kush',
+            'user_name': 'john_doe',
+            'updated_on': 'Sep 25, 2024',
+            'link': '/strain/og-kush',
+            'data_type': 'strains',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
+            'rating': 25
+        },
+        {
+            'title': 'Sample COA Result',
+            'user_name': 'keeganskeate',
+            'updated_on': 'Sep 29, 2024',
+            'link': '/coa/sample',
+            'data_type': 'coas',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
+            'rating': 10
+        },
+        {
+            'title': 'Cannabis Strain: OG Kush',
+            'user_name': 'john_doe',
+            'updated_on': 'Sep 25, 2024',
+            'link': '/strain/og-kush',
+            'data_type': 'strains',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
+            'rating': 25
+        },
+        {
+            'title': 'Sample COA Result',
+            'user_name': 'keeganskeate',
+            'updated_on': 'Sep 29, 2024',
+            'link': '/coa/sample',
+            'data_type': 'coas',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
+            'rating': 10
+        },
+        {
+            'title': 'Cannabis Strain: OG Kush',
+            'user_name': 'john_doe',
+            'updated_on': 'Sep 25, 2024',
+            'link': '/strain/og-kush',
+            'data_type': 'strains',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
+            'rating': 25
+        },
+        {
+            'title': 'Sample COA Result',
+            'user_name': 'keeganskeate',
+            'updated_on': 'Sep 29, 2024',
+            'link': '/coa/sample',
+            'data_type': 'coas',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
+            'rating': 10
+        },
+        {
+            'title': 'Cannabis Strain: OG Kush',
+            'user_name': 'john_doe',
+            'updated_on': 'Sep 25, 2024',
+            'link': '/strain/og-kush',
+            'data_type': 'strains',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
+            'rating': 25
+        },
+        {
+            'title': 'Sample COA Result',
+            'user_name': 'keeganskeate',
+            'updated_on': 'Sep 29, 2024',
+            'link': '/coa/sample',
+            'data_type': 'coas',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
+            'rating': 10
+        },
+        {
+            'title': 'Cannabis Strain: OG Kush',
+            'user_name': 'john_doe',
+            'updated_on': 'Sep 25, 2024',
+            'link': '/strain/og-kush',
+            'data_type': 'strains',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
+            'rating': 25
+        },
+        {
+            'title': 'Sample COA Result',
+            'user_name': 'keeganskeate',
+            'updated_on': 'Sep 29, 2024',
+            'link': '/coa/sample',
+            'data_type': 'coas',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
+            'rating': 10
+        },
+        {
+            'title': 'Cannabis Strain: OG Kush',
+            'user_name': 'john_doe',
+            'updated_on': 'Sep 25, 2024',
+            'link': '/strain/og-kush',
+            'data_type': 'strains',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
+            'rating': 25
+        },
+        {
+            'title': 'Sample COA Result',
+            'user_name': 'keeganskeate',
+            'updated_on': 'Sep 29, 2024',
+            'link': '/coa/sample',
+            'data_type': 'coas',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
+            'rating': 10
+        },
+        {
+            'title': 'Cannabis Strain: OG Kush',
+            'user_name': 'john_doe',
+            'updated_on': 'Sep 25, 2024',
+            'link': '/strain/og-kush',
+            'data_type': 'strains',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
+            'rating': 25
+        },
+        {
+            'title': 'Sample COA Result',
+            'user_name': 'keeganskeate',
+            'updated_on': 'Sep 29, 2024',
+            'link': '/coa/sample',
+            'data_type': 'coas',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
+            'rating': 10
+        },
+        {
+            'title': 'Cannabis Strain: OG Kush',
+            'user_name': 'john_doe',
+            'updated_on': 'Sep 25, 2024',
+            'link': '/strain/og-kush',
+            'data_type': 'strains',
+            'image': 'https://via.placeholder.com/100',
+            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
+            'rating': 25
+        },
+    ]
 
     # Create an activity log.
     # try:
     #     create_log(
-    #         ref='logs/parsers/standardizer',
+    #         ref='logs/website/search',
     #         claims=claims,
-    #         action='standardize_names',
-    #         log_type='parsers',
+    #         action='api_search',
+    #         log_type='search',
     #         key=uid,
-    #         changes=output
+    #         changes=[query]
     #     )
     # except:
     #     print('Failed to log activity.')
 
     # Return the entered data.
-    response = {'success': True, 'data': output}
+    response = {'success': True, 'data': docs}
     return Response(response, status=200)

@@ -125,6 +125,18 @@ export const searchJS = {
   initializeSearchResults() {
     /* Initialize the search results. */
 
+    // // Infinite scroll logic
+    // window.addEventListener('scroll', () => {
+    //   const scrollHeight = document.documentElement.scrollHeight;
+    //   const scrollTop = document.documentElement.scrollTop;
+    //   const clientHeight = document.documentElement.clientHeight;
+    //   if (scrollTop + clientHeight >= scrollHeight - 10) {
+    //     // Load more results when the user scrolls near the bottom
+    //     // cannlytics.search.loadMoreResults();
+    //     console.log('Time to search!!!');
+    //   }
+    // });
+
     // Parse query parameters from the URL.
     const params = new URLSearchParams(window.location.search);
     const query = params.get('q') || '';
@@ -144,6 +156,13 @@ export const searchJS = {
 
     // Update state selection
     window.selectState(state);
+
+    // TODO: Add functionality to data type selection.
+    document.getElementById('filter-select').addEventListener('change', function() {
+      const selectedFilter = this.value;
+      console.log("Filter selected: ", selectedFilter);
+      // window.location.href = `/search?filter=${selectedFilter}`;
+    });
 
     // Update date inputs
     const startDateInput = document.getElementById('dateTestedStart');
@@ -176,7 +195,9 @@ export const searchJS = {
     authRequest('/api/search', searchParams)
       .then(response => {
         // Display the search results.
-        this.displaySearchResults(response);
+        this.displaySearchResults(response.data);
+        // DEV:
+        // this.displaySearchResults([]);
       })
       .catch(error => {
         console.error('Error fetching search results:', error);
@@ -186,38 +207,74 @@ export const searchJS = {
   },
 
   displaySearchResults(data) {
-    // Implement the logic to display search results on the page
-    // For example, update the DOM to show the results
-    const resultsContainer = document.querySelector('.markdown.row.pt-4');
-    if (resultsContainer) {
-      // Clear previous results
-      resultsContainer.innerHTML = '';
-
-      if (data.results && data.results.length > 0) {
-        data.results.forEach(result => {
-          // Create elements to display each result
-          const resultElement = document.createElement('div');
-          resultElement.classList.add('search-result');
-          // Customize this part based on the data structure
-          resultElement.innerHTML = `
-            <h3>${result.title}</h3>
-            <p>${result.description}</p>
-            <!-- Add more details as needed -->
-          `;
-          resultsContainer.appendChild(resultElement);
-        });
-      } else {
-        // No results found
-        resultsContainer.innerHTML = '<p>No results found.</p>';
-      }
+    /* Display the search results on the page. */
+    console.log('DATA:' , data);
+    const resultsContainer = document.getElementById('search-results');
+    resultsContainer.innerHTML = '';
+    if (data && data.length > 0) {
+      data.forEach(result => {
+        const resultCard = this.formatSearchResultRow(result);
+        resultsContainer.innerHTML += resultCard;
+      });
+    } else {
+      resultsContainer.innerHTML = '<p class="sans-serif">No results found.</p>';
     }
   },
 
-  searchAPI() {
-    /* Search the Cannlytics API. */
-
-    // TODO: Implement.
-
+  formatSearchResultRow(result) {
+    // FIXME: Use better up / down arrows and fill-them in / change color on hover.
+    return `
+    <div class="col-md-12 mb-3">
+      <div class="card shadow-sm border-0">
+        <div class="card-body d-flex justify-content-between">
+          <div class="d-flex align-items-center">
+            <img src="${result.image}" alt="${result.data_type}" class="rounded me-3" width="75" height="75">
+            <div>
+              <a class="fs-6 sans-serif text-decoration-none text-dark" href="${result.link}">${result.title}</a>
+              <p class="small mt-0 mb-1">
+                <small class="sans-serif">by
+                <a class="text-muted" href="/user/${result.user_name}">
+                  <small class="sans-serif">${result.user_name}</small>
+                </a> - Updated on ${result.updated_on}</small>
+              </p>
+              <div class="d-flex">
+                ${result.badges.map(badge => `
+                  <span class="badge" style="background-color: ${badge.color};">
+                    ${badge.icon ? `<i class="${badge.icon}"></i>` : ''} ${badge.text}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-column justify-content-between align-items-center">
+            <div class="d-flex">
+              <button class="btn btn-outline-secondary btn-sm me-2"><i class="bi bi-star"></i></button>
+              <div class="dropdown">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-three-dots"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-compact py-0">
+                  <li class="mb-0"><a class="dropdown-item py-1 fw-normal" href="#"><small>🔗 Share</small></a></li>
+                  <li class="mb-0"><a class="dropdown-item py-1 fw-normal" href="#"><small>💾 Save</small></a></li>
+                  <li class="mb-0"><hr class="dropdown-divider my-0"></li>
+                  <li class="mb-0"><a class="dropdown-item py-1 fw-normal text-danger" href="#"><small>🚩 Report</small></a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="d-flex align-items-center">
+              <button class="btn btn-sm text-muted"><i class="bi bi-arrow-up"></i></button>
+              <span class="mx-1"><small class="fw-bold text-dark">${result.rating}</small></span>
+              <button class="btn btn-sm text-muted"><i class="bi bi-arrow-down"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  // <div class="mt-2">
+  //   <button class="btn btn-link text-muted">Share</button>
+  //   <button class="btn btn-link text-muted">Save</button>
+  // </div>
   },
 
 };

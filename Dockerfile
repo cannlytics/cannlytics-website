@@ -31,7 +31,7 @@ RUN apt-get update && \
         libtesseract-dev \
         gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils imagemagick libzbar0 zbar-tools libzbar-dev \
         wget && \
-    wget http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_128.0.6613.84-1_amd64.deb && \
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     dpkg -i google-chrome-stable_128.0.6613.84-1_amd64.deb; apt-get -fy install && \
     wget https://download.oracle.com/java/22/latest/jdk-22_linux-x64_bin.deb && \
     apt-get install -y ./jdk-22_linux-x64_bin.deb && \

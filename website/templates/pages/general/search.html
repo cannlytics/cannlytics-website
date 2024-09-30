@@ -1,32 +1,80 @@
 <!--
   Search Results Page | Cannlytics
   Created: 9/28/2024
-  Updated: 9/28/2024
+  Updated: 9/29/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}Search | Cannlytics{% endblock %}
-{% block dashboard_css %}
-
-
-
-{% endblock %}
 {% block dashboard %}
-<section class="container markdown">
+<section class="container-fluid d-flex ms-0 ps-0">
 
-  <!-- Title -->
-  <h2 class="sans-serif text-dark fw-bold mb-0">Search results</h2>
-
-  <!-- Include Search Bar -->
-  {% include "search_bar.html" %}
+  <!-- Sidebar -->
+  {% include "components/search/search_sidebar.html" %}
 
   <!-- Search results -->
-  <div class="markdown row pt-4">
-    <!-- Search results will be populated here -->
+  <div
+    id="search-content"
+    class="flex-grow-1 d-flex flex-column ps-3 pt-3"
+  >
+    <div class="d-flex justify-content-between">
+      <h4 class="sans-serif text-dark fw-normal mb-0">
+        <small>Search results</small>
+      </h4>
+
+      <!-- Mobile: Data type selection -->
+      {% include "components/search/search_select.html" %}
+    
+      <!-- Sort by -->
+      <div class="dropdown">
+        <button
+          class="btn btn-sm btn-outline-primary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Sort by: Best match
+        </button>
+        <ul class="dropdown-menu py-0" aria-labelledby="dropdownMenuButton">
+          <li class="my-0"><a class="dropdown-item py-1 active" href="#"><small>Best match</small></a></li>
+          <li class="my-0"><a class="dropdown-item py-1" href="#"><small>Most stars</small></a></li>
+          <li class="my-0"><a class="dropdown-item py-1" href="#"><small>Fewest stars</small></a></li>
+          <li class="my-0"><a class="dropdown-item py-1" href="#"><small>Highest rating</small></a></li>
+          <li class="my-0"><a class="dropdown-item py-1" href="#"><small>Lowest rating</small></a></li>
+          <li class="my-0"><a class="dropdown-item py-1" href="#"><small>Newest</small></a></li>
+          <li class="my-0"><a class="dropdown-item py-1" href="#"><small>Oldest</small></a></li>
+        </ul>
+      </div>
+    
+    </div>
+    <div
+      id="search-results"
+      class="markdown sans-serif-text fs-6 lh-md row pt-4"
+    >
+    </div>
+
+    <!-- Optional: More button -->
+    {% comment %} <div class="d-flex justify-content-center">
+      <button class="btn btn-outline-dark rounded-pill px-4">
+        More
+      </button>
+    </div> {% endcomment %}
+
+    <!-- Optional: Pagination -->
+
+     <!-- Custom Footer -->
+    <footer>
+      {% include "components/layout/footer.html" %}
+    </footer>
+
   </div>
 
 </section>
 {% endblock %}
+
+<!-- Over-write Footer -->
+{% block dashboard_footer %}{% endblock %}
 
 {% block page_js %}
 <script>
