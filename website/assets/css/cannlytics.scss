@@ -371,7 +371,6 @@ body.dark .btn-primary:hover {
   border-color: #3b6b5a;
   color: #f4f4f4;
 }
-// FIXME: This is ugly.
 body.dark .btn-outline-primary {
   border-color: #4e8c7a;
   color: #4e8c7a;
@@ -432,29 +431,6 @@ body.dark p.lead a:hover {
   color: #96e6a1;
 }
 
-/* Dark menus */
-// FIXME: This menu style is ugly.
-body.dark .dropdown-menu {
-  background-color: #323443;
-}
-body.dark .dropdown-item {
-  color: #f5f5f5;
-}
-body.dark .dropdown-item:hover,
-body.dark .dropdown-item:active {
-  background-color: #616161;
-}
-.dropdown-item:focus {
-  color: #1a1a1a;
-  background-color: #96e6a133;
-}
-body.dark .dropdown-item:focus {
-  background-color: #96e6a133;
-}
-body.dark .list-group-item {
-  background-color: #cccccc33;
-}
-
 /* Dark icons */
 .theme-toggle {
   float: right;
@@ -509,69 +485,25 @@ body.dark .dropdown-divider {
   Navigation
 ---------------------------------------------------------------------------*/
 
-// footer li a {
-//   color: #e8e8e8 !important;
-// }
-// .nav-link:hover,
-// .nav-link.active {
-//   color: #1a1a1a !important;
-// }
-// body.dark .navbar-toggler-icon {
-//   color: $color-gray !important;
-// }
-// body.dark .nav-link:hover,
-// body.dark .nav-link.active {
-//   color: #fff !important;
-// }
-// .dropdown-mega .dropdown-menu {
-//   box-shadow: none !important;
-//   opacity: 0;
-//   visibility: hidden;
-//   transition-delay: 3s;
-//   top: unset !important;
-//   left: 0 !important;
-//   margin-top: 0;
-//   z-index: 9999;
-// }
-// .dropdown-mega:hover .dropdown-menu,
-// .dropdown-mega .dropdown-menu.show {
-//   display: block !important;
-//   transition-delay: 3s;
-//   opacity: 1 !important;
-//   visibility: visible !important;
-//   box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%) !important;
-// }
-
-/* Make the entire dropdown menu rounded */
 .custom-menu {
-  border-radius: 10px; /* Adjust as needed */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Optional shadow for a floating effect */
-  overflow: hidden; /* Ensures items don't overflow rounded corners */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
-
-/* Hover styles for links */
 .custom-link {
   transition: background-color 0.3s ease, color 0.3s ease, text-decoration 0.3s ease;
 }
-
-/* Change background and underline text on hover */
 .custom-link:hover {
-  background-color: #f5f5f5; /* A light hover background, adjust as needed */
-  color: #000; /* Ensure good contrast */
+  background-color: #f5f5f5;
+  color: #000;
   text-decoration: underline;
 }
-
-/* Optional: Add padding to the dropdown items */
-.dropdown-item {
-  padding: 10px 15px; /* Adjust padding for a more spacious feel */
-}
-
-/* Ensure the menu headers also have a smooth hover effect */
+// .dropdown-item {
+//   padding: 10px 15px;
+// }
 .dropdown-header:hover {
-  background-color: #e0e0e0; /* Optional: Subtle hover effect for headers */
+  background-color: #e0e0e0;
 }
-
-// Underline text on hover.
 .text-underline-hover:hover {
   text-decoration: underline;
 }
@@ -710,23 +642,54 @@ body.dark .page-tabs .nav-link.active {
   List groups
 ---------------------------------------------------------------------------*/
 
-/* Prevent non-active items from changing color on hover in dark theme */
 .list-group-item.active:hover {
   background-color: var(--bs-list-group-active-bg) !important;
   color: var(--bs-list-group-active-color);
   border-color: var(--bs-list-group-active-border-color);
 }
-
-/* Keep active item text color consistent in dark theme */
 body.dark .list-group-item.active {
   color: var(--bs-list-group-active-color);
   background-color: var(--bs-list-group-active-bg);
   border-color: var(--bs-list-group-active-border-color);
 }
-
-/* Keep item text color consistent on hover in dark theme */
 body.dark .list-group-item:hover {
   color: inherit;
+}
+
+/*--------------------------------------------------------------------------
+  Menus
+---------------------------------------------------------------------------*/
+
+/* Dark menus */
+// FIXME: This menu style is ugly.
+body.dark .dropdown-menu {
+  background-color: #323443;
+}
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+body.dark .dropdown-item {
+  color: #f5f5f5;
+}
+body.dark .dropdown-item:hover,
+body.dark .dropdown-item:active {
+  background-color: #2a2a2a;
+}
+.dropdown-item:focus {
+  color: #1a1a1a;
+  background-color: #96e6a133;
+}
+body.dark .dropdown-item:focus {
+  background-color: #96e6a133;
+}
+body.dark .list-group-item {
+  background-color: #cccccc33;
+}
+.dropdown-item.active {
+  background-color: #2e8b57;
+}
+body.dark .dropdown-item.active {
+  background-color: #4e8c7a;
 }
 
 /*--------------------------------------------------------------------------
@@ -773,7 +736,6 @@ body.dark .filter-menu {
   position: sticky;
   top: 0;
   width: 250px;
-  // height: 100vh;
   background-color: #f8f9fa;
   padding: 20px;
   border-right: 1px solid #dee2e6;
@@ -815,4 +777,53 @@ body.dark .active-filter {
 }
 .no-caret::after {
   display: none;
+}
+
+/*--------------------------------------------------------------------------
+  Forms
+---------------------------------------------------------------------------*/
+
+/* Upvote and downvote buttons */
+.arrow-icon {
+  width: 21px;
+  height: 21px;
+}
+.vote-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #6c757d;
+  transition: color 0.2s ease;
+}
+button.upvote:hover .arrow-icon {
+  content: url('/static/website/images/ai-icons/up-arrow-filled-dark.svg');
+}
+button.downvote:hover .arrow-icon {
+  content: url('/static/website/images/ai-icons/down-arrow-filled-dark.svg');
+}
+
+/* Buttons */
+.btn.show.btn-outline-primary {
+  color: #fff !important;
+}
+body.dark .btn.show.btn-outline-primary {
+  background-color: #4e8c7a !important;
+}
+.btn-outline-primary {
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+}
+
+/* Stars */
+.bi-star-fill {
+  color: #FFD700;
+  text-shadow: 0px 0px 3px rgba(255, 215, 0, 0.8);
+}
+body.light .bi-star-fill {
+  color: #FFD700;
+  text-shadow: 0px 0px 3px rgba(255, 215, 0, 0.8);
+}
+body.dark .bi-star-fill {
+  color: #FFD700;
+  text-shadow: 0px 0px 4px rgba(255, 215, 0, 1);
 }

@@ -34,6 +34,7 @@ urlpatterns = [
         path('payments/unsubscribe', payments.unsubscribe),
         path('payments/orders', payments.create_order, name='create_order'),
         path('payments/orders/<str:order_id>/capture', payments.capture_order, name='capture_order'),
+        path('report', contact.report_data, name='report_data'),
     ])),
     path('donate', views.donate, name='donate'),
     path('meetup', views.meetup, name='meetup'),

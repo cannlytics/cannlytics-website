@@ -1,0 +1,41 @@
+<!--
+  Report Dialog Modal
+  Created: 9/30/2024
+  Updated: 9/30/2024
+-->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title sans-serif" id="reportModalLabel">Report data</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="reportForm">
+          <div class="mb-3">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="reason" id="incorrect" value="Incorrect" checked>
+              <label class="form-check-label" for="spam">Incorrect</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="reason" id="spam" value="Spam">
+              <label class="form-check-label" for="spam">Spam</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="reason" id="inappropriate" value="Inappropriate Content">
+              <label class="form-check-label" for="inappropriate">Inappropriate</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="reason" id="other" value="Other">
+              <label class="form-check-label" for="other">Other</label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm text-link text-underline-hover" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" id="submitReport" class="btn btn-sm btn-danger">Submit Report</button>
+      </div>
+    </div>
+  </div>
+</div>

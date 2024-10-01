@@ -1,7 +1,7 @@
 <!--
   Licenses Page | Cannlytics
   Created: 2/25/2024
-  Updated: 3/29/2024
+  Updated: 9/30/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -43,16 +43,13 @@
 <!-- Licensees page -->
 <section class="container markdown">
 
-  <h1>Companies</h1>
-
-  <!-- Search Bar -->
-  {% include "components/layout/search.html" %}
+  <h1>Organizations</h1>
 
   <!-- Filters -->
   <div class="selections-container align-items-center">
 
     <!-- State selection buttons -->
-    {% include "components/layout/state_selection.html" %}
+    {% include "components/forms/state_selection.html" %}
 
   </div>
 
@@ -67,12 +64,18 @@
   </div>
 
   <!-- Licensees List/Grid -->
-  <div id="licenseesContainer" class="mt-3 row ag-theme-quartz ag-theme-quartz-dark" data-masonry='{"percentPosition": true }'></div>
+  <div
+    id="licenseesContainer"
+    class="mt-3 row ag-theme-quartz ag-theme-quartz-dark"
+    data-masonry='{"percentPosition": true }'
+    style="height: 100vh;"
+  ></div>
 
 </section>
 {% endif %}
 {% endblock %}
-{% block dashboard_js %}
+
+{% block page_js %}
 {% if section and section not in 'logs,files,certificates' %}
   <script>
     // Initialize licensee. 

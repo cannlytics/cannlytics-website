@@ -5,7 +5,7 @@
 -->
 {% load static %}
 
-<!-- Back to the top -->
+{% comment %} <!-- Back to the top -->
 <button
   onclick="window.scrollTo({ top: 0, behavior: 'smooth' });"
   class="btn btn-link cannlytics-light-green-text text-decoration-none me-3"
@@ -13,7 +13,7 @@
   title="Go back to the top."
 >
   <i class="bi bi-arrow-up"></i>
-</button>
+</button> {% endcomment %}
 
 <!-- Footer -->
 <footer class="pt-md-5 px-2 px-md-5">
@@ -21,7 +21,7 @@
     <div class="row justify-content-center w-100 m-0">
 
       <!-- Company -->
-      <div class="col col-md-4 me-3 me-md-3 ps-0 mb-3">
+      <div class="col col-md-5 col-lg-3 me-3 me-md-3 ps-0 mb-3">
         <div class="d-flex d-flex flex-column align-items-start flex-wrap">
 
           <!-- Logo -->
@@ -33,13 +33,13 @@
             <img
               src="{% static 'website/images/logos/cannlytics_logo_with_text_light.png' %}"
               class="light-only"
-              style="height:40px;"
+              style="height:33px;"
               alt="Cannlytics"
             >
             <img
               src="{% static 'website/images/logos/cannlytics_logo_with_text_dark.png' %}"
               class="dark-only"
-              style="height:40px;"
+              style="height:33px;"
               alt="Cannlytics"
             >
           </a>
@@ -114,7 +114,7 @@
 
       <!-- Index -->
       {% for item in app.index %}
-        <div class="col mx-6 mx-md-3 mb-3" style="mid-width:140px;">
+        <div class="col me-6 me-md-3 ps-0 pe-3 mb-3" style="mid-width:140px;">
           <h6 class="h5 d-flex align-items-end serif text-dark mb-3 mt-2">
             {{ item.name }}
           </h6>

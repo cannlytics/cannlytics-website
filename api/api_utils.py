@@ -4,7 +4,7 @@ Copyright (c) 2021-2022 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 9/25/2024
-Updated: 9/25/2024
+Updated: 9/30/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 """
 # Standard imports:

@@ -7,8 +7,9 @@
  * Updated: 9/28/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
+import { Modal } from 'bootstrap';
 import { onAuthChange, getCurrentUser } from '../firebase.js';
-import { authRequest  } from '../utils.js';
+import { authRequest, showNotification  } from '../utils.js';
 
 export const searchJS = {
 
@@ -206,6 +207,111 @@ export const searchJS = {
 
   },
 
+  initializeReportButtons() {
+    /* Initialize the report buttons. */
+  
+    // Add event listeners to all "Report" buttons
+    document.querySelectorAll('.dropdown-item.text-danger').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const reportModal = new Modal(document.getElementById('reportModal'));
+        reportModal.show();
+        const resultId = this.closest('.card').dataset.id;
+        document.getElementById('submitReport').dataset.id = resultId;
+      });
+    });
+  
+    // Handle the form submission
+    document.getElementById('submitReport').addEventListener('click', function() {
+      const reportReason = document.querySelector('input[name="reason"]:checked').value;
+      const reportId = this.dataset.id;
+      const data = {
+        id: reportId,
+        reason: reportReason
+      };
+      authRequest('/src/report', { data })
+        .then(response => {
+          showNotification('Report Submitted', 'Thank you for reporting. We will review the issue.', 'success');
+        })
+        .catch(error => {
+          showNotification('Error', 'There was an error submitting your report. Please try again later.', 'error');
+        });
+      const reportModal = Modal.getInstance(document.getElementById('reportModal'));
+      reportModal.hide();
+    });
+  },
+
+  initializeShareButtons() {
+    // Initialize the share buttons.
+    document.querySelectorAll('.share-btn').forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const link = `https://cannlytics.com${this.dataset.link}`;
+        navigator.clipboard.writeText(link).then(() => {
+          showNotification('Link Copied!', 'Link copied. Share as you see fit.', 'success');
+        }).catch(err => {
+          // Show an error notification if something goes wrong.
+          showNotification('Error', 'Failed to copy the link.', 'error');
+          console.error('Could not copy text: ', err);
+        });
+      });
+    });
+  },
+
+  initializeStarButtons() {
+    /* Initialize the star buttons. */
+    document.querySelectorAll('.star-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const icon = this.querySelector('.star-icon');
+        if (this.dataset.starred === "false") {
+          icon.classList.remove('bi-star');
+          icon.classList.add('bi-star-fill');
+          this.dataset.starred = "true";
+          // FIXME: Update the database to mark as starred.
+        } else {
+          icon.classList.remove('bi-star-fill');
+          icon.classList.add('bi-star');
+          this.dataset.starred = "false";
+          // FIXME: Update the database to mark as unstarred.
+        }
+      });
+    });
+  },
+
+  initializeVoteButtons() {
+    /* Initialize the vote buttons. */
+    document.querySelectorAll('.upvote').forEach(button => {
+      button.addEventListener('click', function() {
+        const img = this.querySelector('.arrow-icon');
+        if (this.dataset.voted === "false") {
+          img.src = '/static/website/images/ai-icons/up-arrow-filled-dark.svg';
+          this.dataset.voted = "true";
+          this.nextElementSibling.nextElementSibling.disabled = true;
+        } else {
+          img.src = '/static/website/images/ai-icons/up-arrow.svg';
+          this.dataset.voted = "false";
+          this.nextElementSibling.nextElementSibling.disabled = false;
+        }
+        // FIXME: Update the database with the vote.
+      });
+    });
+    document.querySelectorAll('.downvote').forEach(button => {
+      button.addEventListener('click', function() {
+        const img = this.querySelector('.arrow-icon');
+        if (this.dataset.voted === "false") {
+          img.src = '/static/website/images/ai-icons/down-arrow-filled-dark.svg';
+          this.dataset.voted = "true";
+          this.previousElementSibling.previousElementSibling.disabled = true;
+        } else {
+          img.src = '/static/website/images/ai-icons/down-arrow.svg';
+          this.dataset.voted = "false";
+          this.previousElementSibling.previousElementSibling.disabled = false;
+        }
+        // FIXME: Update the database with the vote.
+      });
+    });
+  },
+
   displaySearchResults(data) {
     /* Display the search results on the page. */
     console.log('DATA:' , data);
@@ -219,10 +325,13 @@ export const searchJS = {
     } else {
       resultsContainer.innerHTML = '<p class="sans-serif">No results found.</p>';
     }
+    this.initializeVoteButtons();
+    this.initializeStarButtons();
+    this.initializeShareButtons();
+    this.initializeReportButtons();
   },
 
   formatSearchResultRow(result) {
-    // FIXME: Use better up / down arrows and fill-them in / change color on hover.
     return `
     <div class="col-md-12 mb-3">
       <div class="card shadow-sm border-0">
@@ -232,8 +341,8 @@ export const searchJS = {
             <div>
               <a class="fs-6 sans-serif text-decoration-none text-dark" href="${result.link}">${result.title}</a>
               <p class="small mt-0 mb-1">
-                <small class="sans-serif">by
-                <a class="text-muted" href="/user/${result.user_name}">
+                <small class="sans-serif text-dark">by
+                <a class="text-dark" href="/user/${result.user_name}">
                   <small class="sans-serif">${result.user_name}</small>
                 </a> - Updated on ${result.updated_on}</small>
               </p>
@@ -248,33 +357,47 @@ export const searchJS = {
           </div>
           <div class="d-flex flex-column justify-content-between align-items-center">
             <div class="d-flex">
-              <button class="btn btn-outline-secondary btn-sm me-2"><i class="bi bi-star"></i></button>
+              <button class="btn btn-outline-secondary btn-sm me-2 star-btn" data-starred="false">
+                <i class="bi bi-star star-icon"></i>
+              </button>
               <div class="dropdown">
                 <button class="btn btn-outline-secondary btn-sm dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="bi bi-three-dots"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-compact py-0">
-                  <li class="mb-0"><a class="dropdown-item py-1 fw-normal" href="#"><small>🔗 Share</small></a></li>
-                  <li class="mb-0"><a class="dropdown-item py-1 fw-normal" href="#"><small>💾 Save</small></a></li>
-                  <li class="mb-0"><hr class="dropdown-divider my-0"></li>
-                  <li class="mb-0"><a class="dropdown-item py-1 fw-normal text-danger" href="#"><small>🚩 Report</small></a></li>
+                  <li class="mb-0">
+                    <a class="dropdown-item py-1 fw-normal share-btn" href="#" data-link="${result.link}">
+                      <small>🔗 Share</small>
+                    </a>
+                  </li>
+                  <li class="mb-0">
+                    <a class="dropdown-item py-1 fw-normal text-danger" href="#">
+                      <small>🚩 Report</small>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <button class="btn btn-sm text-muted"><i class="bi bi-arrow-up"></i></button>
+              <button class="btn btn-sm upvote" data-voted="false">
+                <img src="/static/website/images/ai-icons/up-arrow.svg" alt="Upvote" class="arrow-icon">
+              </button>
               <span class="mx-1"><small class="fw-bold text-dark">${result.rating}</small></span>
-              <button class="btn btn-sm text-muted"><i class="bi bi-arrow-down"></i></button>
+              <button class="btn btn-sm downvote" data-voted="false">
+                <img src="/static/website/images/ai-icons/down-arrow.svg" alt="Downvote" class="arrow-icon">
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   `;
-  // <div class="mt-2">
-  //   <button class="btn btn-link text-muted">Share</button>
-  //   <button class="btn btn-link text-muted">Save</button>
-  // </div>
+  // Optional: Add save button.
+  // <li class="mb-0"><a class="dropdown-item py-1 fw-normal" href="#"><small>💾 Save</small></a></li>
+  // <li class="mb-0"><hr class="dropdown-divider my-0"></li>
   },
+
+  // TODO: reportObservation
+
 
 };

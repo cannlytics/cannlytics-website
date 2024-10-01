@@ -97,6 +97,16 @@ def admin_update(event, context):
     # Update user statistics.
     user_stats = update_user_stats()
 
+    # TODO: Get `pending` contact messages.
+    # `status` == 'pending
+    # db.collection('website').document('support') \
+    #         .collection('support_messages')
+
+
+    # TODO: Get `pending` reported data.
+    # ref = db.collection('website').document('reports') \
+    #             .collection('reported_observations').document(report_id)
+
 
     # TODO: Get the recent logs.
 

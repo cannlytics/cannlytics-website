@@ -1,7 +1,7 @@
 <!--
-  Results Page | Cannlytics Website
+  COAs Page | Cannlytics Website
   Created: 9/28/2024
-  Updated: 9/28/2024
+  Updated: 9/30/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -9,7 +9,7 @@
   {% if section and section not in 'logs,files,certificates' %}
     {{ section }} | Cannlytics
   {% else %}
-    Results | Cannlytics
+    COAs | Cannlytics
   {% endif %}
 {% endblock %}
 {% block dashboard_css %}
@@ -84,7 +84,7 @@
 <!-- Results -->
 <section class="container markdown">
 
-  <h1>Lab Results</h1>
+  <h1>COAs</h1>
 
   {% comment %} <!-- Search Bar -->
   {% include "components/layout/search.html" with

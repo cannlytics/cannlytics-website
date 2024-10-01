@@ -194,6 +194,8 @@ export const licensesJS = {
     };
     createGrid(licenseesContainer, gridOptions);
     cannlytics.ui.setTableTheme();
+    // FIXME: Why is the height weird?
+    document.getElementById('licenseesContainer').style.height = '100%';
   },
 
   initializeRetailers() {

@@ -31,7 +31,7 @@ app_context = {
                 {"title": "📜 COAs", "page": "coas"},
                 {"title": "🧪 Results", "page": "results"},
                 {"title": "🪴Strains", "page": "strains"},
-                {"title": "🧑‍🌾 Organizations", "page": "licenses"},
+                {"title": "🧑‍🌾 Organizations", "page": "organizations"},
                 {"title": "🔬 Compounds", "page": "compounds"},
             ]
         },
