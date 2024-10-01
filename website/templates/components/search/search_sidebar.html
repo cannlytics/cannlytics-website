@@ -1,49 +1,44 @@
 <!--
   Sidebar
   Created: 9/29/2024
-  Updated: 9/29/2024
+  Updated: 10/1/2024
 -->
 <div id="sidebar" class="sidebar bg-body d-none d-md-block">
   <h5 class="sidebar-title sans-serif fs-6 mt-0">Filter by</h5>
 
+  <!-- All -->
+  <div class="filter-item active-filter" data-type="all" onclick="cannlytics.search.filterByDataType('all')">
+    <div><small>🔍 All</small></div>
+    <span class="badge bg-secondary">0</span>
+  </div>
+
   <!-- COAs -->
-  <div class="filter-item active-filter">
-    <div>
-      <small>📜 COAs</small>
-    </div>
+  <div class="filter-item" data-type="coas" onclick="cannlytics.search.filterByDataType('coas')">
+    <div><small>📜 COAs</small></div>
     <span class="badge bg-secondary">0</span>
   </div>
 
   <!-- Results -->
-  <div class="filter-item">
-    <div>
-      <small>🧪 Results</small>
-    </div>
+  <div class="filter-item" data-type="results" onclick="cannlytics.search.filterByDataType('results')">
+    <div><small>🧪 Results</small></div>
     <span class="badge bg-secondary">0</span>
   </div>
 
   <!-- Strains -->
-  <div class="filter-item">
-    <div>
-      <small>🪴 Strains</small>
-    </div>
+  <div class="filter-item" data-type="strains" onclick="cannlytics.search.filterByDataType('strains')">
+    <div><small>🪴 Strains</small></div>
     <span class="badge bg-secondary">0</span>
   </div>
 
-  <!-- Samples -->
-  <div class="filter-item">
-    <div>
-      <small>🧑‍🌾 Organizations</small>
-    </div>
+  <!-- Organizations -->
+  <div class="filter-item" data-type="organizations" onclick="cannlytics.search.filterByDataType('organizations')">
+    <div><small>🧑‍🌾 Organizations</small></div>
     <span class="badge bg-secondary">0</span>
   </div>
 
-  <!-- Samples -->
-  <div class="filter-item">
-    <div>
-      <small>🔬 Compounds</small>
-    </div>
+  <!-- Compounds -->
+  <div class="filter-item" data-type="compounds" onclick="cannlytics.search.filterByDataType('compounds')">
+    <div><small>🔬 Compounds</small></div>
     <span class="badge bg-secondary">0</span>
   </div>
-
 </div>

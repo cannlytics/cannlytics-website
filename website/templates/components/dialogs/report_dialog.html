@@ -1,7 +1,7 @@
 <!--
   Report Dialog Modal
   Created: 9/30/2024
-  Updated: 9/30/2024
+  Updated: 10/1/2024
 -->
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
@@ -15,7 +15,7 @@
           <div class="mb-3">
             <div class="form-check">
               <input class="form-check-input" type="radio" name="reason" id="incorrect" value="Incorrect" checked>
-              <label class="form-check-label" for="spam">Incorrect</label>
+              <label class="form-check-label" for="incorrect">Incorrect</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" type="radio" name="reason" id="spam" value="Spam">
@@ -30,6 +30,13 @@
               <label class="form-check-label" for="other">Other</label>
             </div>
           </div>
+
+          <!-- Textarea for additional details -->
+          <div class="mb-3">
+            <label for="reportDetails" class="form-label sans-serif">Describe the issue (optional)</label>
+            <textarea class="form-control" id="reportDetails" rows="3" placeholder="Provide additional information about the report..."></textarea>
+          </div>
+
         </form>
       </div>
       <div class="modal-footer">

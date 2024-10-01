@@ -4,17 +4,17 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 9/28/2024
- * Updated: 9/28/2024
+ * Updated: 10/1/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Modal } from 'bootstrap';
-import { onAuthChange, getCurrentUser } from '../firebase.js';
+import { onAuthChange, getCurrentUser, getDocument } from '../firebase.js';
 import { authRequest, showNotification  } from '../utils.js';
 
 export const searchJS = {
 
-  selectedDataType: 'ALL',
-  selectedState: 'ALL',
+  selectedDataType: 'all',
+  selectedState: 'all',
 
   initializeSearchBar() {
     /* Initialize the search bar. */
@@ -68,34 +68,6 @@ export const searchJS = {
       }
     });
 
-    // Functions to handle selection
-    window.selectDataType = (selectedType) => {
-      // Reset all buttons to 'btn-outline-primary'
-      document.querySelectorAll('.btn-group[data-group="data-type"] .btn').forEach((btn) => {
-        btn.classList.remove('btn-primary');
-        btn.classList.add('btn-outline-primary');
-      });
-
-      // Set the selected button to 'btn-primary'
-      document.getElementById('btn' + selectedType).classList.remove('btn-outline-primary');
-      document.getElementById('btn' + selectedType).classList.add('btn-primary');
-
-      // Update the selected data type
-      this.selectedDataType = selectedType;
-    };
-
-    window.selectState = (selectedStateParam) => {
-      document.querySelectorAll('.btn-group[data-group="state"] .btn').forEach((btn) => {
-        btn.classList.remove('btn-primary');
-        btn.classList.add('btn-outline-primary');
-      });
-      document.getElementById('btn' + selectedStateParam).classList.remove('btn-outline-primary');
-      document.getElementById('btn' + selectedStateParam).classList.add('btn-primary');
-
-      // Update the selected state
-      this.selectedState = selectedStateParam;
-    };
-
   },
 
   performSearch() {
@@ -108,10 +80,10 @@ export const searchJS = {
     if (query) {
       params.append('q', query);
     }
-    if (this.selectedDataType && this.selectedDataType !== 'ALL') {
+    if (this.selectedDataType && this.selectedDataType !== 'all') {
       params.append('data_type', this.selectedDataType);
     }
-    if (this.selectedState && this.selectedState !== 'ALL') {
+    if (this.selectedState && this.selectedState !== 'all') {
       params.append('state', this.selectedState);
     }
     if (startDateInput) {
@@ -141,10 +113,14 @@ export const searchJS = {
     // Parse query parameters from the URL.
     const params = new URLSearchParams(window.location.search);
     const query = params.get('q') || '';
-    const dataType = params.get('data_type') || 'ALL';
-    const state = params.get('state') || 'ALL';
+    const dataType = params.get('data_type') || 'all';
+    const state = params.get('state') || 'all';
     const startDate = params.get('start_date') || '';
     const endDate = params.get('end_date') || '';
+    let limit = parseInt(params.get('limit')) || 10;
+
+    // Initialize the "More" button.
+    this.initializeMoreButton();
 
     // Update the search input and filters on the page.
     const searchInput = document.getElementById('searchInput');
@@ -152,18 +128,31 @@ export const searchJS = {
       searchInput.value = query;
     }
 
+    // Style the data type select.
+    document.querySelectorAll('#sidebar .filter-item').forEach(item => {
+      item.classList.remove('active-filter'); // Clear any active filter
+      const itemType = item.getAttribute('data-type');
+      if (itemType === dataType) {
+        item.classList.add('active-filter'); // Set the active filter
+      }
+    });
+    const filterSelect = document.getElementById('filter-select');
+    if (filterSelect) {
+      filterSelect.value = dataType;
+    }
+
     // Update data type selection
-    window.selectDataType(dataType);
+    this.selectDataType(dataType);
 
     // Update state selection
-    window.selectState(state);
+    this.selectState(state);
 
-    // TODO: Add functionality to data type selection.
-    document.getElementById('filter-select').addEventListener('change', function() {
-      const selectedFilter = this.value;
-      console.log("Filter selected: ", selectedFilter);
-      // window.location.href = `/search?filter=${selectedFilter}`;
-    });
+    // Add functionality to data type selection.
+    // document.getElementById('filter-select').addEventListener('change', function() {
+    //   const selectedFilter = this.value;
+    //   console.log("Filter selected: ", selectedFilter);
+    //   // window.location.href = `/search?filter=${selectedFilter}`;
+    // });
 
     // Update date inputs
     const startDateInput = document.getElementById('dateTestedStart');
@@ -176,13 +165,11 @@ export const searchJS = {
     }
 
     // Build the search parameters for the API
-    const searchParams = {
-      q: query,
-    };
-    if (dataType && dataType !== 'ALL') {
+    const searchParams = {q: query, limit: limit};
+    if (dataType && dataType !== 'all') {
       searchParams['data_type'] = dataType;
     }
-    if (state && state !== 'ALL') {
+    if (state && state !== 'all') {
       searchParams['state'] = state;
     }
     if (startDate) {
@@ -192,19 +179,38 @@ export const searchJS = {
       searchParams['end_date'] = endDate;
     }
 
-    // Call the API
-    authRequest('/api/search', searchParams)
-      .then(response => {
-        // Display the search results.
-        this.displaySearchResults(response.data);
-        // DEV:
-        // this.displaySearchResults([]);
-      })
-      .catch(error => {
-        console.error('Error fetching search results:', error);
-        // Handle error, show error message to the user
-      });
+    // Listen for the usr.
+    onAuthChange(async user => {
+      
+      // Only perform search if the user is authenticated.
+      if (user) {
+        authRequest('/api/search', searchParams)
+          .then(response => {
+            // Display the search results.
+            this.displaySearchResults(response.data, limit);
+          })
+          .catch(error => {
+            console.error('Error fetching search results:', error);
+            // Handle error, show error message to the user
+          });
+      }
 
+      // TODO: Setup the paywall for non-authenticated users.
+
+    });
+
+  },
+
+  initializeMoreButton() {
+    /* Initialize the "More" button. */
+    document.getElementById('more-button').addEventListener('click', function() {
+      const params = new URLSearchParams(window.location.search);
+      let currentLimit = parseInt(params.get('limit')) || 10;
+      currentLimit += 10;
+      params.set('limit', currentLimit);
+      window.history.pushState({}, '', '?' + params.toString());
+      cannlytics.search.initializeSearchResults();
+    });
   },
 
   initializeReportButtons() {
@@ -216,18 +222,20 @@ export const searchJS = {
         event.preventDefault();
         const reportModal = new Modal(document.getElementById('reportModal'));
         reportModal.show();
-        const resultId = this.closest('.card').dataset.id;
-        document.getElementById('submitReport').dataset.id = resultId;
+        const resultId = this.closest('.card').dataset.hash;
+        document.getElementById('submitReport').dataset.hash = resultId;
       });
     });
   
     // Handle the form submission
     document.getElementById('submitReport').addEventListener('click', function() {
       const reportReason = document.querySelector('input[name="reason"]:checked').value;
-      const reportId = this.dataset.id;
+      const details = document.getElementById('reportDetails').value;
+      const reportId = this.dataset.hash;
       const data = {
         id: reportId,
-        reason: reportReason
+        reason: reportReason,
+        details: details,
       };
       authRequest('/src/report', { data })
         .then(response => {
@@ -263,16 +271,28 @@ export const searchJS = {
     document.querySelectorAll('.star-btn').forEach(button => {
       button.addEventListener('click', function() {
         const icon = this.querySelector('.star-icon');
-        if (this.dataset.starred === "false") {
+        // FIXME: `observationId` is 'undefined'.
+        const observationId = this.dataset.hash;
+        const dataType = this.dataset.type;
+        const isStarred = this.dataset.starred === "true";
+        
+        if (!isStarred) {
+          // User is starring the observation
           icon.classList.remove('bi-star');
           icon.classList.add('bi-star-fill');
           this.dataset.starred = "true";
-          // FIXME: Update the database to mark as starred.
+  
+          // Send star request to server
+          starObservation(observationId, true, dataType);
+  
         } else {
+          // User is unstarring the observation
           icon.classList.remove('bi-star-fill');
           icon.classList.add('bi-star');
           this.dataset.starred = "false";
-          // FIXME: Update the database to mark as unstarred.
+  
+          // Send unstar request to server
+          starObservation(observationId, false, dataType);
         }
       });
     });
@@ -283,45 +303,125 @@ export const searchJS = {
     document.querySelectorAll('.upvote').forEach(button => {
       button.addEventListener('click', function() {
         const img = this.querySelector('.arrow-icon');
-        if (this.dataset.voted === "false") {
+        const observationId = this.dataset.hash;
+        const dataType = this.dataset.type;
+        const isVoted = this.dataset.voted === "true";
+        const ratingElement = this.nextElementSibling.querySelector('.fw-bold');
+        let currentRating = parseInt(ratingElement.textContent, 10);
+  
+        if (!isVoted) {
+          // User is upvoting
           img.src = '/static/website/images/ai-icons/up-arrow-filled-dark.svg';
           this.dataset.voted = "true";
           this.nextElementSibling.nextElementSibling.disabled = true;
+          ratingElement.textContent = currentRating + 1; // Increment vote count in UI
+  
+          // Send upvote request to server
+          voteObservation(observationId, 'up', dataType);
         } else {
+          // User is removing the upvote
           img.src = '/static/website/images/ai-icons/up-arrow.svg';
           this.dataset.voted = "false";
           this.nextElementSibling.nextElementSibling.disabled = false;
+          ratingElement.textContent = currentRating - 1; // Decrement vote count in UI
+  
+          // Remove vote request to server
+          voteObservation(observationId, null, dataType);
         }
-        // FIXME: Update the database with the vote.
       });
     });
+  
     document.querySelectorAll('.downvote').forEach(button => {
       button.addEventListener('click', function() {
         const img = this.querySelector('.arrow-icon');
-        if (this.dataset.voted === "false") {
+        const observationId = this.dataset.hash;
+        const dataType = this.dataset.type;
+        const isVoted = this.dataset.voted === "true";
+        const ratingElement = this.previousElementSibling.querySelector('.fw-bold');
+        let currentRating = parseInt(ratingElement.textContent, 10);
+  
+        if (!isVoted) {
+          // User is downvoting
           img.src = '/static/website/images/ai-icons/down-arrow-filled-dark.svg';
           this.dataset.voted = "true";
           this.previousElementSibling.previousElementSibling.disabled = true;
+          ratingElement.textContent = currentRating - 1; // Decrement vote count in UI
+  
+          // Send downvote request to server
+          voteObservation(observationId, 'down', dataType);
         } else {
+          // User is removing the downvote
           img.src = '/static/website/images/ai-icons/down-arrow.svg';
           this.dataset.voted = "false";
           this.previousElementSibling.previousElementSibling.disabled = false;
+          ratingElement.textContent = currentRating + 1; // Increment vote count in UI
+  
+          // Remove vote request to server
+          voteObservation(observationId, null, dataType);
         }
-        // FIXME: Update the database with the vote.
       });
     });
   },
 
-  displaySearchResults(data) {
+  async fetchUserStarsAndVotes(observations) {
+    /* Fetch the stars and votes for the current user. */
+    const user = getCurrentUser();
+    const uid = user.uid;
+
+    // Loop through the observations and fetch stars/votes.
+    for (let obs of observations) {
+      const starPath = `users/${uid}/stars/${obs.id}`;
+      const votePath = `users/${uid}/votes/${obs.id}`;
+      
+      // Fetch stars.
+      const starData = await getDocument(starPath);
+      if (Object.keys(starData).length > 0) {
+        // Star exists, mark the star button as active.
+        const starButton = document.querySelector(`.star-btn[data-hash="${obs.id}"]`);
+        if (starButton) {
+          const icon = starButton.querySelector('.star-icon');
+          starButton.dataset.starred = "true";
+          icon.classList.remove('bi-star');
+          icon.classList.add('bi-star-fill');
+        }
+      }
+
+      // Fetch votes.
+      const voteData = await getDocument(votePath);
+      if (Object.keys(voteData).length > 0) {
+        const voteType = voteData.vote_type;
+        const upvoteButton = document.querySelector(`.upvote[data-hash="${obs.id}"]`);
+        const downvoteButton = document.querySelector(`.downvote[data-hash="${obs.id}"]`);
+        if (voteType === 'up' && upvoteButton) {
+          upvoteButton.dataset.voted = "true";
+          upvoteButton.querySelector('.arrow-icon').src = '/static/website/images/ai-icons/up-arrow-filled-dark.svg';
+          downvoteButton.disabled = true; // Disable opposite vote button
+        } else if (voteType === 'down' && downvoteButton) {
+          downvoteButton.dataset.voted = "true";
+          downvoteButton.querySelector('.arrow-icon').src = '/static/website/images/ai-icons/down-arrow-filled-dark.svg';
+          upvoteButton.disabled = true; // Disable opposite vote button
+        }
+      }
+    }
+  },
+
+  displaySearchResults(data, limit) {
     /* Display the search results on the page. */
-    console.log('DATA:' , data);
+    console.log('DATA:', data);
     const resultsContainer = document.getElementById('search-results');
     resultsContainer.innerHTML = '';
-    if (data && data.length > 0) {
-      data.forEach(result => {
+    const filteredData = this.selectedDataType === 'all' ? data : data.filter(result => result.data_type === this.selectedDataType);
+    const observationList = [];
+    if (filteredData && filteredData.length > 0) {
+      filteredData.forEach(result => {
         const resultCard = this.formatSearchResultRow(result);
         resultsContainer.innerHTML += resultCard;
+        observationList.push({
+          id: result.id,
+          data_type: result.data_type
+        });
       });
+      this.fetchUserStarsAndVotes(observationList);
     } else {
       resultsContainer.innerHTML = '<p class="sans-serif">No results found.</p>';
     }
@@ -329,6 +429,13 @@ export const searchJS = {
     this.initializeStarButtons();
     this.initializeShareButtons();
     this.initializeReportButtons();
+    updateCounts(data);
+    // const moreButtonContainer = document.getElementById('more-button-container');
+    // if (data.length === limit) {
+    //   moreButtonContainer.classList.remove('d-none');
+    // } else {
+    //   moreButtonContainer.classList.add('d-none');
+    // }
   },
 
   formatSearchResultRow(result) {
@@ -357,7 +464,7 @@ export const searchJS = {
           </div>
           <div class="d-flex flex-column justify-content-between align-items-center">
             <div class="d-flex">
-              <button class="btn btn-outline-secondary btn-sm me-2 star-btn" data-starred="false">
+              <button class="btn btn-outline-secondary btn-sm me-2 star-btn" data-starred="false" data-hash="${result.id}" data-type="${result.data_type}">
                 <i class="bi bi-star star-icon"></i>
               </button>
               <div class="dropdown">
@@ -379,11 +486,11 @@ export const searchJS = {
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <button class="btn btn-sm upvote" data-voted="false">
+              <button class="btn btn-sm upvote" data-voted="false" data-hash="${result.id}" data-type="${result.data_type}">
                 <img src="/static/website/images/ai-icons/up-arrow.svg" alt="Upvote" class="arrow-icon">
               </button>
               <span class="mx-1"><small class="fw-bold text-dark">${result.rating}</small></span>
-              <button class="btn btn-sm downvote" data-voted="false">
+              <button class="btn btn-sm downvote" data-voted="false" data-hash="${result.id}" data-type="${result.data_type}">
                 <img src="/static/website/images/ai-icons/down-arrow.svg" alt="Downvote" class="arrow-icon">
               </button>
             </div>
@@ -392,12 +499,109 @@ export const searchJS = {
       </div>
     </div>
   `;
+  },
   // Optional: Add save button.
   // <li class="mb-0"><a class="dropdown-item py-1 fw-normal" href="#"><small>💾 Save</small></a></li>
   // <li class="mb-0"><hr class="dropdown-divider my-0"></li>
+
+  filterByDataType(dataType) {
+    /* Filter the search results by data type. */
+    const currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set('data_type', dataType);
+    window.location.href = currentUrl.toString();
   },
 
-  // TODO: reportObservation
+  selectDataType(selectedType) {
+    /* Select a data type. */
+    // Reset all buttons to 'btn-outline-primary'
+    console.log('Selected type:', selectedType);
+    document.querySelectorAll('.btn-group[data-group="data-type"] .btn').forEach((btn) => {
+      btn.classList.remove('btn-primary');
+      btn.classList.add('btn-outline-primary');
+    });
 
+    // Set the selected button to 'btn-primary'
+    document.getElementById('btn-' + selectedType).classList.remove('btn-outline-primary');
+    document.getElementById('btn-' + selectedType).classList.add('btn-primary');
+
+    // Update the selected data type
+    this.selectedDataType = selectedType;
+  },
+
+  selectState(selectedStateParam) {
+    /* Select a state. */
+    console.log('STATE:', selectedStateParam);
+    document.querySelectorAll('.btn-group[data-group="state"] .btn').forEach((btn) => {
+      btn.classList.remove('btn-primary');
+      btn.classList.add('btn-outline-primary');
+    });
+    document.getElementById('btn-' + selectedStateParam).classList.remove('btn-outline-primary');
+    document.getElementById('btn-' + selectedStateParam).classList.add('btn-primary');
+    this.selectedState = selectedStateParam;
+  },
 
 };
+
+async function voteObservation(observationId, voteType, dataType) {
+  /* Vote on an observation. */
+  const data = {
+    id: observationId,
+    vote: voteType,
+    type: dataType
+  };
+  try {
+    const response = await authRequest('/src/vote', data);
+    if (response.status === 'success') {
+      console.log(`Observation ${observationId} in ${dataType} collection voted as ${voteType}!`);
+    } else {
+      console.error('Vote failed:', response.error);
+    }
+  } catch (err) {
+    console.error('Error voting on observation:', err);
+  }
+}
+
+async function starObservation(observationId, isStarred, dataType) {
+  /* Star or unstar an observation. */
+  const data = {
+    id: observationId,
+    star: isStarred,
+    data_type: dataType
+  };
+  try {
+    const response = await authRequest('/src/star', data);
+    if (response.status === 'success') {
+      console.log(`Observation ${observationId} in ${dataType} collection star status updated!`);
+    } else {
+      console.error('Star operation failed:', response.error);
+    }
+  } catch (err) {
+    console.error('Error starring/un-starring observation:', err);
+  }
+}
+
+function updateCounts(data) {
+  /* Update the badge counts in the sidebar. */
+  const counts = {
+    all: data.length,
+    coas: data.filter(item => item.data_type === 'coas').length,
+    results: data.filter(item => item.data_type === 'results').length,
+    strains: data.filter(item => item.data_type === 'strains').length,
+    organizations: data.filter(item => item.data_type === 'organizations').length,
+    compounds: data.filter(item => item.data_type === 'compounds').length,
+  };
+  updateBadge('[data-type="all"] .badge', counts.all);
+  updateBadge('[data-type="coas"] .badge', counts.coas);
+  updateBadge('[data-type="results"] .badge', counts.results);
+  updateBadge('[data-type="strains"] .badge', counts.strains);
+  updateBadge('[data-type="organizations"] .badge', counts.organizations);
+  updateBadge('[data-type="compounds"] .badge', counts.compounds);
+}
+
+function updateBadge(selector, count) {
+  /* Update the badge count in the sidebar. */
+  const element = document.querySelector(selector);
+  if (element) {
+    element.textContent = count;
+  }
+}

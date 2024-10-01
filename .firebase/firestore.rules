@@ -235,6 +235,14 @@ service cloud.firestore {
       allow read: if request.auth != null && request.auth.uid == userId;
       allow write: if false;
     }
+    match /users/{userId}/stars/{document=**} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
+    match /users/{userId}/votes/{document=**} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
 
     // Allow users to read their own downloads.
     match /users/{userId}/standardized_downloads/{document=**} {

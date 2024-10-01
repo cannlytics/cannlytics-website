@@ -1,7 +1,7 @@
 <!--
   Search Results Page | Cannlytics
   Created: 9/28/2024
-  Updated: 9/29/2024
+  Updated: 10/1/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -48,18 +48,20 @@
       </div>
     
     </div>
-    <div
-      id="search-results"
-      class="markdown sans-serif-text fs-6 lh-md row pt-4"
-    >
+    <div style="min-height: 100vh;">
+      <div
+        id="search-results"
+        class="markdown sans-serif-text fs-6 lh-md row pt-4"
+      >
+      </div>
     </div>
 
-    <!-- Optional: More button -->
-    {% comment %} <div class="d-flex justify-content-center">
-      <button class="btn btn-outline-dark rounded-pill px-4">
+    <!-- More button -->
+    <div id="more-button-container" class="d-flex d-none justify-content-center mt-3 mb-5">
+      <button id="more-button" class="btn btn-outline-secondary rounded-pill px-4">
         More
       </button>
-    </div> {% endcomment %}
+    </div>
 
     <!-- Optional: Pagination -->
 

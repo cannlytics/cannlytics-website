@@ -20,6 +20,7 @@ from website.views import (
     payments,
     views,
     contact,
+    stats,
 )
 
 
@@ -35,6 +36,8 @@ urlpatterns = [
         path('payments/orders', payments.create_order, name='create_order'),
         path('payments/orders/<str:order_id>/capture', payments.capture_order, name='capture_order'),
         path('report', contact.report_data, name='report_data'),
+        path('star', stats.star_observation, name='star_observation'),
+        path('vote', stats.vote_observation, name='vote_observation'),
     ])),
     path('donate', views.donate, name='donate'),
     path('meetup', views.meetup, name='meetup'),

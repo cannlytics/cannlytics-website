@@ -128,6 +128,7 @@ def api_search(request: Request):
     # 4) Format the search results.
     docs = [
         {
+            'id': 'test-coa',
             'title': 'Sample COA Result',
             'user_name': 'keeganskeate',
             'updated_on': 'Sep 29, 2024',
@@ -135,9 +136,10 @@ def api_search(request: Request):
             'data_type': 'coas',
             'image': 'https://via.placeholder.com/100',
             'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 10
+            'rating': 0
         },
         {
+            'id': 'test-strain',
             'title': 'Cannabis Strain: OG Kush',
             'user_name': 'john_doe',
             'updated_on': 'Sep 25, 2024',
@@ -145,187 +147,7 @@ def api_search(request: Request):
             'data_type': 'strains',
             'image': 'https://via.placeholder.com/100',
             'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 25
-        },
-        {
-            'title': 'Sample COA Result',
-            'user_name': 'keeganskeate',
-            'updated_on': 'Sep 29, 2024',
-            'link': '/coa/sample',
-            'data_type': 'coas',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 10
-        },
-        {
-            'title': 'Cannabis Strain: OG Kush',
-            'user_name': 'john_doe',
-            'updated_on': 'Sep 25, 2024',
-            'link': '/strain/og-kush',
-            'data_type': 'strains',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 25
-        },
-        {
-            'title': 'Sample COA Result',
-            'user_name': 'keeganskeate',
-            'updated_on': 'Sep 29, 2024',
-            'link': '/coa/sample',
-            'data_type': 'coas',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 10
-        },
-        {
-            'title': 'Cannabis Strain: OG Kush',
-            'user_name': 'john_doe',
-            'updated_on': 'Sep 25, 2024',
-            'link': '/strain/og-kush',
-            'data_type': 'strains',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 25
-        },
-        {
-            'title': 'Sample COA Result',
-            'user_name': 'keeganskeate',
-            'updated_on': 'Sep 29, 2024',
-            'link': '/coa/sample',
-            'data_type': 'coas',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 10
-        },
-        {
-            'title': 'Cannabis Strain: OG Kush',
-            'user_name': 'john_doe',
-            'updated_on': 'Sep 25, 2024',
-            'link': '/strain/og-kush',
-            'data_type': 'strains',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 25
-        },
-        {
-            'title': 'Sample COA Result',
-            'user_name': 'keeganskeate',
-            'updated_on': 'Sep 29, 2024',
-            'link': '/coa/sample',
-            'data_type': 'coas',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 10
-        },
-        {
-            'title': 'Cannabis Strain: OG Kush',
-            'user_name': 'john_doe',
-            'updated_on': 'Sep 25, 2024',
-            'link': '/strain/og-kush',
-            'data_type': 'strains',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 25
-        },
-        {
-            'title': 'Sample COA Result',
-            'user_name': 'keeganskeate',
-            'updated_on': 'Sep 29, 2024',
-            'link': '/coa/sample',
-            'data_type': 'coas',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 10
-        },
-        {
-            'title': 'Cannabis Strain: OG Kush',
-            'user_name': 'john_doe',
-            'updated_on': 'Sep 25, 2024',
-            'link': '/strain/og-kush',
-            'data_type': 'strains',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 25
-        },
-        {
-            'title': 'Sample COA Result',
-            'user_name': 'keeganskeate',
-            'updated_on': 'Sep 29, 2024',
-            'link': '/coa/sample',
-            'data_type': 'coas',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 10
-        },
-        {
-            'title': 'Cannabis Strain: OG Kush',
-            'user_name': 'john_doe',
-            'updated_on': 'Sep 25, 2024',
-            'link': '/strain/og-kush',
-            'data_type': 'strains',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 25
-        },
-        {
-            'title': 'Sample COA Result',
-            'user_name': 'keeganskeate',
-            'updated_on': 'Sep 29, 2024',
-            'link': '/coa/sample',
-            'data_type': 'coas',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 10
-        },
-        {
-            'title': 'Cannabis Strain: OG Kush',
-            'user_name': 'john_doe',
-            'updated_on': 'Sep 25, 2024',
-            'link': '/strain/og-kush',
-            'data_type': 'strains',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 25
-        },
-        {
-            'title': 'Sample COA Result',
-            'user_name': 'keeganskeate',
-            'updated_on': 'Sep 29, 2024',
-            'link': '/coa/sample',
-            'data_type': 'coas',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 10
-        },
-        {
-            'title': 'Cannabis Strain: OG Kush',
-            'user_name': 'john_doe',
-            'updated_on': 'Sep 25, 2024',
-            'link': '/strain/og-kush',
-            'data_type': 'strains',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 25
-        },
-        {
-            'title': 'Sample COA Result',
-            'user_name': 'keeganskeate',
-            'updated_on': 'Sep 29, 2024',
-            'link': '/coa/sample',
-            'data_type': 'coas',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 10
-        },
-        {
-            'title': 'Cannabis Strain: OG Kush',
-            'user_name': 'john_doe',
-            'updated_on': 'Sep 25, 2024',
-            'link': '/strain/og-kush',
-            'data_type': 'strains',
-            'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 25
+            'rating': 0
         },
     ]
 
