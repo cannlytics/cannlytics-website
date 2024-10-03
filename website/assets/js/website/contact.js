@@ -12,6 +12,10 @@ import { getCookie, getUrlParameter } from '../utils.js';
 export const contact = {
 
   cannedMessages: {
+    api: {
+      message: 'I need support using the Cannlytics API.',
+      subject: 'Using the Cannlytics API',
+    },
     algorithms: {
       message: 'I am seeking help with a cannabis-related algorithm.',
       subject: 'Seeking Algorithm Help',
@@ -96,7 +100,7 @@ export const contact = {
      */
     const topic = selectedTopic || getUrlParameter('topic');
     if (topic) {
-      const cannedMessage = this.cannedMessages[topic];
+      const cannedMessage = this.cannedMessages[topic] || this.cannedMessages.general;
       document.getElementById('message_input').value = cannedMessage.message;
       // document.getElementById('subject_input').value = cannedMessage.subject;
       document.getElementById('topic_input').value = topic;

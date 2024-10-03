@@ -195,6 +195,16 @@ $gradients: (
       'end-color': #e5a119,
     ),
   ),
+  'bg-gradient-extra': (
+  'light': (
+    'start-color': #2e8bcb, // A calming, scientific blue
+    'end-color': #36c5b8,   // A bright, clean teal
+  ),
+  'hover': (
+    'start-color': #2477a3, // Darker blue for hover
+    'end-color': #2fb39f,   // Darker teal for hover
+  ),
+),
 );
 
 // Generate text gradients

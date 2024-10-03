@@ -1,14 +1,14 @@
 <!--
   Subscription Management Page | Cannlytics Website
   Created: 11/16/2021
-  Updated: 9/23/2024
+  Updated: 10/2/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}Subscription | Cannlytics{% endblock %}
 {% block dashboard_css %}
 
-  <!-- Minor Style Adjustments -->
+  <!-- Subscriptions Style -->
   <style>
     .tooltip-inner {
       text-align: left;
@@ -86,7 +86,9 @@
             <!-- COA Parser -->
             <div class="tab-pane fade show active" id="list-coa" role="tabpanel" aria-labelledby="list-coa-list">
               <h3 class="mt-0 sans-serif">COA Parser</h3>
-              <p class="sans-serif-text">Certificates of analysis (COAs) are abundant for cultivators, processors, retailers, and consumers too, but the data is often locked away. Rich, valuable laboratory data so close, yet so far away! User our COA parser, <b>CoADoc</b> to get these data points in your hands by parsing PDFs and URLs and cleanly returning the data to you.</p>
+              <p class="sans-serif-text">Certificates of analysis (COAs) are abundant for cultivators, processors, retailers, and consumers too, but the data is often locked away. Rich, valuable laboratory data so close, yet so far away! Use our COA parser,
+                <a href="https://github.com/cannlytics/cannlytics/tree/main/cannlytics/data/coas">CoADoc</a>,
+              to get these data points in your hands by parsing PDFs and URLs and cleanly returning the data to you.</p>
             </div>
       
             <!-- Receipt Parser -->
@@ -115,8 +117,11 @@
 
       <!-- Tiers -->
       <h1 class="mt-5 pt-4 text-dark sans-serif">Pricing</h1>
-      <p class="mt-2 mb-0 sans-serif" style="max-width:560px;">
-        We want it to be affordable for you to access all of the cannabis data that you need.
+      <p class="markdown mt-2 mb-0 sans-serif" style="max-width:560px;">
+        We want cannabis data and analytics to be affordable for everyone.
+        Our monthly data and API subscription is designed for you to get all
+        of the cannabis data that you need. If you need more or less, then please
+        <a href="{% url 'page' page='support' %}?topic=custom">contact us</a>.
       </p>
       <div class="row row-cols-1 row-cols-md-3 mb-3 mt-3 text-center">
         {% for item in subscription_plans %}
@@ -124,7 +129,7 @@
             <div id="subscription-card-{{ item.id }}" class="subscription-card card mb-4 shadow-sm">
               <div class="card-header bg-gradient-{{ item.color }}">
                 <h4 class="fw-bold text-white my-0 sans-serif">
-                  {{ item.name }}
+                  Data &amp; API Subscription
                 </h4>
               </div>
               <div class="card-body bg-transparent d-flex flex-column justify-content-between align-items-center">
@@ -147,7 +152,7 @@
                     class="subscribe-button btn bg-gradient-{{ item.color }} text-white"
                     href="{% url 'section' page='account' section='checkout' %}?subscription='{{ item.id }}'"
                   >
-                    Get {{ item.name }}
+                    Subscribe
                   </a>
                   <button
                     id="cancel-button-{{ item.id }}"
@@ -171,13 +176,43 @@
 
     <!-- Future work: Usage -->
 
+    <!-- Consulting -->
+    <div class="container mb-5 mt-5 pt-5">
+      <div style="max-width:560px;">
+        <svg class="pt-3 pe-3" style="float:left;width:125px;height:125px;">
+          <use href="{% static "website/images/emojies/toolbox.svg" %}#toolbox-emoji"></use>
+        </svg>
+        <h2 class="pt-4 text-dark sans-serif">Consulting &amp; Development</h2>
+        <p class="mt-2">
+          <small class="sans-serif-text">
+          You can employ the Cannlytics team to help you solve any problems at hand.
+          In general, the Cannlytics team is available for
+          <strong>$1,850 for an approximately one month job</strong>,          
+          <strong>$500 for a one week job</strong>,
+          or for <strong>$42 per hour</strong>.
+          We are always happy to talk, let you know how long a job
+          will take us, and help you find your best-possible solution.
+          </small>
+        </p>
+        <p class="text-start mt-3">
+          <a
+            class="btn bg-gradient-orange text-white sans-serif"
+            href="{% url 'page' page='support' %}?topic=custom"
+          >
+            Request a job
+            <i class="bi bi-arrow-right"></i>
+          </a>
+        </p>
+      </div>
+    </div>
+
     <!-- Historic Lab Result Migration -->
-    <div class="container mb-5 mt-5">
+    <div class="container mb-5 mt-5 pt-5">
       <div class="py-5" style="max-width:560px;">
         <svg class="pt-3 pe-3" style="float:left;width:125px;height:125px;">
           <use href="{% static "website/images/emojies/sparkler.svg" %}#sparkler-emoji"></use>
         </svg>
-        <h2 class="pt-4 text-dark serif-text">Standardize your data!</h2>
+        <h2 class="pt-4 text-dark sans-serif">Standardize your data!</h2>
         <p class="mt-2">
           <small class="sans-serif-text">
             Your laboratory data are valuable to you and your clients,
@@ -199,33 +234,6 @@
       </div>
     </div>
 
-    <!-- Consulting -->
-    <div class="container mb-5 mt-3 pt-5">
-      <div style="max-width:560px;">
-        <svg class="pt-3 pe-3" style="float:left;width:125px;height:125px;">
-          <use href="{% static "website/images/emojies/toolbox.svg" %}#toolbox-emoji"></use>
-        </svg>
-        <h2 class="pt-4 text-dark serif-text">Consulting &amp; Development</h2>
-        <p class="mt-2">
-          <small class="sans-serif-text">
-          You can employ the Cannlytics team to help you solve any problems at hand.
-          In general, the Cannlytics team is available for <strong>$500 per significant
-          feature</strong> or for <strong>$42 per hour</strong>.
-          We are always happy to talk and help you find your best-possible solution.
-          </small>
-        </p>
-        <p class="text-start mt-3">
-          <a
-            class="btn bg-gradient-orange text-white sans-serif"
-            href="{% url 'page' page='support' %}?topic=custom"
-          >
-            Request a job
-            <i class="bi bi-arrow-right"></i>
-          </a>
-        </p>
-      </div>
-    </div>
-
     <!-- Metrc support -->
     <div class="my-5 pt-5">
       {% include "pages/homepage/components/metrc_state_list.html" with verifications=verifications only %}
@@ -234,19 +242,18 @@
   </section>
 
   <!-- Cancel subscription dialog -->
-  <!-- TODO: The font style may need to be fixed in this modal -->
   <div id="cancel-subscription-dialog" class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Cancel your subscription?</h4>
+          <h4 class="modal-title sans-serif text-dark">Cancel your subscription?</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 
         <!-- Modal body -->
-        <div class="modal-body">
+        <div class="modal-body text-dark">
           Are you sure that you want to cancel your subscription?
           If you do decide to cancel, then your tokens will still be valid
           until the end of your billing period.
@@ -264,7 +271,7 @@
           </button>
           <button
             type="button"
-            class="btn btn-danger"
+            class="btn btn-warning"
             onclick="cannlytics.payments.cancelSubscription()"
           >
             Yes, cancel my subscription
@@ -277,8 +284,8 @@
 
 {% endblock %}
 
-<!-- JavaScript -->
 {% block page_js %}
+<!-- Subscriptions JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 

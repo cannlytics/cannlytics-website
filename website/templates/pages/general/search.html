@@ -1,7 +1,7 @@
 <!--
   Search Results Page | Cannlytics
   Created: 9/28/2024
-  Updated: 10/1/2024
+  Updated: 10/2/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -12,10 +12,20 @@
   <!-- Sidebar -->
   {% include "components/search/search_sidebar.html" %}
 
+  <!-- Promo / Sign-Up Section -->
+  <div
+    id="subscribe-content"
+    class="flex-grow-1 d-flex flex-column ps-3 pt-3"
+    style="display: none;"
+  >
+    {% include "components/placeholders/sign_up_placeholder.html" %}
+    <footer>{% include "components/layout/footer.html" %}</footer>
+  </div>
+
   <!-- Search results -->
   <div
     id="search-content"
-    class="flex-grow-1 d-flex flex-column ps-3 pt-3"
+    class="flex-grow-1 d-flex d-none flex-column ps-3 pt-3"
   >
     <div class="d-flex justify-content-between">
       <h4 class="sans-serif text-dark fw-normal mb-0">
@@ -66,9 +76,7 @@
     <!-- Optional: Pagination -->
 
      <!-- Custom Footer -->
-    <footer>
-      {% include "components/layout/footer.html" %}
-    </footer>
+    <footer>{% include "components/layout/footer.html" %}</footer>
 
     <!-- Report dialog -->
     {% include "components/dialogs/report_dialog.html" %}

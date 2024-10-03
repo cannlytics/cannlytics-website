@@ -1,18 +1,21 @@
 <!--
   No-user Placeholder | Cannlytics Website
   Created: 6/20/2023
-  Updated: 9/22/2024
+  Updated: 10/2/2024
 -->
 {% load static %}
 
 <!-- Sign In Prompt -->
-<section class="no-user-only visually-hidden container mb-2 mt-5 d-flex justify-content-center">
+<section class="no-user-only visually-hidden container d-flex justify-content-center my-5">
   <div class="markdown py-5" style="max-width:560px;">
+    {% comment %}
+    <!-- FIXME: Better image -->
     <svg class="pe-3 pt-3" style="float:left;width:125px;height:125px;">
       <use href="{% static "website/images/emojies/newspaper.svg" %}#newspaper-emoji"></use>
     </svg>
-    <h1 class="pt-4 text-dark">{{ title }}</h1>
-    <p class="mt-2">
+    {% endcomment %}
+    <h2 class="pt-4 text-dark sans-serif mb-0">{{ title }}</h2>
+    <p class="mt-2 sans-serif-text fs-5">
       {{ description }}
     </p>
     <div class="d-flex justify-content-center mt-3">

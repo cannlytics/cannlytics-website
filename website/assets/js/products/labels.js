@@ -298,9 +298,7 @@ export const labelsJS = {
       rowClass: 'app-action',
       rowHeight: this.rowHeight,
       selection: {'mode': 'multiRow', 'enableClickSelection': true},
-      // rowSelection: 'multiple',
       singleClickEdit: true,
-      // suppressRowClickSelection: true,
       onGridReady: event => theme.toggleTheme(theme.getTheme()),
       onRowClicked: onRowClicked,
     };

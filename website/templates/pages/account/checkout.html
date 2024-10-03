@@ -1,7 +1,7 @@
 <!--
   Subscriptions checkout | Cannlytics Website
   Created: 6/21/2023
-  Updated: 6/23/2023
+  Updated: 10/2/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% block title %}Subscriptions checkout | Cannlytics{% endblock %}
@@ -17,14 +17,15 @@
 
 {% endblock %}
 {% block dashboard %}
+<section class="container">
 
-  <!-- Header -->
-  {% include "components/layout/hero.html" with
-    title="Cannlytics Subscription Checkout"
-    description="Get access to bleeding-edge AI tools to give yourself a competitive edge."
-    background_image="https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/assets%2Fimages%2Fai%2Fcannbot-ai.png?alt=media&token=3f2b4dcd-d661-404e-b417-c38768f1cb44"
-    background_position="top left"
-    only
+  <!-- Breadcrumbs -->
+  {% include "components/layout/breadcrumbs.html" with
+    base_page="Account"
+    base_page_url="/account"
+    nested_page="Subscriptions"
+    nested_page_url="/account/subscriptions"
+    current_page="Checkout"
   %}
 
   <!-- Sign In Prompt -->
@@ -34,62 +35,27 @@
   %}
 
   <!-- Checkout -->
-  <div id="checkout" class="requires-auth container mb-2">
-
-    <!-- Breadcrumbs -->
-    <div class="d-flex mt-4 markdown">
-      <nav
-        style="--bs-breadcrumb-divider: '>';"
-        aria-label="breadcrumb"
-      >
-        <ol class="breadcrumb bg-transparent p-0 mb-0">
-          <li class="breadcrumb-item fs-6 lh-sm">
-            <a
-              class="text-dark serif action"
-              href="{% url 'page' page='account' %}"
-            >
-              Account
-            </a>
-          </li>
-          <li class="breadcrumb-item fs-6 lh-sm">
-            <a
-              class="text-dark serif action"
-              href="{% url 'section' page='account' section='subscriptions' %}"
-            >
-              Subscriptions
-            </a>
-          </li>
-          <li class="breadcrumb-item active fs-6 lh-sm text-dark serif" aria-current="page">
-            Checkout
-          </li>
-        </ol>
-        <div>
-      </div>
-      </nav>
-    </div>
+  <div id="checkout" class="requires-auth mb-5 pt-3 pb-5">
 
     <!-- Cart -->
-    <div class="requires-auth col-12 col-md-8 col-lg-8 mt-5">
-      <h4 class="d-flex justify-content-between align-items-center mb-3">
-        <span class="serif">Your cart</span>
+    <div class="requires-auth col-12 col-md-8 col-lg-6">
+      <h2 class="sans-serif text-dark d-flex justify-content-between align-items-center mb-3">
+        Your cart
       </h4>
       <ul class="list-group mb-3">
         <li class="list-group-item d-flex justify-content-between lh-sm">
 
           <!-- Item -->
           <div class="markdown">
-            <img src="https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/assets%2Fimages%2Femojies%2Fopenmoji%2Fai-coin.svg?alt=media&token=98a9cfd7-94a0-46cb-a59e-f7ee3c1b6dbf"
-                style="float:left;width:24px;height:24px;"
-                class=""
-              />
             <div class="d-flex">
-              <div id="order-title" class="fs-5 serif my-0 p-0 flex-grow-1">
-                Cannlytics AI Subscription - <span id="subscription_name" class="serif" style="text-transform: capitalize;"></span>
+              <div id="order-title" class="sans-serif fs-5 my-0 p-0 flex-grow-1">
+                Cannlytics Data &amp; API Subscription:
+                <span id="subscription_name" style="text-transform: capitalize;"></span>
               </div>
             </div>
-            <div class="serif text-muted my-1"><span id="rate" class="serif"></span></div>
+            <div class="sans-serif text-muted my-1"><span id="rate"></span></div>
             <div id="order-description" class="mt-3">
-              <h6 class="serif">Perks:</h6>
+              <h6 class="sans-serif">Perks:</h6>
               <ul id="subscription-attributes" class="text-dark text-start w-75 mt-0"></ul>
             </div>
           </div>
@@ -97,15 +63,15 @@
 
         <!-- Total price -->
         <li class="list-group-item d-flex justify-content-between">
-          <span class="serif text-dark fw-bold">Total (USD)</span>
-          <strong id="price" class="serif text-dark"></strong>
+          <span class="sans-serif text-dark fw-bold">Total (USD)</span>
+          <strong id="price" class="sans-serif text-dark"></strong>
         </li>
 
       </ul>
 
       <!-- PayPal order button -->
       <div style="width:200px;" class="mt-5">
-        <h4 class="serif mb-3">Checkout</h4>
+        <h4 class="sans-serif mb-3">Checkout</h4>
         <div id="paypal-button-container"></div>
       </div>
 
@@ -114,7 +80,7 @@
     <!-- Cancel button -->
     <div class="mt-5">
       <a
-        class="btn btn-sm-light btn-md-light serif"
+        class="btn btn-sm-light btn-md-light"
         href="{% url 'section' page='account' section='subscriptions' %}"
       >
         Cancel
@@ -137,6 +103,7 @@
     %}
   </div>
 
+</section>
 {% endblock %}
 
 <!-- JavaScript -->

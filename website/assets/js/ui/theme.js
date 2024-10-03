@@ -11,6 +11,8 @@ import { hasClass } from '../utils.js';
 
 export const theme = {
 
+  tableTheme: 'quartz',
+
   changeTheme() {
     /**
      * Change the UI theme.

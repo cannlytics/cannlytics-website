@@ -7,15 +7,8 @@
  * Updated: 9/24/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import {
-  deleteDocument,
-  listenToCollection,
-  onAuthChange,
-} from '../firebase.js';
-import {
-  authRequest,
-  showNotification,
-} from '../utils.js';
+import {deleteDocument, listenToCollection, onAuthChange } from '../firebase.js';
+import { authRequest, showNotification } from '../utils.js';
 
 export const standardizer = {
 
@@ -137,7 +130,7 @@ function createDownloadElement(download) {
         <a href="${download.download_url}" class="btn btn-sm btn-primary text-dark me-2" download>
           <i class="bi bi-download me-2"></i>Download
         </a>
-        <button class="btn btn-danger delete-btn text-dark" data-id="${download.id}">
+        <button class="btn btn-warning delete-btn text-dark" data-id="${download.id}">
           <i class="bi bi-trash"></i>
         </button>
       </div>

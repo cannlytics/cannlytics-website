@@ -11,10 +11,10 @@
 <section class="container pt-5" style="max-width:475px;">
 
   <!-- Message -->
-  <h2 class="serif text-dark">
+  <h2 class="sans-serif text-dark mb-0">
     Create an Account
   </h2>
-  <p class="fs-6 lh-lg mb-3">
+  <p class="sans-serif-text fs-5 lh-lg mb-3 mt-2">
     Sign up with a secure email and password.
   </p>
 
@@ -57,16 +57,16 @@
     </div>
   </div>
 
-  <!-- Subscribe to Newsletter Option -->
+  {% comment %} <!-- Subscribe to Newsletter Option -->
   <div class="form-check markdown mb-3">
     <input id="newsletter-signup" class="app-action form-check-input" type="checkbox" value="" checked>
     <label for="newsletter-signup" class="app-action background-hover form-check-label fs-6">
       <small>Subscribe to the newsletter?</small>
     </label>
-  </div>
+  </div> {% endcomment %}
 
   <!-- Agree to terms of use -->
-  <div class="form-check markdown">
+  <div class="form-check markdown pt-1">
     <input id="sign-up-terms-accepted" class="app-action form-check-input" type="checkbox" value="">
     <label for="sign-up-terms-accepted" class="form-check-label fs-6"><small>
       By creating an account you agree that you have read and agree to our
@@ -77,7 +77,7 @@
   </div>
 
   <!-- Sign up -->
-  <div class="d-flex justify-content-end w-100 mt-3">
+  <div class="d-flex justify-content-end w-100 mt-2">
     <div>
       <button
         id="sign-up-button"
@@ -100,12 +100,12 @@
   </div>
 
   <!-- Back button -->
-  <div class="d-flex align-items-center justify-content-center">
+  <div class="d-flex align-items-center justify-content-center pb-5">
     <div
       class="d-flex flex-column align-items-start justify-content-center"
       style="margin-top:6rem;margin-bottom:3rem;"
     >
-      <p class="text-center text-small fs-6 font-weight-light">
+      <p class="sans-serif-text text-center text-small fs-6 font-weight-light">
         <a
           class="background-hover text-dark fs-6"
           href="{% url 'section' page='account' section='sign-in' %}"

@@ -1,7 +1,7 @@
 <!--
   Parsers | Cannlytics
   Created: 9/24/2024
-  Updated: 9/24/2024
+  Updated: 10/2/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% block title %}Parsers | Cannlytics{% endblock %}
@@ -25,8 +25,14 @@
         <a class="list-group-item list-group-item-action active" id="list-coa-list" data-bs-toggle="list" href="#list-coa" role="tab" aria-controls="list-coa">
           COA Parser
         </a>
+        <a class="list-group-item list-group-item-action" id="list-label-list" data-bs-toggle="list" href="#list-label" role="tab" aria-controls="list-label">
+          Label Parser
+        </a>
         <a class="list-group-item list-group-item-action" id="list-receipt-list" data-bs-toggle="list" href="#list-receipt" role="tab" aria-controls="list-receipt">
-          Receipt &amp; Label Parser
+          Receipt Parser
+        </a>
+        <a class="list-group-item list-group-item-action" id="list-standardizer-list" data-bs-toggle="list" href="#list-standardizer" role="tab" aria-controls="list-standardizer">
+          Standardizer
         </a>
       </div>
     </div>
@@ -38,15 +44,35 @@
         <!-- COA Parser -->
         <div class="tab-pane fade show active" id="list-coa" role="tabpanel" aria-labelledby="list-coa-list">
           <h3 class="mt-0 sans-serif">COA Parser</h3>
-          <p class="sans-serif-text">Certificates of analysis (COAs) are abundant for cultivators, processors, retailers, and consumers too, but the data is often locked away. Rich, valuable laboratory data so close, yet so far away! User our COA parser, <b>CoADoc</b> to get these data points in your hands by parsing PDFs and URLs and cleanly returning the data to you.</p>
+          <p class="sans-serif-text">
+            The COA (Certificate of Analysis) Parser, <a href="https://github.com/cannlytics/cannlytics/tree/main/cannlytics/data/coas">CoADoc</a>, extracts data from COA PDFs or URLs. This tool enables you to parse lab results, including cannabinoids, terpenes, contaminants, and every data point on the page, directly from PDFS, images, URLs, and QR codes.
+          </p>
         </div>
-  
+
+        <!-- Label Parser -->
+        <div class="tab-pane fade" id="list-label" role="tabpanel" aria-labelledby="list-label-list">
+          <h3 class="mt-0 sans-serif">Label Parser</h3>
+          <p class="sans-serif-text">
+            The Label Parser parses images of cannabis product labels, extracting text-based data such as strain names, product type, and any lab results. Powered by OpenAI's latest models, <b>BudSpender</b> processes these images into usable datasets for compliance checks, product categorization, and more.
+          </p>
+        </div>
+
         <!-- Receipt Parser -->
         <div class="tab-pane fade" id="list-receipt" role="tabpanel" aria-labelledby="list-receipt-list">
-          <h3 class="mt-0 sans-serif">Receipt &amp; Label Parser</h3>
-          <p class="sans-serif-text">Your cannabis receipts and packages hold a lot of data. Put that data to work with <b>BudSpender</b>. This OpenAI-powered tool parses cannabis receipts and labels into well-structured data that can be used for trending, analytics, and however you please.</p>
+          <h3 class="mt-0 sans-serif">Receipt Parser</h3>
+          <p class="sans-serif-text">
+            The Receipt Parser allows you to upload images of cannabis purchase receipts, extracting purchase data such as product names, prices, and quantities. With <b>BudSpender</b>, this tool can help you analyze spending patterns, track inventory, and generate detailed reports.
+          </p>
         </div>
-  
+
+        <!-- Standardizer -->
+        <div class="tab-pane fade" id="list-standardizer" role="tabpanel" aria-labelledby="list-standardizer-list">
+          <h3 class="mt-0 sans-serif">Standardizer</h3>
+          <p class="sans-serif-text">
+            The Standardizer helps normalize product names, strain names, and product types by applying a consistent naming structure. Whether you are standardizing data in bulk or individually, this tool ensures uniformity across your dataset for accurate comparisons and analysis.
+          </p>
+        </div>
+
       </div>
     </div>
   

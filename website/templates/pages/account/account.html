@@ -1,7 +1,7 @@
 <!--
   Account Page | Cannlytics Website
   Created: 1/17/2021
-  Updated: 9/23/2024
+  Updated: 10/2/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% block title %}Account | Cannlytics{% endblock %}
@@ -16,7 +16,10 @@
 <!-- User Account -->
 <section class="requires-auth visually-hidden container">
 
-  <h5 class="fs-5 lh-base serif-text text-dark mt-5 mb-3">
+  <!-- TODO: Show a subscribe banner if not subscribed. -->
+   {% include "components/notifications/subscribe_banner.html" %}
+
+  <h5 class="fs-5 lh-base sans-serif text-dark mb-3">
     Your account
   </h5>
 
@@ -86,14 +89,14 @@
       <div class="d-flex justify-content-end">
         <button
           type="button"
-          class="btn btn-sm btn-sm-light me-2"
+          class="btn btn-sm btn-sm-light sans-serif fw-normal me-2"
           onclick="cannlytics.settings.resetAccountForm()"
         >
           Reset
         </button>
         <button
           type="button"
-          class="btn btn-sm bg-gradient-green text-white"
+          class="btn btn-sm bg-gradient-green text-white sans-serif fw-normal"
           onclick="cannlytics.settings.saveAccount()"
         >
           Save
@@ -105,8 +108,8 @@
   </div>
 
   <!-- Other Account options -->
-  <div class="col-md-6">
-    <h5 class="fs-5 lh-base serif-text text-dark mb-0 mt-5">
+  <div class="col-md-6 mb-5">
+    <h5 class="fs-5 lh-base sans-serif text-dark mb-0 mt-5">
       Other account options
     </h5>
     <div class="list-group py-3">

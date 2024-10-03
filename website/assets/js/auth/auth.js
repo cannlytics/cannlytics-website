@@ -19,11 +19,7 @@ import {
   onAuthChange,
   sendPasswordReset,
 } from '../firebase.js';
-import {
-  apiRequest,
-  authRequest,
-  showNotification,
-} from '../utils.js';
+import {authRequest, showNotification} from '../utils.js';
 
 export const auth = {
 
@@ -180,8 +176,8 @@ export async function signUp() {
   document.getElementById('sign-up-loading-button').classList.remove('d-none');
   try {
     await createAccount(email, password);
-    const newsletter = document.getElementById('newsletter-signup');
-    if (newsletter.checked) await cannlytics.payments.subscribe();
+    // const newsletter = document.getElementById('newsletter-signup');
+    // if (newsletter.checked) await cannlytics.payments.subscribe();
   } catch(error) {
     const message = authErrors[error.code] || 'Unknown error encountered while signing in.';
     document.getElementById('sign-up-button').classList.remove('d-none');

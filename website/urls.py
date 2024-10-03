@@ -41,6 +41,7 @@ urlpatterns = [
     ])),
     path('donate', views.donate, name='donate'),
     path('meetup', views.meetup, name='meetup'),
+    path('pricing', RedirectView.as_view(url='/account/subscriptions', permanent=False)),
     path('subscriptions', RedirectView.as_view(url='/account/subscriptions', permanent=False)),
     path('save-message', contact.save_message_to_firestore, name='save_message_to_firestore'),
     path('.well-known/ai-plugin.json', RedirectView.as_view(url='/static/ai-plugin.json', permanent=False)),

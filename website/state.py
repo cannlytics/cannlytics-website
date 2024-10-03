@@ -124,8 +124,9 @@ page_data = {
             {
                 "name": "subscription_plans",
                 "ref": "public/subscriptions/subscription_plans",
-                "order_by": "price_per_token",
-                "desc": False
+                # "order_by": "price_per_token",
+                # "desc": False,
+                "filters": [{"key": "active", "operation": "==", "value": True}],
             },
         ],
         "documents": [

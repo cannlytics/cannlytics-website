@@ -1,0 +1,27 @@
+<!--
+  About | Cannlytics Website
+  Created: 9/22/2024
+  Updated: 10/2/2024
+-->
+{% extends "components/layout/dashboard.html" %}
+{% load static %}
+{% block title %}About | Cannlytics{% endblock %}
+{% block dashboard %}
+<div class="container pb-5 pb-md-6">
+
+  <!-- Markdown -->
+  <div class="my-3 pt-3">
+    <div class="col markdown sans-serif-text">
+      {{ about|safe }}
+    </div>
+  </div>
+
+  <!-- List of contributors -->
+  {% include "pages/homepage/components/contributors_promo.html" %}
+
+  <!-- Optional: More information:
+    - data schedule 
+  -->
+  
+</div>
+{% endblock %}

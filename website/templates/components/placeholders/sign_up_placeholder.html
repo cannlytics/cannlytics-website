@@ -1,0 +1,77 @@
+<!--
+  Sign Up Placeholder
+  Created: 10/2/2024
+  Updated: 10/2/2024
+-->
+<style>
+  #promo-sign-up {
+    border-radius: 8px;
+    padding: 40px 20px;
+    max-width: 540px;
+  }
+  #promo-sign-up .badge {
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 12px;
+  }
+  #promo-sign-up .form-control,
+  #promo-sign-up .form-select {
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  #promo-sign-up button {
+    background-color: #ff4500;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+  }
+  #promo-sign-up button:hover {
+    background-color: #ff6347;
+  }
+</style>
+<div id="promo-sign-up" class="container text-center my-5">
+
+  {% comment %}
+  <!-- Optional: Customer Ratings -->
+  <!-- Optional: Number of members -->
+  {% endcomment %}
+
+  <!-- Unlock Features -->
+  <h2 class="sans-serif text-dark mb-0">Subscribe for Full Access</h2>
+  <p class="sans-serif-text text-dark mb-4 mt-2">
+    Subscribe to get unlimited access to lab results, COAs,
+    strains, organizations, and chemical data.
+  </p>
+
+  <!-- Feature List -->
+  <!-- TODO: Replace with the exact count from Firestore -->
+  <div class="text-start mx-auto py-2" style="max-width: 400px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-dark fw-bold">🧪 Lab Results</span>
+      <span class="badge bg-gradient-purple">1,000,000+</span>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-dark fw-bold">📜 COAs</span>
+      <span class="badge bg-gradient-orange">20,000+</span>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-dark fw-bold">🌿 Strains</span>
+      <span class="badge bg-gradient-green">5,000+</span>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-dark fw-bold">🧑‍🌾 Organizations</span>
+      <span class="badge bg-gradient-special">10,000+</span>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span class="text-dark fw-bold">🔬 Compounds</span>
+      <span class="badge bg-gradient-extra">200+</span>
+    </div>
+  </div>
+
+  <!-- Sign-up button -->
+  <a
+    class="btn btn-warning rounded-pill px-4 mt-3"
+    href="{% url 'section' page='account' section='subscriptions' %}"
+  >Subscribe →</a>
+
+</div>

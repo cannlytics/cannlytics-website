@@ -127,7 +127,7 @@ export const payments = {
       let li = document.createElement('li');
       li.className = "fs-6 mb-1";
       let small = document.createElement('small');
-      small.className = "serif text-dark";
+      small.className = "sans-serif text-dark";
       small.textContent = attribute;
       li.appendChild(small);
       ul.appendChild(li);
@@ -184,9 +184,10 @@ export const payments = {
     // If no subscription, then show Upgrade on all and stop.
     const subscribeButtons = document.getElementsByClassName('subscribe-button');
     for (let button of subscribeButtons) {
-      var tier = button.id.split('-')[2];
-      tier = tier.charAt(0).toUpperCase() + tier.slice(1);
-      button.textContent = `Get ${tier}`;
+      // var tier = button.id.split('-')[2];
+      // tier = tier.charAt(0).toUpperCase() + tier.slice(1);
+      // button.textContent = `Get ${tier}`;
+      button.textContent = 'Subscribe';
     }
     if (!userSubscription.support || userSubscription.support == 'free') return;
   

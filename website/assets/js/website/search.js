@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 9/28/2024
- * Updated: 10/1/2024
+ * Updated: 10/2/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { Modal } from 'bootstrap';
@@ -26,20 +26,9 @@ export const searchJS = {
     const filterMenu = document.getElementById('filter-menu');
     const filterButton = document.getElementById('search-filter-button');
 
-    function updateFilterMenuSize() {
-      /* Match the filter menu width to the search container width. */
-      const searchContainerWidth = searchContainer.offsetWidth;
-      const searchContainerLeft = searchContainer.getBoundingClientRect().left + window.pageXOffset;
-      filterMenu.style.width = `${searchContainerWidth}px`;
-      filterMenu.style.left = `${searchContainerLeft}px`;
-    }
-
     // Change the filter menu size when the page changes.
-    updateFilterMenuSize();
-    window.addEventListener('resize', updateFilterMenuSize);
-    onAuthChange(async user => {
-      updateFilterMenuSize();
-    });
+    this.updateFilterMenuSize();
+    window.addEventListener('resize', this.updateFilterMenuSize);
 
     filterButton.addEventListener('click', function() {
 
@@ -179,24 +168,33 @@ export const searchJS = {
       searchParams['end_date'] = endDate;
     }
 
+    // Setup the paywall.
+    const searchContent = document.getElementById('search-content');
+    const subscribeContent = document.getElementById('subscribe-content');
+    searchContent.style.display = 'none';
+
     // Listen for the usr.
     onAuthChange(async user => {
+
+      // Update the filter menu size.
+      this.updateFilterMenuSize();
       
-      // Only perform search if the user is authenticated.
+      // Only search the API if the user is authenticated.
       if (user) {
+        searchContent.style.display = 'flex';
+        subscribeContent.style.display = 'none';
         authRequest('/api/search', searchParams)
           .then(response => {
-            // Display the search results.
             this.displaySearchResults(response.data, limit);
           })
           .catch(error => {
-            console.error('Error fetching search results:', error);
-            // Handle error, show error message to the user
+            showNotification('Error', 'There was an error getting search results. Please contact support or try again later.', 'error');
           });
       }
 
-      // TODO: Setup the paywall for non-authenticated users.
-
+      // Show the paywall for non-authenticated users.
+      subscribeContent.style.display = 'flex';
+      searchContent.style.display = 'none';
     });
 
   },
@@ -504,6 +502,16 @@ export const searchJS = {
   // <li class="mb-0"><a class="dropdown-item py-1 fw-normal" href="#"><small>💾 Save</small></a></li>
   // <li class="mb-0"><hr class="dropdown-divider my-0"></li>
 
+  updateFilterMenuSize() {
+    /* Match the filter menu width to the search container width. */
+    const filterMenu = document.getElementById('filter-menu');
+    const searchContainer = document.getElementById('search-container');
+    const searchContainerWidth = searchContainer.offsetWidth;
+    const searchContainerLeft = searchContainer.getBoundingClientRect().left + window.pageXOffset;
+    filterMenu.style.width = `${searchContainerWidth}px`;
+    filterMenu.style.left = `${searchContainerLeft}px`;
+  },
+
   filterByDataType(dataType) {
     /* Filter the search results by data type. */
     const currentUrl = new URL(window.location.href);
@@ -513,24 +521,17 @@ export const searchJS = {
 
   selectDataType(selectedType) {
     /* Select a data type. */
-    // Reset all buttons to 'btn-outline-primary'
-    console.log('Selected type:', selectedType);
     document.querySelectorAll('.btn-group[data-group="data-type"] .btn').forEach((btn) => {
       btn.classList.remove('btn-primary');
       btn.classList.add('btn-outline-primary');
     });
-
-    // Set the selected button to 'btn-primary'
     document.getElementById('btn-' + selectedType).classList.remove('btn-outline-primary');
     document.getElementById('btn-' + selectedType).classList.add('btn-primary');
-
-    // Update the selected data type
     this.selectedDataType = selectedType;
   },
 
   selectState(selectedStateParam) {
     /* Select a state. */
-    console.log('STATE:', selectedStateParam);
     document.querySelectorAll('.btn-group[data-group="state"] .btn').forEach((btn) => {
       btn.classList.remove('btn-primary');
       btn.classList.add('btn-outline-primary');

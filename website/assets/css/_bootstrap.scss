@@ -1,31 +1,28 @@
-// Bootstrap theme customization
-$green: #2E8B57;
-$orange: #ff7f00;
-$gray-100: #f8f9fa;
-$gray-600: #6c757d;
-$primary: $green;
-$secondary: $gray-600;
-$success: $green;
-$info: $green;
-$warning: $orange;
-$light: $gray-100;
-$white: #fff;
-$theme-colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  "success": $success,
-  "info": $info,
-  "warning": $warning,
-  "light": $light,
-  "white": $white,
-);
-$btn-color: $white;
-$btn-hover-color: $white;
-$btn-active-color: $white;
-$btn-link-color: $primary;
-$btn-link-hover-color: darken($primary, 15%);
-$btn-hover-bg-shade-amount: 20%;
-$btn-hover-bg-tint-amount: 20%;
+// Bootstrap color customizations.
+$primary: #2E8B57;
+$success: #2E8B57;
+// $secondary: #6c757d;
+// $info: #2E8B57;
+// $warning: #ff7f00;
+// $light: #f8f9fa;
+// $theme-colors: (
+//   "primary": $primary,
+//   // "secondary": $secondary,
+//   "success": $success,
+//   // "info": $info,
+//   // "warning": $warning,
+//   // "light": $light,
+//   // "white": $white,
+// );
+
+// Bootstrap buttons customizations.
+// $btn-color: $white;
+// $btn-hover-color: $white;
+// $btn-active-color: $white;
+// $btn-link-color: $primary;
+// $btn-link-hover-color: darken($primary, 15%);
+// $btn-hover-bg-shade-amount: 20%;
+// $btn-hover-bg-tint-amount: 20%;
 
 // Import bootstrap.
 @import 'bootstrap/scss/bootstrap';

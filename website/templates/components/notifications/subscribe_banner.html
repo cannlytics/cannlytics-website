@@ -1,0 +1,29 @@
+<!--
+  Sign Up Placeholder
+  Created: 10/2/2024
+  Updated: 10/2/2024
+-->
+<div
+  id="subscribe-banner"
+  class="alert alert-warning alert-dismissible fade show d-none"
+  role="alert"
+>
+  <div class="d-flex align-items-center">
+    <div class="flex-shrink-0 me-2" role="img"><b class="fs-1">🔑</b></div>
+    <div>
+      <strong class="fs-5"> Subscribe for unlimited data and analytics</strong>
+      <div class="sans-serif fs-6 mb-0">
+        Get access to all cannabis data, parsers, and the API with a
+        <a
+          href="{% url 'section' page='account' section='subscriptions' %}"
+          class="fw-bold background-hover"
+        >Cannlytics subscription</a>.
+      </div>
+      <a
+        href="{% url 'section' page='account' section='subscriptions' %}"
+        class="btn btn-sm bg-gradient-orange text-white mt-2"
+      >Subscribe Now</a>
+    </div>
+  </div>
+  <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>

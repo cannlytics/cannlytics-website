@@ -1,11 +1,11 @@
 <!--
   Label Parser | Cannlytics
   Created: 9/25/2024
-  Updated: 9/25/2024
+  Updated: 10/2/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% block title %}Label Parser | Cannlytics{% endblock %}
-{% block dashboard_tabs %}
+{% comment %} {% block dashboard_tabs %}
 
 <!-- Tabs -->
 <ul id="tabs" class="page-tabs nav" role="tablist">
@@ -26,16 +26,16 @@
   </li>
 </ul>
 
-{% endblock %}
+{% endblock %} {% endcomment %}
 {% block dashboard %}
 <section class="container markdown">
 
-  {% comment %} <!-- Breadcrumbs -->
+  <!-- Breadcrumbs -->
   {% include "components/layout/breadcrumbs.html" with
     base_page="Parsers"
     base_page_url="/parsers"
     current_page="Label Parser"
-  %} {% endcomment %}
+  %}
 
   <!-- Tab content -->
   <div id="tabs-content" class="tab-content">

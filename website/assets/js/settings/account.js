@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 11/28/2021
- * Updated: 12/31/2021
+ * Updated: 10/2/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import {
@@ -24,22 +24,19 @@ import {
 export const accountSettings = {
 
   chooseUserPhoto() {
-    /**
-     * Choose a file to upload.
-     */
+    /* Choose a file to upload. */
     document.getElementById('user-photo-url').click();
   },
 
   initializeAccountForm() {
-    /**
-     * Initialize the user account form.
-     */
+    /* Initialize the user account form. */
      onAuthChange(user => {
       if (user) {
         const fileElem = document.getElementById('user-photo-url');
         fileElem.addEventListener('change', this.uploadUserPhoto, false);
         if (user.photoURL) document.getElementById('account-photo').src = user.photoURL;
         this.resetAccountForm();
+        this.showSubscribeBanner();
       }
       // else {
       //   window.location.href = `${window.location.origin}/account/sign-up`;
@@ -47,10 +44,17 @@ export const accountSettings = {
     });
   },
 
+  async showSubscribeBanner() {
+    /* Show the subscription banner. */
+    let userSubscription = await cannlytics.payments.getUserSubscriptions();
+    if (!userSubscription || userSubscription.support === 'free') {
+      const banner = document.getElementById('subscribe-banner');
+      banner.classList.remove('d-none'); // Show the banner
+    }
+  },
+
   async resetAccountForm() {
-    /**
-     * Reset the user account form.
-     */
+    /* Reset the user account form. */
     const { data } = await authRequest('/api/users');
     const userForm = document.forms['user-form'];
     userForm.reset();
@@ -58,9 +62,7 @@ export const accountSettings = {
   },
 
   async saveAccount() {
-    /**
-    * Saves a user's account fields.
-    */
+    /** Saves a user's account fields. */
     const user = getCurrentUser();
     const data = serializeForm('user-form');
     if (data.email !== user.email) await changeEmail(data.email);
@@ -76,9 +78,7 @@ export const accountSettings = {
   },
 
   async uploadUserPhoto() {
-    /**
-     * Upload a user's photo through the API.
-     */
+    /* Upload a user's photo through the API. */
     if (this.files.length) {
       showNotification('Uploading photo', 'Uploading your profile picture...', /* type = */ 'wait');
       const downloadURL = await updateUserPhoto(this.files[0]);
