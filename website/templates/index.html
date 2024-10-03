@@ -25,9 +25,6 @@
   <link rel="mask-icon" color="#e48632" href="{% static 'website/images/logos/safari-pinned-tab.svg' %}">
   <link rel="shortcut icon" href="{% static 'website/images/logos/favicon.ico' %}" type="image/x-icon">
   
-  <!-- Manifest -->
-  {% comment %} <link rel="manifest" href="{% static 'manifest.webmanifest' %}"> {% endcomment %}
-
   <!-- Title -->
   <title>{% block title %}Cannlytics{% endblock title %}</title>
 
@@ -65,7 +62,9 @@
 <body class="base dashboard">
 
   <!-- Material -->
-  <div id="material">{% block material %}{% endblock material %}</div>
+  <div id="material">
+    {% block material %}{% endblock %}
+  </div>
 
   <!-- 21+ age verification. -->
   {% include "components/dialogs/age_verification_dialog.html" %}
@@ -74,12 +73,14 @@
   {% include "components/notifications/notification_toast.html" %}
 
   <!-- Website JavaScript -->
-  <script type="text/javascript" charset="utf-8">
-    cannlytics.website.initialize();
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      cannlytics.website.initialize();
+    });
   </script>
 
   <!-- Page-specific JavaScript -->
-  {% block page_js %}{% endblock page_js %}
+  {% block page_js %}{% endblock %}
 
 </body>
 </html>

@@ -1,16 +1,15 @@
 /**
  * Website JavaScript | Cannlytics Website
- * Copyright (c) 2021-2022 Cannlytics
+ * Copyright (c) 2021-2024 Cannlytics
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 12/3/2020
- * Updated: 9/15/2024
+ * Updated: 10/2/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { checkGoogleLogIn, onAuthChange, getCurrentUser } from '../firebase.js';
-import { authRequest, hasClass } from '../utils.js';
+import { onAuthChange } from '../firebase.js';
+import { authRequest } from '../utils.js';
 import { contact } from './contact.js';
-import { theme } from '../ui/theme.js';
 import { dashboard } from './dashboard.js';
 
 export const website = {
@@ -19,13 +18,11 @@ export const website = {
   ...dashboard,
 
   initialize() {
-    /**
-     * Initialize the website's features and functionality.
-     */
+    /* Initialize the website's features and functionality. */
     console.log('Initializing website...');
 
     // Set the theme.
-    this.setInitialTheme();
+    cannlytics.ui.setInitialTheme();
 
     // Scroll to any hash's anchor.
     this.scrollToHash();
@@ -41,11 +38,6 @@ export const website = {
           if (user.photoURL) {
             document.getElementById('user-photo').src = user.photoURL;
           }
-          // TODO: Replace with a default image.
-          // else {
-          //   const robohash = `${window.location.origin}/robohash/${user.email}/?width=60&height=60`;
-          //   document.getElementById('user-photo').src = robohash;
-          // }
         } catch(error) {
           // Pass
         }
@@ -56,24 +48,17 @@ export const website = {
         // Login the user on the server.
         await authRequest('/src/auth/login');
 
-        // Redirect the user to the dashboard if they are on the sign-in page.
-        // this.redirectIfUser();
-
       } else {
         // Hide any elements that depend on authentication.
         this.toggleAuthenticatedElements(false);
 
-        // Retry to get user credentials.
-        // checkForCredentials();
       }
     });
 
   },
 
   acceptCookies() {
-    /**
-     * Save the user's choice to accept cookies.
-     */
+    /* Save the user's choice to accept cookies. */
     localStorage.setItem('cannlytics_cookies', true);
     const toast = document.getElementById('accept-cookies');
     toast.style.display = 'none';
@@ -81,9 +66,7 @@ export const website = {
   },
 
   acceptCookiesCheck() {
-    /**
-     * Checks if a user has or has not accepted cookies.
-     */
+    /* Checks if a user has or has not accepted cookies. */
     const acceptCookies = localStorage.getItem('cannlytics_cookies');
     if (!acceptCookies) {
       const toast = document.getElementById('accept-cookies');
@@ -116,9 +99,7 @@ export const website = {
   },
 
   verifyAge(date) {
-    /**
-     * Determines if the provided birthdate is for someone 21 years or older.
-     */
+    /* Determines if the provided birthdate is for someone 21 years or older. */
     const birthdate = new Date(date);
     const year = birthdate.getFullYear();
     if (year < 1900 || year > 2099) return false;
@@ -132,9 +113,7 @@ export const website = {
   },
 
   acceptAgeCheck() {
-    /**
-     * Save the user's choice to accept age verification.
-     */
+    /* Save the user's choice to accept age verification. */
     localStorage.setItem('cannlytics_age', true);
     const modal = document.getElementById('age-verification');
     modal.style.display = 'none';
@@ -142,16 +121,12 @@ export const website = {
   },
 
   rejectAgeCheck() {
-    /**
-     * Redirect the user to another site if they reject age verification.
-     */
+    /* Redirect the user to another site if they reject age verification. */
     window.location.href = "https://google.com";
   },
 
   redirectIfUser() {
-    /**
-     * Redirect the user to the dashboard if they are signed in.
-     */
+    /* Redirect the user to the dashboard if they are signed in. */
     onAuthChange(async user => {
       if (user) {
         const currentPath = window.location.pathname;
@@ -162,54 +137,8 @@ export const website = {
     });
   },
 
-  changeTheme() {
-    /**
-     * Change the website's theme.
-     */
-    let currentTheme = localStorage.getItem('cannlytics_theme');
-    if (!currentTheme) {
-      const hours = new Date().getHours();
-      const dayTime = hours > 6 && hours < 20;
-      currentTheme = dayTime ? 'light' : 'dark';
-    }
-    const newTheme = (currentTheme === 'light') ? 'dark' : 'light';
-    this.setTheme(newTheme);
-    theme.setTableTheme();
-    localStorage.setItem('cannlytics_theme', newTheme);
-  },
-
-  setInitialTheme() {
-    /**
-     * Set the theme when the website loads.
-     */
-    if (typeof(Storage) !== 'undefined') {
-      let currentTheme = localStorage.getItem('cannlytics_theme');
-      if (!currentTheme) {
-        const hours = new Date().getHours();
-        const dayTime = hours > 6 && hours < 20;
-        if (!dayTime) this.setTheme('dark');
-        return;
-      }
-      this.setTheme(currentTheme);
-      localStorage.setItem('cannlytics_theme', currentTheme);
-    } else {
-      document.getElementById('theme-toggle').style.display = 'none';
-    }
-  },
-
-  setTheme(currentTheme) {
-    /**
-     * Set the website's theme.
-     * @param {String} currentTheme The theme to set: `light` or `dark`.
-     */
-    if (currentTheme === 'light') document.body.className = 'base';
-    else if (!hasClass(document.body, 'dark')) document.body.className += ' dark';
-  },
-
   scrollToHash () {
-    /**
-     * Scroll to any an from any hash in the URL.
-     */
+    /* Scroll to any an from any hash in the URL. */
     const hash = window.location.hash.substring(1);
     const element = document.getElementById(hash);
     if (element) element.scrollIntoView();
@@ -232,17 +161,4 @@ export const website = {
     }
   },
 
-}
-
-async function checkForCredentials() {
-  /**
-   * Check if a user has signed in through a redirect from
-   * an authentication provider, such as Google.
-   */
-  try {
-    await checkGoogleLogIn();
-    await authRequest('/src/auth/login');
-  } catch(error) {
-    // No Google sign-in token.
-  }
 }

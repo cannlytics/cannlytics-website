@@ -6,21 +6,21 @@
 {% extends "components/layout/dashboard.html" %}
 {% block title %}Parsers | Cannlytics{% endblock %}
 {% block dashboard %}
-<section class="container markdown">
+<section class="container markdown mb-5 pb-5">
 
   <!-- Title -->
   <h2 class="sans-serif text-dark fw-bold mb-0">Parsers</h2>
-  <p class="markdown sans-serif-text fs-6 lh-md text-dark mt-0 mb-0"
+  <p class="sans-serif-text fs-5 text-dark mt-2 mb-0"
     style="max-width:540px;"
   >
-    Take advantage of our parsers to extract the data that you need.
+    Extract cannabis data from images and PDFs.
   </p>
 
   <!-- Parsers -->
   <div class="markdown row pt-4">
 
     <!-- Parser List -->
-    <div class="col-4">
+    <div class="col-12 col-md-5 col-lg-4 pb-4">
       <div class="list-group" id="list-tab" role="tablist">
         <a class="list-group-item list-group-item-action active" id="list-coa-list" data-bs-toggle="list" href="#list-coa" role="tab" aria-controls="list-coa">
           COA Parser
@@ -38,7 +38,7 @@
     </div>
   
     <!-- Parser Descriptions -->
-    <div class="col-8">
+    <div class="col-12 col-md-6 col-lg-7 px-3">
       <div class="tab-content" id="nav-tabContent">
 
         <!-- COA Parser -->
@@ -47,6 +47,9 @@
           <p class="sans-serif-text">
             The COA (Certificate of Analysis) Parser, <a href="https://github.com/cannlytics/cannlytics/tree/main/cannlytics/data/coas">CoADoc</a>, extracts data from COA PDFs or URLs. This tool enables you to parse lab results, including cannabinoids, terpenes, contaminants, and every data point on the page, directly from PDFS, images, URLs, and QR codes.
           </p>
+          <a class="btn bg-gradient-orange text-white mt-3"
+            href="{% url 'section' page='parsers' section='coa-parser' %}"
+          >Parse COAs 🪄</a>
         </div>
 
         <!-- Label Parser -->
@@ -55,6 +58,9 @@
           <p class="sans-serif-text">
             The Label Parser parses images of cannabis product labels, extracting text-based data such as strain names, product type, and any lab results. Powered by OpenAI's latest models, <b>BudSpender</b> processes these images into usable datasets for compliance checks, product categorization, and more.
           </p>
+          <a class="btn bg-gradient-green text-white mt-3"
+            href="{% url 'section' page='parsers' section='label-parser' %}"
+          >Parse Labels 🪄</a>
         </div>
 
         <!-- Receipt Parser -->
@@ -63,6 +69,9 @@
           <p class="sans-serif-text">
             The Receipt Parser allows you to upload images of cannabis purchase receipts, extracting purchase data such as product names, prices, and quantities. With <b>BudSpender</b>, this tool can help you analyze spending patterns, track inventory, and generate detailed reports.
           </p>
+          <a class="btn bg-gradient-purple text-white mt-3"
+            href="{% url 'section' page='parsers' section='receipt-parser' %}"
+          >Receipt Receipts 🪄</a>
         </div>
 
         <!-- Standardizer -->
@@ -71,6 +80,9 @@
           <p class="sans-serif-text">
             The Standardizer helps normalize product names, strain names, and product types by applying a consistent naming structure. Whether you are standardizing data in bulk or individually, this tool ensures uniformity across your dataset for accurate comparisons and analysis.
           </p>
+          <a class="btn bg-gradient-special text-white mt-3"
+            href="{% url 'section' page='parsers' section='standardizer' %}"
+          >Standardize Data 🪄</a>
         </div>
 
       </div>
@@ -81,7 +93,7 @@
 </section>
 {% endblock %}
 
-{% block dashboard_js %}
+{% block page_js %}
 <script>
 
   // Initialize.

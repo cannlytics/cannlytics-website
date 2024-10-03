@@ -15,14 +15,7 @@
 {% block dashboard_css %}
 
   <!-- AG Grid -->
-  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css"/>
-  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css"/>
-  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
-
-  <!-- Bootstrap Datepicker -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
+  {% include "components/tables/ag_grid_scripts.html" %}
 
 {% endblock %}
 {% block dashboard %}
@@ -38,55 +31,10 @@
 
 {% else %}
 
-<!-- Optional:  -->
-{% comment %} {% include "components/layout/hero.html" with
-  title=''
-  description="Get cannabis lab test results while they're hot!"
-  image_url=''
-  image_size="200px"
-  only
-%} {% endcomment %}
-
-{% comment %} <!-- Breadcrumbs -->
-<section class="container mb-3">
-  <div class="d-flex mt-4">
-    <nav
-      style="--bs-breadcrumb-divider: '>';"
-      aria-label="breadcrumb"
-    >
-      <ol class="breadcrumb bg-transparent p-0 mb-0">
-        <li class="breadcrumb-item fs-6 lh-sm">
-          <a
-            class="text-dark serif action"
-            href="{% url 'page' page='data' %}"
-          >
-            Data
-          </a>
-        </li>
-        <li class="breadcrumb-item fs-6 lh-sm">
-          <a
-            class="text-dark serif action"
-            href="{% url 'section' page='data' section='results' %}"
-          >
-            Lab Results
-          </a>
-        </li>
-      </ol>
-      <div>
-    </div>
-    </nav>
-  </div>
-</section> {% endcomment %}
-
 <!-- Results -->
 <section class="container markdown">
 
-  <h1>Lab Results</h1>
-
-  {% comment %} <!-- Search Bar -->
-  {% include "components/layout/search.html" with
-    placeholder_text="Search results..."
-  %} {% endcomment %}
+  <h2 class="sans-serif text-dark">Lab Results</h2>
 
   <!-- Filters -->
   <div class="selections-container align-items-center">
@@ -126,7 +74,8 @@
 </section>
 {% endif %}
 {% endblock %}
-{% block dashboard_js %}
+
+{% block page_js %}
 {% if section and section not in 'logs,files,certificates' %}
   <script>
 

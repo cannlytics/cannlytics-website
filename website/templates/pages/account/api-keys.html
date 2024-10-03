@@ -8,9 +8,7 @@
 {% block dashboard_css %}
 
   <!-- AG Grid JavaScript and Style -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.2.1/styles/ag-grid.min.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.2.1/styles/ag-theme-quartz.css" />
-  <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@32.2.1/dist/ag-grid-community.min.js"></script>
+  {% include "components/tables/ag_grid_scripts.html" %}
 
 {% endblock %}
 {% block dashboard %}

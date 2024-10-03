@@ -9,10 +9,7 @@
 {% block dashboard_css %}
 
   <!-- AG Grid -->
-  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-grid.css"/>
-  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/styles/ag-theme-alpine.css"/>
-  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
+  {% include "components/tables/ag_grid_scripts.html" %}
 
   <!-- D3 -->
   <script src="https://d3js.org/d3.v6.min.js"></script>
@@ -48,9 +45,10 @@
 </section>
 
 {% endblock %}
-{% block dashboard_js %}
-  <script>
-    // Initialize retailers national map.
-    // cannlytics.licenses.initializeRetailers();
-  </script>
+
+{% block page_js %}
+<script>
+  // Initialize retailers national map.
+  // cannlytics.licenses.initializeRetailers();
+</script>
 {% endblock %}

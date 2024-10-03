@@ -52,6 +52,15 @@ export const theme = {
       localStorage.setItem('theme', theme);
     }
   },
+  
+  setTheme(currentTheme) {
+    /**
+     * Set the website's theme.
+     * @param {String} currentTheme The theme to set: `light` or `dark`.
+     */
+    if (currentTheme === 'light') document.body.className = 'base';
+    else if (!hasClass(document.body, 'dark')) document.body.className += ' dark';
+  },
 
   setTableTheme() {
     /**
