@@ -1,7 +1,7 @@
 <!--
   Home Page | Cannlytics
   Created: 1/5/2021
-  Updated: 9/22/2024
+  Updated: 10/3/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -14,7 +14,7 @@
 {% endblock %}
 {% block dashboard %}
 
-  <!-- TODO: Latest: Retailers, Labs, Producers, Results, Strains -->
+  <!-- TODO: Latest: Results, COAs, Strains, organizations, compounds, etc. -->
 
   <!-- Live analytics -->
   {% comment %} {% include "pages/homepage/components/live_analytics.html" %} {% endcomment %}
@@ -33,9 +33,9 @@
 {% endblock %}
 
 {% block page_js %}
+<!-- Homepage JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Load the latest data
   cannlytics.website.initialize();
 });
 </script>
