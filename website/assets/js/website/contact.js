@@ -120,7 +120,7 @@ export const contact = {
 
     // Validate form data (basic validation example).
     if (!email || !message) {
-      cannlytics.showNotification('Error', 'Email and message are required.', 'error');
+      cannlytics.utils.showNotification('Error', 'Email and message are required.', 'error');
       return false;
     }
 
@@ -134,7 +134,7 @@ export const contact = {
     formData.append('csrfmiddlewaretoken', csrftoken);
 
     // Submit form data via fetch.
-    fetch(window.location.origin + '/save-message', {
+    fetch(window.location.origin + '/src/message', {
       method: 'POST',
       body: formData,
     })
@@ -142,18 +142,18 @@ export const contact = {
     .then(data => {
       if (data.status === 'success') {
         // // Show a success notification
-        // cannlytics.showNotification('Success', 'Message sent successfully!', 'success');
+        // cannlytics.utils.showNotification('Success', 'Message sent successfully!', 'success');
         // // Optionally, reset the form
         // document.getElementById('contact-form').reset();
         window.location.href = window.location.origin + "/thank-you";
       } else {
         // Show an error notification
-        cannlytics.showNotification('Error', 'There was a problem submitting your message.', 'error');
+        cannlytics.utils.showNotification('Error', 'There was a problem submitting your message.', 'error');
       }
     })
     .catch(error => {
       // Handle any errors
-      cannlytics.showNotification('Error', 'An unexpected error occurred.', 'error');
+      cannlytics.utils.showNotification('Error', 'An unexpected error occurred.', 'error');
     });
     return false; // Prevent default form submission behavior
   },

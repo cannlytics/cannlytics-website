@@ -547,6 +547,7 @@ const storageErrors = {
 export {
   auth,
   authErrors,
+  db,
   // analytics,
   addToArray,
   removeFromArray,

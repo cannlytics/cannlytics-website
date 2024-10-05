@@ -15,6 +15,44 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // === Data ===
+
+    // Allow anyone to read COA data.
+    match /coas/{document=**} {
+    	allow read: if true;
+      allow write: if false;
+    }
+
+    // Allow anyone to read results data.
+    match /results/{document=**} {
+    	allow read: if true;
+      allow write: if false;
+    }
+
+    // Allow anyone to read strain data.
+    match /strains/{document=**} {
+    	allow read: if true;
+      allow write: if false;
+    }
+
+    // Allow anyone to read strain data.
+    match /strains/{document=**} {
+    	allow read: if true;
+      allow write: if false;
+    }
+
+    // Allow anyone to read license data.
+    match /licenses/{document=**} {
+    	allow read: if true;
+      allow write: if false;
+    }
+
+    // Allow anyone to read compound data.
+    match /compounds/{document=**} {
+    	allow read: if true;
+      allow write: if false;
+    }
+
     // === General access ===
     
     // Allow anyone to read the standard data models.

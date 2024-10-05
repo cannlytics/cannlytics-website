@@ -4,7 +4,7 @@ Copyright (c) 2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 9/23/2024
-Updated: 10/1/2024
+Updated: 10/4/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports:
@@ -19,7 +19,7 @@ from firebase_admin import firestore
 from website.auth import authenticate_request
 
 
-def save_message_to_firestore(request):
+def send_message(request):
     """Save a message to Firestore."""
     if request.method != 'POST':
         return JsonResponse({'error': 'Invalid request'}, status=400)

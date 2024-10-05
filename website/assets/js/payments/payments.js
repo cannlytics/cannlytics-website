@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 1/17/2021
- * Updated: 9/23/2024
+ * Updated: 10/4/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { getDocument, onAuthChange } from '../firebase.js';
@@ -92,8 +92,8 @@ export const payments = {
             }
 
             // Successful transaction.
-            var msg = `You have successfully subscribed to Cannlytics AI! You can use your tokens to run AI-powered jobs in the app. Put your AI jobs to good use!`;
-            showNotification('Cannlytics AI tokens purchased', msg, /* type = */ 'success', /* delay = */ 10000);
+            var msg = `You have successfully subscribed to Cannlytics! You can use your tokens to parse data from COAs, labels, and receipts. Put your data to good use.`;
+            showNotification('Cannlytics tokens purchased', msg, /* type = */ 'success', /* delay = */ 10000);
 
             // Show a success form to the user.
             document.getElementById('checkout').classList.add('d-none');
@@ -134,7 +134,7 @@ export const payments = {
     });
   },
 
-  // FIXME: MAke this obsolete?
+  // FIXME: Deprecate this function?
   async subscribe(subscription, subscriptionType = 'subscribe') {
     /**
      * Subscribe email, then navigate to the confirmation page.
@@ -231,7 +231,7 @@ export const payments = {
     if (response.success) {
 
       // Show a notification.
-      const message = 'Successfully cancelled your Cannlytics AI subscription. You can subscribe again at any time.';
+      const message = 'Successfully cancelled your Cannlytics subscription. You can subscribe again at any time.';
       showNotification('Subscription canceled', message, /* type = */ 'success');
 
       // Reset the subscription buttons and cards.
@@ -274,7 +274,7 @@ export const payments = {
       console.log('DATA:');
       console.log(response.data);
       document.getElementById('current_tokens').textContent = response.data.tokens ?? 0;
-      document.getElementById('price_per_token').textContent = (response.data.price_per_token ?? 0.05) * 100;
+      document.getElementById('price_per_token').textContent = (response.data.price_per_token ?? 0.01) * 100;
     }
     try {
       // Get the number of tokens from the URL.
@@ -378,8 +378,8 @@ export const payments = {
             }
 
             // Successful transaction.
-            var msg = `You have successfully purchased ${tokens} Cannlytics AI tokens! You can use your tokens to run AI-powered jobs in the app. Put your AI jobs to good use!`;
-            showNotification('Cannlytics AI tokens purchased', msg, /* type = */ 'success', /* delay = */ 10000);
+            var msg = `You have successfully purchased ${tokens} Cannlytics tokens! You can use your tokens to parse data from COAs, labels, and receipts. Put your data to good use.`;
+            showNotification('Cannlytics tokens purchased', msg, /* type = */ 'success', /* delay = */ 10000);
 
             // Show a success form to the user.
             document.getElementById('checkout').classList.add('d-none');
@@ -399,37 +399,21 @@ export const payments = {
     });
   },
 
-
-  /**---------------------------------------------------------------------------
-   * Misc
-   *--------------------------------------------------------------------------*/
-
-  async logPromo() {
-    /**
-     * Log a promotional event.
-     */
-    const code = getUrlParameter('source');
-    if (!code) return;
-    const data = { 'promo_code': code };
-    await authRequest('/src/market/promotions', data);
-  },
-
 };
 
-export const reportError = async () => {
+export const reportPaymentError = async () => {
   /**
    * Report a payment error so it can be corrected manually.
    */
   try {
-    const randomInt = Math.floor(Math.random() * 99);
+    const user = getCurrentUser();
     const data = {
-      name: 'CannBot',
+      name: user.uid,
+      email: user.email,
       subject: 'A PayPal payment error occurred!',
       message: 'An unhandled error occurred during a PayPal payment. Please correct this matter manually.',
-      math_input: randomInt,
-      math_total: randomInt,
     };
-    await authRequest('/src/email/send-message', data);
+    await authRequest('/src/message', data);
   } catch(error) {
     // Could not report error.
   }

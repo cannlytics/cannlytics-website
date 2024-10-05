@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 10/4/2020
- * Updated: 9/29/2024
+ * Updated: 10/2/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
  */
 
@@ -14,10 +14,6 @@
 @import 'colors';
 @import 'code';
 @import 'markdown';
-
-// AG Grid style.
-// @import "ag-grid-community/styles/ag-grid.css";
-// @import "ag-grid-community/styles/ag-theme-balham.css";
 
 /*--------------------------------------------------------------------------
   Fonts
@@ -92,8 +88,6 @@ p small {
 .display-4 {
   font-family: $font-serif-text !important;
 }
-
-// Define font classes.
 .serif {
   font-family: $font-serif-text !important;
 }
@@ -112,15 +106,6 @@ p small {
 .sans-serif-text {
   font-family: $font-sans-serif-text !important;
 }
-
-// .lead {
-//   font-family: $font-serif-text!important;
-//   line-height: 2 !important;
-// }
-// .lead a {
-//   font-family: $font-serif-text!important;
-//   line-height: 2 !important;
-// }
 .text-dark {
   color: #1a1a1a !important;
 }
@@ -158,6 +143,7 @@ body.dark p.text-secondary small {
   Actions / Buttons
 ---------------------------------------------------------------------------*/
 
+/* Buttons */
 .btn {
   font-weight: 700;
 }
@@ -201,7 +187,6 @@ body.dark .background-hover:hover {
 /* Small light buttons */
 .btn-sm-light {
   padding: 3px 12px;
-  // font-size: 0.875rem;
   font-size: var(--bs-btn-font-size);
   border: 1px solid rgb(27 31 35 / 15%);
   line-height: 20px;
@@ -238,6 +223,32 @@ body.dark .btn-sm-light:hover {
 }
 .btn-no-outline {
   border-color: transparent !important;
+}
+
+/* Outline Buttons */
+.btn.show.btn-outline-primary {
+  color: #fff !important;
+}
+body.dark .btn.show.btn-outline-primary {
+  background-color: #4e8c7a !important;
+}
+.btn-outline-primary {
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+}
+
+/* Links */
+.custom-link {
+  transition: background-color 0.3s ease, color 0.3s ease,
+  text-decoration 0.3s ease;
+}
+.custom-link:hover {
+  background-color: #f5f5f5;
+  color: #000;
+  text-decoration: underline;
+}
+.text-underline-hover:hover {
+  text-decoration: underline;
 }
 
 /*--------------------------------------------------------------------------
@@ -494,23 +505,10 @@ body.dark .dropdown-divider {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
-.custom-link {
-  transition: background-color 0.3s ease, color 0.3s ease, text-decoration 0.3s ease;
-}
-.custom-link:hover {
-  background-color: #f5f5f5;
-  color: #000;
-  text-decoration: underline;
-}
-// .dropdown-item {
-//   padding: 10px 15px;
-// }
 .dropdown-header:hover {
   background-color: #e0e0e0;
 }
-.text-underline-hover:hover {
-  text-decoration: underline;
-}
+
 
 /*--------------------------------------------------------------------------
   Modals
@@ -719,7 +717,6 @@ body.dark .filter-menu {
   background-color: #2a2a2a;
   color: #eaeaea;
   border-color: #444444;
-  // box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
 }
 .filter-menu.show {
   display: block;
@@ -729,13 +726,6 @@ body.dark .filter-menu {
 }
 
 /* Search sidebar */
-// #search-content {
-//   flex-grow: 1;
-//   height: calc(100vh - 60px);
-// }
-// #search-results {
-//   min-height: 100%;
-// }
 .sidebar {
   position: sticky;
   top: 0;
@@ -806,18 +796,6 @@ button.downvote:hover .arrow-icon {
   content: url('/static/website/images/ai-icons/down-arrow-filled-dark.svg');
 }
 
-/* Buttons */
-.btn.show.btn-outline-primary {
-  color: #fff !important;
-}
-body.dark .btn.show.btn-outline-primary {
-  background-color: #4e8c7a !important;
-}
-.btn-outline-primary {
-  --bs-btn-hover-color: #fff;
-  --bs-btn-active-color: #fff;
-}
-
 /* Stars */
 .bi-star-fill {
   color: #FFD700;
@@ -830,4 +808,9 @@ body.light .bi-star-fill {
 body.dark .bi-star-fill {
   color: #FFD700;
   text-shadow: 0px 0px 4px rgba(255, 215, 0, 1);
+}
+
+/* Tooltips */
+.tooltip-inner {
+  text-align: left;
 }

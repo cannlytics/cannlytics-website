@@ -85,7 +85,7 @@
         */
       var message = form.message.value;
       if (message === null || message === '') {
-        cannlytics.showNotification('Message required', 'Please enter a message so we can help you.', 'error');
+        cannlytics.utils.showNotification('Message required', 'Please enter a message so we can help you.', 'error');
         return false;
       }
       return true;

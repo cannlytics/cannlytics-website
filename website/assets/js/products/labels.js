@@ -14,7 +14,7 @@ import { theme } from '../ui/theme.js';
 
 export const labelsJS = {
 
-  // CoADoc parameters.
+  // Parameters.
   minWidth: 100,
   gridOptions: {},
   gridAPI: null,

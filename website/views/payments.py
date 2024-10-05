@@ -1,10 +1,10 @@
 """
 Subscription Views | Cannlytics Website
-Copyright (c) 2021-2023 Cannlytics
+Copyright (c) 2021-2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 1/5/2021
-Updated: 9/23/2024
+Updated: 10/4/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports:
@@ -340,8 +340,8 @@ def capture_order(request, order_id):
             update_custom_claims(uid, claims=claims)
 
             # Format the email.
-            subject = 'Subscribed to Cannlytics AI'
-            message = f'Congratulations,\n\nYou have successfully subscribed to Cannlytics AI. You can use your tokens to run AI-powered jobs in the app:\n\nhttps://data.cannlytics.com\n\nPut your AI jobs to good use!\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
+            subject = 'Subscribed to Cannlytics'
+            message = f'Congratulations,\n\nYou have successfully subscribed to Cannlytics. You can use your tokens to parse data from COAs, labels, and receipts. Put your data to good use.\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
 
         # Otherwise, update the user's amount of tokens.
         else:
@@ -352,8 +352,8 @@ def capture_order(request, order_id):
             data = {**order_data, **{'tokens': current_tokens}}
 
             # Credit the user with the appropriate tokens.
-            subject = 'Cannlytics AI Tokens Purchased'
-            message = f'Congratulations,\n\nYou have successfully purchased {number_of_tokens} Cannlytics AI tokens. You can use your tokens to run AI-powered jobs in the app:\n\nhttps://data.cannlytics.com\n\nPut your AI jobs to good use!\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
+            subject = 'Cannlytics Tokens Purchased'
+            message = f'Congratulations,\n\nYou have successfully purchased {number_of_tokens} Cannlytics tokens. You can use your tokens to parse data from COAs, labels, and receipts. Put your data to good use.\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
             try:
                 increment_value(
                     ref=f'subscribers/{uid}',
@@ -361,8 +361,8 @@ def capture_order(request, order_id):
                     amount=number_of_tokens,
                 )
             except:
-                subject = 'Cannlytics AI Tokens Purchase Failed'
-                message = f'Please be in touch,\n\nYou have ordered {number_of_tokens} Cannlytics AI tokens, but we had trouble crediting your account. Please email dev@cannlytics.com and we will credit your account with your tokens.\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
+                subject = 'Cannlytics Tokens Purchase Failed'
+                message = f'Please be in touch,\n\nYou have ordered {number_of_tokens} Cannlytics tokens, but we had trouble crediting your account. Please email dev@cannlytics.com and we will credit your account with your tokens.\n\nAlways here to help,\nThe Cannlytics Team' #pylint: disable=line-too-long
 
         # Send an email to the admin and the user.
         try:

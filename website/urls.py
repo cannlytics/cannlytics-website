@@ -4,7 +4,7 @@ Copyright (c) 2020-2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 12/29/2020
-Updated: 9/23/2024
+Updated: 10/4/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # External imports:
@@ -12,15 +12,14 @@ from django.conf import settings
 from django.conf.urls import handler404, handler500
 from django.urls import include, path
 from django.views.generic.base import RedirectView
-from django_robohash.views import robohash
 
 # Internal imports:
 from website.views import (
     auth,
-    payments,
-    views,
     contact,
+    payments,
     stats,
+    views,
 )
 
 
@@ -35,6 +34,7 @@ urlpatterns = [
         path('payments/unsubscribe', payments.unsubscribe),
         path('payments/orders', payments.create_order, name='create_order'),
         path('payments/orders/<str:order_id>/capture', payments.capture_order, name='capture_order'),
+        path('message', contact.send_message, name='send_message'),
         path('report', contact.report_data, name='report_data'),
         path('star', stats.star_observation, name='star_observation'),
         path('vote', stats.vote_observation, name='vote_observation'),
@@ -43,7 +43,6 @@ urlpatterns = [
     path('meetup', views.meetup, name='meetup'),
     path('pricing', RedirectView.as_view(url='/account/subscriptions', permanent=False)),
     path('subscriptions', RedirectView.as_view(url='/account/subscriptions', permanent=False)),
-    path('save-message', contact.save_message_to_firestore, name='save_message_to_firestore'),
     path('.well-known/ai-plugin.json', RedirectView.as_view(url='/static/ai-plugin.json', permanent=False)),
     path('favicon.ico', RedirectView.as_view(url='/static/favicon.ico', permanent=False)),
     path('robots.txt', RedirectView.as_view(url='/static/robots.txt', permanent=False)),

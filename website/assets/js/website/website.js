@@ -10,12 +10,12 @@
 import { onAuthChange } from '../firebase.js';
 import { authRequest } from '../utils.js';
 import { contact } from './contact.js';
-import { dashboard } from './dashboard.js';
+import { homepage } from './homepage.js';
 
 export const website = {
 
   ...contact,
-  ...dashboard,
+  ...homepage,
 
   initialize() {
     /* Initialize the website's features and functionality. */

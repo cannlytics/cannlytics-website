@@ -172,7 +172,7 @@ def api_labels(request, label_id=None):
         user_subscription = get_document(f'subscribers/{uid}')
         current_tokens = user_subscription.get('tokens', 0) if user_subscription else 0
         if current_tokens < 1:
-            message = 'You have 0 Cannlytics AI tokens. You need 1 AI token per AI job. You can purchase more tokens at https://cannlytics.com/account/subscriptions.'
+            message = 'You have 0 Cannlytics tokens. You need 1 token per parse. You can purchase more tokens at https://cannlytics.com/account/subscriptions.'
             print(message)
             response = {'success': False, 'message': message}
             return Response(response, status=402)

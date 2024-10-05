@@ -1,10 +1,10 @@
 """
 Cannlytics Subscriptions Tests
-Copyright (c) 2021-2023 Cannlytics
+Copyright (c) 2021-2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 6/22/2023
-Updated: 6/22/2023
+Updated: 10/4/2024
 License: MIT License <https://opensource.org/licenses/MIT>
 """
 # Standard imports:
@@ -111,8 +111,8 @@ if __name__ == '__main__':
 
     # Create a product.
     product_data = {
-        "name": "Cannlytics AI Subscription",
-        "description": "A Cannlytics AI subscription.",
+        "name": "Cannlytics Subscription",
+        "description": "A Cannlytics subscription.",
         "type": "SERVICE",
         "category": "SOFTWARE",
         "image_url": "https://firebasestorage.googleapis.com/v0/b/cannlytics.appspot.com/o/public%2Fimages%2Flogos%2Fcannlytics_ai_with_text.png?alt=media&token=78d19117-eff5-4f45-a8fa-3bbdabd6917d",
@@ -123,7 +123,7 @@ if __name__ == '__main__':
     plan_data = {
         "product_id": None,
         "name": "Premium",
-        "description": "Premium Cannlytics AI subscription.",
+        "description": "Premium Cannlytics subscription.",
         "billing_cycles": [
         {
             "frequency": {

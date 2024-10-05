@@ -3,11 +3,11 @@
   Created: 4/27/2021
   Updated: 11/25/2021
 -->
-{% extends "index.html" %}
+{% extends "components/layout/dashboard.html" %}
 {% block title %}500 | Cannlytics{% endblock %}
-{% block material %}
+{% block dashboard %}
   <div class="position-absolute w-100 text-center pt-5">
-    <h1 class="display-4 text-center">500<br>Error in<br>Orbit</h1>
+    <h2 class="display-5 sans-serif text-center mt-5">Unknown Error<br>Doh!</h2>
   </div>
   <div class="container">
     <svg
@@ -1066,7 +1066,7 @@
     </svg>
   <div class="d-flex align-items-center justify-content-center">
     <p
-      class="fs-6 font-weight-light serif text-left mb-4"
+      class="fs-6 font-weight-light sans-serif-text text-left mb-4"
       style="line-height:2;max-width:420px;"
     >
         Greatest apologies, an error occurred
@@ -1075,23 +1075,23 @@
         try to get to where you need to go.
     </p>
   </div>
-    <div class="d-flex align-items-center justify-content-center mt-4">
+    <div class="d-flex align-items-center justify-content-center mt-2 pb-5">
       <button
-        class="btn btn-sm btn-link text-dark serif"
+        class="btn btn-sm btn-link text-dark sans-serif"
         type="button"
         onclick="goBack()"
       >
         Back
       </button>
       <a
-        class="btn btn-sm btn-link text-dark serif"
+        class="btn btn-sm btn-link text-dark sans-serif"
         type="button"
         href="/"
       >
         Home
       </a>
       <a
-        class="btn btn-sm btn-link text-dark serif"
+        class="btn btn-sm btn-link text-dark sans-serif"
         type="button"
         href="/account/sign-in"
       >

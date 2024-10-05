@@ -4,7 +4,7 @@ Copyright (c) 2023 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 6/23/2023
-Updated: 8/18/2024
+Updated: 10/4/2024
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 Description:
@@ -54,7 +54,7 @@ def auth_signup(data, context):
         entry = {
             'created_at': created_at,
             'support': 'free',
-            'tokens': 50,
+            'tokens': 10,
             'uid': uid,
             'email': user_email,
         }
@@ -115,16 +115,17 @@ def auth_signup(data, context):
             <p>Welcome to Cannlytics,</p>
             <p>Explore subscription plans and find the right plan for you at <a href="https://cannlytics.com/account/subscriptions">https://cannlytics.com/account/subscriptions</a>.</p>
             <p class="mt-2" style="max-width:560px;">
-                You can get access to bleeding-edge AI tools to give yourself a competitive edge, including:
-                <a href="https://data.cannlytics.com/results">a COA parser</a>,
-                <a href="https://data.cannlytics.com/sales">a receipt parser</a>,
-                <a href="https://data.cannlytics.com/licenses">licenses data archive</a>, and
+                With a subscription, you get access to:
+                <a href="https://cannlytics.com/parsers/coa-parser">a COA parser</a>,
+                <a href="https://cannlytics.com/parsers/label-parser">a label parser</a>,
+                <a href="https://cannlytics.com/parsers/receipt-parser">a receipt parser</a>,
+                <a href="https://cannlytics.com/organizations">data archives</a>, and
                 <a href="https://cannlytics.com/api">API access</a>.
             </p>
-            <p>As a new user, you have received <strong class="serif">10 free tokens</strong> to try Cannlytics AI.</p>
-            <p>Each Cannlytics AI job consumes <strong class="serif">1 token</strong>. Only successful jobs will consume tokens. Your tokens are valid for <strong class="serif">one month</strong> after purchase. You can always purchase more tokens for your account at <a href="https://cannlytics.com/account">https://cannlytics.com/account</a>.</p>
-            <p>You can use your tokens to run AI-powered jobs in the app: <a href="https://data.cannlytics.com">https://data.cannlytics.com</a>. Put your AI jobs to good use!</p>
-            <p>Thank you for subscribing,<br>The Cannabis Data Science Team</p>
+            <p>As a new user, you have received <strong class="serif">10 free tokens</strong> to try parsing COAs, labels and receipts.</p>
+            <p>Each parse consumes <strong class="serif">1 token</strong>. Only successful jobs will consume tokens. Your tokens are valid for <strong class="serif">one month</strong> after purchase. You can always purchase more tokens for your account at <a href="https://cannlytics.com/account">https://cannlytics.com/account</a>.</p>
+            <p>Please parse as many COAs, labels, and receipts as you desire! Put your data to good use.</p>
+            <p>Thank you for subscribing,<br>The Cannlytics Team</p>
         </body>
         </html>
         """

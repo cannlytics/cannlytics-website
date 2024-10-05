@@ -7,7 +7,7 @@
  * Updated: 7/20/2022
  * License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
  */
-import { reportError } from '../payments/payments.js';
+import { reportPaymentError } from '../payments/payments.js';
 import { authRequest } from '../utils.js';
 import { dataTables } from './dataTables.js';
 
@@ -123,7 +123,7 @@ export const data = {
       onError: function(error) {
         const message = 'A payment error occurred. Please try again later or email support.';
         showNotification('Payment Error', message, /* type = */ 'error');
-        reportError();
+        reportPaymentError();
       },
     }).render('#paypal-button-container');
   },

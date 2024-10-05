@@ -1,34 +1,144 @@
 <!--
   Home Page | Cannlytics
   Created: 1/5/2021
-  Updated: 10/3/2024
+  Updated: 10/4/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}Cannlytics{% endblock %}
-{% block dashboard_css %}
-
-  <!-- D3 Charts -->
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-
-{% endblock %}
 {% block dashboard %}
+<section class="container-fluid d-flex pb-5">
 
-  <!-- TODO: Latest: Results, COAs, Strains, organizations, compounds, etc. -->
+  <!-- Aside (will implement later) -->
+  <aside class="d-none d-lg-block col-lg-3">
+    <div class="card bg-light border">
+      <div class="card-body text-dark">
+        <h6 class="sans-serif card-title fw-bold">Latest Updates</h6>
+        <ul class="list-unstyled">
+          <li class="">
+            <small><i class="bi bi-info-circle"></i> Data updated: Oct 4, 2024</small>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-4">
+      <div class="card-body text-dark">
+        <h6 class="sans-serif card-title">Recent</h6>
+        <ul class="list-unstyled">
+          <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
+          <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
+          <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
+          <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
+          <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-4">
+      <div class="card-body text-dark">
+        <h6 class="sans-serif card-title">Groups</h6>
+        <ul class="list-unstyled">
+          <li>
+            <a href="#">
+              <small>
+                <i class="bi bi-people"></i> Cannabis Data Science
+              </small>
+            </a>              
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-4">
+      <div class="card-body text-dark">
+        <h6 class="sans-serif card-title">Events</h6>
+        <ul class="list-unstyled">
+          <li><i class="bi bi-calendar-event"></i> <small>A Review of Cannabis Lab Test...</small></li>
+          <li><a href="#"><small>Show more</small></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card mt-4">
+      <div class="card-body text-dark">
+        <h6 class="sans-serif card-title">Trending</h6>
+        <ul class="list-unstyled">
+          <li><i class="bi bi-hash"></i> <small>jack-herer</small></li>
+          <li><a href="#"><small>Show more</small></a></li>
+        </ul>
+      </div>
+    </div>
+  </aside>
 
-  <!-- Live analytics -->
-  {% comment %} {% include "pages/homepage/components/live_analytics.html" %} {% endcomment %}
+  <!-- Main Content -->
+  <main class="flex-grow-1 px-3">
+    <div class="d-flex justify-content-between mb-4">
+      <h4 class="sans-serif fw-bold mb-0">Data</h4>
 
-  <!-- Newest Strains -->
-  {% comment %} {% include "pages/homepage/components/newest_strains.html" %} {% endcomment %}
+      <!-- View Controls -->
+      <div>
 
-  <!-- Newest Results -->
-  {% comment %} {% include "pages/homepage/components/newest_results.html" %} {% endcomment %}
+        <!-- Data type select -->
+        <div class="d-inline-block mb-3 ms-2">
+          <select
+            id="data-type-select"
+            class="form-select form-select-sm"
+            onchange="cannlytics.website.changeDataType(this.value)"
+          >
+            <option value="all" selected><small>🔍 All</small></option>
+            <option value="coas"><small>📜 COAs</small></option>
+            <option value="results"><small>🧪 Results</small></option>
+            <option value="strains"><small>🪴 Strains</small></option>
+            <option value="organizations"><small>🧑‍🌾 Organizations</small></option>
+            <option value="compounds"><small>🔬 Compounds</small></option>
+          </select>
+        </div>
 
-  <!-- Newest Licenses -->
-  {% comment %} {% include "pages/homepage/components/newest_licenses.html" %} {% endcomment %}
+        <!-- Sort By -->
+        <div class="dropdown d-inline-block ms-2">
+          <select
+            id="order-select"
+            class="form-select form-select-sm"
+            onchange="cannlytics.website.changeOrder()"
+          >
+            <option value="desc" selected><small>Latest</small></option>
+            <option value="asc"><small>Oldest</small></option>
+          </select>
+        </div>
 
-  <!-- TODO: Community reviews -->
+        <!-- TODO: Filter button -->
+        <!-- Filters are dynamic depending on the data type -->
+
+        <!-- View selection -->
+        <div class="btn-group btn-group-sm ms-2" role="group" aria-label="View selection">
+          <button type="button" class="btn btn-outline-primary active" id="grid-button" onclick="switchToGridView()">
+            <i class="bi bi-grid"></i>
+          </button>
+          <button type="button" class="btn btn-outline-primary" id="list-button" onclick="switchToListView()">
+            <i class="bi bi-list"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Observation Cards -->
+    <!-- FIXME: Populate these with realtime data from Firestore -->
+    <div id="data-grid" class="grid-view row">
+      {% for item in observations %}
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+          <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <p class="card-text">{{ item.description }}</p>
+            <a href="{{ item.link }}" class="btn btn-primary mt-auto">View Details</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+
+</section>
 
 {% endblock %}
 
@@ -36,7 +146,12 @@
 <!-- Homepage JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  cannlytics.website.initialize();
+  cannlytics.website.initializeHomepage();
 });
 </script>
 {% endblock %}
+
+<!-- Optional: Live analytics -->
+{% comment %} {% include "pages/homepage/components/live_analytics.html" %} {% endcomment %}
+
+<!-- Optional: Community reviews -->

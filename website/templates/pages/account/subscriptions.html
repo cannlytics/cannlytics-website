@@ -1,7 +1,7 @@
 <!--
   Subscription Management Page | Cannlytics Website
   Created: 11/16/2021
-  Updated: 10/2/2024
+  Updated: 10/4/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -10,9 +10,6 @@
 
   <!-- Subscriptions Style -->
   <style>
-    .tooltip-inner {
-      text-align: left;
-    }
     .bg-purple {
       background-color: #7B4EA8 !important;
     }
@@ -56,26 +53,34 @@
     %}
 
     <!-- Subscriptions -->
-    <div class="mt-3">
-      <h1 class="pt-4 text-dark sans-serif">Cannlytics Subscriptions</h1>
-      <p class="mt-2 mb-4 sans-serif" style="max-width:560px;">
+    <div class="mt-4">
+      <h2 class="sans-serif text-dark mb-0">Cannlytics Subscriptions</h2>
+      <p class="mt-2 mb-4" style="max-width:560px;">
+        <small class="sans-serif-text">
         With your Cannlytics subscription, you'll get access to:
+        </small>
       </p>
       <div class="markdown row">
         <!-- Feature List -->
         <div class="col-4">
           <div class="list-group" id="list-tab" role="tablist">
-            <a class="list-group-item list-group-item-action active" id="list-coa-list" data-bs-toggle="list" href="#list-coa" role="tab" aria-controls="list-coa">
-              COA Parser
-            </a>
-            <a class="list-group-item list-group-item-action" id="list-receipt-list" data-bs-toggle="list" href="#list-receipt" role="tab" aria-controls="list-receipt">
-              Receipt &amp; Label Parser
-            </a>
-            <a class="list-group-item list-group-item-action" id="list-archives-list" data-bs-toggle="list" href="#list-archives" role="tab" aria-controls="list-archives">
+            <a class="list-group-item list-group-item-action active" id="list-archives-list" data-bs-toggle="list" href="#list-archives" role="tab" aria-controls="list-archives">
               Data Archives
             </a>
             <a class="list-group-item list-group-item-action" id="list-api-list" data-bs-toggle="list" href="#list-api" role="tab" aria-controls="list-api">
               API Access
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-coa-parser-list" data-bs-toggle="list" href="#list-coa-parser" role="tab" aria-controls="list-coa-parser">
+              COA Parser
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-label-parser-list" data-bs-toggle="list" href="#list-label-parser" role="tab" aria-controls="list-label-parser">
+              Label Parser
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-receipt-parser-list" data-bs-toggle="list" href="#list-receipt-parser" role="tab" aria-controls="list-receipt-parser">
+              Receipt Parser
+            </a>
+            <a class="list-group-item list-group-item-action" id="list-standardizer-list" data-bs-toggle="list" href="#list-standardizer" role="tab" aria-controls="list-standardizer">
+              Standardizer
             </a>
           </div>
         </div>
@@ -83,22 +88,9 @@
         <!-- Feature Descriptions -->
         <div class="col-8">
           <div class="tab-content" id="nav-tabContent">
-            <!-- COA Parser -->
-            <div class="tab-pane fade show active" id="list-coa" role="tabpanel" aria-labelledby="list-coa-list">
-              <h3 class="mt-0 sans-serif">COA Parser</h3>
-              <p class="sans-serif-text">Certificates of analysis (COAs) are abundant for cultivators, processors, retailers, and consumers too, but the data is often locked away. Rich, valuable laboratory data so close, yet so far away! Use our COA parser,
-                <a href="https://github.com/cannlytics/cannlytics/tree/main/cannlytics/data/coas">CoADoc</a>,
-              to get these data points in your hands by parsing PDFs and URLs and cleanly returning the data to you.</p>
-            </div>
-      
-            <!-- Receipt Parser -->
-            <div class="tab-pane fade" id="list-receipt" role="tabpanel" aria-labelledby="list-receipt-list">
-              <h3 class="mt-0 sans-serif">Label &amp; Receipt Parser</h3>
-              <p class="sans-serif-text">Your cannabis package labels and receipts hold a lot of data. Put that data to work with <b>BudSpender</b>. This OpenAI-powered tool parses cannabis labels and receipts into well-structured data that can be used for trending, analytics, and however you please.</p>
-            </div>
-      
+
             <!-- Data Archives -->
-            <div class="tab-pane fade" id="list-archives" role="tabpanel" aria-labelledby="list-archives-list">
+            <div class="tab-pane fade show active" id="list-archives" role="tabpanel" aria-labelledby="list-archives-list">
               <h3 class="mt-0 sans-serif">Data Archives</h3>
               <p class="sans-serif-text">
                 You'll get access to our repository of
@@ -111,17 +103,52 @@
               <p class="sans-serif-text">The Cannlytics API allows users to interface with cannabis data and statistics. Each API endpoint handles authentication, error handling, and identifying the precise logic to perform. You can perform all of your favorite
               parsing programmatically with the API.</p>
             </div>
+
+            <!-- COA Parser -->
+            <div class="tab-pane fade" id="list-coa-parser" role="tabpanel" aria-labelledby="list-coa-parser-list">
+              <h3 class="mt-0 sans-serif">COA Parser</h3>
+              <p class="sans-serif-text">
+                The COA (Certificate of Analysis) Parser, <a href="https://github.com/cannlytics/cannlytics/tree/main/cannlytics/data/coas">CoADoc</a>, extracts data from COA PDFs or URLs. This tool enables you to parse lab results, including cannabinoids, terpenes, contaminants, and every data point on the page, directly from PDFS, images, URLs, and QR codes.
+              </p>
+            </div>
+
+            <!-- Label Parser -->
+            <div class="tab-pane fade" id="list-label-parser" role="tabpanel" aria-labelledby="list-label-parser-list">
+              <h3 class="mt-0 sans-serif">Label Parser</h3>
+              <p class="sans-serif-text">
+                The Label Parser parses images of cannabis product labels, extracting text-based data such as strain names, product type, and any lab results. Powered by OpenAI's latest models, <b>BudSpender</b> processes these images into usable datasets for compliance checks, product categorization, and more.
+              </p>
+            </div>
+      
+            <!-- Receipt Parser -->
+            <div class="tab-pane fade" id="list-receipt-parser" role="tabpanel" aria-labelledby="list-receipt-parser-list">
+              <h3 class="mt-0 sans-serif">Receipt Parser</h3>
+              <p class="sans-serif-text">
+                The Receipt Parser allows you to upload images of cannabis purchase receipts, extracting purchase data such as product names, prices, and quantities. With <b>BudSpender</b>, this tool can help you analyze spending patterns, track inventory, and generate detailed reports.
+              </p>
+            </div>
+
+            <!-- Standardizer -->
+            <div class="tab-pane fade" id="list-standardizer" role="tabpanel" aria-labelledby="list-standardizer-list">
+              <h3 class="mt-0 sans-serif">Standardizer</h3>
+              <p class="sans-serif-text">
+                The Standardizer helps normalize product names, strain names, and product types by applying a consistent naming structure. Whether you are standardizing data in bulk or individually, this tool ensures uniformity across your dataset for accurate comparisons and analysis.
+              </p>
+            </div>
+
           </div>
         </div>
       </div>
 
       <!-- Tiers -->
-      <h1 class="mt-5 pt-4 text-dark sans-serif">Pricing</h1>
-      <p class="markdown mt-2 mb-0 sans-serif" style="max-width:560px;">
-        We want cannabis data and analytics to be affordable for everyone.
-        Our monthly data and API subscription is designed for you to get all
-        of the cannabis data that you need. If you need more or less, then please
-        <a href="{% url 'page' page='support' %}?topic=custom">contact us</a>.
+      <h2 class="sans-serif text-dark mb-0 mt-5 pt-5">Pricing</h2>
+      <p class="markdown mt-2 mb-0" style="max-width:560px;">
+        <small class="sans-serif-text">
+          We want cannabis data and analytics to be affordable for everyone.
+          Our monthly data and API subscription is designed for you to get all
+          of the cannabis data that you need. If you need more or less, then please
+          <a href="{% url 'page' page='support' %}?topic=custom">contact us</a>.
+        </small>
       </p>
       <div class="row row-cols-1 row-cols-md-3 mb-3 mt-3 text-center">
         {% for item in subscription_plans %}
@@ -219,7 +246,7 @@
             therefore, you can have us standardize your
             archive of lab results, in whatever format they may be in, into a clean,
             well-formatted, accessible workbook for you. Our standard rate is
-            <strong>$500 per lab</strong> and <strong>50¢ per COA</strong>.
+            <strong>$500 per lab</strong> and <strong>50¢ per document</strong>.
           </small>
         </p>
         <p class="text-start mt-3">
