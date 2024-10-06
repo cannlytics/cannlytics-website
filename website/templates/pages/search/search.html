@@ -1,0 +1,124 @@
+<!--
+  Search Results Page | Cannlytics
+  Created: 9/28/2024
+  Updated: 10/6/2024
+-->
+{% extends "components/layout/dashboard.html" %}
+{% load static %}
+{% block title %}Search | Cannlytics{% endblock %}
+{% block dashboard %}
+<section class="container-fluid d-flex ms-0 ps-0 pb-5">
+
+  <!-- Sidebar -->
+  <aside class="d-none d-lg-block col-lg-3 ms-2">
+    <div
+      id="sidebar"
+      class="sidebar d-none d-md-block card bg-body text-dark px-3 py-2"
+    >
+      <h5 class="card-title sans-serif text-dark fs-6 mt-0">Filter by</h5>
+      <div class="d-flex justify-content-between align-items-center py-1 px-2 rounded filter-item active-filter" data-type="all" onclick="cannlytics.search.filterByDataType('all')" role="button">
+        <div><small>🔍 All</small></div>
+        <span class="badge bg-secondary">0</span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center py-1 px-2 rounded filter-item" data-type="coas" onclick="cannlytics.search.filterByDataType('coas')" role="button">
+        <div><small>📜 COAs</small></div>
+        <span class="badge bg-secondary">0</span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center py-1 px-2 rounded filter-item" data-type="results" onclick="cannlytics.search.filterByDataType('results')" role="button">
+        <div><small>🧪 Results</small></div>
+        <span class="badge bg-secondary">0</span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center py-1 px-2 rounded filter-item" data-type="strains" onclick="cannlytics.search.filterByDataType('strains')" role="button">
+        <div><small>🪴 Strains</small></div>
+        <span class="badge bg-secondary">0</span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center py-1 px-2 rounded filter-item" data-type="organizations" onclick="cannlytics.search.filterByDataType('organizations')" role="button">
+        <div><small>🧑‍🌾 Organizations</small></div>
+        <span class="badge bg-secondary">0</span>
+      </div>
+      <div class="d-flex justify-content-between align-items-center py-1 px-2 rounded filter-item" data-type="compounds" onclick="cannlytics.search.filterByDataType('compounds')" role="button">
+        <div><small>🔬 Compounds</small></div>
+        <span class="badge bg-secondary">0</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Promo / Sign-Up Section -->
+  <main
+    id="subscribe-content"
+    class="flex-grow-1 d-flex d-none flex-column px-3"
+  >
+    {% include "components/placeholders/sign_up_placeholder.html" %}
+  </main>
+
+  <!-- Search results -->
+  <main id="search-content" class="flex-grow-1 d-flex d-none flex-column px-3">
+    <div class="d-flex justify-content-between">
+
+      <!-- Title -->
+      <h4 class="sans-serif text-dark fw-normal mb-0">
+        <small>Search results</small>
+      </h4>
+
+      <!-- Mobile: Data type selection -->
+      <div id="search-select" class="d-block d-md-none mb-3">
+        <select
+          id="filter-select"
+          class="form-select form-select-sm"
+          onchange="cannlytics.search.filterByDataType(this.value)"
+        >
+          <option value="all" selected>🔍 All</option>
+          <option value="coas">📜 COAs</option>
+          <option value="results">🧪 Results</option>
+          <option value="strains">🪴 Strains</option>
+          <option value="organizations">🧑‍🌾 Organizations</option>
+          <option value="compounds">🔬 Compounds</option>
+        </select>
+      </div>
+    
+      <!-- Sort by -->
+      <div class="form-group">
+        <select id="sortSelect" class="form-select form-select-sm" aria-label="Sort by">
+          <option value="best_match" selected>Best match</option>
+          <option value="most_stars">Most stars</option>
+          <option value="fewest_stars">Fewest stars</option>
+          <option value="highest_rating">Highest rating</option>
+          <option value="lowest_rating">Lowest rating</option>
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+      </div>
+    
+    </div>
+
+    <!-- Search results grid -->
+    <div id="search-results" class="markdown sans-serif-text fs-6 lh-md row pt-4"></div>
+
+    <!-- More button -->
+    <div id="more-button-container" class="d-flex d-none justify-content-center mt-3 mb-5">
+      <button id="more-button" class="btn btn-outline-secondary rounded-pill px-4">
+        More
+      </button>
+    </div>
+
+    <!-- Optional: Pagination -->
+
+    <!-- Report dialog -->
+    {% include "components/dialogs/report_dialog.html" %}
+
+  </main>
+
+</section>
+{% endblock %}
+
+{% block page_js %}
+<!-- Search JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Initialize search page.
+  cannlytics.search.initializeSearchResults();
+
+});
+</script>
+{% endblock %}

@@ -1,7 +1,7 @@
 <!--
   Subscription Management Page | Cannlytics Website
   Created: 11/16/2021
-  Updated: 10/4/2024
+  Updated: 10/6/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -223,11 +223,13 @@
         </p>
         <p class="text-start mt-3">
           <a
-            class="btn bg-gradient-orange text-white sans-serif"
+            class="icon-link icon-link-hover btn bg-gradient-orange text-white sans-serif"
             href="{% url 'page' page='support' %}?topic=custom"
           >
             Request a job
-            <i class="bi bi-arrow-right"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M10.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.293 7.5H1.5a.5.5 0 0 0 0 1h7.793L7.146 11.354a.5.5 0 1 0 .708.708l3-3z"/>
+            </svg>
           </a>
         </p>
       </div>
@@ -251,11 +253,13 @@
         </p>
         <p class="text-start mt-3">
           <a
-            class="btn bg-gradient-green text-white sans-serif"
+            class="icon-link icon-link-hover btn bg-gradient-green text-white sans-serif"
             href="{% url 'page' page='support' %}?topic=data-migration"
           >
             Request a quote
-            <i class="bi bi-arrow-right"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M10.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.293 7.5H1.5a.5.5 0 0 0 0 1h7.793L7.146 11.354a.5.5 0 1 0 .708.708l3-3z"/>
+            </svg>
           </a>
         </p>
       </div>
@@ -263,7 +267,7 @@
 
     <!-- Metrc support -->
     <div class="my-5 pt-5">
-      {% include "pages/homepage/components/metrc_state_list.html" with verifications=verifications only %}
+      {% include "components/promos/metrc.html" with verifications=verifications only %}
     </div>
 
   </section>

@@ -1,7 +1,7 @@
 <!--
   State Selection
   Created: 3/24/2024
-  Updated: 9/28/2024
+  Updated: 10/6/2024
 -->
 <div 
   class="btn-group btn-group-sm" 
@@ -15,17 +15,19 @@
     type="button" 
     class="btn btn-primary" 
     id="btn-all" 
-    onclick="selectState('all')"
+    onclick="cannlytics.search.selectState('all')"
   >
     All
   </button>
+
+  <!-- Future work: Get supported states from Firestore -->
 
   <!-- CA -->
   <button 
     type="button" 
     class="btn btn-outline-primary" 
     id="btn-CA" 
-    onclick="selectState('CA')"
+    onclick="cannlytics.search.selectState('CA')"
   >
     CA
   </button>
@@ -35,7 +37,7 @@
     type="button" 
     class="btn btn-outline-primary" 
     id="btn-FL" 
-    onclick="selectState('FL')"
+    onclick="cannlytics.search.selectState('FL')"
   >
     FL
   </button>

@@ -174,6 +174,7 @@ export function initializeVoteButtons() {
 export async function fetchUserStarsAndVotes(observations) {
   /* Fetch the stars and votes for the current user. */
   const user = getCurrentUser();
+  if (!user) return;
   const uid = user.uid;
 
   // Loop through the observations and fetch stars/votes.

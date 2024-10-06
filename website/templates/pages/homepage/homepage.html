@@ -1,7 +1,7 @@
 <!--
   Home Page | Cannlytics
   Created: 1/5/2021
-  Updated: 10/5/2024
+  Updated: 10/6/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -13,19 +13,22 @@
   <aside class="d-none d-lg-block col-lg-3">
 
     <!-- Latest Updates -->
-    <div class="card bg-light border">
-      <div class="card-body text-dark">
+    <div class="card">
+      <div class="card-body bg-body rounded text-dark">
         <h6 class="sans-serif card-title fw-bold">Latest Updates</h6>
         <ul class="list-unstyled mb-0">
           <!-- Gets data updated at from Firestore (stats/data) -->
-          <li class="">
-            <small><i class="bi bi-info-circle"></i> Data updated: {{ data_stats.updated_at|date:"M. j, Y" }}</small>
+          <li class="mb-1">
+            <small><i class="bi bi-info-circle"></i> Data updated: <span id="data-updated-at">{{ data_stats.updated_at|date:"M. j, Y" }}</span></small>
           </li>
           <!-- Gets the latest contributor from OpenCollective -->
-          <li id="latest-contribution"></li>
+          <li id="latest-contribution" class="mb-1"></li>
           <li class="">
-            <a href="https://opencollective.com/cannlytics-company">
-              <small>Contribute to the project <i class="bi bi-arrow-right"></i></small>
+            <a class="icon-link icon-link-hover" href="https://opencollective.com/cannlytics-company">
+              <small>Contribute to the project</small>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M10.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.293 7.5H1.5a.5.5 0 0 0 0 1h7.793L7.146 11.354a.5.5 0 1 0 .708.708l3-3z"/>
+              </svg>
             </a>
           </li>
         </ul>
@@ -35,7 +38,7 @@
     {% comment %} <!-- Trending -->
     <!-- Future work: Keep track of trending data -->
     <div class="card mt-4">
-      <div class="card-body text-dark">
+      <div class="card-body bg-body roundedtext-dark">
         <h6 class="sans-serif card-title">Trending</h6>
         <ul class="list-unstyled mb-0">
           <li><i class="bi bi-hash"></i> <small>jack-herer</small></li>
@@ -48,7 +51,7 @@
     <!-- Recently -->
      <!-- Future work: Show user's parsing jobs -->
     <div class="card mt-4">
-      <div class="card-body text-dark">
+      <div class="card-body bg-body rounded text-dark">
         <h6 class="sans-serif card-title">Recently Parsed</h6>
         <ul class="list-unstyled mb-0">
           <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
@@ -63,14 +66,12 @@
 
     <!-- Meetups -->
     <div class="card mt-4">
-      <div class="card-body text-dark">
+      <div class="card-body bg-body rounded text-dark">
         <h6 class="sans-serif card-title">Meetups</h6>
         <ul class="list-unstyled mb-0">
           <li>
             <a href="https://www.meetup.com/cannabis-data-science/">
-              <small>
-                <i class="bi bi-people"></i> Cannabis Data Science
-              </small>
+                <i class="bi bi-people"></i> <small>Cannabis Data Science</small>
             </a>              
           </li>
         </ul>
@@ -81,7 +82,7 @@
     <!-- Future work: Load events from meetup.com -->
     <!-- Future work: Get video links to youtube.com -->
     <div class="card mt-4">
-      <div class="card-body text-dark">
+      <div class="card-body bg-body rounded text-dark">
         <h6 class="sans-serif card-title">Events</h6>
         <ul class="list-unstyled mb-0">
           <li><i class="bi bi-calendar-event"></i> <small>A Review of Cannabis Lab Test...</small></li>
@@ -107,12 +108,12 @@
             class="form-select form-select-sm"
             onchange="cannlytics.website.changeDataType(this.value)"
           >
-            <option value="all" selected><small>🔍 All</small></option>
-            <option value="coas"><small>📜 COAs</small></option>
-            <option value="results"><small>🧪 Results</small></option>
-            <option value="strains"><small>🪴 Strains</small></option>
-            <option value="organizations"><small>🧑‍🌾 Organizations</small></option>
-            <option value="compounds"><small>🔬 Compounds</small></option>
+            <option value="all" selected>🔍 All</option>
+            <option value="coas">📜 COAs</option>
+            <option value="results">🧪 Results</option>
+            <option value="strains">🪴 Strains</option>
+            <option value="organizations">🧑‍🌾 Organizations</option>
+            <option value="compounds">🔬 Compounds</option>
           </select>
         </div>
 
@@ -123,8 +124,13 @@
             class="form-select form-select-sm"
             onchange="cannlytics.website.changeOrder()"
           >
-            <option value="desc" selected><small>Latest</small></option>
-            <option value="asc"><small>Oldest</small></option>
+            <option value="desc" selected>Latest</option>
+            <option value="asc">Oldest</option>
+            {% comment %} <!-- TODO: Add more sorting options -->
+            <option value="most_stars">Most stars</option>
+            <option value="fewest_stars">Fewest stars</option>
+            <option value="highest_rating">Highest rating</option>
+            <option value="lowest_rating">Lowest rating</option> {% endcomment %}
           </select>
         </div>
 
@@ -168,7 +174,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 {% endblock %}
 
-<!-- Optional: Live analytics -->
+<!-- Optional: Toggle between "Data" and "Stats" -->
 {% comment %} {% include "pages/homepage/components/live_analytics.html" %} {% endcomment %}
-
-<!-- Optional: Community reviews -->

@@ -1,7 +1,7 @@
 <!--
   Dashboard | Cannlytics
   Created: 1/5/2021
-  Updated: 10/2/2024
+  Updated: 10/6/2024
 -->
 {% extends "index.html" %}
 {% block material %}
@@ -15,16 +15,14 @@
     </header>
 
     <!-- Content -->
-    <main id="dashboard" class="mt-3" style="min-height:400px;">
+    <main id="dashboard" class="mt-3">
       {% block dashboard %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    {% block dashboard_footer %}
     <footer>
       {% include "components/layout/footer.html" %}
     </footer>
-    {% endblock %}
 
     <!-- Dashboard JavaScript -->
     {% block page_js %}{% endblock %}

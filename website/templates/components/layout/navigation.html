@@ -1,7 +1,7 @@
 <!--
   Navigation | Cannlytics Website
   Created: 1/7/2021
-  Updated: 9/21/2024
+  Updated: 10/6/2024
 -->
 {% load static %}
 
@@ -41,15 +41,12 @@
     <!-- Navigation links -->
     {% for link in item.links %}
       <li {% if forloop.last %}class="pb-2"{% endif %}>
-        {% if link.url %}
-        <a class="dropdown-item fs-6 sans-serif py-0 custom-link" href="{{ link.url }}">
+        <a
+          class="dropdown-item fs-6 sans-serif py-0 custom-link"
+          href="{% if link.url %}{{ link.url }}{% elif link.section %}{% url 'section' page=link.page section=link.section %}{% else %}{% url 'page' page=link.page %}{% endif %}"
+        >
           <small>{{ link.title }}</small>
         </a>
-        {% else %}
-        <a class="dropdown-item fs-6 sans-serif py-0 custom-link" href="{% url 'page' page=link.page %}">
-          <small>{{ link.title }}</small>
-        </a>
-        {% endif %}
       </li>
     {% endfor %}
 

@@ -4,22 +4,24 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 9/28/2024
- * Updated: 10/5/2024
+ * Updated: 10/6/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { onAuthChange, getCurrentUser, getDocument } from '../firebase.js';
-import { authRequest, showNotification  } from '../utils.js';
+import { onAuthChange } from '../firebase.js';
+import { authRequest  } from '../utils.js';
 import {
   initializeReportButtons,
   initializeShareButtons,
   initializeStarButtons,
   initializeVoteButtons,
+  fetchUserStarsAndVotes,
 } from '../stats/stats.js';
 
 export const searchJS = {
 
   selectedDataType: 'all',
   selectedState: 'all',
+  selectedSort: 'best_match',
 
   initializeSearchBar() {
     /* Initialize the search bar. */
@@ -62,6 +64,23 @@ export const searchJS = {
       }
     });
 
+    // Function to toggle the visibility of the clear button
+    searchInput.addEventListener('input', function() {
+      if (searchInput.value.length > 0) {
+        clearButton.style.display = 'inline-block';
+      } else {
+        clearButton.style.display = 'none';
+      }
+    });
+
+    // Clear the input when the clear button is clicked.
+    const clearButton = document.getElementById('clear-search-button');
+    clearButton.addEventListener('click', function() {
+      searchInput.value = '';
+      searchInput.focus();
+      clearButton.style.display = 'none';
+    });
+
   },
 
   performSearch() {
@@ -86,13 +105,16 @@ export const searchJS = {
     if (endDateInput) {
       params.append('end_date', endDateInput);
     }
+    if (this.selectedSort) {
+      params.append('sort', this.selectedSort);
+    }
     window.location.href = '/search?' + params.toString();
   },
 
   initializeSearchResults() {
     /* Initialize the search results. */
 
-    // // Infinite scroll logic
+    // Future work: Infinite scroll logic
     // window.addEventListener('scroll', () => {
     //   const scrollHeight = document.documentElement.scrollHeight;
     //   const scrollTop = document.documentElement.scrollTop;
@@ -111,6 +133,7 @@ export const searchJS = {
     const state = params.get('state') || 'all';
     const startDate = params.get('start_date') || '';
     const endDate = params.get('end_date') || '';
+    const sortOption = params.get('sort') || 'best_match';
     let limit = parseInt(params.get('limit')) || 10;
 
     // Initialize the "More" button.
@@ -141,7 +164,17 @@ export const searchJS = {
     // Update state selection
     this.selectState(state);
 
-    // Add functionality to data type selection.
+    // Handle sort change with the select dropdown.
+    this.selectedSort = sortOption;
+    const sortSelect = document.getElementById('sortSelect');
+    sortSelect.value = sortOption;
+    sortSelect.addEventListener('change', (event) => {
+        const selectedSort = event.target.value;
+        this.selectedSort = selectedSort;
+        this.performSearch();
+    });
+
+    // Future work: Add filter functionality.
     // document.getElementById('filter-select').addEventListener('change', function() {
     //   const selectedFilter = this.value;
     //   console.log("Filter selected: ", selectedFilter);
@@ -158,25 +191,26 @@ export const searchJS = {
       endDateInput.value = endDate;
     }
 
-    // Build the search parameters for the API
-    const searchParams = {q: query, limit: limit};
+    // Build the API search query.
+    const body = {q: query, limit: limit, sort: sortOption};
     if (dataType && dataType !== 'all') {
-      searchParams['data_type'] = dataType;
+      body['data_type'] = dataType;
     }
     if (state && state !== 'all') {
-      searchParams['state'] = state;
+      body['state'] = state;
     }
     if (startDate) {
-      searchParams['start_date'] = startDate;
+      body['start_date'] = startDate;
     }
     if (endDate) {
-      searchParams['end_date'] = endDate;
+      body['end_date'] = endDate;
     }
 
     // Setup the paywall.
     const searchContent = document.getElementById('search-content');
     const subscribeContent = document.getElementById('subscribe-content');
-    searchContent.style.display = 'none';
+    searchContent.classList.remove('d-none');
+    console.log('INITIALIZING SEARCH');
 
     // Listen for the usr.
     onAuthChange(async user => {
@@ -186,20 +220,21 @@ export const searchJS = {
       
       // Only search the API if the user is authenticated.
       if (user) {
-        searchContent.style.display = 'flex';
-        subscribeContent.style.display = 'none';
-        authRequest('/api/search', searchParams)
-          .then(response => {
-            this.displaySearchResults(response.data, limit);
-          })
-          .catch(error => {
-            showNotification('Error', 'There was an error getting search results. Please contact support or try again later.', 'error');
-          });
+        console.log('USER:', user);
+        searchContent.classList.remove('d-none');
+        subscribeContent.classList.add('d-none');
+        const response = await authRequest('/api/search', body);
+        try {
+          this.displaySearchResults(response.data);
+        } catch (error) {
+          showNotification('Error', 'There was an error getting search results. Please contact support or try again later.', 'error');
+        }
+      } else {
+        // Show the paywall.
+        console.log('NO USER');
+        searchContent.classList.add('d-none');
+        subscribeContent.classList.remove('d-none');
       }
-
-      // Show the paywall for non-authenticated users.
-      subscribeContent.style.display = 'flex';
-      searchContent.style.display = 'none';
     });
 
   },
@@ -216,7 +251,7 @@ export const searchJS = {
     });
   },
 
-  displaySearchResults(data, limit) {
+  displaySearchResults(data) {
     /* Display the search results on the page. */
     console.log('DATA:', data);
     const resultsContainer = document.getElementById('search-results');
@@ -224,15 +259,15 @@ export const searchJS = {
     const filteredData = this.selectedDataType === 'all' ? data : data.filter(result => result.data_type === this.selectedDataType);
     const observationList = [];
     if (filteredData && filteredData.length > 0) {
-      filteredData.forEach(result => {
-        const resultCard = this.formatSearchResultRow(result);
+      filteredData.forEach(item => {
+        const resultCard = this.formatSearchResultRow(item);
         resultsContainer.innerHTML += resultCard;
         observationList.push({
-          id: result.id,
-          data_type: result.data_type
+          id: item.id,
+          data_type: item.data_type
         });
       });
-      this.fetchUserStarsAndVotes(observationList);
+      fetchUserStarsAndVotes(observationList);
     } else {
       resultsContainer.innerHTML = '<p class="sans-serif">No results found.</p>';
     }
@@ -248,26 +283,23 @@ export const searchJS = {
 
   },
 
-  formatSearchResultRow(result) {
+  formatSearchResultRow(item) {
     return `
     <div class="col-md-12 mb-3">
       <div class="card shadow-sm border-0">
         <div class="card-body d-flex justify-content-between">
           <div class="d-flex align-items-center">
-            <a href="${result.link}">
-              <img src="${result.image}" alt="${result.data_type}" class="rounded me-3" width="75" height="75">
+            <a href="${item.link}" class="rounded me-3 bg-transparent">
+              <img src="${item.image}" alt="${item.data_type}" class="rounded" width="75" height="75">
             </a>
             <div>
-              <a class="fs-6 sans-serif text-decoration-none text-dark" href="${result.link}">${result.title}</a>
+              <a class="fs-6 sans-serif text-decoration-none text-dark" href="${item.link}">${item.title}</a>
               <p class="small mt-0 mb-1">
-                <small class="sans-serif text-dark">by
-                <a class="text-dark" href="/user/${result.user_name}">
-                  <small class="sans-serif">${result.user_name}</small>
-                </a> - Updated on ${result.updated_on}</small>
+                <small class="sans-serif text-dark">${item.updated_on}</small>
               </p>
               <div class="d-flex">
-                ${result.tags.map(tag => `
-                  <a href="/search?q=${tag.tag_name}">
+                ${item.tags.map(tag => `
+                  <a href="/search?q=${tag.tag_name}" class="bg-transparent">
                     <span class="badge" style="background-color: ${tag.tag_color};">
                       ${tag.tag_name.toString()}
                     </span>
@@ -278,7 +310,7 @@ export const searchJS = {
           </div>
           <div class="d-flex flex-column justify-content-between align-items-center">
             <div class="d-flex">
-              <button class="btn btn-outline-secondary btn-sm me-2 star-btn" data-starred="false" data-hash="${result.id}" data-type="${result.data_type}">
+              <button class="btn btn-outline-secondary btn-sm me-2 star-btn" data-starred="false" data-hash="${item.id}" data-type="${item.data_type}">
                 <span class="star-count mx-1">${item.star_count || 0}</span>
                 <i class="bi bi-star star-icon"></i>
               </button>
@@ -288,7 +320,7 @@ export const searchJS = {
                 </button>
                 <ul class="dropdown-menu dropdown-compact py-0">
                   <li class="mb-0">
-                    <a class="dropdown-item py-1 fw-normal share-btn" href="#" data-link="${result.link}">
+                    <a class="dropdown-item py-1 fw-normal share-btn" href="#" data-link="${item.link}">
                       <small>🔗 Share</small>
                     </a>
                   </li>
@@ -301,11 +333,11 @@ export const searchJS = {
               </div>
             </div>
             <div class="d-flex align-items-center">
-              <button class="btn btn-sm upvote" data-voted="false" data-hash="${result.id}" data-type="${result.data_type}">
+              <button class="btn btn-sm upvote" data-voted="false" data-hash="${item.id}" data-type="${item.data_type}">
                 <img src="/static/website/images/ai-icons/up-arrow.svg" alt="Upvote" class="arrow-icon">
               </button>
-              <span class="mx-1"><small class="rating fw-bold text-dark">${result.upvote_count - result.downvote_count}</small></span>
-              <button class="btn btn-sm downvote" data-voted="false" data-hash="${result.id}" data-type="${result.data_type}">
+              <span class="mx-1"><small class="rating fw-bold text-dark">${item.upvote_count - item.downvote_count}</small></span>
+              <button class="btn btn-sm downvote" data-voted="false" data-hash="${item.id}" data-type="${item.data_type}">
                 <img src="/static/website/images/ai-icons/down-arrow.svg" alt="Downvote" class="arrow-icon">
               </button>
             </div>
@@ -318,6 +350,12 @@ export const searchJS = {
   // Optional: Add save button.
   // <li class="mb-0"><a class="dropdown-item py-1 fw-normal" href="#"><small>💾 Save</small></a></li>
   // <li class="mb-0"><hr class="dropdown-divider my-0"></li>
+
+  // Optional: Add user link.
+  // by
+  // <a class="text-dark" href="/user/${item.user_name}">
+  //   <small class="sans-serif">${item.user_name}</small>
+  // </a>
 
   updateFilterMenuSize() {
     /* Match the filter menu width to the search container width. */

@@ -1,49 +1,12 @@
-<!-- TODO: Search by category
-   
-  Wishlist:
-
-    - Search for a given chemical
-
-    - Search for a given product
-
-    - Search for a given strain
-
-    - Search for a result URL (search by URL hash then parse if needed)
-
-    - Search results by uploading a PDF (search by file hash then parse if needed)
-
-    - Search by uploading an image:
-      * COA
-      * Label
-      * Receipt
-
-  -->
 <!--
   Search Bar
   Created: 2/26/2024
-  Updated: 10/1/2024
+  Updated: 10/6/2024
 -->
-<div class="search-bar w-100 my-3">
+<div class="search-bar w-100 my-3 mx-2">
+  <div id="search-container" class="input-group input-group-sm">
 
-  <!-- Search Input -->
-  <div
-    id="search-container"
-    class="input-group input-group-sm"
-  >
-    <button
-      id="search-button"
-      class="btn btn-sm btn-outline-primary"
-      type="button"
-    >
-      <i class="bi bi-search"></i>
-    </button>
-    <input
-      id="searchInput"
-      type="text"
-      class="form-control"
-      placeholder="{{ placeholder_text | default:'Prompt...'}}"
-      aria-label="Prompt"
-    >
+    <!-- Filter -->
     <button
       id="search-filter-button"
       class="btn btn-sm btn-outline-primary filter-icon"
@@ -51,6 +14,35 @@
     >
       <i class="bi bi-sliders"></i>
     </button>
+
+    <!-- Search Input -->
+    <input
+      id="searchInput"
+      type="text"
+      class="form-control"
+      placeholder="{{ placeholder_text | default:'Prompt...'}}"
+      aria-label="Prompt"
+    >
+
+    <!-- Clear button -->
+    <button
+      id="clear-search-button"
+      class="btn btn-sm btn-outline-primary"
+      type="button"
+      style="display: none;"
+    >
+      <i class="bi bi-x"></i>
+    </button>
+
+    <!-- Search button -->
+    <button
+      id="search-button"
+      class="btn btn-sm btn-outline-primary"
+      type="button"
+    >
+      <i class="bi bi-search"></i>
+    </button>
+
   </div>
 
   <!-- Search menu -->
@@ -66,15 +58,17 @@
       <!-- State selection buttons -->
       <h6 class="sans-serif mt-2">State</h6>
       {% include "components/forms/state_selection.html" %}
-      <a href="" class="link-text">Fund more states</a>
 
       <!-- Date selection -->
       <h6 class="sans-serif mt-3">Date</h6>
       {% include "components/forms/date_selection.html" %}
 
-      {% comment %} <!-- Filter by product type -->
+      {% comment %}
+      <!-- TODO: Add more filters based on data type -->
+      <!-- Filter by product type -->
       <h6 class="sans-serif mt-4">Product Type</h6>
-      {% include "components/forms/product_type_selection.html" %} {% endcomment %}
+      {% include "components/forms/product_type_selection.html" %}
+      {% endcomment %}
       
     </div>
 

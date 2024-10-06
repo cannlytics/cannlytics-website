@@ -4,17 +4,17 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 10/4/2024
- * Updated: 10/5/2024
+ * Updated: 10/6/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase.js';
-import { showNotification } from '../utils.js';
+import { db, getDocument } from '../firebase.js';
 import {
   initializeReportButtons,
   initializeStarButtons,
   initializeShareButtons,
   initializeVoteButtons,
+  fetchUserStarsAndVotes,
 } from '../stats/stats.js';
 
 export const homepage = {
@@ -28,13 +28,14 @@ export const homepage = {
   filters: {},
   dataLoading: false,
   lastDoc: null,
+  dataStats: null,
   testData: [
     {
       'id': 'test-coa',
       'title': 'Sample COA Result',
       'user_name': 'keeganskeate',
       'updated_on': 'Sep 29, 2024',
-      'link': '/coa/sample',
+      'link': '/coas/sample',
       'data_type': 'coas',
       'image': 'https://via.placeholder.com/100',
       'tags': [
@@ -49,7 +50,7 @@ export const homepage = {
       'title': 'Cannabis Strain: OG Kush',
       'user_name': 'john_doe',
       'updated_on': 'Sep 25, 2024',
-      'link': '/strain/og-kush',
+      'link': '/strains/og-kush',
       'data_type': 'strains',
       'image': 'https://via.placeholder.com/100',
       'tags': [
@@ -63,7 +64,8 @@ export const homepage = {
 
   initializeHomepage() {
     /* Initialize the homepage. */
-    console.log('Initializing homepage...');
+
+    // Listen to realtime data.
     this.listenToData();
 
     // FIXME: Set up infinite scroll with test data.
@@ -72,13 +74,20 @@ export const homepage = {
     // Get the latest contributor.
     this.getLatestOpenCollectiveContributor();
 
+    // Get data statistics.
+    this.getDataStats();
+
   },
 
   initializeInfiniteScroll() {
     /* Initialize infinite scroll. */
     window.addEventListener('scroll', () => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 && !this.dataLoading) {
-        this.loadMoreData();
+        console.log('Loading more data...');
+        this.dataLoading = true;
+        this.selectedLimit += 10;
+        this.listenToData();
+        this.dataLoading = false;
       }
     });
   },
@@ -123,14 +132,6 @@ export const homepage = {
       );
     });
   },
-  
-  async loadMoreData() {
-    /* Load more data. */
-    this.dataLoading = true;
-    this.selectedLimit += 10;
-    this.listenToData();
-    this.dataLoading = false;
-  },
 
   updateDataDisplay(dataType, data) {
     /* Update the UI with the new data. */
@@ -143,6 +144,7 @@ export const homepage = {
     });
 
     // Update or add cards
+    const observationList = [];
     data.forEach(item => {
       if (existingCards.has(item.id)) {
         // Update the existing card
@@ -155,6 +157,10 @@ export const homepage = {
         const card = this.createCard(item);
         container.appendChild(card);
       }
+      observationList.push({
+        id: item.id,
+        data_type: item.data_type
+      });
     });
 
     // Remove cards that are not in the new data
@@ -169,6 +175,9 @@ export const homepage = {
     initializeShareButtons();
     initializeStarButtons();
     initializeVoteButtons();
+
+    // Get user stars and votes.
+    fetchUserStarsAndVotes(observationList);
   },
 
   createCard(item) {
@@ -357,6 +366,39 @@ export const homepage = {
     } catch (error) {
       // Log any errors
       console.error("Error: " + error);
+    }
+  },
+
+  async getDataStats() {
+    /* Get data statistics from Firestore. */
+    const stats = await getDocument('stats/data');
+    // let stats = {}
+    // if (this.dataStats == null) {
+    //   stats = await getDocument('stats/data');
+    //   this.dataStats = stats;
+    // }
+    console.log('STATS:', stats);
+    const date = new Date(stats.updated_at);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+    try {
+      document.getElementById('data-updated-at').textContent = formattedDate;
+    } catch (error) {
+      // Pass
+    }
+
+    // Fill in collection counts, e.g. 1,200 COAs
+    try {
+      document.getElementById('lab-result-count').textContent = stats.results_count.toLocaleString() + '+';
+      document.getElementById('coas-count').textContent = stats.coas_count.toLocaleString() + '+';
+      document.getElementById('strains-count').textContent = stats.strains_count.toLocaleString() + '+';
+      document.getElementById('organizations-count').textContent = stats.licenses_count.toLocaleString() + '+';
+      document.getElementById('compounds-count').textContent = stats.compounds_count.toLocaleString() + '+';
+    } catch (error) {
+      // Pass
     }
   },
 
