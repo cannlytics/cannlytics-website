@@ -4,7 +4,7 @@
   Updated: 10/1/2024
 -->
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title sans-serif" id="reportModalLabel">Report data</h5>
@@ -13,19 +13,19 @@
       <div class="modal-body">
         <form id="reportForm">
           <div class="mb-3">
-            <div class="form-check">
+            <div class="form-check mb-2">
               <input class="form-check-input" type="radio" name="reason" id="incorrect" value="Incorrect" checked>
-              <label class="form-check-label" for="incorrect">Incorrect</label>
+              <label class="form-check-label" for="incorrect">Incorrect data</label>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="reason" id="spam" value="Spam">
-              <label class="form-check-label" for="spam">Spam</label>
-            </div>
-            <div class="form-check">
+            <div class="form-check mb-2">
               <input class="form-check-input" type="radio" name="reason" id="inappropriate" value="Inappropriate Content">
               <label class="form-check-label" for="inappropriate">Inappropriate</label>
             </div>
-            <div class="form-check">
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="radio" name="reason" id="spam" value="Spam">
+              <label class="form-check-label" for="spam">Spam / Duplicate</label>
+            </div>
+            <div class="form-check mb-2">
               <input class="form-check-input" type="radio" name="reason" id="other" value="Other">
               <label class="form-check-label" for="other">Other</label>
             </div>
@@ -34,7 +34,7 @@
           <!-- Textarea for additional details -->
           <div class="mb-3">
             <label for="reportDetails" class="form-label sans-serif">Describe the issue (optional)</label>
-            <textarea class="form-control" id="reportDetails" rows="3" placeholder="Provide additional information about the report..."></textarea>
+            <textarea class="form-control fs-6" id="reportDetails" rows="3" placeholder="Please provide as much additional information about the report as you can..."></textarea>
           </div>
 
         </form>

@@ -4,12 +4,18 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 10/4/2024
- * Updated: 10/4/2024
+ * Updated: 10/5/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase.js';
 import { showNotification } from '../utils.js';
+import {
+  initializeReportButtons,
+  initializeStarButtons,
+  initializeShareButtons,
+  initializeVoteButtons,
+} from '../stats/stats.js';
 
 export const homepage = {
 
@@ -31,8 +37,12 @@ export const homepage = {
       'link': '/coa/sample',
       'data_type': 'coas',
       'image': 'https://via.placeholder.com/100',
-      'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-      'rating': 0
+      'tags': [
+        {'tag_id': 'coas', 'tag_name': 'COA', 'tag_color': '#3498db'},
+      ],
+      'star_count': 0,
+      'upvote_count': 1,
+      'downvote_count': 0,
     },
     {
       'id': 'test-strain',
@@ -42,16 +52,26 @@ export const homepage = {
       'link': '/strain/og-kush',
       'data_type': 'strains',
       'image': 'https://via.placeholder.com/100',
-      'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-      'rating': 0
+      'tags': [
+        {'tag_id': 'strains', 'tag_name': 'Strain', 'tag_color': '#27ae60'}
+      ],
+      'star_count': 0,
+      'upvote_count': -1,
+      'downvote_count': 0,
     },
   ],
 
   initializeHomepage() {
     /* Initialize the homepage. */
     console.log('Initializing homepage...');
-    // this.initializeInfiniteScroll();
     this.listenToData();
+
+    // FIXME: Set up infinite scroll with test data.
+    // this.initializeInfiniteScroll();
+
+    // Get the latest contributor.
+    this.getLatestOpenCollectiveContributor();
+
   },
 
   initializeInfiniteScroll() {
@@ -65,7 +85,7 @@ export const homepage = {
 
   listenToData() {
     /* Listen to data collections. */
-    // TODO: Apply filters
+    // Future work: Apply filters
     // if (filters.startDate) {
     //   q = query(q, where('date_tested', '>=', new Date(filters.startDate)));
     // }
@@ -76,14 +96,14 @@ export const homepage = {
       this.listenToAllData();
       return;
     }
-    console.log(`Listening to collection: ${selectedDataType}`);
+    console.log(`Listening to collection: ${this.selectedDataType}`);
     listenToDataCollection(
       this.selectedDataType,
       this.selectedOrder,
       this.selectedDirection,
       this.selectedLimit,
       (data) => {
-        this.updateDataDisplay(type, data);
+        this.updateDataDisplay(this.selectedDataType, data);
       },
     );
   },
@@ -108,8 +128,6 @@ export const homepage = {
     /* Load more data. */
     this.dataLoading = true;
     this.selectedLimit += 10;
-    // const lastDoc = this.lastDoc; // Keep track of the last visible document
-    // TODO: Find a more elegant way to update the UI without re-rendering everything.
     this.listenToData();
     this.dataLoading = false;
   },
@@ -117,68 +135,174 @@ export const homepage = {
   updateDataDisplay(dataType, data) {
     /* Update the UI with the new data. */
     const container = document.getElementById('data-grid');
-    data.forEach(item => {
-      const card = this.createCard(item, dataType);
-      container.appendChild(card);
+
+    // Track existing cards by ID
+    const existingCards = new Map();
+    container.querySelectorAll('[data-id]').forEach(card => {
+      existingCards.set(card.dataset.id, card);
     });
-    // TODO: Implement.
-    // this.initializeStarButtons();
-    // this.initializeShareButtons();
-    // this.initializeVoteButtons();
-    // this.initializeReportButtons();
+
+    // Update or add cards
+    data.forEach(item => {
+      if (existingCards.has(item.id)) {
+        // Update the existing card
+        const existingCard = existingCards.get(item.id);
+        const newCard = this.createCard(item);
+        existingCard.replaceWith(newCard);
+        existingCards.delete(item.id);
+      } else {
+        // Add a new card
+        const card = this.createCard(item);
+        container.appendChild(card);
+      }
+    });
+
+    // Remove cards that are not in the new data
+    existingCards.forEach(card => {
+      if (card.parentNode === container) {
+        container.removeChild(card);
+      }
+    });
+
+    // Initialize card functionality.
+    initializeReportButtons();
+    initializeShareButtons();
+    initializeStarButtons();
+    initializeVoteButtons();
   },
 
-  createCard(item, dataType) {
+  createCard(item) {
     /* Create a card for an item. */
 
-    // Create the card elements.
+    // Create the card template.
     const col = document.createElement('div');
-    col.className = 'col-12 col-md-6 col-lg-4 mb-4';
+    col.className = 'observation col-12 col-md-6 col-lg-4 mb-4';
+    col.dataset.id = item.id;
+    col.dataset.type = item.data_type;
     const card = document.createElement('div');
     card.className = 'card h-100 shadow-sm border-0';
   
-    // If there's an image
+    // Add any image.
+    // FIXME: Use a better placeholder image.
+    item.image_url = 'https://via.placeholder.com/100';
     if (item.image_url) {
+      const link = document.createElement('a');
       const img = document.createElement('img');
       img.src = item.image_url;
       img.className = 'card-img-top';
       img.alt = item.name || 'Item Image';
-      card.appendChild(img);
+      link.href = `/${item.data_type}/${item.id}`;
+      link.appendChild(img);
+      card.appendChild(link);
     }
   
     // Card body
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body d-flex flex-column';
-    const title = document.createElement('h5');
+    const title = document.createElement('h6');
+    const titleLink = document.createElement('a');
     title.className = 'card-title';
-    title.textContent = item.name || item.title || 'Untitled';
+    titleLink.className = 'sans-serif text-dark';
+    titleLink.textContent = item.name || item.title || 'Untitled';
+    titleLink.href = `/${item.data_type}/${item.id}`;
+    title.appendChild(titleLink);
     cardBody.appendChild(title);
-    const description = document.createElement('p');
-    description.className = 'card-text';
-    description.textContent = item.description || 'No description available.';
-    cardBody.appendChild(description);
     const btnGroup = document.createElement('div');
     btnGroup.className = 'btn-group mt-auto';
+    const toolbar = document.createElement('div');
+    toolbar.className = 'd-flex justify-content-end align-items-center btn-toolbar';
+    toolbar.role = 'toolbar';
+
+    // Add badges.
+    if (item.tags && item.tags.length > 0) {
+      const tagContainer = document.createElement('div');
+      tagContainer.className = 'd-flex flex-wrap';
+      item.tags.forEach(tag => {
+        const link = document.createElement('a');
+        const badge = document.createElement('span');
+        badge.className = 'badge me-1 mb-1';
+        badge.style.backgroundColor = tag.tag_color;
+        badge.textContent = `${tag.tag_name}`;
+        link.href = `/search?q=${tag.tag_id}`;
+        link.appendChild(badge);
+        tagContainer.appendChild(link);
+      });
+      cardBody.appendChild(tagContainer);
+    }
+
+    // Add upvote button.
+    const upvoteBtn = document.createElement('button');
+    upvoteBtn.className = 'btn btn-sm upvote';
+    upvoteBtn.dataset.voted = 'false';
+    upvoteBtn.dataset.hash = item.id;
+    upvoteBtn.dataset.type = item.data_type;
+    upvoteBtn.innerHTML = '<img src="/static/website/images/ai-icons/up-arrow.svg" alt="Upvote" class="arrow-icon">';
+    toolbar.appendChild(upvoteBtn);
   
-    // Star button
+    // Add the star count.
+    const rating = item.upvote_count - item.downvote_count;
+    const ratingSpan = document.createElement('span');
+    ratingSpan.className = 'mx-1';
+    ratingSpan.innerHTML = `<small class="rating fw-bold text-dark">${rating || 0}</small>`;
+    toolbar.appendChild(ratingSpan);
+  
+    // Add downvote button.
+    const downvoteBtn = document.createElement('button');
+    downvoteBtn.className = 'btn btn-sm downvote';
+    downvoteBtn.dataset.voted = 'false';
+    downvoteBtn.dataset.hash = item.id;
+    downvoteBtn.dataset.type = item.data_type;
+    downvoteBtn.innerHTML = '<img src="/static/website/images/ai-icons/down-arrow.svg" alt="Downvote" class="arrow-icon">';
+    toolbar.appendChild(downvoteBtn);
+    toolbar.appendChild(btnGroup);
+  
+    // Add star button.
     const starBtn = document.createElement('button');
-    starBtn.className = 'btn star-btn';
-    starBtn.dataset.id = item.id;
-    starBtn.dataset.type = dataType;
+    starBtn.className = 'btn btn-outline-secondary btn-sm star-btn ms-2';
+    starBtn.dataset.hash = item.id;
+    starBtn.dataset.type = item.data_type;
     starBtn.dataset.starred = 'false';
-    starBtn.innerHTML = '<i class="bi bi-star"></i>';
-    btnGroup.appendChild(starBtn);
+    starBtn.innerHTML = `<span class="star-count mx-1">${item.star_count || 0}</span> <i class="bi bi-star star-icon"></i>`;
+    toolbar.appendChild(starBtn);
   
-    // Share button
-    const shareBtn = document.createElement('button');
-    shareBtn.className = 'btn share-btn';
-    shareBtn.dataset.link = `/item/${item.id}`;
-    shareBtn.innerHTML = '<i class="bi bi-share"></i>';
-    btnGroup.appendChild(shareBtn);
+    // Add dropdown menu.
+    const dropdown = document.createElement('div');
+    dropdown.className = 'dropdown';
+    const dropdownBtn = document.createElement('button');
+    dropdownBtn.className = 'btn btn-outline-secondary btn-sm dropdown-toggle no-caret ms-2';
+    dropdownBtn.type = 'button';
+    dropdownBtn.dataset.bsToggle = 'dropdown';
+    dropdownBtn.setAttribute('aria-expanded', 'false');
+    dropdownBtn.innerHTML = '<i class="bi bi-three-dots"></i>';
+    dropdown.appendChild(dropdownBtn);
+    const dropdownMenu = document.createElement('ul');
+    dropdownMenu.className = 'dropdown-menu dropdown-compact py-0';
   
-    // TODO: upvote/downvote, report
+    // Add share button.
+    const shareOption = document.createElement('li');
+    shareOption.className = 'mb-0';
+    const shareLink = document.createElement('a');
+    shareLink.className = 'dropdown-item py-1 fw-normal share-btn';
+    shareLink.href = '#';
+    shareLink.dataset.link = `/${item.data_type}/${item.id}`;
+    shareLink.innerHTML = '<small>🔗 Share</small>';
+    shareOption.appendChild(shareLink);
+    dropdownMenu.appendChild(shareOption);
+
+    // Add report button.
+    const reportOption = document.createElement('li');
+    reportOption.className = 'mb-0';
+    const reportLink = document.createElement('a');
+    reportLink.className = 'report-link dropdown-item py-1 fw-normal text-danger';
+    reportLink.href = '#';
+    reportLink.innerHTML = '<small>🚩 Report</small>';
+    reportOption.appendChild(reportLink);
+    dropdownMenu.appendChild(reportOption);
+    dropdown.appendChild(dropdownMenu);
+    toolbar.appendChild(dropdown);
   
-    cardBody.appendChild(btnGroup);
+    // Complete the card.
+    cardBody.appendChild(toolbar);
     card.appendChild(cardBody);
     col.appendChild(card);
     return col;
@@ -212,6 +336,28 @@ export const homepage = {
     document.getElementById('data-grid').classList.remove('grid-view');
     document.getElementById('list-button').classList.add('btn-primary');
     document.getElementById('grid-button').classList.remove('btn-primary');
+  },
+
+  async getLatestOpenCollectiveContributor() {
+    /* Get the latest Open Collective contributor. */
+    const slug = 'cannlytics-company';
+    const limit = 100;
+    const offset = 10;
+    try {
+      const response = await fetch(`https://opencollective.com/${slug}/members/all.json?limit=${limit}&offset=${offset}`);
+      const data = await response.json();
+      const contributors = data.filter(member => member.lastTransactionAmount);
+      const latestContributor = contributors[contributors.length - 1];
+      if (latestContributor) {
+        const latestContribution = document.querySelector("#latest-contribution");
+        latestContribution.innerHTML = `<small><i class="bi bi-cash-coin"></i> Latest donation: ${latestContributor.name} ($${latestContributor.totalAmountDonated.toFixed(2)})</small>`;
+      } else {
+        document.getElementById("latest-contribution").classList.add('d-none');
+      }
+    } catch (error) {
+      // Log any errors
+      console.error("Error: " + error);
+    }
   },
 
 };

@@ -152,6 +152,14 @@ page_data = {
             }
         ]
     },
+    "homepage": {
+        "documents": [
+            {
+                "name": "data_stats",
+                "ref": "stats/data"
+            }
+        ]
+    },
     "personality": {
         "documents": [
             {

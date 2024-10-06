@@ -1,7 +1,7 @@
 <!--
   Home Page | Cannlytics
   Created: 1/5/2021
-  Updated: 10/4/2024
+  Updated: 10/5/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -9,22 +9,48 @@
 {% block dashboard %}
 <section class="container-fluid d-flex pb-5">
 
-  <!-- Aside (will implement later) -->
+  <!-- Aside -->
   <aside class="d-none d-lg-block col-lg-3">
+
+    <!-- Latest Updates -->
     <div class="card bg-light border">
       <div class="card-body text-dark">
         <h6 class="sans-serif card-title fw-bold">Latest Updates</h6>
-        <ul class="list-unstyled">
+        <ul class="list-unstyled mb-0">
+          <!-- Gets data updated at from Firestore (stats/data) -->
           <li class="">
-            <small><i class="bi bi-info-circle"></i> Data updated: Oct 4, 2024</small>
+            <small><i class="bi bi-info-circle"></i> Data updated: {{ data_stats.updated_at|date:"M. j, Y" }}</small>
+          </li>
+          <!-- Gets the latest contributor from OpenCollective -->
+          <li id="latest-contribution"></li>
+          <li class="">
+            <a href="https://opencollective.com/cannlytics-company">
+              <small>Contribute to the project <i class="bi bi-arrow-right"></i></small>
+            </a>
           </li>
         </ul>
       </div>
     </div>
+
+    {% comment %} <!-- Trending -->
+    <!-- Future work: Keep track of trending data -->
     <div class="card mt-4">
       <div class="card-body text-dark">
-        <h6 class="sans-serif card-title">Recent</h6>
-        <ul class="list-unstyled">
+        <h6 class="sans-serif card-title">Trending</h6>
+        <ul class="list-unstyled mb-0">
+          <li><i class="bi bi-hash"></i> <small>jack-herer</small></li>
+          <li><a href="#"><small>Show more</small></a></li>
+        </ul>
+      </div>
+    </div> {% endcomment %}
+
+    {% comment %}
+    <!-- Recently -->
+     <!-- Future work: Show user's parsing jobs -->
+    <div class="card mt-4">
+      <div class="card-body text-dark">
+        <h6 class="sans-serif card-title">Recently Parsed</h6>
+        <ul class="list-unstyled mb-0">
           <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
           <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
           <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
@@ -33,12 +59,15 @@
         </ul>
       </div>
     </div>
+    {% endcomment %}
+
+    <!-- Meetups -->
     <div class="card mt-4">
       <div class="card-body text-dark">
-        <h6 class="sans-serif card-title">Groups</h6>
-        <ul class="list-unstyled">
+        <h6 class="sans-serif card-title">Meetups</h6>
+        <ul class="list-unstyled mb-0">
           <li>
-            <a href="#">
+            <a href="https://www.meetup.com/cannabis-data-science/">
               <small>
                 <i class="bi bi-people"></i> Cannabis Data Science
               </small>
@@ -47,29 +76,25 @@
         </ul>
       </div>
     </div>
+
+    {% comment %} <!-- Events -->
+    <!-- Future work: Load events from meetup.com -->
+    <!-- Future work: Get video links to youtube.com -->
     <div class="card mt-4">
       <div class="card-body text-dark">
         <h6 class="sans-serif card-title">Events</h6>
-        <ul class="list-unstyled">
+        <ul class="list-unstyled mb-0">
           <li><i class="bi bi-calendar-event"></i> <small>A Review of Cannabis Lab Test...</small></li>
           <li><a href="#"><small>Show more</small></a></li>
         </ul>
       </div>
-    </div>
-    <div class="card mt-4">
-      <div class="card-body text-dark">
-        <h6 class="sans-serif card-title">Trending</h6>
-        <ul class="list-unstyled">
-          <li><i class="bi bi-hash"></i> <small>jack-herer</small></li>
-          <li><a href="#"><small>Show more</small></a></li>
-        </ul>
-      </div>
-    </div>
+    </div> {% endcomment %}
+
   </aside>
 
   <!-- Main Content -->
   <main class="flex-grow-1 px-3">
-    <div class="d-flex justify-content-between mb-4">
+    <div class="d-flex justify-content-between mb-2">
       <h4 class="sans-serif fw-bold mb-0">Data</h4>
 
       <!-- View Controls -->
@@ -106,7 +131,9 @@
         <!-- TODO: Filter button -->
         <!-- Filters are dynamic depending on the data type -->
 
+        {% comment %}
         <!-- View selection -->
+        <!-- Future work: Implement -->
         <div class="btn-group btn-group-sm ms-2" role="group" aria-label="View selection">
           <button type="button" class="btn btn-outline-primary active" id="grid-button" onclick="switchToGridView()">
             <i class="bi bi-grid"></i>
@@ -115,31 +142,21 @@
             <i class="bi bi-list"></i>
           </button>
         </div>
+        {% endcomment %}
 
       </div>
 
     </div>
 
     <!-- Observation Cards -->
-    <!-- FIXME: Populate these with realtime data from Firestore -->
-    <div id="data-grid" class="grid-view row">
-      {% for item in observations %}
-      <div class="col-12 col-md-6 col-lg-4 mb-4">
-        <div class="card h-100 shadow-sm border-0">
-          <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}">
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">{{ item.name }}</h5>
-            <p class="card-text">{{ item.description }}</p>
-            <a href="{{ item.link }}" class="btn btn-primary mt-auto">View Details</a>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
+    <div id="data-grid" class="grid-view row"></div>
+
   </main>
 
-</section>
+  <!-- Report dialog -->
+  {% include "components/dialogs/report_dialog.html" %}
 
+</section>
 {% endblock %}
 
 {% block page_js %}

@@ -4,11 +4,12 @@ Copyright (c) 2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 9/23/2024
-Updated: 10/4/2024
+Updated: 10/5/2024
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports:
 from datetime import datetime
+import json
 import uuid
 
 # External imports:
@@ -23,6 +24,7 @@ def send_message(request):
     """Save a message to Firestore."""
     if request.method != 'POST':
         return JsonResponse({'error': 'Invalid request'}, status=400)
+    body = json.loads(request.body)['data']
     claims = authenticate_request(request)
     created_at = datetime.now().isoformat()
     user_agent = request.META.get('HTTP_USER_AGENT', 'unknown')
@@ -32,10 +34,10 @@ def send_message(request):
     data = {
         'uid': claims.get('uid'),
         'message_id': message_id,
-        'name': request.POST.get('name'),
-        'email': request.POST.get('email'),
-        'topic': request.POST.get('subject'),
-        'message': request.POST.get('message'),
+        'name': body.get('name'),
+        'email': body.get('email'),
+        'topic': body.get('subject'),
+        'message': body.get('message'),
         'created_at': created_at,
         'user_agent': user_agent,
         'ip_address': ip_address,
@@ -45,7 +47,7 @@ def send_message(request):
     db = firestore.client()
     ref = db.collection('website').document('support') \
         .collection('support_messages').document(message_id)
-    ref.set(data)
+    ref.set(data, merge=True)
     return JsonResponse({'status': 'success'}, status=200)
     
 
@@ -55,10 +57,11 @@ def report_data(request):
         return JsonResponse({'error': 'Invalid request method'}, status=400)
     claims = authenticate_request(request)
     report_id = str(uuid.uuid4())
-    report_reason = request.data.get('reason')
-    report_details = request.data.get('details')
-    observation_id = request.data.get('id')
-    data_type = request.data.get('type')
+    body = json.loads(request.body)['data']
+    report_reason = body.get('reason')
+    report_details = body.get('details')
+    observation_id = body.get('id')
+    data_type = body.get('data_type')
     created_at = datetime.now().isoformat()
     user_agent = request.META.get('HTTP_USER_AGENT', 'unknown')
     ip_address = request.META.get('REMOTE_ADDR')

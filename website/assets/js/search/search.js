@@ -4,12 +4,17 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 9/28/2024
- * Updated: 10/2/2024
+ * Updated: 10/5/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { Modal } from 'bootstrap';
 import { onAuthChange, getCurrentUser, getDocument } from '../firebase.js';
 import { authRequest, showNotification  } from '../utils.js';
+import {
+  initializeReportButtons,
+  initializeShareButtons,
+  initializeStarButtons,
+  initializeVoteButtons,
+} from '../stats/stats.js';
 
 export const searchJS = {
 
@@ -211,198 +216,6 @@ export const searchJS = {
     });
   },
 
-  initializeReportButtons() {
-    /* Initialize the report buttons. */
-  
-    // Add event listeners to all "Report" buttons
-    document.querySelectorAll('.dropdown-item.text-danger').forEach(button => {
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        const reportModal = new Modal(document.getElementById('reportModal'));
-        reportModal.show();
-        const resultId = this.closest('.card').dataset.hash;
-        document.getElementById('submitReport').dataset.hash = resultId;
-      });
-    });
-  
-    // Handle the form submission
-    document.getElementById('submitReport').addEventListener('click', function() {
-      const reportReason = document.querySelector('input[name="reason"]:checked').value;
-      const details = document.getElementById('reportDetails').value;
-      const reportId = this.dataset.hash;
-      const data = {
-        id: reportId,
-        reason: reportReason,
-        details: details,
-      };
-      authRequest('/src/report', { data })
-        .then(response => {
-          showNotification('Report Submitted', 'Thank you for reporting. We will review the issue.', 'success');
-        })
-        .catch(error => {
-          showNotification('Error', 'There was an error submitting your report. Please try again later.', 'error');
-        });
-      const reportModal = Modal.getInstance(document.getElementById('reportModal'));
-      reportModal.hide();
-    });
-  },
-
-  initializeShareButtons() {
-    // Initialize the share buttons.
-    document.querySelectorAll('.share-btn').forEach(button => {
-      button.addEventListener('click', function(event) {
-        event.preventDefault();
-        const link = `https://cannlytics.com${this.dataset.link}`;
-        navigator.clipboard.writeText(link).then(() => {
-          showNotification('Link Copied!', 'Link copied. Share as you see fit.', 'success');
-        }).catch(err => {
-          // Show an error notification if something goes wrong.
-          showNotification('Error', 'Failed to copy the link.', 'error');
-          console.error('Could not copy text: ', err);
-        });
-      });
-    });
-  },
-
-  initializeStarButtons() {
-    /* Initialize the star buttons. */
-    document.querySelectorAll('.star-btn').forEach(button => {
-      button.addEventListener('click', function() {
-        const icon = this.querySelector('.star-icon');
-        // FIXME: `observationId` is 'undefined'.
-        const observationId = this.dataset.hash;
-        const dataType = this.dataset.type;
-        const isStarred = this.dataset.starred === "true";
-        
-        if (!isStarred) {
-          // User is starring the observation
-          icon.classList.remove('bi-star');
-          icon.classList.add('bi-star-fill');
-          this.dataset.starred = "true";
-  
-          // Send star request to server
-          starObservation(observationId, true, dataType);
-  
-        } else {
-          // User is unstarring the observation
-          icon.classList.remove('bi-star-fill');
-          icon.classList.add('bi-star');
-          this.dataset.starred = "false";
-  
-          // Send unstar request to server
-          starObservation(observationId, false, dataType);
-        }
-      });
-    });
-  },
-
-  initializeVoteButtons() {
-    /* Initialize the vote buttons. */
-    document.querySelectorAll('.upvote').forEach(button => {
-      button.addEventListener('click', function() {
-        const img = this.querySelector('.arrow-icon');
-        const observationId = this.dataset.hash;
-        const dataType = this.dataset.type;
-        const isVoted = this.dataset.voted === "true";
-        const ratingElement = this.nextElementSibling.querySelector('.fw-bold');
-        let currentRating = parseInt(ratingElement.textContent, 10);
-  
-        if (!isVoted) {
-          // User is upvoting
-          img.src = '/static/website/images/ai-icons/up-arrow-filled-dark.svg';
-          this.dataset.voted = "true";
-          this.nextElementSibling.nextElementSibling.disabled = true;
-          ratingElement.textContent = currentRating + 1; // Increment vote count in UI
-  
-          // Send upvote request to server
-          voteObservation(observationId, 'up', dataType);
-        } else {
-          // User is removing the upvote
-          img.src = '/static/website/images/ai-icons/up-arrow.svg';
-          this.dataset.voted = "false";
-          this.nextElementSibling.nextElementSibling.disabled = false;
-          ratingElement.textContent = currentRating - 1; // Decrement vote count in UI
-  
-          // Remove vote request to server
-          voteObservation(observationId, null, dataType);
-        }
-      });
-    });
-  
-    document.querySelectorAll('.downvote').forEach(button => {
-      button.addEventListener('click', function() {
-        const img = this.querySelector('.arrow-icon');
-        const observationId = this.dataset.hash;
-        const dataType = this.dataset.type;
-        const isVoted = this.dataset.voted === "true";
-        const ratingElement = this.previousElementSibling.querySelector('.fw-bold');
-        let currentRating = parseInt(ratingElement.textContent, 10);
-  
-        if (!isVoted) {
-          // User is downvoting
-          img.src = '/static/website/images/ai-icons/down-arrow-filled-dark.svg';
-          this.dataset.voted = "true";
-          this.previousElementSibling.previousElementSibling.disabled = true;
-          ratingElement.textContent = currentRating - 1; // Decrement vote count in UI
-  
-          // Send downvote request to server
-          voteObservation(observationId, 'down', dataType);
-        } else {
-          // User is removing the downvote
-          img.src = '/static/website/images/ai-icons/down-arrow.svg';
-          this.dataset.voted = "false";
-          this.previousElementSibling.previousElementSibling.disabled = false;
-          ratingElement.textContent = currentRating + 1; // Increment vote count in UI
-  
-          // Remove vote request to server
-          voteObservation(observationId, null, dataType);
-        }
-      });
-    });
-  },
-
-  async fetchUserStarsAndVotes(observations) {
-    /* Fetch the stars and votes for the current user. */
-    const user = getCurrentUser();
-    const uid = user.uid;
-
-    // Loop through the observations and fetch stars/votes.
-    for (let obs of observations) {
-      const starPath = `users/${uid}/stars/${obs.id}`;
-      const votePath = `users/${uid}/votes/${obs.id}`;
-      
-      // Fetch stars.
-      const starData = await getDocument(starPath);
-      if (Object.keys(starData).length > 0) {
-        // Star exists, mark the star button as active.
-        const starButton = document.querySelector(`.star-btn[data-hash="${obs.id}"]`);
-        if (starButton) {
-          const icon = starButton.querySelector('.star-icon');
-          starButton.dataset.starred = "true";
-          icon.classList.remove('bi-star');
-          icon.classList.add('bi-star-fill');
-        }
-      }
-
-      // Fetch votes.
-      const voteData = await getDocument(votePath);
-      if (Object.keys(voteData).length > 0) {
-        const voteType = voteData.vote_type;
-        const upvoteButton = document.querySelector(`.upvote[data-hash="${obs.id}"]`);
-        const downvoteButton = document.querySelector(`.downvote[data-hash="${obs.id}"]`);
-        if (voteType === 'up' && upvoteButton) {
-          upvoteButton.dataset.voted = "true";
-          upvoteButton.querySelector('.arrow-icon').src = '/static/website/images/ai-icons/up-arrow-filled-dark.svg';
-          downvoteButton.disabled = true; // Disable opposite vote button
-        } else if (voteType === 'down' && downvoteButton) {
-          downvoteButton.dataset.voted = "true";
-          downvoteButton.querySelector('.arrow-icon').src = '/static/website/images/ai-icons/down-arrow-filled-dark.svg';
-          upvoteButton.disabled = true; // Disable opposite vote button
-        }
-      }
-    }
-  },
-
   displaySearchResults(data, limit) {
     /* Display the search results on the page. */
     console.log('DATA:', data);
@@ -423,17 +236,16 @@ export const searchJS = {
     } else {
       resultsContainer.innerHTML = '<p class="sans-serif">No results found.</p>';
     }
-    this.initializeVoteButtons();
-    this.initializeStarButtons();
-    this.initializeShareButtons();
-    this.initializeReportButtons();
+
+    // Initialize card functionality.
+    initializeReportButtons();
+    initializeShareButtons();
+    initializeStarButtons();
+    initializeVoteButtons();
+
+    // Update the badge counts in the sidebar.
     updateCounts(data);
-    // const moreButtonContainer = document.getElementById('more-button-container');
-    // if (data.length === limit) {
-    //   moreButtonContainer.classList.remove('d-none');
-    // } else {
-    //   moreButtonContainer.classList.add('d-none');
-    // }
+
   },
 
   formatSearchResultRow(result) {
@@ -442,7 +254,9 @@ export const searchJS = {
       <div class="card shadow-sm border-0">
         <div class="card-body d-flex justify-content-between">
           <div class="d-flex align-items-center">
-            <img src="${result.image}" alt="${result.data_type}" class="rounded me-3" width="75" height="75">
+            <a href="${result.link}">
+              <img src="${result.image}" alt="${result.data_type}" class="rounded me-3" width="75" height="75">
+            </a>
             <div>
               <a class="fs-6 sans-serif text-decoration-none text-dark" href="${result.link}">${result.title}</a>
               <p class="small mt-0 mb-1">
@@ -452,10 +266,12 @@ export const searchJS = {
                 </a> - Updated on ${result.updated_on}</small>
               </p>
               <div class="d-flex">
-                ${result.badges.map(badge => `
-                  <span class="badge" style="background-color: ${badge.color};">
-                    ${badge.icon ? `<i class="${badge.icon}"></i>` : ''} ${badge.text}
-                  </span>
+                ${result.tags.map(tag => `
+                  <a href="/search?q=${tag.tag_name}">
+                    <span class="badge" style="background-color: ${tag.tag_color};">
+                      ${tag.tag_name.toString()}
+                    </span>
+                  </a>
                 `).join('')}
               </div>
             </div>
@@ -463,6 +279,7 @@ export const searchJS = {
           <div class="d-flex flex-column justify-content-between align-items-center">
             <div class="d-flex">
               <button class="btn btn-outline-secondary btn-sm me-2 star-btn" data-starred="false" data-hash="${result.id}" data-type="${result.data_type}">
+                <span class="star-count mx-1">${item.star_count || 0}</span>
                 <i class="bi bi-star star-icon"></i>
               </button>
               <div class="dropdown">
@@ -476,7 +293,7 @@ export const searchJS = {
                     </a>
                   </li>
                   <li class="mb-0">
-                    <a class="dropdown-item py-1 fw-normal text-danger" href="#">
+                    <a class="report-link dropdown-item py-1 fw-normal text-danger" href="#">
                       <small>🚩 Report</small>
                     </a>
                   </li>
@@ -487,7 +304,7 @@ export const searchJS = {
               <button class="btn btn-sm upvote" data-voted="false" data-hash="${result.id}" data-type="${result.data_type}">
                 <img src="/static/website/images/ai-icons/up-arrow.svg" alt="Upvote" class="arrow-icon">
               </button>
-              <span class="mx-1"><small class="fw-bold text-dark">${result.rating}</small></span>
+              <span class="mx-1"><small class="rating fw-bold text-dark">${result.upvote_count - result.downvote_count}</small></span>
               <button class="btn btn-sm downvote" data-voted="false" data-hash="${result.id}" data-type="${result.data_type}">
                 <img src="/static/website/images/ai-icons/down-arrow.svg" alt="Downvote" class="arrow-icon">
               </button>
@@ -542,44 +359,6 @@ export const searchJS = {
   },
 
 };
-
-async function voteObservation(observationId, voteType, dataType) {
-  /* Vote on an observation. */
-  const data = {
-    id: observationId,
-    vote: voteType,
-    type: dataType
-  };
-  try {
-    const response = await authRequest('/src/vote', data);
-    if (response.status === 'success') {
-      console.log(`Observation ${observationId} in ${dataType} collection voted as ${voteType}!`);
-    } else {
-      console.error('Vote failed:', response.error);
-    }
-  } catch (err) {
-    console.error('Error voting on observation:', err);
-  }
-}
-
-async function starObservation(observationId, isStarred, dataType) {
-  /* Star or unstar an observation. */
-  const data = {
-    id: observationId,
-    star: isStarred,
-    data_type: dataType
-  };
-  try {
-    const response = await authRequest('/src/star', data);
-    if (response.status === 'success') {
-      console.log(`Observation ${observationId} in ${dataType} collection star status updated!`);
-    } else {
-      console.error('Star operation failed:', response.error);
-    }
-  } catch (err) {
-    console.error('Error starring/un-starring observation:', err);
-  }
-}
 
 function updateCounts(data) {
   /* Update the badge counts in the sidebar. */

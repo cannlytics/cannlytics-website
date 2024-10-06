@@ -135,8 +135,10 @@ def api_search(request: Request):
             'link': '/coa/sample',
             'data_type': 'coas',
             'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'COA', 'color': '#3498db', 'icon': 'bi bi-file-earmark-text' }],
-            'rating': 0
+            'tags': [{'tag_id': 'coas', 'tag_name': 'COA', 'tag_color': '#3498db'}],
+            'star_count': 0,
+            'upvote_count': 1,
+            'downvote_count': 0,
         },
         {
             'id': 'test-strain',
@@ -146,8 +148,10 @@ def api_search(request: Request):
             'link': '/strain/og-kush',
             'data_type': 'strains',
             'image': 'https://via.placeholder.com/100',
-            'badges': [{ 'text': 'Strain', 'color': '#27ae60', 'icon': 'bi bi-droplet' }],
-            'rating': 0
+            'tags': [{'tag_id': 'strains', 'tag_name': 'Strain', 'tag_color': '#27ae60'}],
+            'star_count': 0,
+            'upvote_count': 1,
+            'downvote_count': 0,
         },
     ]
 

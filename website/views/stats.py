@@ -72,8 +72,8 @@ def star_observation(request):
         if is_starred:
             user_star_ref.delete()
             entry = {'star_count': firestore.Increment(-1)}
-            obs_ref.update(entry)
-            user_metadata_ref.update(entry)
+            obs_ref.set(entry, merge=True)
+            user_metadata_ref.set(entry, merge=True)
         return JsonResponse({'status': 'success', 'id': obs_id}, status=200)
     
     # Handle star.
@@ -86,8 +86,8 @@ def star_observation(request):
             'starred_at': created_at,
         })
         entry = {'star_count': firestore.Increment(1)}
-        obs_ref.update(entry)
-        user_metadata_ref.update(entry)
+        obs_ref.set(entry, merge=True)
+        user_metadata_ref.set(entry, merge=True)
         return JsonResponse({'status': 'success', 'id': obs_id}, status=200)
 
 
@@ -144,8 +144,8 @@ def vote_observation(request):
             'vote_type': vote_type,
             'voted_at': datetime.now().isoformat(),
         })
-        obs_ref.update(vote_update)
-        user_metadata_ref.update(vote_update)
+        obs_ref.set(vote_update, merge=True)
+        user_metadata_ref.set(vote_update, merge=True)
 
     # Handle user changing their vote.
     else:
@@ -157,15 +157,15 @@ def vote_observation(request):
             else:
                 vote_update['downvote_count'] = firestore.Increment(-1)
             user_vote_ref.delete()
-            obs_ref.update(vote_update)
+            obs_ref.set(vote_update, merge=True)
         
         # User is changing their vote.
         else:
-            user_vote_ref.update({
+            user_vote_ref.set({
                 'vote_type': vote_type,
                 'voted_at': datetime.now().isoformat(),
-            })
-            obs_ref.update(vote_update)
+            }, merge=True)
+            obs_ref.set(vote_update, merge=True)
 
     # Create a log.
     if current_vote == vote_type:
