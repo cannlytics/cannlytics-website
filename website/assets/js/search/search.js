@@ -290,12 +290,12 @@ export const searchJS = {
         <div class="card-body d-flex justify-content-between">
           <div class="d-flex align-items-center">
             <a href="${item.link}" class="rounded me-3 bg-transparent">
-              <img src="${item.image}" alt="${item.data_type}" class="rounded" width="75" height="75">
+              <img src="${item.image_url}" alt="${item.data_type}" class="rounded" width="75" height="75">
             </a>
             <div>
               <a class="fs-6 sans-serif text-decoration-none text-dark" href="${item.link}">${item.title}</a>
               <p class="small mt-0 mb-1">
-                <small class="sans-serif text-dark">${item.updated_on}</small>
+                <small class="sans-serif text-dark">${item.updated_at}</small>
               </p>
               <div class="d-flex">
                 ${item.tags.map(tag => `
@@ -353,8 +353,8 @@ export const searchJS = {
 
   // Optional: Add user link.
   // by
-  // <a class="text-dark" href="/user/${item.user_name}">
-  //   <small class="sans-serif">${item.user_name}</small>
+  // <a class="text-dark" href="/user/${item.created_by}">
+  //   <small class="sans-serif">${item.created_by}</small>
   // </a>
 
   updateFilterMenuSize() {

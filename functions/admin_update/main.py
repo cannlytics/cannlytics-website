@@ -14,27 +14,34 @@ import os
 import requests
 
 # External imports.
-from cannlytics.firebase import (
-    get_collection,
-    update_documents,
-)
+# from cannlytics.firebase import (
+#     get_collection,
+#     update_documents,
+# )
 from firebase_admin import auth, initialize_app, firestore
+from google.auth import default
+from google.cloud import firestore
+from google.cloud.firestore_v1 import aggregation
+from google.cloud.firestore_v1.base_query import FieldFilter
+
+
+# Initialize Firestore.
+try:
+    initialize_app()
+except ValueError:
+    pass
+
+# Get the project ID.
+_, project_id = default()
 
 
 def update_user_stats():
     """Update user statistics."""
 
-    # Initialize Firestore.
-    try:
-        initialize_app()
-    except ValueError:
-        pass
-
     # Get user statistics.
     users = []
     monthly_users = 0
     start_of_month = datetime(datetime.now().year, datetime.now().month, 1)
-    print('Getting user statistics...')
     page = auth.list_users()
     while page:
         for user in page.users:
@@ -48,7 +55,7 @@ def update_user_stats():
     print(f'Total number of users: {number_of_users}')
     print(f'Number of new users this month: {monthly_users}')
 
-    # Get current user stats and see if there were any change in users.
+    # Update user stats
     db = firestore.client()
     ref = db.collection('stats').document('users')
     current_user_stats = ref.get().to_dict()
@@ -57,20 +64,14 @@ def update_user_stats():
             'total_users': 0,
             'monthly_users': 0,
         }
-
-    # Calculate the daily change in users.
     updated_user_stats = {
         'total_users': number_of_users,
         'monthly_users': monthly_users,
     }
     updated_user_stats['change_in_users'] = updated_user_stats['total_users'] - current_user_stats['total_users']
     updated_user_stats['change_in_monthly_users'] = updated_user_stats['monthly_users'] - current_user_stats['monthly_users']
-
-    # Update user stats if they changed.
     ref.set(updated_user_stats)
     print('Updated stats/users document.')
-
-    # Return the updated user stats.
     return updated_user_stats
 
 
@@ -88,14 +89,10 @@ def admin_update(event, context):
         return
 
     # Initialize Firebase.
-    try:
-        initialize_app()
-    except ValueError:
-        pass
     database = firestore.client()
 
     # Update user statistics.
-    user_stats = update_user_stats()
+    update_user_stats()
 
     # TODO: Get `pending` contact messages.
     # `status` == 'pending
@@ -111,19 +108,11 @@ def admin_update(event, context):
     # TODO: Get the recent logs.
 
 
-    # TODO: Perform statistics on the logs.
-
-
-    # TODO: Ask ChatGPT to summarize the logs.
-
-
-    # TODO: Count how many documents were created, updated, and deleted.
-
-
-    # TODO: Get the number of Cloud Run requests.
-
-
-    # TODO: Count the number of website page visits (for the top 10 visited). 
+    # Optional: Perform statistics on the logs.
+    # Optional: Ask ChatGPT to summarize the logs.
+    # Optional: Count how many documents were created, updated, and deleted.
+    # Optional: Get the number of Cloud Run requests.
+    # Optional: Count the number of website page visits (for the top 10 visited). 
 
     
     # TODO: Summarize the data in Firestore:
@@ -131,7 +120,6 @@ def admin_update(event, context):
     # - Number of new strains
     # - Number of new producers
     # - Number of new labs
-    # - If any lab result is in the 99th percentile for any cannabinoid or terpene
     # - Any new plant patents
     # - Any new licenses
 

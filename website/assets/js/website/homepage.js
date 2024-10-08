@@ -33,11 +33,11 @@ export const homepage = {
     {
       'id': 'test-coa',
       'title': 'Sample COA Result',
-      'user_name': 'keeganskeate',
-      'updated_on': 'Sep 29, 2024',
+      'created_by': 'cannlytics',
+      'updated_at': 'Sep 29, 2024',
       'link': '/coas/sample',
       'data_type': 'coas',
-      'image': 'https://via.placeholder.com/100',
+      'image_url': 'https://via.placeholder.com/100',
       'tags': [
         {'tag_id': 'coas', 'tag_name': 'COA', 'tag_color': '#3498db'},
       ],
@@ -48,11 +48,11 @@ export const homepage = {
     {
       'id': 'test-strain',
       'title': 'Cannabis Strain: OG Kush',
-      'user_name': 'john_doe',
-      'updated_on': 'Sep 25, 2024',
+      'created_by': 'cannlytics',
+      'updated_at': 'Sep 25, 2024',
       'link': '/strains/og-kush',
       'data_type': 'strains',
-      'image': 'https://via.placeholder.com/100',
+      'image_url': 'https://via.placeholder.com/100',
       'tags': [
         {'tag_id': 'strains', 'tag_name': 'Strain', 'tag_color': '#27ae60'}
       ],
