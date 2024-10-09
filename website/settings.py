@@ -90,6 +90,9 @@ else:
     DEBUG = True
     print('WARNING: Debug mode is enabled.')
 
+# Initialize OpenAI API
+os.environ['OPENAI_API_KEY'] = config.get('OPENAI_API_KEY')
+
 
 #----------------------------------------------------------------------#
 # Apps

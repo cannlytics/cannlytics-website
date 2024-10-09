@@ -423,3 +423,48 @@ This step provides access to this containerized app from a [Firebase Hosting] UR
 ```shell
 firebase deploy --only hosting:production
 ```
+
+<!-- 
+
+Publishing NEW
+
+First, update `gcloud` and login:
+
+```bash
+gcloud components update
+gcloud auth login
+```
+
+Check if vector indexes have been created:
+
+```bash
+gcloud firestore indexes composite list --database=cannlytics
+```
+
+Create vector indexes if needed:
+
+```bash
+gcloud firestore indexes composite create \
+--collection-group='coas' \
+--query-scope=COLLECTION \
+--field-config field-path='results_embedding',vector-config='{"dimension":"1536", "flat": "{}"}' \
+--database=cannlytics
+
+gcloud firestore indexes composite create \
+--collection-group='coas' \
+--query-scope=COLLECTION \
+--field-config field-path='product_name_embedding',vector-config='{"dimension":"1536", "flat": "{}"}' \
+--database=cannlytics
+
+gcloud firestore indexes composite create \
+--collection-group='coas' \
+--query-scope=COLLECTION \
+--field-config field-path='strain_name_embedding',vector-config='{"dimension":"1536", "flat": "{}"}' \
+--database=cannlytics
+```
+
+Note, the dimensions should match those of the embedding model. At the moment, `2048` is the maximum allowed.
+
+
+
+-->
