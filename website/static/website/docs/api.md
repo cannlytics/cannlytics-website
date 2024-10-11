@@ -1,6 +1,6 @@
 # The Cannlytics API
 
-The Cannlytics API allows users to seamlessly integrate with all of the functionality that Cannlytics has to offer. The Cannlytics API endpoints are simply an interface to the logic implemented in the `cannlytics` module. The API endpoints handle authentication, error handling, and identifying the precise logic to perform.
+The Cannlytics API allows users to integrate with all of the functionality that Cannlytics has to offer. The Cannlytics API endpoints are simply an interface to the logic implemented in the `cannlytics` module. The API endpoints handle authentication, error handling, and identifying the precise logic to perform.
 
 ## Get Started with the Cannlytics API
 
@@ -31,6 +31,66 @@ Start making requests to the Cannlytics API by following these 3 quick steps.
 | `\search` | `GET`, `POST` | Search the API data. |
 | `\standardize` | `GET`, `POST` | Standardize data. |
 
+
+## Examples <a name="examples"></a>
+
+You can make requests through the API passing your API key as a bearer token in the authorization header. Below is an example reading an API key from a local `.env` file.
+
+### Python
+
+```py
+from dotenv import load_dotenv
+import os
+import requests
+
+# Load your API key.
+load_dotenv('.env')
+API_KEY = os.getenv('CANNLYTICS_API_KEY')
+
+# Pass your API key through the authorization header as a bearer token.
+HEADERS = {
+    'Authorization': 'Bearer %s' % API_KEY,
+    'Content-type': 'application/json',
+}
+
+# Parse a COA through the API.
+data = {'urls': ['https://cannlytics.page.link/test-coa']}
+endpoint = 'https://cannlytics.com/api/coas'
+response = requests.post(endpoint, headers=headers, json=data)
+extracted = response.json()
+print(extracted["data"])
+```
+
+### Node.js
+
+```js
+const axios = require('axios');
+
+// Load your API key.
+require('dotenv').config();
+
+// Pass your API key through the authorization header as a bearer token.
+const apiKey = process.env.CANNLYTICS_API_KEY;
+const options = {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization' : `Bearer ${apiKey}`
+  }
+};
+
+// Parse a COA through the API.
+const data = { urls: ['https://cannlytics.page.link/test-coa'] };
+const endpoint = 'https://cannlytics.com/api/coas';
+axios.post(endpoint, data, options)
+  .then((response) => {
+    const extracted = response.data;
+    console.log(extracted["data"]);
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
+```
+
 ## API Support
 
-If you have any questions or need help with the Cannlytics API, then please <a href="https://cannlytics.com/contact?topic=api">contact us</a>. We are happy to help you get started with the Cannlytics API.
+If you have any questions or need help with the Cannlytics API, then please <a href="https://cannlytics.com/support?topic=api">contact us</a>. We are happy to help you get started with the Cannlytics API.

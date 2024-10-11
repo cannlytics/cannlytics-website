@@ -2,14 +2,14 @@
 # Cannlytics API OpenAPI Specification
 # Authors: Keegan Skeate <https://github.com/keeganskeate>
 # Created 4/23/2023
-# Updated: 9/22/2023
+# Updated: 10/11/2024
 # License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 #------------------------------------------------------------------------------
-openapi: 1.0.0
+openapi: 1.0.1
 info:
   title: Cannlytics API
   summary: Cannabis data and analytics.
-description: The Cannlytics API allows users to interface with cannabis data and statistics.
+description: The Cannlytics API allows users to interface with cannabis data and analytics.
 termsOfService: https://docs.cannlytics.com/about/terms-of-service/
 contact:
   name: Cannlytics Admin
@@ -20,9 +20,7 @@ license:
   url: https://github.com/cannlytics/cannlytics/blob/main/LICENSE
 servers:
 - url: https://cannlytics.com/api
-  description: Production server
-- url: https://cannlytics.com/api
-  description: Enterprise server
+  description: Public API
 paths:
   /:
     get:
@@ -33,88 +31,23 @@ paths:
           description: Successful operation
 
   #------------------------------------------------------------------------------
-  # Authentication
+  # Functions
   #------------------------------------------------------------------------------
-
-  # Create API key.
-  /auth/create-key:
-    post:
-      operationId: auth.create_api_key
-      summary: Create an API key.
-      responses:
-        200:
-          description: Successful operation
-
-  # Delete key.
-  /auth/delete-key:
-    delete:
-      operationId: auth.delete_api_key
-      summary: Delete an API key.
-      responses:
-        200:
-          description: Successful operation
-
-  # Get keys.
-  /auth/get-keys:
-    get:
-      operationId: auth.get_api_key_hmacs
-      summary: Get API key HMACs.
-      responses:
-        200:
-          description: Successful operation
-
-
-  #------------------------------------------------------------------------------
-  # AI
-  #------------------------------------------------------------------------------
-
-  # AI base.
-  /ai:
-    get:
-      operationId: api.ai.ai_base
-      summary: Base AI API endpoint for users to find available AI tools.
-      responses:
-        200:
-          description: Successful operation
-
-  # AI recipes.
-  /ai/recipes/{recipe_id}:
-    get:
-      operationId: api.ai.recipes_api
-      summary: Get AI-generated recipes or a specific recipe by ID.
-      parameters:
-        - name: recipe_id
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-
-  # AI text to color.
-  /ai/color:
-    post:
-      operationId: api.ai.text_to_color_api
-      summary: Use AI to convert text to a color.
-      responses:
-        200:
-          description: Successful operation
 
   # AI text to emoji.
-  /ai/emoji:
+  /search:
     post:
-      operationId: api.ai.text_to_emoji_api
-      summary: Use AI to convert text to an emoji.
+      operationId: api.search
+      summary: Search various data types for specific queries.
       responses:
         200:
           description: Successful operation
 
-  # AI strain name generation.
-  /ai/strain/name:
+  # Standardization.
+  /standardize:
     post:
-      operationId: api.ai.recipes_api
-      summary: Use AI to generate a strain name.
+      operationId: api.standardize
+      summary: Standardize product names, strain names, and product types.
       responses:
         200:
           description: Successful operation
@@ -123,68 +56,26 @@ paths:
   # Data
   #------------------------------------------------------------------------------
 
-  # Data base.
-  /data:
+  # Compound data.
+  /compounds/{id}:
     get:
-      summary: Base data API endpoint for users to find available datasets.
-      operationId: api.data.data_base
-      responses:
-        '200':
-          description: A list of available datasets.
-
-  # Analyses data.
-  /data/analyses/{analysis_id}:
-    get:
-      summary: Retrieve analyses data.
-      operationId: api.data.analyses_data
+      summary: Retrieve specific compound data by ID.
+      operationId: api.compounds
       parameters:
-        - name: analysis_id
-          in: query
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: A list of analyses data.
-
-  # Analyte data.
-  /data/analytes/{analyte_id}:
-    get:
-      summary: Retrieve specific analyte data by ID.
-      operationId: api.data.analytes_data
-      parameters:
-        - name: analyte_id
+        - name: id
           in: path
           required: false
           schema:
             type: string
       responses:
         '200':
-          description: Analyte data for the given ID.
+          description: Compound data for the given ID.
 
   # COA data.
-  /data/coas:
+  /coas/{id}:
     get:
       summary: Retrieve COA data.
-      operationId: api.data.api_data_coas
-      responses:
-        '200':
-          description: A list of COA data.
-
-  # Download COA data.
-  /data/coas/download:
-    get:
-      summary: Download COA data.
-      operationId: api.data.download_coa_data
-      responses:
-        '200':
-          description: COA data downloaded.
-
-  # Lab data.
-  /data/labs/{license_number}:
-    get:
-      summary: Retrieve lab data.
-      operationId: api.data.lab_data
+      operationId: api.coas
       parameters:
         - name: license_number
           in: path
@@ -193,12 +84,12 @@ paths:
             type: string
       responses:
         '200':
-          description: A list of lab data.
+          description: A list of any COA data found.
 
   # License data.
-  /data/licenses/{license_number}:
+  /licenses/{license_number}:
     get:
-      operationId: api.data.license_data
+      operationId: api.licenses
       summary: Get licenses data.
       parameters:
         - name: license_number
@@ -208,178 +99,50 @@ paths:
             type: string
   
   # Lab results data.
-  /data/results/{lab_result_id}:
+  /results/{id}:
     get:
-      operationId: api.data.strain_data
-      summary: Get lab result data.
+      operationId: api.results
+      summary: Get a product's lab test result data by `id`.
       parameters:
-        - name: lab_result_id
+        - name: id
           in: path
           required: false
           schema:
             type: string
 
   # Strain data.
-  /data/strains/{strain_name}:
+  /strains/{id}:
     get:
-      operationId: api.data.strain_data
-      summary: Get strain data by strain_name.
+      operationId: api.strains
+      summary: Get strain data by `id`.
       parameters:
-        - name: strain_name
+        - name: id
           in: path
           required: false
           schema:
             type: string
   
-  # Regulation data.
-  /data/regulations/{state}:
+  # Label data.
+  /labels/{id}:
     get:
-      operationId: api.data.regulation_data
-      summary: Get regulation data by state.
+      operationId: api.labels
+      summary: Get a user's label data by `id`.
       parameters:
-        - name: state
-          in: path
-          required: true
-          schema:
-            type: string
-  
-  # Patent data.
-  /data/patents:
-    get:
-      summary: Retrieve patent stats.
-      operationId: api.data.patent_stats
-      responses:
-        '200':
-          description: A list of patent stats.
-
-  #------------------------------------------------------------------------------
-  # Statistics
-  #------------------------------------------------------------------------------
-
-  # Stats base.  
-  /stats:
-    get:
-      summary: Retrieve effects stats.
-      operationId: api.stats.effects_stats
-      responses:
-        '200':
-          description: A list of effects stats.
-
-  # Effects prediction model.
-  /stats/effects:
-    get:
-      summary: Retrieve effects stats.
-      operationId: api.stats.effects_stats
-      responses:
-        '200':
-          description: A list of effects stats.
-
-  /stats/effects/actual:
-    get:
-      summary: Record actual effects.
-      operationId: api.stats.record_effects
-      responses:
-        '200':
-          description: Actual effects recorded.
-
-  /stats/effects/{strain}:
-    get:
-      summary: Retrieve effects stats for a specific strain.
-      operationId: api.stats.effects_stats
-      parameters:
-        - name: strain
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Effects stats for the given strain.
-
-  # Personality statistics.
-  /stats/personality:
-    get:
-      summary: Retrieve personality stats.
-      operationId: api.stats.personality_stats
-      responses:
-        '200':
-          description: A list of personality stats.
-
-  # Recommendation statistics.
-  /stats/recommendations:
-    get:
-      summary: Retrieve recommendation stats.
-      operationId: api.stats.recommendation_stats
-      responses:
-        '200':
-          description: A list of recommendation stats.
-
-  #------------------------------------------------------------------------------
-  # Organizations
-  #------------------------------------------------------------------------------
-
-  # Organization data.
-  /organizations/{organization_id}:
-    get:
-      operationId: organizations.organizations
-      summary: Get organization data by organization_id.
-      parameters:
-        - name: organization_id
+        - name: id
           in: path
           required: false
           schema:
             type: string
   
-  # Organization's settings.
-  /organizations/{organization_id}/settings:
+  # Receipt data.
+  /receipts/{id}:
     get:
-      operationId: organizations.organizations
-      summary: Get organization settings by organization_id.
+      operationId: api.receipts
+      summary: Get a user's receipt data by `id`.
       parameters:
-        - name: organization_id
+        - name: id
           in: path
-          required: true
-          schema:
-            type: string
-  
-  # Organization's team.
-  /organizations/{organization_id}/team:
-    get:
-      operationId: organizations.organization_team
-      summary: Get organization team members by organization_id.
-      parameters:
-        - name: organization_id
-          in: path
-          required: true
-          schema:
-            type: string
-  
-  # Organization team member.
-  /organizations/{organization_id}/team/{user_id}:
-    get:
-      operationId: organizations.organization_team
-      summary: Get organization team member by organization_id and user_id.
-      parameters:
-        - name: organization_id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: user_id
-          in: path
-          required: true
-          schema:
-            type: string
-  
-  # Join an organization.
-  /organizations/{organization_id}/join:
-    post:
-      operationId: organizations.join_organization
-      summary: Join an organization by organization_id.
-      parameters:
-        - name: organization_id
-          in: path
-          required: true
+          required: false
           schema:
             type: string
   
@@ -717,7 +480,3 @@ paths:
           required: true
           schema:
             type: string
-
-  #------------------------------------------------------------------------------
-  # TODO: LIMS
-  #------------------------------------------------------------------------------

@@ -66,7 +66,7 @@ USER_PROMPT = "Given the following user prompt, strictly return the most relevan
 @csrf_exempt
 @api_view(['POST', 'OPTIONS'])
 def api_search(request: Request):
-    """Standardize product names, strain names, and product types."""
+    """Search various data types for specific queries."""
 
     # Authenticate the user from a `CANNLYTICS_API_KEY`.
     claims = authenticate_request(request)

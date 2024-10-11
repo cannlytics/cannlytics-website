@@ -1803,4 +1803,4 @@ url = f'{base}/metrc/types/waste-reasons'
 response = requests.get(url, headers=headers)
 ```
 
-For further assistance using the Cannlytics API to interface with Metrc, [contact support](https://cannlytics.com/contact).
+For further assistance using the Cannlytics API to interface with Metrc, [contact support](https://cannlytics.com/support).
