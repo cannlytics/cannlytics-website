@@ -211,8 +211,7 @@ USE_TZ = True
 #----------------------------------------------------------------------#
 
 # Specify allowed domains depending on production or development status.
-# TODO: Make more secure by defining `ALLOWED_HOSTS`.
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['cannlytics.com', 'localhost'] if PRODUCTION == 'True' else ['localhost', '127.0.0.1']
 if PRODUCTION != 'True':
     ALLOWED_HOSTS.extend(['*'])
 try:

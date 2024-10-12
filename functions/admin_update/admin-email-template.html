@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cannlytics Admin Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #0d6efd;
+        }
+        .stats-container {
+            background-color: #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-item {
+            margin-bottom: 10px;
+        }
+        .messages-container {
+            background-color: #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .message-item {
+            background-color: #fff;
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+    <p>Good morning Cannlytics Admin,</p>
+    <p>Below are the latest statistics and updates for the Cannlytics Website as of $current_date.</p>
+
+    <div class="stats-container">
+        <h2>User Statistics</h2>
+        <div class="stat-item">Total Users: <span class="highlight">$total_users</span> (Change: $change_in_users)</div>
+        <div class="stat-item">New Users This Month: <span class="highlight">$monthly_users</span> (Change: $change_in_monthly_users)</div>
+    </div>
+
+    <div class="stats-container">
+        <h2>New Data This Month</h2>
+        <div class="stat-item">New COAs: <span class="highlight">$new_coas</span></div>
+        <div class="stat-item">New Results: <span class="highlight">$new_results</span></div>
+        <div class="stat-item">New Strains: <span class="highlight">$new_strains</span></div>
+        <div class="stat-item">New Licenses: <span class="highlight">$new_licenses</span></div>
+    </div>
+
+    <div class="messages-container">
+        <h2>Pending Contact Messages ($num_messages)</h2>
+        $messages_html
+    </div>
+
+    <div class="messages-container">
+        <h2>Pending Reported Data ($num_reported_data)</h2>
+        $reported_data_html
+    </div>
+
+    <p>Have a productive day,<br>Cannbot</p>
+</body>
+</html>
