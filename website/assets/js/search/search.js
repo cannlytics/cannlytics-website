@@ -260,6 +260,7 @@ export const searchJS = {
     const observationList = [];
     if (filteredData && filteredData.length > 0) {
       filteredData.forEach(item => {
+        if (item.reported) return;
         const resultCard = this.formatSearchResultRow(item);
         resultsContainer.innerHTML += resultCard;
         observationList.push({

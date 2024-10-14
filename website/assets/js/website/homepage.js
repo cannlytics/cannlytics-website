@@ -146,6 +146,7 @@ export const homepage = {
     // Update or add cards
     const observationList = [];
     data.forEach(item => {
+      if (item.reported) return;
       if (existingCards.has(item.id)) {
         // Update the existing card
         const existingCard = existingCards.get(item.id);

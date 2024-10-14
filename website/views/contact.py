@@ -86,4 +86,8 @@ def report_data(request):
     ref = db.collection('website').document('reports') \
         .collection('reported_observations').document(report_id)
     ref.set(report_data)
+    # Note: Flag the observation in Firestore as `reported` if the user is authenticated.
+    if claims and data_type and observation_id:
+        ref = db.collection(data_type).document(observation_id)
+        ref.set({'reported': True}, merge=True)
     return JsonResponse({'status': 'success', 'report_id': report_id}, status=200)
