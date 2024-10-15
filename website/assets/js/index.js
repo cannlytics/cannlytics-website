@@ -1,10 +1,10 @@
 /**
  * Cannlytics Module Index | Cannlytics Website
- * Copyright (c) 2021-2022 Cannlytics
+ * Copyright (c) 2021-2024 Cannlytics
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 1/6/2021
- * Updated: 10/4/2024
+ * Updated: 10/14/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 // import { analytics } from './analytics/analytics.js';
@@ -17,6 +17,7 @@ import { website } from './website/website.js';
 import { ui } from './ui/ui.js';
 import { utils } from './utils.js';
 import { CoADoc as coas } from './results/coas.js';
+import { compoundsJS as compounds } from './compounds/compounds.js';
 import { licensesJS as licenses } from './licenses/licenses.js';
 import { retailersJS as retailers } from './licenses/retailers.js';
 import { resultsJS as results } from './results/results.js';
@@ -39,6 +40,7 @@ export {
   utils,
   website,
   coas,
+  compounds,
   licenses,
   retailers,
   results,

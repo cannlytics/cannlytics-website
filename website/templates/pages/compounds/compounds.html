@@ -6,20 +6,69 @@
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}Compounds{% endblock %}
-{% block dashboard %}
+{% block dashboard_css %}
 
-  <!-- TODO: Filters
-   
-   - Analysis type: `cannabinoids`, `terpenes`, `pesticides`, `heavy_metals`, `residual_solvents`, `microbes`
-  
+  <!-- AG Grid -->
+  {% include "components/tables/ag_grid_scripts.html" %}
+
+{% endblock %}
+{% block dashboard %}
+{% if section and section not in 'logs,files,certificates' %}
+
+  <!-- Result page -->
+  <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pb-5 mx-auto">
+    {% include "pages/results/result.html" with
+      id=section
+    %}
+    {% block unit %}{% endblock unit %}
+  </main>
+
+{% else %}
+
+<!-- Compounds -->
+<section class="container markdown">
+
+  <h2 class="sans-serif text-dark">Compounds</h2>
+
+  <!-- TODO: Masonry of cards for each analysis.
+    Each card has a list of compound names and links
+    to those pages (/compounds/{key}) 
+    - `cannabinoids`
+    - `terpenes`
+    - `pesticides`
+    - `heavy_metals`
+    - `residual_solvents`
+    - `microbes`
   -->
 
+</section>
+{% endif %}
+{% endblock %}
 
-  <!-- TODO: Cannabinoids list -->
+{% block page_js %}
+{% if section %}
 
+<!-- Compound JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
 
-  <!-- TODO: Terpenes list -->
+  // Initialize compound.
+  cannlytics.compounds.initializeCompound('{{ section }}');
 
+});
+</script>
 
+{% else %}
 
+<!-- Compounds JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Initialize compounds.
+  cannlytics.compounds.initializeCompounds();
+
+});
+</script>
+
+{% endif %}
 {% endblock %}
