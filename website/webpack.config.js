@@ -30,11 +30,8 @@ module.exports = env => {
     entry: [
       './assets/css/cannlytics.scss',
       './assets/js/index.js',
-      // You can add additional JS here.
+      // You can add additional JS/SCSS here.
     ],
-    // entry: {
-    //   cannlytics: `./assets/js/index.js`,
-    // },
     output: {
       path: path.resolve(__dirname, `./static/${appName}`),
       filename: './js/bundles/cannlytics.min.js',
