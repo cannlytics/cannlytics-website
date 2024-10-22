@@ -50,6 +50,9 @@ export const strainsJS = {
     // total_tests
     // strain_type
     // first_date_tested
+
+    // TODO: Get a gallery of images for the strain.
+    // Collection: strains/{strain-id}/strain_images
   },
   
   initializeStrains() {
