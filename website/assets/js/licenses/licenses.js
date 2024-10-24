@@ -8,52 +8,13 @@
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 import { createGrid } from 'ag-grid-community';
-import { getCollection, getDocument } from '../firebase.js';
+import { db } from '../firebase.js';
+import { collection, query, where, onSnapshot, limit } from 'firebase/firestore';
 
 export const licensesJS = {
 
-  async initializeLicensee() {
-    /**
-     * Initialize the licensee page.
-     */
-    let data = JSON.parse(localStorage.getItem('licensee'));
-    const slug = window.location.pathname.split('/').pop();
-    if (data && data.id === slug) {
-      console.log('Initializing licensee page from local data:', data);
-    } else {
-      const path = `public/data/licenses/${slug}`;
-      data = await getDocument(path);
-      console.log('Initializing licensee page from Firestore:', data);
-    }
-    // Render licensee data in the UI
-    document.getElementById('licenseeImageUrl').src = data.image_url || '';
-    document.getElementById('licenseeLegalName').textContent = data.business_legal_name || '';
-    document.getElementById('licenseeDbaName').textContent = data.business_dba_name || '';
-    document.getElementById('licenseeNumber').textContent = data.license_number || '';
-    document.getElementById('licenseeType').textContent = data.license_type || '';
-
-    // Business Information
-    document.getElementById('businessLegalName').textContent = data.business_legal_name || '';
-    document.getElementById('businessDbaName').textContent = data.business_dba_name || '';
-
-    // License Details
-    document.getElementById('licenseType').textContent = data.license_type || '';
-    document.getElementById('licenseNumber').textContent = data.license_number || '';
-    document.getElementById('licenseStatus').textContent = data.license_status || '';
-    document.getElementById('licenseStatusDate').textContent = data.license_status_date || '';
-    // Populate other license details
-
-    // Contact Information
-    document.getElementById('businessEmail').textContent = data.business_email || '';
-    document.getElementById('businessPhone').textContent = data.business_phone || '';
-    document.getElementById('businessWebsite').textContent = data.business_website || '';
-
-    // Location
-    document.getElementById('premiseStreetAddress').textContent = data.premise_street_address || '';
-    document.getElementById('premiseCity').textContent = data.premise_city || '';
-    // Populate other location details
-
-  },
+  licensees: [],
+  viewType: 'grid',
   
   initializeLicensees() {
     /**
@@ -65,32 +26,63 @@ export const licensesJS = {
     const selectedState = document.querySelector('.btn-group .btn-primary').id.replace('btn', '');
     const startDate = null;
     const endDate = null;
-  
-    // Fetch licensees data from Firestore
-    this.fetchLicensees(searchTerm, startDate, endDate, selectedState)
-      .then((licensees) => {
-        console.log('Licensees:', licensees);
 
-        // Add event listeners for view toggle buttons
-        document.getElementById('listViewButton').addEventListener('click', () => {
-          this.renderListView(licensees);
-        });
-        document.getElementById('gridViewButton').addEventListener('click', () => {
-          this.renderGridView(licensees);
-        });
+    // Add event listeners for view toggle buttons
+    document.getElementById('listViewButton').addEventListener('click', () => {
+      this.renderTable(this.licensees);
+      this.viewType = 'table';
+    });
+    document.getElementById('gridViewButton').addEventListener('click', () => {
+      this.renderMasonry(this.licensees);
+      this.viewType = 'grid';
+    });
 
-        // Default to grid view
-        this.renderGridView(licensees);
-
-      })
-      .catch((error) => {
-        console.error('Error initializing licensees:', error);
-        const licenseesContainer = document.getElementById('licenseesContainer');
-        licenseesContainer.innerHTML = '';
-        const errorMessage = document.createElement('p');
-        errorMessage.textContent = 'Failed to fetch licensees data. Please try again later.';
-        licenseesContainer.appendChild(errorMessage);
+    // TODO: Listen to realtime license data.
+    // const db = getFirestore(firebaseApp);
+    const q = query(
+      collection(db, 'licenses'),
+      where('state', '==', 'ca'),
+      limit(10),
+    );
+    onSnapshot(q, (querySnapshot) => {
+      const docs = [];
+      querySnapshot.forEach((doc) => {
+        docs.push(doc.data());
       });
+      console.log("Current licenses in CA: ", docs.length);
+      this.licensees = docs;
+
+      // Render table or list.
+      if (this.viewType === 'table') {
+        this.renderTable(docs);
+      } else {
+        this.renderMasonry(docs);
+      }
+
+    },
+    (error) => {
+      console.log('Error getting documents: ', error);
+    });
+  
+    // // Fetch licensees data from Firestore
+    // this.fetchLicensees(searchTerm, startDate, endDate, selectedState)
+    //   .then((licensees) => {
+    //     console.log('Licensees:', licensees);
+
+
+    //     // Default to grid view
+    //     this.renderMasonry(licensees);
+
+    //   })
+    //   .catch((error) => {
+    //     // FIXME: Spruce up this HTML.
+    //     console.error('Error initializing licensees:', error);
+    //     const licenseesContainer = document.getElementById('licenseesContainer');
+    //     licenseesContainer.innerHTML = '';
+    //     const errorMessage = document.createElement('p');
+    //     errorMessage.textContent = 'Failed to fetch licensees data. Please try again later.';
+    //     licenseesContainer.appendChild(errorMessage);
+    //   });
 
   },
 
@@ -98,31 +90,32 @@ export const licensesJS = {
     /**
      * Fetch licensees data from Firestore based on search term, date range, and selected state.
      */
+    // FIXME:
     const filters = [];
     if (searchTerm) {
-      filters.push({ key: 'business_legal_name', operation: '>=', value: searchTerm });
-      filters.push({ key: 'business_legal_name', operation: '<=', value: searchTerm + '\uf8ff' });
+      filters.push({ key: 'legal_name', operation: '>=', value: searchTerm });
+      filters.push({ key: 'legal_name', operation: '<=', value: searchTerm + '\uf8ff' });
     }
     if (selectedState && selectedState !== 'ALL') {
       filters.push({ key: 'state', operation: '==', value: selectedState });
     }
     console.log('FILTERS:');
     console.log(filters);
-    return getCollection('data/licenses/all', {
-      order: 'business_legal_name',
+    return getCollection('licenses', {
+      order: 'legal_name',
       max: 10,
-      filters: filters,
+      // filters: filters,
     });
   },
 
-  renderListView(licensees) {
+  renderMasonry(licensees) {
     /**
      * Render the licensees in a list view.
      */
-    document.getElementById('listViewButton').classList.add('btn-primary');
-    document.getElementById('listViewButton').classList.remove('btn-outline-primary');
-    document.getElementById('gridViewButton').classList.remove('btn-primary');
-    document.getElementById('gridViewButton').classList.add('btn-outline-primary');
+    document.getElementById('gridViewButton').classList.add('btn-primary');
+    document.getElementById('gridViewButton').classList.remove('btn-outline-primary');
+    document.getElementById('listViewButton').classList.remove('btn-primary');
+    document.getElementById('listViewButton').classList.add('btn-outline-primary');
   
     const licenseesContainer = document.getElementById('licenseesContainer');
     licenseesContainer.innerHTML = '';
@@ -134,9 +127,12 @@ export const licensesJS = {
       });
   
       // Initialize Masonry after rendering the licensee cards
-      new Masonry(licenseesContainer, {
+      var msnry = new Masonry(licenseesContainer, {
         itemSelector: '.col-sm-6',
-        percentPosition: true,
+        percentPosition: false,
+      });
+      msnry.on( 'layoutComplete', function() {
+        document.getElementById('licenseesContainer').style.height = undefined;
       });
     } else {
       const noDataMessage = document.createElement('p');
@@ -145,35 +141,23 @@ export const licensesJS = {
     }
   },
 
-  renderGridView(licensees) {
+  renderTable(licensees) {
     /**
-     * Render the licensees in a grid view.
+     * Render the licensees in a table view.
      */
-    document.getElementById('gridViewButton').classList.add('btn-primary');
-    document.getElementById('gridViewButton').classList.remove('btn-outline-primary');
-    document.getElementById('listViewButton').classList.remove('btn-primary');
-    document.getElementById('listViewButton').classList.add('btn-outline-primary');
+    document.getElementById('listViewButton').classList.add('btn-primary');
+    document.getElementById('listViewButton').classList.remove('btn-outline-primary');
+    document.getElementById('gridViewButton').classList.remove('btn-primary');
+    document.getElementById('gridViewButton').classList.add('btn-outline-primary');
     const licenseesContainer = document.getElementById('licenseesContainer');
     licenseesContainer.innerHTML = '';
     const gridOptions = {
       columnDefs: [
-        { field: 'business_legal_name', headerName: 'Legal Name', flex: 1 },
-        { field: 'business_dba_name', headerName: 'DBA Name', flex: 1 },
-        {
-          field: 'license_number',
-          headerName: 'License Number',
-          flex: 1,
-        },
-        {
-          field: 'license_type',
-          headerName: 'License Type',
-          flex: 1,
-        },
-        {
-          field: 'premise_city',
-          headerName: 'City',
-          flex: 1,
-        },
+        { field: 'legal_name', headerName: 'Legal Name', flex: 1 },
+        { field: 'dba', headerName: 'DBA Name', flex: 1 },
+        { field: 'license_number', headerName: 'License Number', flex: 1 },
+        { field: 'license_type', headerName: 'License Type', flex: 1 },
+        { field: 'city', headerName: 'City', flex: 1 },
       ],
       rowData: licensees,
       defaultColDef: {
@@ -372,31 +356,141 @@ export const licensesJS = {
 
   },
 
+  async initializeLicensee() {
+    /**
+     * Initialize the licensee page.
+     */
+    let data = JSON.parse(localStorage.getItem('licensee'));
+    const slug = window.location.pathname.split('/').pop();
+    if (data && data.id === slug) {
+      console.log('Initializing licensee page from local data:', data);
+    } else {
+      const path = `public/data/licenses/${slug}`;
+      data = await getDocument(path);
+      console.log('Initializing licensee page from Firestore:', data);
+    }
+    // Render licensee data in the UI
+    document.getElementById('licenseeImageUrl').src = data.image_url || '';
+    document.getElementById('licenseeLegalName').textContent = data.legal_name || '';
+    document.getElementById('licenseeDbaName').textContent = data.business_dba_name || '';
+    document.getElementById('licenseeNumber').textContent = data.license_number || '';
+    document.getElementById('licenseeType').textContent = data.license_type || '';
+
+    // Business Information
+    document.getElementById('businessLegalName').textContent = data.legal_name || '';
+    document.getElementById('businessDbaName').textContent = data.business_dba_name || '';
+
+    // License Details
+    document.getElementById('licenseType').textContent = data.license_type || '';
+    document.getElementById('licenseNumber').textContent = data.license_number || '';
+    document.getElementById('licenseStatus').textContent = data.license_status || '';
+    document.getElementById('licenseStatusDate').textContent = data.license_status_date || '';
+    // Populate other license details
+
+    // Contact Information
+    document.getElementById('businessEmail').textContent = data.business_email || '';
+    document.getElementById('businessPhone').textContent = data.business_phone || '';
+    document.getElementById('businessWebsite').textContent = data.business_website || '';
+
+    // Location
+    document.getElementById('premiseStreetAddress').textContent = data.premise_street_address || '';
+    document.getElementById('premiseCity').textContent = data.premise_city || '';
+    // Populate other location details
+
+  },
+
 };
 
-// Helper function to create a licensee card element.
 const createLicenseeCard = (licensee) => {
-  const cardElement = document.createElement('div');
-  cardElement.classList.add('col-sm-6', 'col-md-4', 'mb-4');
+  /* Create a card for a licensee following the same pattern as createCard. */
 
-  const cardInnerElement = document.createElement('div');
-  cardInnerElement.classList.add('card');
+  // Create the card template
+  const col = document.createElement('div');
+  col.className = 'observation col-12 col-md-6 col-lg-4 mb-4';
+  col.dataset.id = licensee.id;
+  col.dataset.type = licensee.data_type;
+  
+  const card = document.createElement('div');
+  card.className = 'card h-100 shadow-sm border-0';
 
-  const cardBodyElement = document.createElement('div');
-  cardBodyElement.classList.add('card-body');
+  // Add placeholder image or licensee image if available
+  const imageUrl = licensee.image_url || 'https://via.placeholder.com/100';
+  if (imageUrl) {
+    const link = document.createElement('a');
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.className = 'card-img-top';
+    img.alt = licensee.legal_name || 'Licensee Image';
+    link.href = licensee.link;
+    link.appendChild(img);
+    card.appendChild(link);
+  }
 
-  const titleElement = document.createElement('h5');
-  titleElement.classList.add('card-title');
-  titleElement.textContent = licensee.business_legal_name;
+  // Card body
+  const cardBody = document.createElement('div');
+  cardBody.className = 'card-body d-flex flex-column';
 
-  const descriptionElement = document.createElement('p');
-  descriptionElement.classList.add('card-text');
-  descriptionElement.textContent = licensee.business_dba_name;
+  // Title
+  const title = document.createElement('h6');
+  const titleLink = document.createElement('a');
+  title.className = 'card-title';
+  titleLink.className = 'sans-serif text-dark';
+  titleLink.textContent = licensee.title || `${licensee.legal_name} (${licensee.license_number})`;
+  titleLink.href = licensee.link;
+  title.appendChild(titleLink);
+  cardBody.appendChild(title);
 
-  cardBodyElement.appendChild(titleElement);
-  cardBodyElement.appendChild(descriptionElement);
-  cardInnerElement.appendChild(cardBodyElement);
-  cardElement.appendChild(cardInnerElement);
+  // Add DBA if different from legal name
+  if (licensee.dba && licensee.dba !== licensee.legal_name) {
+    const dba = document.createElement('p');
+    dba.className = 'card-text small text-muted mb-2';
+    dba.textContent = `DBA: ${licensee.dba}`;
+    cardBody.appendChild(dba);
+  }
 
-  return cardElement;
+  // Add license status and type
+  const status = document.createElement('p');
+  status.className = 'card-text small mb-2';
+  status.textContent = `${licensee.license_status} ${licensee.license_type}`;
+  cardBody.appendChild(status);
+
+  // Add location if available
+  if (licensee.city !== 'Data Not Available' || licensee.county) {
+    const location = document.createElement('p');
+    location.className = 'card-text small text-muted mb-2';
+    location.textContent = [
+      licensee.city !== 'Data Not Available' ? licensee.city : '',
+      licensee.county ? licensee.county + ' County' : '',
+      licensee.state.toUpperCase()
+    ].filter(Boolean).join(', ');
+    cardBody.appendChild(location);
+  }
+
+  // Add tags
+  if (licensee.tags && licensee.tags.length > 0) {
+    const tagContainer = document.createElement('div');
+    tagContainer.className = 'd-flex flex-wrap';
+    licensee.tags.forEach(tag => {
+      const link = document.createElement('a');
+      const badge = document.createElement('span');
+      badge.className = 'badge me-1 mb-1';
+      badge.style.backgroundColor = tag.tag_color;
+      badge.textContent = tag.tag_name;
+      link.href = `/search?q=${tag.tag_id}`;
+      link.appendChild(badge);
+      tagContainer.appendChild(link);
+    });
+    cardBody.appendChild(tagContainer);
+  }
+
+  // Add toolbar
+  const toolbar = document.createElement('div');
+  toolbar.className = 'd-flex justify-content-end align-items-center btn-toolbar mt-auto';
+  toolbar.role = 'toolbar';
+  cardBody.appendChild(toolbar);
+
+  // Complete the card
+  card.appendChild(cardBody);
+  col.appendChild(card);
+  return col;
 };

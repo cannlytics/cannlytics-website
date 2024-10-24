@@ -193,7 +193,6 @@ export const homepage = {
     card.className = 'card h-100 shadow-sm border-0';
   
     // Add any image.
-    // FIXME: Use a better placeholder image.
     item.image_url = 'https://via.placeholder.com/100';
     if (item.image_url) {
       const link = document.createElement('a');
@@ -396,7 +395,7 @@ export const homepage = {
       document.getElementById('lab-result-count').textContent = stats.results_count.toLocaleString() + '+';
       document.getElementById('coas-count').textContent = stats.coas_count.toLocaleString() + '+';
       document.getElementById('strains-count').textContent = stats.strains_count.toLocaleString() + '+';
-      document.getElementById('organizations-count').textContent = stats.licenses_count.toLocaleString() + '+';
+      document.getElementById('licenses-count').textContent = stats.licenses_count.toLocaleString() + '+';
       document.getElementById('compounds-count').textContent = stats.compounds_count.toLocaleString() + '+';
     } catch (error) {
       // Pass

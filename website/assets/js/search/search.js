@@ -406,14 +406,14 @@ function updateCounts(data) {
     coas: data.filter(item => item.data_type === 'coas').length,
     results: data.filter(item => item.data_type === 'results').length,
     strains: data.filter(item => item.data_type === 'strains').length,
-    organizations: data.filter(item => item.data_type === 'organizations').length,
+    licenses: data.filter(item => item.data_type === 'licenses').length,
     compounds: data.filter(item => item.data_type === 'compounds').length,
   };
   updateBadge('[data-type="all"] .badge', counts.all);
   updateBadge('[data-type="coas"] .badge', counts.coas);
   updateBadge('[data-type="results"] .badge', counts.results);
   updateBadge('[data-type="strains"] .badge', counts.strains);
-  updateBadge('[data-type="organizations"] .badge', counts.organizations);
+  updateBadge('[data-type="licenses"] .badge', counts.licenses);
   updateBadge('[data-type="compounds"] .badge', counts.compounds);
 }
 
