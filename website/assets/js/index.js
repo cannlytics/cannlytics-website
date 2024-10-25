@@ -16,7 +16,7 @@ import { settings } from './settings/settings.js';
 import { website } from './website/website.js';
 import { ui } from './ui/ui.js';
 import { utils } from './utils.js';
-import { CoADoc as coas } from './results/coas.js';
+import { CoADoc as coas } from './coas/coas.js';
 import { compoundsJS as compounds } from './compounds/compounds.js';
 import { licensesJS as licenses } from './licenses/licenses.js';
 import { retailersJS as retailers } from './licenses/retailers.js';
