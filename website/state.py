@@ -32,7 +32,7 @@ app_context = {
                 {"title": "🧪 Results", "page": "results"},
                 {"title": "🪴Strains", "page": "strains"},
                 {"title": "🧑‍🌾 Organizations", "page": "organizations"},
-                {"title": "🔬 Compounds", "page": "compounds"},
+                {"title": "🔬 Analytes", "page": "analytes"},
             ]
         },
         {

@@ -141,6 +141,7 @@ def admin_update(event, context):
         ('results', 'date_tested'),
         ('strains', 'updated_at'),
         ('licenses', 'updated_at'),
+        ('analytes', 'updated_at'),
     ]
     new_data_counts = {}
     for col, field in collections:

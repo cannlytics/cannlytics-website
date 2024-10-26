@@ -20,7 +20,8 @@ import {
 export const homepage = {
 
   // Parameters.
-  dataTypes: ['coas', 'results', 'strains', 'licenses', 'compounds'],
+  // dataTypes: ['coas', 'results', 'strains', 'licenses', 'analytes'],
+  dataTypes: ['coas',],
   selectedDataType: 'all',
   selectedDirection: 'desc',
   selectedLimit: 3,
@@ -127,7 +128,7 @@ export const homepage = {
         this.selectedDirection,
         this.selectedLimit,
         (data) => {
-          this.updateDataDisplay(type, this.testData);
+          this.updateDataDisplay(type, data);
         },
       );
     });
@@ -135,6 +136,7 @@ export const homepage = {
 
   updateDataDisplay(dataType, data) {
     /* Update the UI with the new data. */
+    console.log('Updating data display:', dataType, data);
     const container = document.getElementById('data-grid');
 
     // Track existing cards by ID
@@ -232,7 +234,7 @@ export const homepage = {
         badge.className = 'badge me-1 mb-1';
         badge.style.backgroundColor = tag.tag_color;
         badge.textContent = `${tag.tag_name}`;
-        link.href = `/search?q=${tag.tag_id}`;
+        link.href = tag.tag_link;
         link.appendChild(badge);
         tagContainer.appendChild(link);
       });
