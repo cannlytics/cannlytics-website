@@ -195,11 +195,11 @@ export const homepage = {
     card.className = 'card h-100 shadow-sm border-0';
   
     // Add any image.
-    item.image_url = 'https://via.placeholder.com/100';
-    if (item.image_url) {
+    if (item.image_url ?? item.thumbnail_url) {
       const link = document.createElement('a');
       const img = document.createElement('img');
-      img.src = item.image_url;
+      img.height = 100;
+      img.src = item.image_url ?? item.thumbnail_url;
       img.className = 'card-img-top';
       img.alt = item.name || 'Item Image';
       link.href = `/${item.data_type}/${item.id}`;
