@@ -1,5 +1,5 @@
 /**
- * Compounds JavaScript | Cannlytics Website
+ * Analytes JavaScript | Cannlytics Website
  * Copyright (c) 2021-2022 Cannlytics
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
@@ -11,10 +11,10 @@
 import { getCollection, getDocument } from '../firebase.js';
 import { formatDate, formatDecimal } from '../utils.js';
 
-export const compoundsJS = {
+export const analytesJS = {
 
 
-  async searchCompounds() {
+  async searchAnalytes() {
     /**
      * Use `key_embedding` to search for the nearest analyte.
      */
@@ -23,33 +23,37 @@ export const compoundsJS = {
 
   },
   
-  async initializeCompounds() {
+  async initializeAnalytes() {
     /**
-     * Initialize the compounds page.
+     * Initialize the analytes page.
      */
-    console.log('Initializing compounds page...');
+    console.log('Initializing analytes page...');
+
+    // TODO: Use query parameters to filter by analysis.
+    const analysis = new URLSearchParams(window.location.search).get('analysis');
 
   
-    // Get compounds from Firestore.
-    const data = await getCollection('compounds', {
+    // Get analytes from Firestore.
+    // FIXME: Re-write with new query syntax.
+    const data = await getCollection('analytes', {
       order: 'analysis',
       desc: false,
     });
     console.log('Data:', data);
 
-    // FIXME: Render the compounds in the user interface.
+    // FIXME: Render the analytes in the user interface.
 
   },
 
-  async initializeCompound(key) {
+  async initializeAnalyte(key) {
     /**
      * Initialize the compound page.
      */
     console.log('Initializing compound page', key);
 
     // Get the compound from Firestore.
-    const data = await getDocument(`compounds/${key}`);
-    console.log('Compound:', data);
+    const data = await getDocument(`analytes/${key}`);
+    console.log('Analyte:', data);
 
     // FIXME: Render the compound in the user interface.
 

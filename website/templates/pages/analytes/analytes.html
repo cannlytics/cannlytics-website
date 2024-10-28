@@ -1,7 +1,7 @@
 <!--
   Compounds Page | Cannlytics
   Created: 2/25/2024
-  Updated: 2/27/2024
+  Updated: 10/27/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -15,9 +15,9 @@
 {% block dashboard %}
 {% if section and section not in 'logs,files,certificates' %}
 
-  <!-- Result page -->
+  <!-- Analyte page -->
   <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pb-5 mx-auto">
-    {% include "pages/results/result.html" with
+    {% include "pages/analytes/analyte.html" with
       id=section
     %}
     {% block unit %}{% endblock unit %}
@@ -25,10 +25,10 @@
 
 {% else %}
 
-<!-- Compounds -->
+<!-- Analytes -->
 <section class="container markdown">
 
-  <h2 class="sans-serif text-dark">Compounds</h2>
+  <h2 class="sans-serif text-dark">Analytes</h2>
 
   <!-- TODO: Masonry of cards for each analysis.
     Each card has a list of compound names and links
@@ -48,24 +48,24 @@
 {% block page_js %}
 {% if section %}
 
-<!-- Compound JavaScript -->
+<!-- Analyte JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
-  // Initialize compound.
-  cannlytics.compounds.initializeCompound('{{ section }}');
+  // Initialize analyte.
+  cannlytics.analytes.initializeAnalyte('{{ section }}');
 
 });
 </script>
 
 {% else %}
 
-<!-- Compounds JavaScript -->
+<!-- Analytes JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
-  // Initialize compounds.
-  cannlytics.compounds.initializeCompounds();
+  // Initialize analytes.
+  cannlytics.analytes.initializeAnalytes();
 
 });
 </script>

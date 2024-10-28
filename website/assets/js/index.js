@@ -17,7 +17,7 @@ import { website } from './website/website.js';
 import { ui } from './ui/ui.js';
 import { utils } from './utils.js';
 import { CoADoc as coas } from './coas/coas.js';
-import { compoundsJS as compounds } from './compounds/compounds.js';
+import { analytesJS as analytes } from './analytes/analytes.js';
 import { licensesJS as licenses } from './licenses/licenses.js';
 import { retailersJS as retailers } from './licenses/retailers.js';
 import { resultsJS as results } from './results/results.js';
@@ -40,7 +40,7 @@ export {
   utils,
   website,
   coas,
-  compounds,
+  analytes,
   licenses,
   retailers,
   results,
