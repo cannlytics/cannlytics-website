@@ -65,4 +65,18 @@ export const analytesJS = {
 
   },
 
+  // Analyte timeseries Firestore paths:
+  // analytes/{key}/daily/{yyyy-mm-dd}
+  // analytes/{key}/weekly/{yyyy-ww}
+  // analytes/{key}/monthly/{yyyy-mm}
+  // analytes/{key}/quarterly/{yyyy-q}
+  // analytes/{key}/yearly/{yyyy}
+
+  // Analyte distribution Firestore paths:
+  // analytes/{key}/distributions/past-day
+  // analytes/{key}/distributions/past-week
+  // analytes/{key}/distributions/past-month
+  // analytes/{key}/distributions/past-quarter
+  // analytes/{key}/distributions/past-year
+
 };
