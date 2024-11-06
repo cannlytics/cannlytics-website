@@ -6,7 +6,7 @@
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}
-  {% if section and section not in 'logs,files,certificates' %}
+  {% if section %}
     {{ section }} | Cannlytics
   {% else %}
     COAs | Cannlytics
@@ -19,7 +19,7 @@
 
 {% endblock %}
 {% block dashboard %}
-{% if section and section not in 'logs,files,certificates' %}
+{% if section %}
 
   <!-- COA page -->
   <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 pb-5 mx-auto">
@@ -84,7 +84,7 @@ Purposes:
 {% endblock %}
 
 {% block page_js %}
-{% if section and section not in 'logs,files,certificates' %}
+{% if section %}
   <script>
 
     // Initialize result. 

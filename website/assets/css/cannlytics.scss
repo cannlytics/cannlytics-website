@@ -585,6 +585,9 @@ body.dark .popover .link-primary:hover {
   gap: 20px;
   margin-bottom: 20px;
 }
+.color-border-on-hover:hover {
+  border: 2px solid #ffa600;
+}
 
 /*--------------------------------------------------------------------------
   Breadcrumbs

@@ -192,24 +192,26 @@ export const homepage = {
     col.dataset.id = item.id;
     col.dataset.type = item.data_type;
     const card = document.createElement('div');
-    card.className = 'card h-100 shadow-sm border-0';
+    card.className = 'card h-100 shadow-sm color-border-on-hover border-2';
   
     // Add any image.
     if (item.image_url ?? item.thumbnail_url) {
       const link = document.createElement('a');
       const img = document.createElement('img');
-      img.height = 100;
+      img.height = 225;
+      img.width = '100%';
       img.src = item.image_url ?? item.thumbnail_url;
       img.className = 'card-img-top';
       img.alt = item.name || 'Item Image';
+      img.style.objectFit = 'cover';
       link.href = `/${item.data_type}/${item.id}`;
       link.appendChild(img);
       card.appendChild(link);
     }
   
-    // Card body
+    // Card title.
     const cardBody = document.createElement('div');
-    cardBody.className = 'card-body d-flex flex-column';
+    cardBody.className = 'card-body d-flex flex-column flex-grow-1 border-top border-2';
     const title = document.createElement('h6');
     const titleLink = document.createElement('a');
     title.className = 'card-title';
@@ -218,10 +220,12 @@ export const homepage = {
     titleLink.href = `/${item.data_type}/${item.id}`;
     title.appendChild(titleLink);
     cardBody.appendChild(title);
+
+    // Create toolbar.
     const btnGroup = document.createElement('div');
     btnGroup.className = 'btn-group mt-auto';
     const toolbar = document.createElement('div');
-    toolbar.className = 'd-flex justify-content-end align-items-center btn-toolbar';
+    toolbar.className = 'd-flex justify-content-end align-items-center btn-toolbar mt-auto';
     toolbar.role = 'toolbar';
 
     // Add badges.
@@ -311,9 +315,9 @@ export const homepage = {
     dropdownMenu.appendChild(reportOption);
     dropdown.appendChild(dropdownMenu);
     toolbar.appendChild(dropdown);
-  
-    // Complete the card.
     cardBody.appendChild(toolbar);
+  
+    // Return the card as a grid item.
     card.appendChild(cardBody);
     col.appendChild(card);
     return col;
