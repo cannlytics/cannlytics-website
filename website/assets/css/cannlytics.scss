@@ -286,6 +286,15 @@ background-color: white !important;
 color: #2c3e50 !important;
 border: 2px solid #dce4ec;
 }
+.form-control,
+.form-select {
+  border-color: #c0c0c0;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: #96e6a1; /* Adjust to a pleasant blue or any color that matches your theme */
+  box-shadow: 0 0 0 0.2rem #96e6a140; /* Matches the new focus border color */
+}
 
 /* Radio Groups */
 .form-check-input:checked {
@@ -315,6 +324,23 @@ body.dark footer .form-control {
 .form-control[readonly] {
   background-color: unset;
 }
+body.dark .form-control,
+body.dark .form-select {
+  background-color: #2c3e50;
+  border-color: #4e8c7a;
+  color: #f4f4f4;
+}
+body.dark .form-control:hover,
+body.dark .form-select:hover {
+  border-color: #3b6b5a;
+  color: #f4f4f4;
+}
+// body.dark .form-control:focus,
+// body.dark .form-select:focus {
+//   background-color: #3b6b5a;
+//   border-color: #3b6b5a;
+//   color: #f4f4f4;
+// }
 
 /* Custom ranges */
 .form-range {
@@ -588,6 +614,12 @@ body.dark .popover .link-primary:hover {
 .color-border-on-hover:hover {
   border: 2px solid #ffa600;
 }
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+// .card:hover {
+//   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+// }
 
 /*--------------------------------------------------------------------------
   Breadcrumbs

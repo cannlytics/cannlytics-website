@@ -24,5 +24,10 @@ $success: #2E8B57;
 // $btn-hover-bg-shade-amount: 20%;
 // $btn-hover-bg-tint-amount: 20%;
 
+// Increase font size.
+$font-weight-normal: 500 !default;
+$body-font-weight: 500;
+$font-weight-base: 500;
+
 // Import bootstrap.
 @import 'bootstrap/scss/bootstrap';

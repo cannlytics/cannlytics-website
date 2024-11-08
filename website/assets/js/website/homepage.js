@@ -192,7 +192,7 @@ export const homepage = {
     col.dataset.id = item.id;
     col.dataset.type = item.data_type;
     const card = document.createElement('div');
-    card.className = 'card h-100 shadow-sm color-border-on-hover border-2';
+    card.className = 'card h-100 color-border-on-hover border-2 rounded-4 overflow-hidden';
   
     // Add any image.
     if (item.image_url ?? item.thumbnail_url) {
@@ -364,8 +364,9 @@ export const homepage = {
       const contributors = data.filter(member => member.lastTransactionAmount);
       const latestContributor = contributors[contributors.length - 1];
       if (latestContributor) {
+        console.log('CONTRIBUTOR:', latestContributor);
         const latestContribution = document.querySelector("#latest-contribution");
-        latestContribution.innerHTML = `<small><i class="bi bi-cash-coin"></i> Latest donation: ${latestContributor.name} ($${latestContributor.totalAmountDonated.toFixed(2)})</small>`;
+        latestContribution.innerHTML = `<small><i class="bi bi-cash-coin"></i> Last Contribution: ${latestContributor.name} ($${latestContributor.lastTransactionAmount.toFixed(2)})</small>`;
       } else {
         document.getElementById("latest-contribution").classList.add('d-none');
       }

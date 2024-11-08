@@ -35,11 +35,12 @@ export const analytesJS = {
   
     // Get analytes from Firestore.
     // FIXME: Re-write with new query syntax.
-    const data = await getCollection('analytes', {
-      order: 'analysis',
-      desc: false,
-    });
-    console.log('Data:', data);
+    // TODO: Get `analyses` from Firestore.
+    // const data = await getCollection('analytes', {
+    //   order: 'analysis',
+    //   desc: false,
+    // });
+    // console.log('Data:', data);
 
     // FIXME: Render the analytes in the user interface.
 
