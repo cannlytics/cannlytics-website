@@ -192,7 +192,7 @@ export const homepage = {
     col.dataset.id = item.id;
     col.dataset.type = item.data_type;
     const card = document.createElement('div');
-    card.className = 'card h-100 color-border-on-hover border-2 rounded-4 overflow-hidden';
+    card.className = 'card h-100 color-border-on-hover border-1 rounded-2 overflow-hidden';
   
     // Add any image.
     if (item.image_url ?? item.thumbnail_url) {
@@ -211,7 +211,7 @@ export const homepage = {
   
     // Card title.
     const cardBody = document.createElement('div');
-    cardBody.className = 'card-body d-flex flex-column flex-grow-1 border-top border-2';
+    cardBody.className = 'card-body d-flex flex-column flex-grow-1 border-top border-1';
     const title = document.createElement('h6');
     const titleLink = document.createElement('a');
     title.className = 'card-title';
