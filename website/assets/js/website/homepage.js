@@ -7,7 +7,7 @@
  * Updated: 10/6/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs, limit, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { db, getDocument } from '../firebase.js';
 import {
   initializeReportButtons,
@@ -63,14 +63,75 @@ export const homepage = {
     },
   ],
 
+  // FIXME: Get data dynamically!
+  legalityData: {
+    "AL": { status: "medical", name: "Alabama" },
+    "AK": { status: "recreational", name: "Alaska" },
+    "AZ": { status: "recreational", name: "Arizona" },
+    "AR": { status: "medical", name: "Arkansas" },
+    "CA": { status: "recreational", name: "California" },
+    "CO": { status: "recreational", name: "Colorado" },
+    "CT": { status: "recreational", name: "Connecticut" },
+    "DE": { status: "recreational", name: "Delaware" },
+    "DC": { status: "recreational", name: "District of Columbia" },
+    "FL": { status: "medical", name: "Florida" },
+    "GA": { status: "no_program", name: "Georgia" },
+    "HI": { status: "medical", name: "Hawaii" },
+    "ID": { status: "no_program", name: "Idaho" },
+    "IL": { status: "recreational", name: "Illinois" },
+    "IN": { status: "no_program", name: "Indiana" },
+    "IA": { status: "no_program", name: "Iowa" },
+    "KS": { status: "no_program", name: "Kansas" },
+    "KY": { status: "no_program", name: "Kentucky" },
+    "LA": { status: "medical", name: "Louisiana" },
+    "ME": { status: "recreational", name: "Maine" },
+    "MD": { status: "recreational", name: "Maryland" },
+    "MA": { status: "recreational", name: "Massachusetts" },
+    "MI": { status: "recreational", name: "Michigan" },
+    "MN": { status: "recreational", name: "Minnesota" },
+    "MS": { status: "medical", name: "Mississippi" },
+    "MO": { status: "recreational", name: "Missouri" },
+    "MT": { status: "recreational", name: "Montana" },
+    "NE": { status: "no_program", name: "Nebraska" },
+    "NV": { status: "recreational", name: "Nevada" },
+    "NH": { status: "medical", name: "New Hampshire" },
+    "NJ": { status: "recreational", name: "New Jersey" },
+    "NM": { status: "recreational", name: "New Mexico" },
+    "NY": { status: "recreational", name: "New York" },
+    "NC": { status: "no_program", name: "North Carolina" },
+    "ND": { status: "recreational", name: "North Dakota" },
+    "OH": { status: "recreational", name: "Ohio" },
+    "OK": { status: "medical", name: "Oklahoma" },
+    "OR": { status: "recreational", name: "Oregon" },
+    "PA": { status: "medical", name: "Pennsylvania" },
+    "RI": { status: "recreational", name: "Rhode Island" },
+    "SC": { status: "no_program", name: "South Carolina" },
+    "SD": { status: "no_program", name: "South Dakota" },
+    "TN": { status: "no_program", name: "Tennessee" },
+    "TX": { status: "no_program", name: "Texas" },
+    "UT": { status: "medical", name: "Utah" },
+    "VT": { status: "recreational", name: "Vermont" },
+    "VA": { status: "recreational", name: "Virginia" },
+    "WA": { status: "recreational", name: "Washington" },
+    "WV": { status: "medical", name: "West Virginia" },
+    "WI": { status: "no_program", name: "Wisconsin" },
+    "WY": { status: "no_program", name: "Wyoming" }
+  },
+
   initializeHomepage() {
     /* Initialize the homepage. */
 
     // Listen to realtime data.
-    this.listenToData();
+    // this.listenToData();
 
     // FIXME: Set up infinite scroll with test data.
     // this.initializeInfiniteScroll();
+
+    // Initialize the product types.
+    this.initializeProductTypes();
+
+    // Initialize the state map.
+    this.initializeStateMap();
 
     // Get the latest contributor.
     this.getLatestOpenCollectiveContributor();
@@ -78,6 +139,306 @@ export const homepage = {
     // Get data statistics.
     this.getDataStats();
 
+    // TODO: Get the latest strains!
+
+  },
+
+  async initializeProductTypes() {
+    /* Initialize the product types. */
+
+    // Create main grid container
+    const container = document.getElementById('product-types-container');
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'product-types-grid';
+    container.appendChild(gridContainer);
+    gridContainer.innerHTML = '';
+
+    // Get one of each of the most recently tested product types.
+    const standardProductTypes = [
+      { id: 'flower', name: 'Flower' },
+      { id: 'concentrate', name: 'Concentrates' },
+      { id: 'edible', name: 'Edibles' },
+      { id: 'preroll', name: 'Pre-Rolls' },
+      { id: 'infused', name: 'Infused' },
+      { id: 'topical', name: 'Topicals' },
+      { id: 'tincture', name: 'Tinctures' },
+      { id: 'other', name: 'Other' }
+    ];
+    const productTypePromises = standardProductTypes.map(async (type) => {
+      try {
+        // Query Firestore for the most recent COA with an image for this product type.
+        const coasRef = collection(db, 'coas');
+        const q = query(coasRef,
+          where('standard_product_type', '==', type.id),
+          where('image_url', '!=', null),
+          orderBy('date_tested', 'desc'),
+          limit(1)
+        );
+        const snapshot = await getDocs(q);
+
+        // Get the image URL from the COA or use a placeholder.
+        let imageUrl = '/static/website/images/ai-icons/cannabis-leaf.png';
+        if (!snapshot.empty) {
+          console.log('DATA:', snapshot.docs[0].data());
+          imageUrl = snapshot.docs[0].data().image_url;
+        }
+
+        // Create and return the card element.
+        return this.createProductCard(type, imageUrl);
+      } catch (error) {
+        console.error(`Error fetching data for ${type.name}:`, error);
+        return this.createProductCard(type, '/static/website/images/ai-icons/cannabis-leaf.png');
+      }
+    });
+
+    // Wait for all cards to be created and add them to the grid.
+    const cards = await Promise.all(productTypePromises);
+    cards.forEach(card => gridContainer.appendChild(card));
+
+  },
+
+  createProductCard(type, imageUrl) {
+    /* Create a product card with clickable navigation to filtered results. */
+
+    // Create card container.
+    const card = document.createElement('div');
+    card.className = 'product-card bg-body';
+    
+    // Create image container.
+    const imageContainer = document.createElement('div');
+    imageContainer.className = 'product-card-image';
+    
+    // Create and set up image.
+    const image = document.createElement('img');
+    image.src = imageUrl;
+    image.alt = type.name;
+    image.loading = 'lazy';
+    
+    // Create title container.
+    const titleContainer = document.createElement('div');
+    titleContainer.className = 'product-card-content border-top border-1';
+    
+    // Create title.
+    const title = document.createElement('h3');
+    title.className = 'product-card-title sans-serif text-dark text-center fw-bold fs-6';
+    title.textContent = type.name;
+    
+    // Assemble the card.
+    imageContainer.appendChild(image);
+    titleContainer.appendChild(title);
+    card.appendChild(imageContainer);
+    card.appendChild(titleContainer);
+    
+    // Navigate to the results page when the card is clicked.
+    card.addEventListener('click', () => {
+      const url = `/results?product_type=${encodeURIComponent(type.id)}`;
+      window.location.href = url;
+    });
+    
+    return card;
+  },
+
+  initializeStateMap() {
+    /* Initialize the state map. */
+
+    // Set up dimensions.
+    const width = 960;
+    const height = 600;
+    
+    // Clear any existing map.
+    const container = document.getElementById('state-map');
+    container.innerHTML = '';
+    
+    // Create tooltip.
+    const tooltip = d3.select("body").append("div")
+      .attr("class", "state-tooltip")
+      .style("opacity", 0)
+      .style("position", "absolute")
+      .style("background-color", "rgba(0, 0, 0, 0.8)")
+      .style("color", "white")
+      .style("padding", "8px")
+      .style("border-radius", "4px")
+      .style("font-size", "12px")
+      .style("pointer-events", "none")
+      .style("z-index", "100");
+    
+    // Create SVG.
+    const svg = d3.create('svg')
+      .attr('viewBox', [0, 0, width, height])
+      .style('width', '100%')
+      .style('height', 'auto')
+      .style('max-height', '600px');
+      
+    // Create container for states.
+    const g = svg.append('g');
+    
+    // Helper function to get state abbreviation.
+    const getStateAbbr = (stateName) => {
+      for (const [abbr, data] of Object.entries(this.legalityData)) {
+        if (data.name === stateName) return abbr;
+      }
+      return null;
+    };
+
+    // Create legend data.
+    const legendData = [
+      { label: "Adult-Use", color: "#7561DB" }, // Rich periwinkle
+      { label: "Medical", color: "#FF8FA1" },   // Soft coral pink
+      { label: "No data", color: "#cccccc" }
+    ];
+    
+    // Get state color based on status.
+    const getStateColor = (stateAbbr) => {
+      if (!stateAbbr) return '#cccccc';
+      const status = this.legalityData[stateAbbr]?.status;
+      switch(status) {
+        case 'recreational':
+          return '#7561DB';
+        case 'medical':
+          return '#FF8FA1';
+        default:
+          return '#cccccc';
+      }
+    };
+    
+    // Get hover color (slightly lighter).
+    const getHoverColor = (stateAbbr) => {
+      if (!stateAbbr) return '#cccccc';
+      const status = self.legalityData[stateAbbr]?.status;
+      switch(status) {
+        case 'recreational':
+          return '#9381FF'; // Darker periwinkle
+        case 'medical':
+          return '#FFB7C3'; // Darker coral pink
+        default:
+          return '#cccccc';
+      }
+    };
+    
+    // Store reference to this for event handlers.
+    const self = this;
+
+    // Load and process the map data.
+    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json')
+      .then(us => {
+        // Convert TopoJSON to GeoJSON.
+        const states = topojson.feature(us, us.objects.states);
+        const stateNames = topojson.feature(us, us.objects.states).features.map(d => d.properties.name);
+        
+        // Set up projection.
+        const projection = d3.geoAlbersUsa()
+          .fitSize([width, height], states);
+        
+        const path = d3.geoPath()
+          .projection(projection);
+        
+        // Add states.
+        g.selectAll('path')
+          .data(states.features)
+          .join('path')
+          .attr('d', path)
+          .style('fill', d => {
+            const stateAbbr = getStateAbbr(d.properties.name);
+            return getStateColor(stateAbbr);
+          })
+          .style('stroke', '#ffffff')
+          .style('stroke-width', '1')
+          .style('cursor', d => {
+            const stateAbbr = getStateAbbr(d.properties.name);
+            return this.legalityData[stateAbbr]?.status === 'no_program' ? 'not-allowed' : 'pointer';
+          })
+          .on('mouseover', function(event, d) {
+            const stateAbbr = getStateAbbr(d.properties.name);
+            if (!stateAbbr) return;
+            
+            const status = self.legalityData[stateAbbr]?.status;
+            if (status !== 'no_program') {
+              d3.select(this).style('fill', getHoverColor(stateAbbr));
+              
+              tooltip.transition()
+                .duration(200)
+                .style("opacity", .9);
+              
+              let tooltipContent = `
+                <strong>${d.properties.name}</strong><br/>
+                ${status === 'recreational' ? 'Adult-use' : 'Medical'}<br/>
+                » Click for results
+              `;
+              
+              tooltip.html(tooltipContent)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+            }
+          })
+          .on('mouseout', function(event, d) {
+            const stateAbbr = getStateAbbr(d.properties.name);
+            if (!stateAbbr) return;
+            
+            d3.select(this).style('fill', getStateColor(stateAbbr));
+            tooltip.transition()
+              .duration(500)
+              .style("opacity", 0);
+          })
+          .on('click', (event, d) => {
+            const stateAbbr = getStateAbbr(d.properties.name);
+            if (!stateAbbr) return;
+            
+            if (this.legalityData[stateAbbr]?.status !== 'no_program') {
+              window.location.href = `/results?state=${stateAbbr}`;
+            }
+          });
+
+        // Add state labels.
+        g.selectAll('text')
+          .data(states.features)
+          .join('text')
+          .attr('transform', d => {
+            const centroid = path.centroid(d);
+            if (isNaN(centroid[0]) || isNaN(centroid[1])) return 'translate(0,0)';
+            return `translate(${centroid[0]},${centroid[1]})`;
+          })
+          .attr('dy', '.35em')
+          .style('fill', '#ffffff')
+          .style('font-size', '12px')
+          .style('font-weight', 'bold')
+          .style('text-anchor', 'middle')
+          .style('pointer-events', 'none')
+          .text(d => getStateAbbr(d.properties.name) || '');
+
+        // Add legend.
+        const legendGroup = svg.append('g')
+          .attr('class', 'legend')
+          .attr('transform', `translate(15, 15)`);
+
+        const legendEntries = legendGroup.selectAll('.legend-entry')
+          .data(legendData)
+          .join('g')
+          .attr('class', 'legend-entry')
+          .attr('transform', (d, i) => `translate(0, ${i * 25})`);
+
+        // Add circles for each legend item.
+        legendEntries.append('circle')
+          .attr('cx', 8)
+          .attr('cy', 8)
+          .attr('r', 8)
+          .style('fill', d => d.color);
+
+        // Add text labels.
+        legendEntries.append('text')
+          .attr('x', 25)
+          .attr('y', 12)
+          .style('fill', '#000000')
+          .style('font-size', '14px')
+          .style('font-weight', 'normal')
+          .text(d => d.label);
+
+        // Append the SVG to the container.
+        container.appendChild(svg.node());
+      })
+      .catch(error => {
+        console.error('Error loading map data:', error);
+        container.innerHTML = 'Error loading map data';
+      });
   },
 
   initializeInfiniteScroll() {

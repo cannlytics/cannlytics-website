@@ -7,7 +7,7 @@
  * Updated: 2/13/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
-import { createGrid } from 'ag-grid-community';
+import { createGrid, ModuleRegistry, ClientSideRowModelModule } from 'ag-grid-community';
 import { getCollection, getDocument } from '../firebase.js';
 import { formatDate, formatDecimal } from '../utils.js';
 
@@ -35,6 +35,9 @@ export const resultsJS = {
     const startDate = document.getElementById('dateTestedStart').value;
     const endDate = document.getElementById('dateTestedEnd').value;
     const selectedState = document.querySelector('.btn-group .btn-primary').id.replace('btn', '');
+
+    // Initialize AG Grid tables.
+    ModuleRegistry.registerModules([ ClientSideRowModelModule ]); 
   
     // Fetch lab results data from Firestore
     this.fetchResults(searchTerm, startDate, endDate, selectedState)

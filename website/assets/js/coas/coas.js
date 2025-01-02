@@ -25,6 +25,7 @@ export const coasJS = {
     /**
      * Initialize the COA page.
      */
+    console.log('Initializing COA page.');
 
   },
 

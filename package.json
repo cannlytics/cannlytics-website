@@ -26,13 +26,14 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@primer/octicons": "19.8.0",
-    "ag-grid-community": "^32.2.0",
-    "axios": "1.7.4",
+    "ag-grid-community": "^33.0.3",
+    "axios": "1.7.9",
     "bootstrap": "^5.3.3",
-    "firebase": "^10.13.0",
+    "firebase": "^11.1.0",
     "html5-qrcode": "2.3.8",
-    "npm": "^10.8.2",
+    "npm": "^11.0.0",
     "popper.js": "1.16.1",
+    "stable": "^0.1.8",
     "tether": "2.0.0"
   },
   "devDependencies": {

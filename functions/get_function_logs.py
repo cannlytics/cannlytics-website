@@ -1,20 +1,24 @@
 """
-Export Logs
+Get Function Logs
 Copyright (c) 2023 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 10/24/2023
-Updated: 10/24/2023
+Updated: 12/28/2023
 License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 """
+# Standard imports:
+from datetime import datetime, timedelta
+import os
+
+# External imports:
 import google.auth
 from google.cloud import logging_v2
 from google.cloud.logging_v2 import DESCENDING
-from datetime import datetime, timedelta
 import pandas as pd
 
 
-def get_logs(
+def get_function_logs(
         function_name,
         project_id=None,
         service_type='cloud_function',
@@ -85,27 +89,39 @@ def get_logs(
     return pd.DataFrame(logs_data)
 
 
-# Get website logs.
-df = get_logs(
-    'cannlytics-website',
-    service_type='cloud_run',
-    start_time=datetime(2023, 10, 24),
-    end_time=datetime(2023, 10, 24, 6),
-)
-print(df)
+# === Tests ===
+if __name__ == '__main__':
 
-# Get sign up cloud function logs.
-df = get_logs(
-    'auth_signup',
-    start_time=datetime(2023, 10, 20),
-    end_time=datetime(2023, 10, 22),
-)
-print(df)
+    # Define where to save the logs.
+    log_dir = 'D://data/.logs/cannlytics-website'
+    os.makedirs(log_dir, exist_ok=True)
 
-# Get parse COA jobs cloud function logs.
-df = get_logs(
-    'parse_coa_jobs',
-    start_time=datetime(2023, 10, 16),
-    end_time=datetime(2023, 10, 18),
-)
-print(df)
+    # Define the time range for the logs.
+    start_time = datetime(2024, 12, 22)
+    end_time = datetime(2024, 12, 28)
+
+    # Define functions.
+    cloud_functions = [
+        # ('cannlytics-website', 'cloud_run'), # FIXME: This resource has many logs and needs a shorter time span or other adjustments.
+        ('auth_signup', 'cloud_function'),
+        ('calc_results_stats', 'cloud_function'),
+        ('calc_spending_stats', 'cloud_function'),
+        ('calc_strain_stats', 'cloud_function'),
+        ('parse_coa_jobs', 'cloud_function'),
+        ('parse_receipt_jobs', 'cloud_function'),
+    ]
+
+    # Get logs for each function.
+    for function_name, service_type in cloud_functions:
+        df = get_function_logs(
+            function_name,
+            service_type=service_type,
+            start_time=start_time,
+            end_time=end_time,
+        )
+        if len(df) == 0:
+            print(f'No logs found: `{function_name}`')
+            continue
+        outfile = os.path.join(log_dir, f'logs-{function_name}-{start_time.strftime("%Y-%m-%d")}-to-{end_time.strftime("%Y-%m-%d")}.csv')
+        df.to_csv(outfile, index=False)
+        print(f'Saved {len(df)} `{function_name}` logs: {outfile}')

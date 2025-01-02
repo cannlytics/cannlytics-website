@@ -1,13 +1,13 @@
 # Dockerfile | Cannlytics Website
-# Copyright (c) 2021-2023 Cannlytics
+# Copyright (c) 2021-2024 Cannlytics
 #
-# Auhtors: Keegan Skeate <keegan@cannlytics.com>
+# Authors: Keegan Skeate <keegan@cannlytics.com>
 # Created: 1/5/2021
-# Updated: 9/10/2023
+# Updated: 12/29/2024
 # License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
 
 # Python setup.
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 # Environment Variables.
 ENV APP=website \

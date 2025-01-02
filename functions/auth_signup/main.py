@@ -1,6 +1,6 @@
 """
 Authentication Sign Up | Cannlytics
-Copyright (c) 2023 Cannlytics
+Copyright (c) 2023-2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 6/23/2023
@@ -90,6 +90,7 @@ def auth_signup(data, context):
         return
 
     # Send a welcome email.
+    # FIXME: This is failing every time in the cloud.
     try:
         msg = MIMEText('Welcome to Cannlytics')
         msg['Subject'] = 'Welcome!'
@@ -137,6 +138,7 @@ def auth_signup(data, context):
         print('Failed to send welcome email to user: %s' % uid)
 
     # Send an email to the Cannlytics admin.
+    # FIXME: This is failing every time in the cloud.
     try:
         subject = 'A new user signed up!\n'
         for key, value in entry.items():

@@ -1,11 +1,21 @@
 <!--
   Home Page | Cannlytics
   Created: 1/5/2021
-  Updated: 10/6/2024
+  Updated: 12/29/2024
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
 {% block title %}Cannlytics{% endblock %}
+{% block dashboard_css %}
+
+  <!-- AG Grid -->
+  {% include "components/tables/ag_grid_scripts.html" %}
+
+  <!-- D3 -->
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="https://d3js.org/topojson.v3.min.js"></script>
+
+{% endblock %}
 {% block dashboard %}
 <section class="container-fluid d-flex pb-5">
 
@@ -17,52 +27,31 @@
       <div class="card-body bg-body bg-light-subtle rounded-2 text-dark">
         <h6 class="sans-serif card-title fw-bold">Latest Updates</h6>
         <ul class="list-unstyled mb-0">
-          <!-- Gets data updated at from Firestore (stats/data) -->
+          
+          <!-- Data updated at (stats/data) -->
           <li class="mb-1">
             <small><i class="bi bi-info-circle"></i> Data updated: <span id="data-updated-at">{{ data_stats.updated_at|date:"M. j, Y" }}</span></small>
           </li>
-          <!-- Gets the latest contributor from OpenCollective -->
+  
+          <!-- Latest contributor (OpenCollective) -->
           <li id="latest-contribution" class="mb-1"></li>
+
+          <!-- Contribute to the project -->
           <li class="">
-            <a class="icon-link icon-link-hover" href="https://opencollective.com/cannlytics-company">
+            <a
+              class="icon-link icon-link-hover"
+              href="https://opencollective.com/cannlytics-company"
+            >
               <small>Contribute to the project</small>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M10.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L9.293 7.5H1.5a.5.5 0 0 0 0 1h7.793L7.146 11.354a.5.5 0 1 0 .708.708l3-3z"/>
               </svg>
             </a>
           </li>
+
         </ul>
       </div>
     </div>
-
-    {% comment %} <!-- Trending -->
-    <!-- Future work: Keep track of trending data -->
-    <div class="card mt-4">
-      <div class="card-body bg-body roundedtext-dark">
-        <h6 class="sans-serif card-title">Trending</h6>
-        <ul class="list-unstyled mb-0">
-          <li><i class="bi bi-hash"></i> <small>jack-herer</small></li>
-          <li><a href="#"><small>Show more</small></a></li>
-        </ul>
-      </div>
-    </div> {% endcomment %}
-
-    {% comment %}
-    <!-- Recently -->
-     <!-- Future work: Show user's parsing jobs -->
-    <div class="card mt-4">
-      <div class="card-body bg-body rounded text-dark">
-        <h6 class="sans-serif card-title">Recently Parsed</h6>
-        <ul class="list-unstyled mb-0">
-          <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
-          <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
-          <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
-          <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
-          <li><a href="#"><small>A Review of Cannabis Lab Tests...</small></a></li>
-        </ul>
-      </div>
-    </div>
-    {% endcomment %}
 
     <!-- Meetups -->
     <div class="card border-1 rounded-2 overflow-hidden mt-4">
@@ -78,101 +67,66 @@
       </div>
     </div>
 
-    {% comment %} <!-- Events -->
-    <!-- Future work: Load events from meetup.com -->
-    <!-- Future work: Get video links to youtube.com -->
-    <div class="card mt-4">
-      <div class="card-body bg-body rounded text-dark">
-        <h6 class="sans-serif card-title">Events</h6>
-        <ul class="list-unstyled mb-0">
-          <li><i class="bi bi-calendar-event"></i> <small>A Review of Cannabis Lab Test...</small></li>
-          <li><a href="#"><small>Show more</small></a></li>
-        </ul>
-      </div>
-    </div> {% endcomment %}
-
   </aside>
 
   <!-- Main Content -->
   <main class="flex-grow-1 px-3">
+
+    <!-- Product Types -->
     <div class="d-flex justify-content-between mb-2">
-      <h4 class="sans-serif text-dark fw-bold mb-0">Data</h4>
+      <a href="/results" class="text-decoration-none">
+        <h4 class="sans-serif text-dark fw-bold mb-0">Lab Results</h4>
+      </a>
+     </div>
+    <div id="product-types-container"></div>
 
-      <!-- View Controls -->
-      <div>
+    <!-- States -->
+    <div class="d-flex justify-content-between mb-2 mt-5">
+      <h4 class="sans-serif text-dark fw-bold mb-0">State Data</h4>
+    </div>
+    <div id="state-map" class="card border-1 rounded-2"></div>
 
-        <!-- Data type select -->
-        <div class="d-inline-block mb-3 ms-2">
-          <select
-            id="data-type-select"
-            class="form-select form-select-sm"
-            onchange="cannlytics.website.changeDataType(this.value)"
-          >
-            <option value="all" selected>🔍 All</option>
-            <option value="coas">📜 COAs</option>
-            <option value="results">🧪 Results</option>
-            <option value="strains">🪴 Strains</option>
-            <option value="organizations">🧑‍🌾 Organizations</option>
-            <option value="analytes">🔬 Analytes</option>
-          </select>
-        </div>
+    <!-- Strains -->
+    <div class="d-flex justify-content-between mb-2 mt-5">
+      <a href="/strains" class="text-decoration-none">
+        <h4 class="sans-serif text-dark fw-bold mb-0">Strains</h4>
+       </a>
 
-        <!-- Sort By -->
-        <div class="dropdown d-inline-block ms-2">
-          <select
-            id="order-select"
-            class="form-select form-select-sm"
-            onchange="cannlytics.website.changeOrder()"
-          >
-            <option value="desc" selected>Latest</option>
-            <option value="asc">Oldest</option>
-            {% comment %} <!-- TODO: Add more sorting options -->
-            <option value="most_stars">Most stars</option>
-            <option value="fewest_stars">Fewest stars</option>
-            <option value="highest_rating">Highest rating</option>
-            <option value="lowest_rating">Lowest rating</option> {% endcomment %}
-          </select>
-        </div>
-
-        <!-- TODO: Filter button -->
-        <!-- Filters are dynamic depending on the data type -->
-
-        {% comment %}
-        <!-- View selection -->
-        <!-- Future work: Implement -->
-        <div class="btn-group btn-group-sm ms-2" role="group" aria-label="View selection">
-          <button type="button" class="btn btn-outline-primary active" id="grid-button" onclick="switchToGridView()">
-            <i class="bi bi-grid"></i>
-          </button>
-          <button type="button" class="btn btn-outline-primary" id="list-button" onclick="switchToListView()">
-            <i class="bi bi-list"></i>
-          </button>
-        </div>
-        {% endcomment %}
-
+      <!-- Strain sort -->
+       <!-- FIXME: Implement On change! -->
+      <div class="dropdown d-inline-block ms-2">
+        <select
+          id="strain-order-select"
+          class="form-select form-select-sm"
+          onchange="cannlytics.website.changeOrder()"
+        >
+          <option value="desc" selected>Latest</option>
+          <option value="asc">Oldest</option>
+          {% comment %} <!-- TODO: Add more sorting options -->
+          <option value="most_stars">Most stars</option>
+          <option value="fewest_stars">Fewest stars</option>
+          <option value="highest_rating">Highest rating</option>
+          <option value="lowest_rating">Lowest rating</option> {% endcomment %}
+        </select>
       </div>
 
     </div>
-
-    <!-- Observation Cards -->
-    <div id="data-grid" class="grid-view row"></div>
+    <!-- TODO: Implement the strains grid!!! -->
+    <div id="strains-grid" class="grid-view row"></div>
 
   </main>
-
-  <!-- Report dialog -->
-  {% include "components/dialogs/report_dialog.html" %}
 
 </section>
 {% endblock %}
 
-{% block page_js %}
 <!-- Homepage JavaScript -->
+{% block page_js %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  cannlytics.website.initializeHomepage();
-});
+
+  // Initialize the homepage.
+  document.addEventListener('DOMContentLoaded', function() {
+    cannlytics.website.initializeHomepage();
+  });
+
 </script>
 {% endblock %}
-
-<!-- Optional: Toggle between "Data" and "Stats" -->
-{% comment %} {% include "pages/homepage/components/live_analytics.html" %} {% endcomment %}

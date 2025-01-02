@@ -19,10 +19,6 @@ import { formatDecimal } from '../utils.js';
 
 export const strainsJS = {
 
-  async searchStrainNames() {
-
-  },
-
   async initializeStrain() {
     /**
      * Initialize the strain page.
@@ -96,23 +92,6 @@ export const strainsJS = {
 
   },
 
-  // TODO: Search strains.
-
-  // async findSimilarStrains() {
-  //   /**
-  //    * Find similar strains based on the selected strain.
-  //    */
-  //   // FIXME: Implement search for similar strains.
-  //   var chemotype = FieldValue.vector([3.0, 1.0, 2.0]);
-  //   const db = new Firestore();
-  //   const coll = db.collection('strains');
-  //   const vectorQuery = coll.findNearest('chemotype', chemotype, {
-  //     limit: 5,
-  //     distanceMeasure: 'EUCLIDEAN'
-  //   });
-  //   const vectorQuerySnapshot = await vectorQuery.get();
-  // },
-
   fetchStrains(searchTerm, startDate, endDate, selectedState) {
     /**
      * Fetch strains data from Firestore based on search term, date range, and selected state.
@@ -179,6 +158,10 @@ export const strainsJS = {
     document.getElementById('listViewButton').classList.remove('btn-primary');
     document.getElementById('listViewButton').classList.add('btn-outline-primary');
     const strainsContainer = document.getElementById('strainsContainer');
+    const masonryInstance = Masonry.data(strainsContainer);
+    if (masonryInstance) {
+      masonryInstance.destroy();
+    }
     strainsContainer.innerHTML = '';
     const gridOptions = {
       columnDefs: [
@@ -223,6 +206,24 @@ export const strainsJS = {
     createGrid(strainsContainer, gridOptions);
     cannlytics.ui.setTableTheme();
   },
+
+  async searchStrainNames() {
+    // Future work.
+  },
+  // Example:
+  // async findSimilarStrains() {
+  //   /**
+  //    * Find similar strains based on the selected strain.
+  //    */
+  //   var chemotype = FieldValue.vector([3.0, 1.0, 2.0]);
+  //   const db = new Firestore();
+  //   const coll = db.collection('strains');
+  //   const vectorQuery = coll.findNearest('chemotype', chemotype, {
+  //     limit: 5,
+  //     distanceMeasure: 'EUCLIDEAN'
+  //   });
+  //   const vectorQuerySnapshot = await vectorQuery.get();
+  // },
 
 };
 

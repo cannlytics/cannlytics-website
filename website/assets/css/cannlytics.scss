@@ -4,7 +4,7 @@
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 10/4/2020
- * Updated: 10/2/2024
+ * Updated: 12/29/2024
  * License: MIT License <https://github.com/cannlytics/cannlytics/blob/main/LICENSE>
  */
 
@@ -851,4 +851,85 @@ body.dark .bi-star-fill {
 /* Tooltips */
 .tooltip-inner {
   text-align: left;
+}
+
+/*--------------------------------------------------------------------------
+  Homepage
+---------------------------------------------------------------------------*/
+
+/* State Map */
+#state-map {
+  width: 100%;
+}
+#state-map svg {
+  display: block;
+  margin: 0 auto;
+}
+#state-map path {
+  transition: fill 0.2s ease;
+}
+
+/* Product Type Grid */
+.product-types-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+.product-card {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+}
+body.dark .product-card {
+  border-color: #1a1a1a;
+}
+.product-card:hover {
+  border-color: #1a1a1a;
+}
+body.dark .product-card:hover {
+  border-color: #ccc;
+}
+.product-card-image {
+  height: 160px;
+  overflow: hidden;
+}
+.product-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.product-card-content {
+  padding: 0.5rem;
+}
+.product-card-content h3 {
+  margin: 0;
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 600;
+} 
+/* Responsive grid adjustments */
+@media (min-width: 640px) {
+  .product-types-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 768px) {
+  .product-types-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .product-types-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (min-width: 1280px) {
+  .product-types-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
 }
