@@ -4,7 +4,7 @@ Copyright (c) 2024 Cannlytics
 
 Authors: Keegan Skeate <https://github.com/keeganskeate>
 Created: 9/15/2024
-Updated: 9/21/2024
+Updated: 1/3/2025
 License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
 """
 # Standard imports:
@@ -15,11 +15,15 @@ from typing import Any
 from django.conf import settings
 from markdown import markdown
 from pymdownx import emoji
-import requests
 
 # Internal imports:
-from website.settings import DEBUG, PROJECT_NAME as BASE
 from website.state import page_texts
+
+# Define the project name.
+# TODO: I don't think it's the best to import from settings.
+# Is there a better place to define the project name?
+# from website.settings import PROJECT_NAME as BASE
+BASE = 'website'
 
 
 def get_page_texts(request: Any, context: dict) -> dict:
@@ -75,23 +79,6 @@ def get_local_markdown(app, page):
     with open(file_path, 'r', encoding='utf-8') as md_file:
         text = md_file.read()
     return text
-
-
-# TODO: Try to make obsolete.
-# def get_remote_markdown(request, app, page):
-#     """Load remote markdown files."""
-#     if DEBUG:
-#         referrer = request.META.get('HTTP_REFERER')
-#         if referrer:
-#             base = referrer.split('/')[2]
-#         else:
-#             base = 'localhost'
-#     else:
-#         base = 'cannlytics.com'
-#     protocol = 'http' if DEBUG else 'https'
-#     url = f'{protocol}://{base}/static/{app}/docs/{page}.md'
-#     text = requests.get(url).text
-#     return text
 
 
 def get_markdown(

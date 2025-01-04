@@ -74,7 +74,7 @@
 
     <!-- Product Types -->
     <div class="d-flex justify-content-between mb-2">
-      <a href="/results" class="text-decoration-none">
+      <a href="{% url 'page' page='results' %}" class="text-decoration-none">
         <h4 class="sans-serif text-dark fw-bold mb-0">Lab Results</h4>
       </a>
      </div>
@@ -82,13 +82,15 @@
 
     <!-- States -->
     <div class="d-flex justify-content-between mb-2 mt-5">
-      <h4 class="sans-serif text-dark fw-bold mb-0">State Data</h4>
+      <a href="{% url 'page' page='states' %}" class="text-decoration-none">
+        <h4 class="sans-serif text-dark fw-bold mb-0">State Data</h4>
+      </a>
     </div>
     <div id="state-map" class="card border-1 rounded-2"></div>
 
     <!-- Strains -->
     <div class="d-flex justify-content-between mb-2 mt-5">
-      <a href="/strains" class="text-decoration-none">
+      <a href="{% url 'page' page='strains' %}" class="text-decoration-none">
         <h4 class="sans-serif text-dark fw-bold mb-0">Strains</h4>
        </a>
 

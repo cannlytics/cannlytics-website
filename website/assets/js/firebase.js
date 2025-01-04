@@ -75,6 +75,8 @@ const firebaseApp = initializeApp({
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const storage = getStorage(firebaseApp);
+
+// FIXME: In general, need to refactor all functions to use modular Firebase.
  
 /*------------------------------------------------------------------------------
  * Firestore Interface

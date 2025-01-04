@@ -10,17 +10,17 @@
   },
   "private": true,
   "scripts": {
-    "start": "conda activate cds & npm-run-all --parallel serve livereload dev",
+    "start": "npm-run-all --parallel serve livereload dev",
     "serve": "cd website & webpack serve --env development & cd ../",
     "livereload": "set PROJECT=website & python manage.py livereload --ignore-static-dirs",
     "dev": "set PROJECT=website & python manage.py runserver",
     "build": "cd website & webpack --env production & cd ../",
     "collectstatic": "set PROJECT=website & echo yes|python manage.py collectstatic",
     "container": "npm run collectstatic --noinput & gcloud builds submit --tag gcr.io/cannlytics/cannlytics-website",
-    "run": "gcloud run deploy cannlytics-website --image=gcr.io/cannlytics/cannlytics-website --set-env-vars=SETTINGS_NAME=cannlytics_platform_settings --region=us-central1 --allow-unauthenticated --platform=managed --memory=8Gi --cpu=2 --min-instances=1 --max-instances=99 --no-use-http2 --timeout=15m",
+    "run": "gcloud run deploy cannlytics-website --image=gcr.io/cannlytics/cannlytics-website --set-env-vars=SETTINGS_NAME=cannlytics_platform_settings --region=us-central1 --allow-unauthenticated --platform=managed --memory=8Gi --cpu=1 --min-instances=1 --max-instances=99 --no-use-http2 --timeout=15m",
     "deploy": "firebase deploy --project cannlytics --only hosting:cannlytics",
     "docker": "docker build . --tag gcr.io/cannlytics/cannlytics-website:latest & docker push gcr.io/cannlytics/cannlytics-website:latest",
-    "publish": "conda activate cds & npm run build & npm run collectstatic & npm run docker & npm run run & npm run deploy",
+    "publish": "npm run build & npm run collectstatic & npm run docker & npm run run & npm run deploy",
     "clean": "rimraf website/static/website/js/bundles/hot"
   },
   "dependencies": {
