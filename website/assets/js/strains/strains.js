@@ -17,6 +17,8 @@ import { createGrid, ModuleRegistry, ClientSideRowModelModule } from 'ag-grid-co
 import { Modal } from 'bootstrap';
 import { getCollection, getDocument } from '../firebase.js';
 import { formatDecimal, formatPercentage } from '../utils.js';
+import { renderCannabinoidChart } from './cannabinoidsChart.js';
+import { renderTerpeneChart } from './terpeneChart.js';
 
 export const strainsJS = {
 
@@ -221,6 +223,12 @@ export const strainsJS = {
       }
       console.log('FIRESTORE STRAIN DATA:', data);
     }
+
+    // TODO: Render the cannabinoids figure.
+    renderCannabinoidChart(data);
+
+    // Render the terpenes figure.
+    renderTerpeneChart(data);
 
     // Render strain data.
     document.getElementById('strain_name').textContent = data.strain_name;

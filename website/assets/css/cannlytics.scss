@@ -1020,3 +1020,59 @@ body.dark .product-card:hover {
 .dot.active {
   background-color: white;
 }
+
+/* Terpenes Charts CSS */
+.chart {
+  position: relative;
+}
+.bar, .mini-bar {
+  transition: opacity 0.2s;
+}
+.axis path {
+  display: none;
+}
+.brush .selection {
+  fill: rgba(128, 128, 128, 0.2);
+  stroke: #888;
+}
+.brush .extent {
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+.y.axis line {
+  fill: none;
+}
+.x.axis line {
+  fill: none;
+  stroke: #e0e0e0;
+  shape-rendering: crispEdges;
+}
+.resize {
+  display: inline !important;
+  fill: #7A7A7A;
+  fill-opacity: 1;
+  stroke: #7A7A7A;
+  stroke-width: 2px;
+}
+
+/* Cannabinoids Chart CSS */
+
+#cannabinoidChart {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  fill: #242424;
+  text-align: center;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+}
+.legend {
+  font-family: 'Raleway', sans-serif;
+  fill: #333333;
+}
+.tooltip {
+  fill: #333333;
+}
+.radar-chart-wrapper {
+  margin: 20px auto;
+  max-width: 800px;
+}
