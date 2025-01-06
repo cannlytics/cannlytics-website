@@ -401,6 +401,16 @@ export const formatDecimal = (params) => {
   return '';
 };
 
+export function formatPercentage(value, decimals = 2) {
+  /**
+   * Format a percentage.
+   */
+  if (value === null || value === undefined) {
+    return '';
+  }
+  return Number(value).toFixed(decimals) + '%';
+}
+
 /*------------------------------------------------------------------------------
  * Export
  *----------------------------------------------------------------------------*/

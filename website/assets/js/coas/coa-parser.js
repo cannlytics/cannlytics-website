@@ -430,7 +430,7 @@ function onRowClicked(row) {
    * Open the modal of sample results when a row of the table is clicked.
    * @param {RowNode} row A table row.
    */
-  const modal = new Modal(document.getElementById('results-modal'), {});;
+  const modal = new Modal(document.getElementById('results-modal'), {});
   modal.show();
   renderSampleResults(row.data.sample_id);
 }

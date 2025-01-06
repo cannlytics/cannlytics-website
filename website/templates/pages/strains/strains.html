@@ -1,7 +1,7 @@
 <!--
   Strains Page | Cannlytics
   Created: 1/5/2021
-  Updated: 7/20/2024
+  Updated: 1/5/2025
 -->
 {% extends "components/layout/dashboard.html" %}
 {% load static %}
@@ -18,7 +18,7 @@
   {% include "components/tables/ag_grid_scripts.html" %}
 
   <!-- Masonry -->
-  <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+  {% include "components/tables/masonry_scripts.html" %}
 
 {% endblock %}
 {% block dashboard %}
@@ -70,19 +70,6 @@
   </script>
 {% else %}
   <script>
-
-    {% comment %} // Render the date picker for both start and end date inputs.
-    $('.datepicker').datepicker({
-      format: 'mm/dd/yyyy',
-      autoclose: true,
-      todayHighlight: true
-    });
-    const startDateInput = $('#dateTestedStart');
-    const endDateInput = $('#dateTestedEnd');
-    const currentDate = new Date();
-    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    $('#dateTestedStart').datepicker('setDate', firstDayOfMonth);
-    $('#dateTestedEnd').datepicker('setDate', currentDate); {% endcomment %}
 
     // Attach functionality.
     console.log('Attaching functionality...');

@@ -3,7 +3,7 @@
   Created: 2/17/2024
   Updated: 2/25/2024
 -->
-<section class="container markdown">
+<section class="container">
 
   <!-- Breadcrumbs -->
   {% include "components/layout/breadcrumbs.html" with
@@ -12,54 +12,214 @@
     current_page=id
   %}
 
-  {% comment %} <div class="row">
+  <!-- Strain -->
+  <div class="row">
+
+    <!-- Images -->
     <div class="col-md-6">
-      <img id="strainImageUrl" class="img-fluid" alt="Strain Image">
+      <!-- Main Image Container -->
+      <div class="main-image-container mb-3">
+        <img id="mainImage" class="img-fluid rounded" alt="Strain Image">
+      </div>
+      
+      <!-- Thumbnail Gallery -->
+      <div class="thumbnail-gallery position-relative">
+        <!-- Previous Button -->
+        <button class="carousel-control-prev" type="button" id="prevButton">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        
+        <!-- Thumbnails Container -->
+        <div class="thumbnails-container d-flex align-items-center justify-content-center overflow-hidden">
+          <div id="thumbnailsTrack" class="d-flex">
+            <!-- Thumbnails will be inserted here by JavaScript -->
+          </div>
+        </div>
+        
+        <!-- Next Button -->
+        <button class="carousel-control-next" type="button" id="nextButton">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
     </div>
+
+    <!-- Fullscreen Gallery Modal -->
+    <div id="galleryModal" class="modal fade" tabindex="-1">
+      <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- Close button -->
+             <!-- FIXME: This is not working (or it's covered up?) -->
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-4 bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        
+        <!-- Main image container -->
+        <div class="modal-body">
+        <div class="d-flex align-items-center justify-content-center h-100">
+          <!-- Previous button -->
+          <button class="carousel-control-prev" type="button" id="modalPrevButton">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          
+          <!-- Image -->
+          <img id="modalMainImage" class="modal-image" alt="Fullscreen Image">
+          
+          <!-- Next button -->
+          <button class="carousel-control-next" type="button" id="modalNextButton">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+        
+        <!-- Dots navigation -->
+        <div class="modal-dots position-absolute bottom-0 start-50 translate-middle-x pb-4">
+          <!-- Dots will be inserted here by JavaScript -->
+        </div>
+      </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Strain data -->
     <div class="col-md-6">
-      <h1 id="strainName"></h1>
-      <p id="strainDescription"></p>
-      <p>Total Favorites: <span id="strainTotalFavorites"></span></p>
+
+      <!-- Strain name -->
+      <h1 id="strain_name" class="sans-serif fw-bold text-dark"></h1>
+
+      <!-- Stats -->
+      <table class="table table-sm table-bordered mt-3">
+        <tbody>
+          <tr>
+            <td class="bg-transparent">Total tests</td>
+            <td id="total_results" class="bg-transparent"></td>
+          </tr>
+          <!-- TODO: Add links to each -->
+          <tr>
+            <td class="bg-transparent">Last test</td>
+            <td id="latest_date_tested" class="bg-transparent"></td>
+          </tr>
+          <tr>
+            <td class="bg-transparent">First test</td>
+            <td id="first_date_tested" class="bg-transparent"></td>
+          </tr>
+          <tr>
+            <td class="bg-transparent">First producer</td>
+            <td id="first_producer" class="bg-transparent"></td>
+          </tr>
+          <tr>
+            <td class="bg-transparent">First lab</td>
+            <td id="first_lab" class="bg-transparent"></td>
+          </tr>
+          <tr>
+            <td class="bg-transparent">First state</td>
+            <td id="first_state" class="bg-transparent text-uppercase"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      {% comment %} <p>Total Favorites: <span id="strainTotalFavorites"></span></p> {% endcomment %}
       <!-- TODO: Add other strain fields -->
     </div>
-  </div> {% endcomment %}
 
-  <!-- FIXME: Form of strain data!
-   Strain
-    - strain_image
-    - strain_name
-    - strain_description
+    
 
-    Origin
-    - first_date_tested
-    - latest_date_tested
-    - first_producer
-    - first_state
-    - first_zipcode
+  </div>
 
-    Results
-    - total_tests
-    - avg_total_cannabinoids
-    - avg_total_thc
-    - avg_total_cbd
-    - avg_total_terpenes
-    - avg_{cannabinoid}
-    - avg_{terpene}
-    - avg_beta_pinene_d_limonene_ratio
+  <!-- TODO: Cannabinoid profile -->
+  <div class="row mt-5">
 
-    Stats
-    - strain_type
-    - cannabinoid_type
-    - dominant_terpene
-    - cannabinoid_diversity
-    - terpene_diversity 
+    <h5 class="sans-serif fst-italic text-dark">Cannabinoid Profile</h5>
+
+    <!-- Cannabinoid Stats -->
+    <div class="col-md-6">
+      <table class="table table-sm table-bordered mt-3">
+        <tbody>
+          <tr>
+            <td class="bg-transparent">Avg. Total Cannabinoids</td>
+            <td id="avg_total_cannabinoids" class="bg-transparent"></td>
+          </tr>
+          <tr>
+            <td class="bg-transparent">Avg. Total THC</td>
+            <td id="avg_total_thc" class="bg-transparent"></td>
+          </tr>
+          <tr>
+            <td class="bg-transparent">Avg. Total CBD</td>
+            <td id="avg_total_cbd" class="bg-transparent"></td>
+          </tr>
+          <tr>
+            <td class="bg-transparent">Cannabinoid Diversity</td>
+            <td id="avg_cannabinoid_diversity" class="bg-transparent"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TODO: Chart of cannabinoids (avg_{cannabinoid}) -->
+    
+
+  </div>
+
+  <!-- TODO: Terpene profile -->
+  <div class="row mt-5">
+
+    <h5 class="sans-serif fst-italic text-dark">Terpene Profile</h5>
+
+    <!-- Terpene Stats -->
+    <div class="col-md-6">
+      <table class="table table-sm table-bordered mt-3">
+        <tbody>
+          <tr>
+            <td class="bg-transparent">Avg. Total Terpenes</td>
+            <td id="avg_total_terpenes" class="bg-transparent"></td>
+          </tr>
+          <tr>
+            <td class="bg-transparent">Terpene Diversity</td>
+            <td id="avg_terpene_diversity" class="bg-transparent"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TODO: Chart of terpenes (avg_{terpene}) -->
+
+  </div>
+
+
+
+
+  <!-- TODO: Strains with similar chemical profiles -->
+  <div class="row mt-5">
+
+    <h5 class="sans-serif fst-italic text-dark">Chemically similar strains</h5>
+
+  </div>
+
+  <!-- TODO: Strains with similar names -->
+  <div class="row mt-5">
+
+    <h5 class="sans-serif fst-italic text-dark">Similarly named strains</h5>
+
+  </div>
+
+
+  <!-- TODO: Strain results -->
+  <div class="row mt-5 mb-5">
+
+    <h5 class="sans-serif fst-italic text-dark">Strain results</h5>
+
+  </div>
+
+
+  <!-- Optional: Strain results scatterplot
+  - Allow the user to chose the compounds on the x and y axis. 
   -->
 
-  <!-- TODO: Gallery (strain_images)-->
 
-  <!-- TODO: Strain results (scatterplot?) -->
-
-  <!-- Optional:
+    <!-- Optional:
     - Ridge plots for cultivars with terpene data.
     - Regression plots of ratios with all strains colored by strain.
     - Review strain.
@@ -67,7 +227,5 @@
       * Legs
       * Nose
   -->
-
-  <!-- TODO: Strains with similar chemical profiles -->
 
 </section>

@@ -933,3 +933,90 @@ body.dark .product-card:hover {
     grid-template-columns: repeat(5, 1fr);
   }
 }
+
+
+/*--------------------------------------------------------------------------
+  Image gallery
+---------------------------------------------------------------------------*/
+
+.main-image-container {
+  aspect-ratio: 1;
+  overflow: hidden;
+  cursor: url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'>\
+      <circle cx='16' cy='16' r='14' fill='rgba(0,0,0,0.7)'/>\
+      <path d='M16 8v16M8 16h16' stroke='white' stroke-width='2'/>\
+    </svg>") 16 16,
+    auto;
+}
+.main-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.thumbnail-gallery {
+  height: 80px;
+}
+.thumbnails-container {
+  height: 100%;
+  margin: 0 40px;
+}
+#thumbnailsTrack {
+  transition: transform 0.3s ease-in-out;
+  gap: 8px;
+}
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in-out;
+}
+.thumbnail.active {
+  opacity: 1;
+  border: 2px solid #0d6efd;
+}
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  width: 32px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  height: 100%;
+}
+.modal-fullscreen {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.modal-image {
+  max-height: 90vh;
+  max-width: 90vw;
+  object-fit: contain;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  width: 10%;
+  background: none;
+  border: none;
+  opacity: 0.8;
+}
+.modal-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+.dot.active {
+  background-color: white;
+}
