@@ -26,12 +26,15 @@ export function renderCannabinoidChart(strainData) {
         width = Math.min(700, window.innerWidth - 10) - margin.left - margin.right,
         height = Math.min(width, window.innerHeight - margin.top - margin.bottom - 20);
 
+  // FIXME: Specify the `maxValue` based on the data.
+  const maxValue = 0.3;
+
   // Configure the radar chart options
   const radarChartOptions = {
     w: width,
     h: height,
     margin: margin,
-    maxValue: 0.05,           // Typical max percentage for cannabinoids
+    maxValue: maxValue,           // Typical max percentage for cannabinoids
     levels: 5,               // Number of circles in the radar
     roundStrokes: true,      // Make the shape smoother
     color: d3.scale.ordinal().range(['#2E8B57']),  // Sea Green color

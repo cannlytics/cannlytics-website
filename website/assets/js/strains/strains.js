@@ -1,10 +1,10 @@
 /**
  * Strains JavaScript | Cannlytics Website
- * Copyright (c) 2021-2022 Cannlytics
+ * Copyright (c) 2021-2025 Cannlytics
  * 
  * Authors: Keegan Skeate <https://github.com/keeganskeate>
  * Created: 2/13/2024
- * Updated: 3/26/2024
+ * Updated: 1/7/2025
  * License: MIT License <https://github.com/cannlytics/cannlytics-website/blob/main/LICENSE>
  */
 // import {
@@ -17,8 +17,10 @@ import { createGrid, ModuleRegistry, ClientSideRowModelModule } from 'ag-grid-co
 import { Modal } from 'bootstrap';
 import { getCollection, getDocument } from '../firebase.js';
 import { formatDecimal, formatPercentage } from '../utils.js';
-import { renderCannabinoidChart } from './cannabinoidsChart.js';
-import { renderTerpeneChart } from './terpeneChart.js';
+// import { renderCannabinoidChart } from './cannabinoidsChart.js';
+// import { renderTerpeneChart } from './terpeneChart.js';
+import { renderCannabinoidRadarChart, renderTerpeneRadarChart } from './resultsRadarChart.js';
+import { renderResultsBarChart } from './resultsBarChart.js';
 
 export const strainsJS = {
 
@@ -224,11 +226,22 @@ export const strainsJS = {
       console.log('FIRESTORE STRAIN DATA:', data);
     }
 
-    // TODO: Render the cannabinoids figure.
-    renderCannabinoidChart(data);
+    // FIXME: Allow the user to select which chart to render.
 
-    // Render the terpenes figure.
-    renderTerpeneChart(data);
+    // Render a terpene bar chart.
+    renderResultsBarChart('#terpeneChart', data, TERPENE_LIST);
+
+    // Render a cannabinoid bar chart.
+    renderResultsBarChart('#cannabinoidChart', data, CANNABINOID_LIST);
+
+    // // Render a cannabinoid radar chart.
+    // renderCannabinoidRadarChart(data);
+
+    // // Render a terpene radar chart.
+    // renderTerpeneRadarChart(data);
+
+    // Setup chart toggles.
+    setupChartToggles(data);
 
     // Render strain data.
     document.getElementById('strain_name').textContent = data.strain_name;
@@ -279,9 +292,6 @@ export const strainsJS = {
     // strain_type
     // first_date_tested
 
-    // Primary image.
-    // document.getElementById('image_url').src = data.image_url;
-
     // Get a gallery of images for the strain.
     // Collection: strains/{strain-id}/strain_images
     const gallery = await getCollection(`strains/${strainId}/strain_images`, {});
@@ -306,7 +316,7 @@ export const strainsJS = {
       thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
       
       const thumbImg = document.createElement('img');
-      thumbImg.src = image.image_url;
+      thumbImg.src = image.image_download_url;
       thumbImg.alt = `Thumbnail ${index + 1}`;
       
       thumbnail.appendChild(thumbImg);
@@ -421,7 +431,7 @@ export const strainsJS = {
      */
     this.currentImageIndex = index;
     const mainImage = document.getElementById('mainImage');
-    mainImage.src = images[index].image_url;
+    mainImage.src = images[index].image_download_url;
     document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
       thumb.classList.toggle('active', i === index);
     });
@@ -433,7 +443,7 @@ export const strainsJS = {
      */
     this.modalCurrentIndex = index;
     const modalImage = document.getElementById('modalMainImage');
-    modalImage.src = images[index].image_url;
+    modalImage.src = images[index].image_download_url;
     document.querySelectorAll('.dot').forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
     });
@@ -450,7 +460,7 @@ const createStrainCard = (strain) => {
   cardInnerElement.classList.add('card');
 
   const imageElement = document.createElement('img');
-  imageElement.src = strain.image_url || 'path/to/default/image.jpg';
+  imageElement.src = strain.image_download_url || 'path/to/default/image.jpg';
   imageElement.classList.add('card-img-top');
   imageElement.alt = 'Strain';
 
@@ -473,3 +483,261 @@ const createStrainCard = (strain) => {
 
   return cardElement;
 };
+
+function setupChartToggles(data) {
+  /**
+   * Setup the chart toggle buttons for the strain page.
+   */
+  // References to each button (terpenes)
+  const tBarBtn   = document.getElementById('terpeneBarBtn');
+  const tRadarBtn = document.getElementById('terpeneRadarBtn');
+  const tTableBtn = document.getElementById('terpeneTableBtn');
+
+  // References to each button (cannabinoids)
+  const cBarBtn   = document.getElementById('cannabinoidBarBtn');
+  const cRadarBtn = document.getElementById('cannabinoidRadarBtn');
+  const cTableBtn = document.getElementById('cannabinoidTableBtn');
+
+  // Helper to toggle classes among 3 buttons
+  function setActiveButton(allButtons, activeBtn) {
+    allButtons.forEach(btn => {
+      btn.classList.remove('btn-primary', 'active');
+      btn.classList.add('btn-outline-primary');
+    });
+    activeBtn.classList.remove('btn-outline-primary');
+    activeBtn.classList.add('btn-primary', 'active');
+  }
+
+  // Terpene buttons: Bar, Radar, Table
+  const terpeneButtons = [ tBarBtn, tRadarBtn, tTableBtn ];
+
+  // Terpene BAR
+  tBarBtn.addEventListener('click', () => {
+    d3.select('#terpeneChart').selectAll('*').remove();
+    renderResultsBarChart('#terpeneChart', data, TERPENE_LIST);
+    setActiveButton(terpeneButtons, tBarBtn);
+  });
+
+  // Terpene RADAR
+  tRadarBtn.addEventListener('click', () => {
+    d3.select('#terpeneChart').selectAll('*').remove();
+    renderTerpeneRadarChart(data);
+    setActiveButton(terpeneButtons, tRadarBtn);
+  });
+
+  // Terpene TABLE
+  tTableBtn.addEventListener('click', () => {
+    d3.select('#terpeneChart').selectAll('*').remove();
+    // The table-building function
+    renderResultsTable('#terpeneChart', data, TERPENE_LIST);
+    setActiveButton(terpeneButtons, tTableBtn);
+  });
+
+  // Cannabinoid buttons: Bar, Radar, Table
+  const cannabinoidButtons = [ cBarBtn, cRadarBtn, cTableBtn ];
+
+  // Cannabinoid BAR
+  cBarBtn.addEventListener('click', () => {
+    d3.select('#cannabinoidChart').selectAll('*').remove();
+    renderResultsBarChart('#cannabinoidChart', data, CANNABINOID_LIST);
+    setActiveButton(cannabinoidButtons, cBarBtn);
+  });
+
+  // Cannabinoid RADAR
+  cRadarBtn.addEventListener('click', () => {
+    d3.select('#cannabinoidChart').selectAll('*').remove();
+    renderCannabinoidRadarChart(data);
+    setActiveButton(cannabinoidButtons, cRadarBtn);
+  });
+
+  // Cannabinoid TABLE
+  cTableBtn.addEventListener('click', () => {
+    d3.select('#cannabinoidChart').selectAll('*').remove();
+    renderResultsTable('#cannabinoidChart', data, CANNABINOID_LIST);
+    setActiveButton(cannabinoidButtons, cTableBtn);
+  });
+}
+
+function setActiveButton(allButtons, activeBtn) {
+  // allButtons is an array of button elements
+  // activeBtn is the one to highlight
+
+  allButtons.forEach(btn => {
+    // Remove .active / .btn-primary from all
+    btn.classList.remove('btn-primary', 'active');
+    btn.classList.add('btn-outline-primary');
+  });
+
+  // Then add .active / .btn-primary to just the active one
+  activeBtn.classList.remove('btn-outline-primary');
+  activeBtn.classList.add('btn-primary', 'active');
+};
+
+
+// List of cannabinoids.
+const CANNABINOID_LIST = [
+  'cbc', 'cbca', 'cbcv', 'cbd', 'cbda', 'cbdv', 'cbdva', 'cbg', 'cbga', 
+  'cbl', 'cbla', 'cbn', 'cbna', 'cbt', 'delta_8_thc', 'delta_9_thc', 
+  'thcv', 'thcva', 'thca'
+];
+
+// List of terpenes.
+const TERPENE_LIST = [
+  'alpha_bisabolol', 'alpha_cedrene', 'alpha_humulene', 'alpha_ocimene',
+  'alpha_phellandrene', 'alpha_pinene', 'alpha_terpinene', 'beta_caryophyllene',
+  'beta_myrcene', 'beta_ocimene', 'beta_pinene', 'borneol', 'camphene', 'camphor',
+  'caryophyllene_oxide', 'cedrol', 'cineole', 'citral', 'citronellol', 'd_limonene',
+  'delta_3_carene', 'dihydrocarveol', 'eucalyptol', 'fenchol', 'fenchone',
+  'gamma_terpinene', 'geraniol', 'geranyl_acetate', 'guaiol', 'hexahydrothymol',
+  'isoborneol', 'isopulegol', 'linalool', 'menthol', 'nerol', 'nerolidol',
+  'p_cymene', 'p_mentha_1_5_diene', 'phytol', 'pulegone', 'sabinene', 'terpineol',
+  'terpinolene', 'alpha_terpineol', 'trans_beta_farnesene', 'trans_nerolidol', 'valencene'
+];
+
+export function renderResultsTable(containerSelector, strainData, compoundList) {
+  // Remove old content
+  d3.select(containerSelector).selectAll('*').remove();
+
+  // Build an array of { compound, value } for the table
+  let tableData = [];
+  compoundList.forEach((compound) => {
+    const key = `avg_${compound}`;
+    let val = strainData[key];
+    if (val && !isNaN(val) && val > 0) {
+      tableData.push({
+        compound: compound, // raw
+        value: val
+      });
+    }
+  });
+
+  if (tableData.length === 0) {
+    d3.select(containerSelector).html('<p>No data available.</p>');
+    return;
+  }
+
+  // Create the container <table>
+  const table = d3.select(containerSelector)
+    .append('table')
+    .attr('class', 'table table-striped table-hover');
+
+  // Create thead & tr
+  const thead = table.append('thead').append('tr');
+
+  // We'll keep track of sorting states for each column
+  let sortState = {
+    compound: { ascending: true },
+    value: { ascending: true }
+  };
+
+  //////////////////////////////
+  // HEADERS
+  //////////////////////////////
+  thead.append('th')
+    .attr('class', 'compound-col')
+    .text('Compound')
+    .style('cursor', 'pointer')
+    .on('click', () => {
+      // Toggle sort direction
+      sortState.compound.ascending = !sortState.compound.ascending;
+      // Sort tableData by 'compound' (raw snake_case)
+      tableData.sort((a, b) => {
+        const compA = a.compound.toLowerCase();
+        const compB = b.compound.toLowerCase();
+        if (compA < compB) return sortState.compound.ascending ? -1 : 1;
+        if (compA > compB) return sortState.compound.ascending ? 1 : -1;
+        return 0;
+      });
+      // Re-render tbody
+      renderTableBody();
+    });
+
+  thead.append('th')
+    .attr('class', 'value-col')
+    .text('Avg. (%)')
+    .style('cursor', 'pointer')
+    .on('click', () => {
+      // Toggle sort direction
+      sortState.value.ascending = !sortState.value.ascending;
+      // Sort tableData by 'value'
+      tableData.sort((a, b) => {
+        if (a.value < b.value) return sortState.value.ascending ? -1 : 1;
+        if (a.value > b.value) return sortState.value.ascending ? 1 : -1;
+        return 0;
+      });
+      renderTableBody();
+    });
+
+  // Create tbody
+  const tbody = table.append('tbody');
+
+  //////////////////////////////
+  // BODY RENDER
+  //////////////////////////////
+  function renderTableBody() {
+    // Clear existing rows
+    tbody.selectAll('tr').remove();
+
+    // Populate rows from sorted tableData
+    tableData.forEach(d => {
+      const row = tbody.append('tr');
+
+      // 1) COMPOUND column
+      //    - Format for display with Greek/hyphens
+      //    - Link to /analytes/<kebabCase>
+      const displayName = formatCompoundName(d.compound);
+      const analyteId = compoundToAnalyteId(d.compound);
+
+      row.append('td')
+        .append('a')
+        .attr('href', `/analytes/${analyteId}`)
+        .attr('target', '_blank') // if you want it in a new tab
+        .text(displayName);
+
+      // 2) VALUE column
+      row.append('td').text(d.value.toFixed(2));
+    });
+  }
+
+  // 3) Initial render
+  renderTableBody();
+}
+
+// HELPER FUNCTIONS
+
+function formatCompoundName(compound) {
+  /** 
+   * Format the compound name for display by:
+   * 1. Converting underscores to hyphens
+   * 2. Replacing English spellings of Greek letters with symbols
+   * 3. Capitalizing the first letter of each word (except Greek symbols)
+   */
+  let display = compound.replace(/_/g, '-');
+  const greekMap = {
+    alpha: 'α',
+    beta: 'β',
+    gamma: 'γ',
+    delta: 'δ'
+  };
+  Object.keys(greekMap).forEach(eng => {
+    const re = new RegExp(eng, 'g');
+    display = display.replace(re, greekMap[eng]);
+  });
+  let words = display.split('-');
+  words = words.map(word => {
+    if (Object.values(greekMap).includes(word)) {
+      return word;
+    }
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  });
+  return words.join('-');
+}
+
+function compoundToAnalyteId(compound) {
+  /**
+   * Convert underscores to hyphens for the link’s analyte ID (kebab-case).
+   * (We do NOT replace alpha/beta here, because the server likely expects
+   * “alpha-pinene” in the URL, not “α-pinene”.)
+   */
+  return compound.replace(/_/g, '-');
+}

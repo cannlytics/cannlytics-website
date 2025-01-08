@@ -69,7 +69,7 @@ export function RadarChart(id, data, options) {
 	/////////////////////////////////////////////////////////
 	
 	//Filter for the outside glow
-	var filter = g.append('defs').append('filter').attr('id','glow'),
+	var filter = g.append('defs').append('filter').attr('id',`glow-${id}`),
 		feGaussianBlur = filter.append('feGaussianBlur').attr('stdDeviation','2.5').attr('result','coloredBlur'),
 		feMerge = filter.append('feMerge'),
 		feMergeNode_1 = feMerge.append('feMergeNode').attr('in','coloredBlur'),
@@ -92,7 +92,7 @@ export function RadarChart(id, data, options) {
 		.style("fill", "#CDCDCD")
 		.style("stroke", "#CDCDCD")
 		.style("fill-opacity", cfg.opacityCircles)
-		.style("filter" , "url(#glow)");
+		.style("filter" , `url(#glow-${id})`);
 
 	//Text indicating at what % each level is
 	axisGrid.selectAll(".axisLabel")
@@ -188,7 +188,7 @@ export function RadarChart(id, data, options) {
 		.style("stroke-width", cfg.strokeWidth + "px")
 		.style("stroke", function(d,i) { return cfg.color(i); })
 		.style("fill", "none")
-		.style("filter" , "url(#glow)");		
+		.style("filter" , `url(#glow-${id})`);		
 	
 	//Append the circles
 	blobWrapper.selectAll(".radarCircle")

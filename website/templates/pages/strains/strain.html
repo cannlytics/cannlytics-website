@@ -158,9 +158,20 @@
       </table>
     </div>
 
-    <!-- TODO: Chart of cannabinoids (avg_{cannabinoid}) -->
-    <div id="cannabinoidChart" class="radar-chart-wrapper"></div>
-    
+    <!-- Cannabinoid chart -->
+     <!-- TODO: Include `thca` checkbox -->
+    <div class="chart-controls">
+      <button id="cannabinoidBarBtn" class="btn btn-outline-primary active">
+        <i class="bi bi-bar-chart"></i>
+      </button>
+      <button id="cannabinoidRadarBtn" class="btn btn-outline-primary">
+        <i class="bi bi-radar"></i>
+      </button>
+      <button id="cannabinoidTableBtn" class="btn btn-outline-primary">
+        <i class="bi bi-table"></i>
+      </button>
+    </div>
+    <div id="cannabinoidChart" class="chart mt-2"></div>
 
   </div>
 
@@ -185,8 +196,27 @@
       </table>
     </div>
 
-    <!-- Bar chart of terpenes -->
-    <div id="terpeneChart" class="chart" style="height:400px;"></div>
+    <!-- Terpenes chart -->
+     <!-- TODO: Add a third button that shows a Bootstrap table of results -->
+    <div class="chart-controls">
+      <button id="terpeneBarBtn" class="btn btn-outline-primary active">
+        <i class="bi bi-bar-chart"></i>
+      </button>
+      <button id="terpeneRadarBtn" class="btn btn-outline-primary">
+        <i class="bi bi-radar"></i>
+      </button>
+      <button id="terpeneTableBtn" class="btn btn-outline-primary">
+        <i class="bi bi-table"></i>
+      </button>
+    </div>
+    <div id="terpeneChart" class="chart  mt-2"></div>
+
+  </div>
+
+  <!-- TODO: Strain results -->
+  <div class="row mt-5 mb-5">
+
+    <h5 class="sans-serif fst-italic text-dark">Strain results</h5>
 
   </div>
 
@@ -201,14 +231,6 @@
   <div class="row mt-5">
 
     <h5 class="sans-serif fst-italic text-dark">Similarly named strains</h5>
-
-  </div>
-
-
-  <!-- TODO: Strain results -->
-  <div class="row mt-5 mb-5">
-
-    <h5 class="sans-serif fst-italic text-dark">Strain results</h5>
 
   </div>
 

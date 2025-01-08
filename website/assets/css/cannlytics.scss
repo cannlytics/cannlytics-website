@@ -1056,23 +1056,33 @@ body.dark .product-card:hover {
 }
 
 /* Cannabinoids Chart CSS */
+.bar-tooltip {
+  position: absolute;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+}
 
-#cannabinoidChart {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 300;
-  fill: #242424;
-  text-align: center;
-  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
-}
-.legend {
-  font-family: 'Raleway', sans-serif;
-  fill: #333333;
-}
-.tooltip {
-  fill: #333333;
-}
-.radar-chart-wrapper {
-  margin: 20px auto;
-  max-width: 800px;
-}
+// #cannabinoidChart {
+//   font-family: 'Open Sans', sans-serif;
+//   font-size: 11px;
+//   font-weight: 300;
+//   fill: #242424;
+//   text-align: center;
+//   text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+// }
+// .legend {
+//   font-family: 'Raleway', sans-serif;
+//   fill: #333333;
+// }
+// .tooltip {
+//   fill: #333333;
+// }
+// .radar-chart-wrapper {
+//   margin: 20px auto;
+//   max-width: 800px;
+// }
